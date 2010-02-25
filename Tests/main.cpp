@@ -3,7 +3,7 @@
 #include <map>
 #include <cstdlib>
 #include <string>
-/*
+
 using namespace std;
 
 class PortInterface {
@@ -160,71 +160,4 @@ int main()
     cout << "Hello world!" << endl;
     return 0;
 }
-*/
-struct Vertex2D
-{
-  int position[2];
 
-  void setPos(int x, int y) {
-      position[0] = x;
-      position[1] = y;
-  }
-
-};
-
-struct ColorVertex2D: public Vertex2D
-{
-  int color[4];
-
-  void setColor(int r, int g, int b, int a) {
-      color[0] = r;
-      color[1] = g;
-      color[2] = b;
-      color[3] = a;
-  }
-
-};
-
-template <class VertexType>
-class Sprite {
-
-public:
-    void setPos(int x, int y) {
-        for(int i=0; i < 4; ++i)
-            verts[i].setPos(x, y);
-    }
-
-    void setColor(int r, int g, int b, int a) {
-        for(int i=0; i < 4; ++i)
-            verts[i].setColor(r, g, b, a);
-    }
-
-    int * arr() {
-        return (int*)verts;
-    }
-
-private:
-    VertexType verts[4];
-
-};
-
-int main() {
-
-    Sprite<Vertex2D> Spr2d;
-    Sprite<ColorVertex2D> SprCol2d;
-
-    Spr2d.setPos(1, 2);
-    for (int i = 0; i < 4*2; ++i) {
-        std::cout << Spr2d.arr()[i] << " ";
-    }
-    std::cout << "\n";
-
-    SprCol2d.setPos(3, 4);
-    SprCol2d.setColor(1, 2, 3, 4);
-    for (int i = 0; i < 4*6; ++i) {
-        std::cout << SprCol2d.arr()[i] << " ";
-    }
-    std::cout << "\n";
-
-    return 0;
-}
