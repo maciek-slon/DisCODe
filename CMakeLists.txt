@@ -14,3 +14,4 @@ include(MacroOutOfSourceBuild)
 macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source build.")
 
 add_subdirectory(Tests)
+add_subdirectory(Core)
