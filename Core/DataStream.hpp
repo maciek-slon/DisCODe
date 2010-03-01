@@ -18,7 +18,7 @@ class DataStreamIn : public DataStreamInterface {
 	DataStreamIn(std::string n = "name") : DataStreamInterface(n) {};
 
 	void write (const T & t) {
-		internalWrite(t);
+		conn->send(t);
 	}
 
 	T read() {

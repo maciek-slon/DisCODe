@@ -13,5 +13,13 @@ include(MacroOutOfSourceBuild)
 
 macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source build.")
 
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+include_directories( Base Core Common )
+
 add_subdirectory(Tests)
-add_subdirectory(Core)
+add_subdirectory(Sources)
+add_subdirectory(Processors)

@@ -11,9 +11,9 @@
 
 #include <string>
 
-#include "Connection.hpp"
-
 namespace Core {
+
+class Connection;
 
 class DataStreamInterface {
 public:
@@ -29,20 +29,14 @@ public:
 
     template <class T>
     void set(const T & t) {
-    	if (type == dsIn)
+    	if (type() == dsIn)
     		internalSet( (void*)(&t) );
     	else
     		throw "Output ports can't receive data!";
     }
 
-
-
 protected:
     virtual void internalSet(void * ptr) = 0;
-
-    template <class T> void internalWrite(const T & t) {
-        conn->send(t);
-    }
 
 private:
     std::string name;
