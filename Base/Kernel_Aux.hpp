@@ -11,6 +11,8 @@
 
 #include <string>
 
+#include <boost/extension/extension.hpp>
+
 #include "Kernel.hpp"
 #include "Panel.hpp"
 
@@ -18,11 +20,13 @@ namespace Base {
 
 /**
  * \enum kernelType
- * Type of kernel (shared library).
+ * \brief Type of kernel (shared library).
  */
 enum kernelType
 {
-	KERNEL_SOURCE, KERNEL_PROCESSOR
+	KERNEL_SOURCE,    ///< Data source, for example camera
+	KERNEL_PROCESSOR, ///< Data processor
+	KERNEL_SINK       ///< Data sink, for example movie writer
 };
 
 
@@ -45,7 +49,7 @@ typedef std::string (*returnName)(void);
  * \brief Type representing function used for retrieving Panel object from SO.
  * \author tkornuta
  */
-//typedef Base::Panel* (*returnPanel)(void);
+typedef Base::Panel* (*returnPanel)(void);
 
 /*!
  * \typedef returnKernel
@@ -67,25 +71,25 @@ typedef Base::Kernel* (*returnKernel)(void);
  *
  * \param KERNEL_NAME the kernel name.
  * \param KERNEL_TYPE type of kernel
- * \param SOURCE_CLASS_NAME the class name of the kernel you are adding to the library.
+ * \param KERNEL_CLASS_NAME the class name of the kernel you are adding to the library.
  * \param PANEL_CLASS_NAME the class name of the panel you are adding to the library.
  * \author tkornuta
  */
 #define REGISTER_KERNEL(KERNEL_NAME, KERNEL_TYPE, KERNEL_CLASS_NAME, PANEL_CLASS_NAME) \
 extern "C" { \
-  Base::kernelType returnType() \
+  Base::kernelType BOOST_EXTENSION_EXPORT_DECL returnType() \
   { \
     return KERNEL_TYPE; \
   } \
-  std::string returnName() \
+  std::string BOOST_EXTENSION_EXPORT_DECL returnName() \
   { \
     return KERNEL_NAME; \
   } \
-  Base::Kernel* returnSource() \
+  Base::Kernel* BOOST_EXTENSION_EXPORT_DECL returnSource() \
   { \
     return new KERNEL_CLASS_NAME(); \
   } \
-  Base::Panel* returnPanel() \
+  Base::Panel* BOOST_EXTENSION_EXPORT_DECL returnPanel() \
   { \
     return new PANEL_CLASS_NAME(); \
   } \

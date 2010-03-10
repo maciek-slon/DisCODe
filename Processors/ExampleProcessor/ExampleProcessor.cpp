@@ -29,6 +29,13 @@ public:
 	 */
 	void* processData(const void* data_) {};
 
+	void setup() {
+
+	}
+
+	void clean() {
+
+	}
 };
 
 /*

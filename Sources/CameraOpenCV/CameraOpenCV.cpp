@@ -1,5 +1,5 @@
 /*!
- * \file CameraOpenCV.hpp
+ * \file CameraOpenCV.cpp
  * \brief
  *
  * \author mstefanc
@@ -23,6 +23,14 @@
 class CameraOpenCV : public Base::Kernel {
 public:
 	CameraOpenCV(std::string n = "CameraOpenCV") : Kernel(n) {};
+
+	void setup() {
+
+	}
+
+	void clean() {
+
+	}
 
 private:
 

@@ -18,7 +18,7 @@ namespace Base {
 
 /*!
  * \class Kernel
- * \brief
+ * \brief Abstract base class for all types of kernels.
  *
  * \author mstefanc
  */
@@ -43,6 +43,15 @@ protected:
 		return streams;
 	}
 
+	/*!
+	 * Setup kernel, open devices (if any) etc.
+	 */
+	virtual void setup() = 0;
+
+	/*!
+	 * Clean up whole mess (close files etc.)
+	 */
+	virtual void clean() = 0;
 
 private:
 	/*!

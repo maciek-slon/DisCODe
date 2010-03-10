@@ -18,8 +18,12 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-include_directories( Base Core Common )
+find_package( Boost REQUIRED )
+
+include_directories( Base Core Common ${Boost_INCLUDE_DIRS})
+
 
 add_subdirectory(Tests)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
+add_subdirectory(Sinks)

@@ -9,13 +9,4 @@
 
 namespace Base {
 
-Kernel::Kernel() {
-	// TODO Auto-generated constructor stub
-
-}
-
-Kernel::~Kernel() {
-	// TODO Auto-generated destructor stub
-}
-
 }
