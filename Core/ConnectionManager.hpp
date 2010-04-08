@@ -36,6 +36,7 @@ public:
 	 * Destructor, called only once, when related singleton is destroyed.
 	 */
 	~ConnectionManager() {
+		/// @todo uncomment!
 		/*BOOST_FOREACH(std::pair<std::string, Connection *> con, connections)
 			delete con.second;*/
 	}

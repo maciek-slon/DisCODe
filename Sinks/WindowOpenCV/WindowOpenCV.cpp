@@ -27,12 +27,14 @@ public:
 	 */
 	WindowOpenCV() {};
 
-	void setup() {
-
+	bool setup() {
+		cvNamedWindow(name().c_str(), 1);
+		return true;
 	}
 
-	void clean() {
-
+	bool clean() {
+		cvDestroyWindow(name().c_str());
+		return true;
 	}
 };
 

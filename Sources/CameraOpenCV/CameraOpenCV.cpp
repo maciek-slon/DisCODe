@@ -24,12 +24,12 @@ class CameraOpenCV : public Base::Kernel {
 public:
 	CameraOpenCV(std::string n = "CameraOpenCV") : Kernel(n) {};
 
-	void setup() {
-
+	bool setup() {
+		return true;
 	}
 
-	void clean() {
-
+	bool clean() {
+		return true;
 	}
 
 private:

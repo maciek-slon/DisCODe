@@ -29,12 +29,12 @@ public:
 	 */
 	void* processData(const void* data_) {};
 
-	void setup() {
-
+	bool setup() {
+		return true;
 	}
 
-	void clean() {
-
+	bool clean() {
+		return true;
 	}
 };
 

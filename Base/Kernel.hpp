@@ -24,7 +24,7 @@ namespace Base {
  */
 class Kernel {
 public:
-	Kernel(std::string n = "unnamed_kernel") : name(n) {};
+	Kernel(std::string n = "unnamed_kernel") : m_name(n) {};
 
 	virtual ~Kernel() {};
 
@@ -46,12 +46,26 @@ protected:
 	/*!
 	 * Setup kernel, open devices (if any) etc.
 	 */
-	virtual void setup() = 0;
+	virtual bool setup() = 0;
 
 	/*!
 	 * Clean up whole mess (close files etc.)
 	 */
-	virtual void clean() = 0;
+	virtual bool clean() = 0;
+
+	/*!
+	 * Return kernel name
+	 */
+	const std::string & name() {
+		return m_name;
+	}
+
+	/*!
+	 * Set kernel name
+	 */
+	void setName(const std::string & n) {
+		m_name = n;
+	}
 
 private:
 	/*!
@@ -62,8 +76,10 @@ private:
 	/*!
 	 * Name of this module. It's used for runtime identification.
 	 */
-	std::string name;
+	std::string m_name;
 };
+
+typedef Kernel* KernelPtr;
 
 }
 

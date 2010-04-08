@@ -12,8 +12,16 @@ set(Tests_SOURCES main.cpp)
 # using file() function:
 # file(GLOB Tests_SOURCES *.cpp)
 
+find_package(Boost COMPONENTS system filesystem REQUIRED)
+
 # Create an executable file called helloworld from sources:
 add_executable(Tests ${Tests_SOURCES})
+
+target_link_libraries(
+  Tests  
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+)
 
 #####################################################
 # test 2

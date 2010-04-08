@@ -18,7 +18,7 @@
 
 namespace Base {
 
-/**
+/*!
  * \enum kernelType
  * \brief Type of kernel (shared library).
  */
@@ -28,7 +28,6 @@ enum kernelType
 	KERNEL_PROCESSOR, ///< Data processor
 	KERNEL_SINK       ///< Data sink, for example movie writer
 };
-
 
 /*!
  * \typedef returnType

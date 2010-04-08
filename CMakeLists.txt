@@ -18,10 +18,14 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Required on Windows
+if(WIN32)
+    SET(BOOST_ROOT D:/boost_1_42_0)
+endif()
+
 find_package( Boost REQUIRED )
 
-include_directories( Base Core Common ${Boost_INCLUDE_DIRS})
-
+include_directories( . Base Core Common ${Boost_INCLUDE_DIRS})
 
 add_subdirectory(Tests)
 add_subdirectory(Sources)
