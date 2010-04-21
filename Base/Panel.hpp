@@ -6,8 +6,12 @@
  * \date 06.03.2008
  */
 
-#ifndef PANEL_HPP_
-#define PANEL_HPP_
+#ifndef _PANEL_HPP_
+#define _PANEL_HPP_
+
+#include <iostream>
+
+using namespace std;
 
 namespace Base {
 
@@ -24,7 +28,7 @@ public:
 	 */
 	Panel()
 	{
-
+		cout << "Hello abstract Panel\n";
 	}
 
 	/*!
@@ -37,3 +41,4 @@ public:
 }//: namespace Base
 
 #endif
+

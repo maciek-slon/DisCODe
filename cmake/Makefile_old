@@ -1,0 +1,153 @@
+# Compiler.
+CXX = icpc
+
+## Compiler options ####################################################################################
+# Compiler flags.
+CXXFLAGS = -openmp -g -O0 -msse2 `pkg-config --cflags opencv gsl` `fltk-config --cxxflags --use-forms` -g #-Wall
+# Linker flags.
+LDFLAGS += -g -O0 `pkg-config --libs opencv gsl` `fltk-config --ldflags --use-forms` -fPIC -rdynamic -lguide -lpthread 
+.PHONY: clean 
+
+# Objects required for application (CORE).
+CORE_OBJ = MainWindow.o TestMode_Panel.o SourceManagement_Panel.o SourceManager.o TaskFactory.o main.o Socket.o
+
+## Common objects ######################################################################################
+# Common objects.
+COMMON_OBJ = TaskInterface.o DataSynchronizer.o ImageProcessor.o Panel.o ImageViewer.o TestMode.o
+
+# Common region detector objects.
+REGION_DETECTOR_OBJ = HomogeneousRegion.o HomogeneousRegionDetector.o FloodFillRegionDetector.o FloodFilllHSVLUTsBasedRegionDetector.o \
+	FloodFilllConditionsBasedRegionDetector.o BlobsDetector.o BlobsToHomogeneousRegionsAdapter.o ContourExtractor.o Blob.o LineSegment.o BlobsManager.o  
+
+# Common color space transformation objects.
+COLOR_SPACE_TRANSFORMERS_OBJ = ColorSpaceTransformer.o BGR2HSVTransformer.o BGR2YUVTransformer.o BGR2YUVprimTransformer.o \
+	ColorSpaceLUTTransformer.o BGR2HSVLUTTransformer.o 
+
+# Common color classifiers objects.
+COLOR_CLASSIFIERS_OBJ = LUTColorClassifier.o LUTBGRCubesClassifier.o
+
+
+## Tasks objects #######################################################################################
+# Objects used in simple example task.
+TK_SIMPLEEXAMPLE_OBJ = TK_SimpleExample_ImageProcessor.o Empty_TaskPanel.o 
+
+# Objects used in blue ball localization task.
+TK_BLUEBALL_OBJ = TK_BlueBall_ImageProcessor.o TK_BlueBall_TaskPanel.o 
+
+# Objects used in cube corners localization task.
+TK_CUBE_CORNERS_LOCALIZATION_OBJ = TK_CubeCornersLocalization_ImageProcessor.o TK_CubeCornersLocalization_TaskPanel.o \
+	Cube.o $(COLOR_SPACE_TRANSFORMERS_OBJ) $(COLOR_CLASSIFIERS_OBJ) $(REGION_DETECTOR_OBJ) CubeDetector.o	
+
+# Objects used in cube localization task.
+TK_ARTMAP_ROI_DETECTION = TK_ArtmapROIDetection_ImageProcessor.o TK_ArtmapROIDetection_TaskPanel.o HistogramManager.o Cube.o \
+	Artmap.o ObjectProbabilityROI.o SourceManager.o ROISensoryMemory.o ColorSpaceTransformer.o BGR2HSVTransformer.o BGR2YUVTransformer.o BGR2YUVprimTransformer.o 
+
+# Objects used in Piotr Sakowicz's spots recognition task.
+PS_SPOTS_RECOGNITION_OBJ = PS_SpotsRecognition_ImageProcessor.o PS_SpotsRecognition_TaskPanel.o PS_SpotsRecognition_ImageSet.o  PS_SpotsRecognition_Pix.o  PS_SpotsRecognition_ObjectPoints.o PS_SpotsRecognition_ObjectHistogram.o PS_SpotsRecognition_CalibMinim.o PS_SpotsRecognition_ObjectComplex.o PS_SpotsRecognition_ObjectMoments.o PS_SpotsRecognition_ConfigFile.o BGR2HSVTransformer.o ColorSpaceTransformer.o
+
+# Objects used in Jarek Debek's bricks localization task.
+JD_BRICKS_OBJ = JD_Bricks_ImageProcessor.o JD_Bricks_TaskPanel.o
+
+# Objects used in Piotrek Wilkowski's shared object.
+PW_HAAR_TRAINING_OBJ = HaarDataManager.o PW_HaarTraining_ImageProcessor.o PW_HaarTraining_TaskPanel.o
+
+# Objects used in Piotrek Wilkowski's scene recognition task.
+PW_SCENE_RECOGNITION_OBJ = PW_SceneRecognition_ImageProcessor.o PW_SceneRecognition_TaskPanel.o PW_ObjectLocalizer.o
+
+# Objects used in Mateusz Kozinski's Hand Tracking task.
+MK_HAND_TRACKING_OBJ = MK_HandTracking_ImageProcessor.o MK_HandTracking_TaskPanel.o 
+
+# Objects used in Kamil Rocki's CUDA GPU Processing task.
+KR_CUDA_OBJ = KR_CUDA_ImageProcessor.o KR_CUDA_TaskPanel.o CV_CUDA.o
+
+# Objects used in Artur Wilkowski's gesture recognition task.
+AW_GESTURE_RECOGNITION_OBJ = AW_GestureRecognition_ImageProcessor.o AW_GestureRecognition_TaskPanel.o AW_CVisionUtils.o AW_obraz_bin.o AW_Pattern.o AW_BGClassifier.o
+
+# Objects used in Tomasz Bem's Draughts playing task
+TB_DRAUGHTS_OBJ = TB_Draughts_TaskPanel.o TB_Draughts_ImageProcessor.o $(COLOR_SPACE_TRANSFORMERS_OBJ) $(COLOR_CLASSIFIERS_OBJ) $(REGION_DETECTOR_OBJ)
+
+
+# Create fradia binary and tasks' shared objects.
+all: libfradia.a fradia TK_ArtmapROIDetection.so TK_SimpleExample.so JD_Bricks.so PW_HaarTraining.so \
+	MK_HandTracking.so PS_SpotsRecognition.so TK_BlueBall.so TK_CubeCornersLocalization.so \
+	AW_GestureRecognition.so TB_Draughts.so PW_SceneRecognition.so
+
+
+## Objects creation scripts #####################################################################
+# Create common archive.
+libfradia.a: $(COMMON_OBJ)
+	$(AR) cru $@ $?
+
+# Create cvFraDIA binary.
+fradia: $(CORE_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -o $@ -L. -lfradia
+
+# Create SOs.
+TB_Draughts.so: $(TB_DRAUGHTS_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+TK_SimpleExample.so: $(TK_SIMPLEEXAMPLE_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+TK_BlueBall.so: $(TK_BLUEBALL_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+TK_ArtmapROIDetection.so: $(TK_ARTMAP_ROI_DETECTION) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+TK_CubeCornersLocalization.so: $(TK_CUBE_CORNERS_LOCALIZATION_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+PS_SpotsRecognition.so: $(PS_SPOTS_RECOGNITION_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+JD_Bricks.so: $(JD_BRICKS_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+PW_HaarTraining.so: $(PW_HAAR_TRAINING_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+	
+PW_SceneRecognition.so: $(PW_SCENE_RECOGNITION_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+MK_HandTracking.so: $(MK_HAND_TRACKING_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+KR_CUDA.so: $(KR_CUDA_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia -L/opt/cuda/lib -lcuda -I/usr/include/cuda -lcudart 
+
+CV_CUDA.o: CV_CUDA.cu
+	nvcc --compile  CV_CUDA.cu -O3 --compiler-options -fno-strict-aliasing -DUNIX -use_fast_math --host-compilation C++ -g -G3
+
+AW_GestureRecognition.so: $(AW_GESTURE_RECOGNITION_OBJ) $(COMMON_OBJ)
+	$(CXX) $^ $(LDFLAGS) -shared -o $@ -L. -lfradia
+
+
+## Compilation scripts #################################################################################
+# Directory with dependences.
+DEPDIR = .deps
+df = $(DEPDIR)/$(*F)
+# Makedepend command.
+MAKEDEPEND = mkdir -p .deps; gcc -M `pkg-config --cflags opencv gsl` `fltk-config --cxxflags --use-forms` -o $(DEPDIR)/$*.d $<
+
+# Overwritten command for *.cc compilation - also creates dependency files (*.P) in adequate directory.
+%.o : %.cc
+	@$(MAKEDEPEND); \
+	cp $(df).d $(df).P; \
+	sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+	-e '/^$$/ d' -e 's/$$/ :/' < $(df).d >> $(df).P; \
+	rm -f $(df).d
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
+
+# Wildcards used during dependency include.
+SOURCES = ${wildcard *.cc}
+DEPENDS = ${patsubst %.cc,$(DEPDIR)/%.P,${SOURCES}}
+
+# Include created dependency files.
+-include $(DEPENDS)
+
+# Remove objects/archive/so/binary.
+clean: 
+	rm -f *.o *.so *.a fradia libfradia.a \
+	rm .deps/*
+

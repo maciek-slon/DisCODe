@@ -11,86 +11,151 @@
 
 #include <string>
 
-#include <boost/extension/extension.hpp>
-
-#include "Kernel.hpp"
+#include "DataProcessor.hpp"
+#include "DataSource.hpp"
+#include "State.hpp"
 #include "Panel.hpp"
 
 namespace Base {
 
+
+/*!
+ * \def DESTROY_DEACTIVED_KERNEL
+ * Destroys objects during kernel deactivation.
+ */
+#define DESTROY_DEACTIVED_KERNEL 1
+
 /*!
  * \enum kernelType
- * \brief Type of kernel (shared library).
+ * Type of kernel (shared library).
  */
 enum kernelType
 {
-	KERNEL_SOURCE,    ///< Data source, for example camera
-	KERNEL_PROCESSOR, ///< Data processor
-	KERNEL_SINK       ///< Data sink, for example movie writer
+	KERNEL_SOURCE, KERNEL_PROCESSOR
 };
+
 
 /*!
  * \typedef returnType
- * \brief Type representing function used for retrieving kernel type.
+ * \brief Functor used for retrieving kernel type.
  * \author tkornuta
  */
 typedef Base::kernelType (*returnType)(void);
 
 /*!
  * \typedef returnName
- * \brief Type representing function used for retrieving kernel name.
+ * \brief Functor used for retrieving kernel name.
  * \author tkornuta
  */
 typedef std::string (*returnName)(void);
 
 /*!
+ * \typedef returnSource
+ * \brief Functor used for retrieving source object from SO.
+ * \author tkornuta
+ */
+typedef Base::DataSource* (*returnSource)(void);
+
+/*!
+ * \typedef returnProcessor
+ * \brief Functor used for retrieving data processor object from SO.
+ * \author tkornuta
+ */
+typedef Base::DataProcessor* (*returnProcessor)(void);
+
+/*!
  * \typedef returnPanel
- * \brief Type representing function used for retrieving Panel object from SO.
+ * \brief Functor used for retrieving Panel object from SO.
  * \author tkornuta
  */
 typedef Base::Panel* (*returnPanel)(void);
 
 /*!
- * \typedef returnKernel
- * \brief Type representing function used for retrieving kernel object from SO.
+ * \typedef returnState
+ * \brief Functor used for retrieving instance of State object from SO.
+ * \date Apr 9, 2010
  * \author tkornuta
  */
-typedef Base::Kernel* (*returnKernel)(void);
+typedef Base::XMLTranslatableState* (*returnState)(void);
+
 
 }//: namespace Base
 
 
 /*!
- * Use this macro to register a kernel. There must be exactly only one macro call for every kernel (shared library).
+ * Use this macro to register a source kernel. The must be exactly only one macro call for every kernel (shared library).
  * It adds four basic functions:
  *  - 'returnType', which returns kernel type (in this case KERNEL_SOURCE),
  *  - 'returnName', which returns kernel name (KERNEL_NAME),
- *  - 'returnKernel', which will return a new instance of SOURCE_CLASS_NAME source,
+ *  - 'returnSource', which will return a new instance of SOURCE_CLASS_NAME source,
  *  - 'returnPanel', which will return a new instance of PANEL_CLASS_NAME panel.
  *
  * \param KERNEL_NAME the kernel name.
- * \param KERNEL_TYPE type of kernel
- * \param KERNEL_CLASS_NAME the class name of the kernel you are adding to the library.
+ * \param SOURCE_CLASS_NAME the class name of the source you are adding to the library.
  * \param PANEL_CLASS_NAME the class name of the panel you are adding to the library.
+ * \param STATE_INSTANCE instance of the component state.
  * \author tkornuta
  */
-#define REGISTER_KERNEL(KERNEL_NAME, KERNEL_TYPE, KERNEL_CLASS_NAME, PANEL_CLASS_NAME) \
+#define REGISTER_SOURCE_KERNEL(KERNEL_NAME, SOURCE_CLASS_NAME, PANEL_CLASS_NAME, STATE_INSTANCE) \
 extern "C" { \
-  Base::kernelType BOOST_EXTENSION_EXPORT_DECL returnType() \
+  Base::kernelType returnType() \
   { \
-    return KERNEL_TYPE; \
+    return Base::KERNEL_SOURCE; \
   } \
-  std::string BOOST_EXTENSION_EXPORT_DECL returnName() \
+  std::string returnName() \
   { \
     return KERNEL_NAME; \
   } \
-  Base::Kernel* BOOST_EXTENSION_EXPORT_DECL returnSource() \
+  Base::DataSource* returnSource() \
   { \
-    return new KERNEL_CLASS_NAME(); \
+    return new SOURCE_CLASS_NAME(); \
   } \
-  Base::Panel* BOOST_EXTENSION_EXPORT_DECL returnPanel() \
+  Base::Panel* returnPanel() \
   { \
     return new PANEL_CLASS_NAME(); \
+  } \
+  Base::XMLTranslatableState* returnState() \
+  { \
+    return &STATE_INSTANCE; \
+  } \
+} /* extern "C" */
+
+
+/*!
+ * Use this macro to register a task kernel. The must be exactly only one macro call for every kernel (shared library).
+ * It adds four basic functions:
+ *  - 'returnType', which returns kernel type (in this case KERNEL_PROCESSOR),
+ *  - 'returnName', which returns kernel name (KERNEL_NAME),
+ *  - 'returnProcessor', which will return a new instance of PROCESSOR_CLASS_NAME source,
+ *  - 'returnPanel', which will return a new instance of PANEL_CLASS_NAME panel.
+ *
+ * \param KERNEL_NAME the kernel name.
+ * \param PROCESSOR_CLASS_NAME the class name of the processor you are adding to the library.
+ * \param PANEL_CLASS_NAME the class name of the panel you are adding to the library.
+ * \param STATE_INSTANCE instance of the component state.
+ * \author tkornuta
+ */
+#define REGISTER_PROCESSOR_KERNEL(KERNEL_NAME, PROCESSOR_CLASS_NAME, PANEL_CLASS_NAME, STATE_INSTANCE) \
+extern "C" { \
+  Base::kernelType returnType() \
+  { \
+    return Base::KERNEL_PROCESSOR; \
+  } \
+  std::string returnName() \
+  { \
+    return KERNEL_NAME; \
+  } \
+  Base::DataProcessor* returnProcessor() \
+  { \
+    return new PROCESSOR_CLASS_NAME(); \
+  } \
+  Base::Panel* returnPanel() \
+  { \
+    return new PANEL_CLASS_NAME(); \
+  } \
+  Base::XMLTranslatableState* returnState() \
+  { \
+    return &STATE_INSTANCE; \
   } \
 } /* extern "C" */
 

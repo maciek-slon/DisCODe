@@ -1,0 +1,42 @@
+# CMake compatibility issues
+CMAKE_MINIMUM_REQUIRED(VERSION 2.4.6)
+MARK_AS_ADVANCED(CMAKE_BACKWARDS_COMPATIBILITY)
+
+# Allow more human readable "if then else" constructs.
+SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE)
+
+# Project name.
+PROJECT (FraDIA)
+
+# Find FLTK package.
+#SET (fltk_DIR /usr/share/cmake-2.4/)
+#FIND_PACKAGE (FLTK REQUIRED)
+FIND_PROGRAM(FLTK_CONFIG_SCRIPT fltk-config PATHS ${FLTK_BIN_DIR})
+IF(FLTK_CONFIG_SCRIPT)
+EXEC_PROGRAM(${FLTK_CONFIG_SCRIPT} ARGS --libs OUTPUT_VARIABLE FLTK_LIBRARIES)
+ENDIF(FLTK_CONFIG_SCRIPT)
+
+#PKGCONFIG(FLTK FLTK_INCLUDE_DIR FLTK_LIBDIR FLTK_LINKFLAGS FLTK_CFLAGS)
+MESSAGE (fltk:${FLTK_DIR}:${FLTK_FOUND}:${FLTK_INCLUDE_DIR}:${FLTK_LIBRARIES})
+
+
+# Use Package Config to retrieve information about OpenCV localization.
+INCLUDE (UsePkgConfig)
+PKGCONFIG(opencv OpenCV_INCLUDEDIR OpenCV_LIBDIR OpenCV_LINKFLAGS OpenCV_CFLAGS)
+MESSAGE (opencv:${OpenCV_LIBDIR})
+
+# Common includes.
+INCLUDE_DIRECTORIES(../ Base ../Common ${OpenCV_INCLUDEDIR} ${FLTK_INCLUDE_DIR})
+
+# Common libraries.
+LINK_LIBRARIES (cxcore cv cvaux highgui ${FLTK_LIBRARIES}) 
+
+
+# Subdirectories.
+ADD_SUBDIRECTORY (Base)
+ADD_SUBDIRECTORY (Core)
+
+# require proper c++
+ADD_DEFINITIONS( "-Wall -ansi -pedantic" )
+
+

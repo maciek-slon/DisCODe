@@ -1,0 +1,18 @@
+#  ADD_DEFINITIONS( <expanded COMPILE_DEFINITIONS from calling cmake>)
+#  INCLUDE_DIRECTORIES(${INCLUDE_DIRECTORIES})
+#  LINK_DIRECTORIES(${LINK_DIRECTORIES})
+#  ADD_EXECUTABLE(cmTryCompileExec sources)
+#  TARGET_LINK_LIBRARIES(cmTryCompileExec ${LINK_LIBRARIES})
+
+
+# Files.
+FILE(GLOB files *.cc)
+
+# Include directories.
+INCLUDE_DIRECTORIES(. ../Base ../Core ../Common ../Tasks/AW_Tasks ../Tasks/JD_Tasks ../Tasks/JK_Tasks ../Tasks/KR_Tasks ../Tasks/MK_Tasks ../Tasks/PS_Tasks ../Tasks/PW_Tasks ../Tasks/TB_Tasks ../Tasks/RT_Tasks ../Tasks/TK_Tasks ${OpenCV_INCLUDEDIR})
+
+ADD_EXECUTABLE (fradia ${files})
+TARGET_LINK_LIBRARIES (fradia Base) 
+
+
+
