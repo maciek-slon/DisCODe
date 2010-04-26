@@ -9,20 +9,15 @@
 #include <pthread.h>
 
 #include <sys/time.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-#include <stdlib.h>
-#include <stdio.h>
-
-
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
 #include <sys/stat.h>
-#include <iostream>
 
 
 #include "FraDIAException.hpp"
