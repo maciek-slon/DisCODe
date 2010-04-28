@@ -24,6 +24,7 @@ Example_Processor::Example_Processor()
 void* Example_Processor::processData(const void* data_)
 {
 	cout<<"Example_Processor::processData\n";
+	return NULL;
 }//: process_frame
 
 

@@ -184,8 +184,6 @@ public:
 	bool lazyInitialize(string filename_)
 	{
 		try {
-			char* err;
-
 			// Try to open dll.
 			//dl = dlopen(filename_.c_str(), RTLD_LOCAL | RTLD_LAZY);
 			lib.set_location(filename_);

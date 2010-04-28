@@ -31,12 +31,12 @@ public:
   /*!
    * Constructor - creates description on the base of char*.
    */
-  FraDIAException(const char* description_) : description(std::string(description_)), std::exception() { }
+  FraDIAException(const char* description_) : std::exception(), description(std::string(description_)) { }
 
   /*!
    * Constructor - creates description on the base of string.
    */
-  FraDIAException(std::string description_) : description(description_), std::exception() { }
+  FraDIAException(std::string description_) : std::exception(), description(description_) { }
 
   /*!
    * Property - returns exception description.

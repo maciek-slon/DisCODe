@@ -92,7 +92,7 @@ public:
 	/*!
 	 * Returns existing (or creates new) node for kernel of given type.
 	 */
-	xmlNodePtr& returnKernelNode(Base::kernelType kernel_type_, const char* node_name_);
+	xmlNodePtr returnKernelNode(Base::kernelType kernel_type_, const char* node_name_);
 
 };
 

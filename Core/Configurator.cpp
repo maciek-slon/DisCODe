@@ -123,7 +123,7 @@ xmlNodePtr& Configurator::returnManagerNode(Base::kernelType kernel_type_){
 }
 
 
-xmlNodePtr& Configurator::returnKernelNode(Base::kernelType kernel_type_, const char* node_name_) {
+xmlNodePtr Configurator::returnKernelNode(Base::kernelType kernel_type_, const char* node_name_) {
 	cout<<node_name_<<": ";
 	// Get "root" node for given type of kernels.
 	xmlNodePtr tmp_root;

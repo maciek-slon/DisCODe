@@ -9,7 +9,6 @@
 #ifndef KERNELMANAGER_HPP_
 #define KERNELMANAGER_HPP_
 
-//#include <regex.h>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -17,6 +16,15 @@
 
 #include <boost/foreach.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
+
+#include "boost/filesystem.hpp"
+using namespace boost::filesystem;
+
+#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(MSC_VER)
+#  define LIB_EXT ".dll"
+#else
+#  define LIB_EXT ".so"
+#endif
 
 #include "Kernel_Aux.hpp"
 #include "FraDIAException.hpp"
@@ -161,30 +169,14 @@ public:
 
 	void getSOList(string dir_, vector <string>& files)
 	{
-		// Vector for storing SO filenames.
-		//vector<string> files = vector<string> ();
-		DIR * dp;
-		struct dirent *dirp;
-		// Try to open directory.
-		if ((dp = opendir(dir_.c_str())) == NULL) {
-			throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: Error while opening ") + dir_);
-		}//: ifBase
-
-		// Create regular expression.
-		// TODO: DO IT!
-/*		regex_t reg;
-		regcomp(&reg, ".*[.]so", REG_NOSUB);
-
-		// Iterate through files in directory.
-		while ((dirp = readdir(dp)) != NULL)
-			// If they fit to the regex - add them to list.
-			if (regexec(&reg, dirp->d_name, 0, NULL, REG_NOTEOL) == 0)
-				files.push_back(dir_ + "/" + string(dirp->d_name));
-*/
-		// Close directory.
-		closedir(dp);
-		// Free memory.
-//		regfree(&reg);
+		// find all libraries in current directory
+		path dir_path(dir_);
+		directory_iterator end_itr; // default construction yields past-the-end
+		for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
+		{
+			if ( itr->path().extension() == LIB_EXT )
+				files.push_back(itr->leaf());
+		}
 	}
 
 	/*!

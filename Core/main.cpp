@@ -10,6 +10,7 @@
 
 #include <sys/time.h>
 #include <cstdio>
+#include <cstring>
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
@@ -102,7 +103,7 @@ int main(int argc_, char** argv_)
 	catch (exception& ex){
 		// If required print exception description.
 		cout << "Fatal exception:\n";
-		if (ex.what() != "")
+		if (!strcmp(ex.what(), ""))
 			cout << ex.what() << endl;
 		// Show usage.
 		//cout << "Usage:\n fradia [config]\n"

@@ -37,6 +37,7 @@ void Image_Source::disconnect()
 void* Image_Source::retrieveData()
 {
 	cout << "Image_Source::retrieveData\n";
+	return NULL;
 }
 
 
