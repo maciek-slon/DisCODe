@@ -96,11 +96,12 @@ int main(int argc_, char** argv_)
 		SOURCES_MANAGER.initializeKernelsList();
 		PROCESSORS_MANAGER.initializeKernelsList();
 
-	CONFIGURATOR.saveConfiguration();
+		CONFIGURATOR.saveConfiguration();
 
 	}//: try
 	catch (exception& ex){
 		// If required print exception description.
+		cout << "Fatal exception:\n";
 		if (ex.what() != "")
 			cout << ex.what() << endl;
 		// Show usage.

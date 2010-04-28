@@ -25,16 +25,21 @@ else()
 
 endif()
 
-find_package( Boost REQUIRED )
+# SET(CMAKE_INCLUDE_PATH ./libs)
+# SET(CMAKE_LIBRARY_PATH ./libs)
+
+FIND_PACKAGE( Boost REQUIRED thread)
 FIND_PACKAGE( LibXml2 REQUIRED )
 
 if(WIN32)
-    SET(FraDIA_LIBRARIES xml2 iconv wsock32  boost_thread)
+    SET(FraDIA_LIBRARIES xml2 iconv wsock32 ${Boost_THREAD_LIBRARY})
 else()
-    SET(FraDIA_LIBRARIES xml2 boost_thread)
+    SET(FraDIA_LIBRARIES xml2 ${Boost_THREAD_LIBRARY})
 endif()
 
-include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
+LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
+
+include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} libs/include)
 
 add_subdirectory(Core)
 add_subdirectory(Sources)

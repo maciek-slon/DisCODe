@@ -9,9 +9,13 @@
 #ifndef KERNELFACTORY_HPP_
 #define KERNELFACTORY_HPP_
 
-#include <dlfcn.h>
+//#include <dlfcn.h>
+#include <boost/extension/shared_library.hpp>
+#include <boost/function.hpp>
 #include <boost/utility.hpp>
 #include <string>
+
+using namespace boost::extensions;
 
 #include "Kernel_Aux.hpp"
 
@@ -66,7 +70,8 @@ private:
 	/*!
 	 * Pointer to the associated dynamic library.
 	 */
-	void *dl;
+	//void *dl;
+	boost::extensions::shared_library lib;
 
 	/*!
 	 * Variable used for storing address of the functor returning created object.
@@ -101,7 +106,6 @@ public:
 	KernelFactory()
 	{
 		// NULL pointers.
-		dl = 0;
 		panel = 0;
 		object = 0;
 		cout << FACTORY_NAME << ": Hello\n";
@@ -113,8 +117,8 @@ public:
 	virtual ~KernelFactory()
 	{
 		// Close dl if required.
-		if (dl != 0)
-			dlclose(dl);
+		if (lib.is_open())
+			lib.close();
 		// Free memory.
 		if (object)
 			delete (object);
@@ -160,8 +164,10 @@ public:
 		// Hide panel.
 		//	panel->hide();
 		// Destroy objects.
-		delete(panel);
-		delete(object);
+		if (object)
+			delete (object);
+		if (panel)
+			delete (panel);
 		// Set pointers to NULL.
 		panel=0;
 		object=0;
@@ -181,49 +187,45 @@ public:
 			char* err;
 
 			// Try to open dll.
-			dl = dlopen(filename_.c_str(), RTLD_LOCAL | RTLD_LAZY);
+			//dl = dlopen(filename_.c_str(), RTLD_LOCAL | RTLD_LAZY);
+			lib.set_location(filename_);
 			// Validate operation.
-			if ((err = dlerror()) != NULL)
-				throw Common::FraDIAException(err);
+			if (!lib.open())
+				throw Common::FraDIAException("Library open error!");
 
 			// Try to retrieve method returning type.
 			Base::returnType ret_type;
-			ret_type = (Base::returnType) dlsym(dl, "returnType");
-			// Validate operation.
-			if ((err = dlerror()) != NULL)
-				throw Common::FraDIAException(err);
+			ret_type = (Base::returnType) lib.getptr("returnType");
+			if (!ret_type)
+				throw Common::FraDIAException("Can't find returnType() in library!");
 			// Check type.
 			if (ret_type() != KERNEL_TYPE)
 				throw Common::FraDIAException(filename_ + string(" doesn't contain a kernel of given type."));
 
 			// Try to retrieve method returning kernel name.
 			Base::returnName ret_name;
-			ret_name = (Base::returnName) dlsym(dl, "returnName");
-			// Validate operation.
-			if ((err = dlerror()) != NULL)
-				throw Common::FraDIAException(err);
+			ret_name = (Base::returnName) lib.getptr("returnName");
+			if (!ret_name)
+				throw Common::FraDIAException("Can't find returnName() in library!");
 			// Retrieve kernel name.
 			name = ret_name();
 
 			// The rest is "lazy" - retrieve only functors, leave pointers to processor and panel unset.
 
 			// Try to retrieve method returning processor.
-			ret_object = (OBJECT_FUNCTOR) dlsym(dl, FUNCTION_NAME);
-			// Validate operation.
-			if ((err = dlerror()) != NULL)
-				throw Common::FraDIAException(err);
+			ret_object = (OBJECT_FUNCTOR) lib.getptr(FUNCTION_NAME);
+			if (!ret_object)
+				throw Common::FraDIAException("Can't load ret_object from library!");
 
 			// Try to retrieve method returning panel.
-			ret_panel = (Base::returnPanel) dlsym(dl, "returnPanel");
-			// Validate operation.
-			if ((err = dlerror()) != NULL)
-				throw Common::FraDIAException(err);
+			ret_panel = (Base::returnPanel) lib.getptr("returnPanel");
+			if (!ret_panel)
+				throw Common::FraDIAException("Can't load ret_panel from library!");
 
 			// Try to retrieve method returning state instance.
-			ret_state = (Base::returnState) dlsym(dl, "returnState");
-			// Validate operation.
-			if ((err = dlerror()) != NULL)
-				throw Common::FraDIAException(err);
+			ret_state = (Base::returnState) lib.getptr("returnState");
+			if (!ret_state)
+				throw Common::FraDIAException("Can't load ret_state from library!");
 
 			// Kernel initialized properly.
 			cout << FACTORY_NAME << ": Dynamic library " << filename_ << " containing " << name

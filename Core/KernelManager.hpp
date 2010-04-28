@@ -9,7 +9,7 @@
 #ifndef KERNELMANAGER_HPP_
 #define KERNELMANAGER_HPP_
 
-#include <regex.h>
+//#include <regex.h>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -100,8 +100,10 @@ public:
 	{
 		cout << MANAGER_NAME << "Manager: Goodbye public\n";
 		// Deactivate kernel.
-		active_kernel_factory->deactivate();
-		active_kernel_factory = 0;
+		if (active_kernel_factory) {
+			active_kernel_factory->deactivate();
+			active_kernel_factory = 0;
+		}
 		// Kernel destructors are called automagically by prt_map.
 	}
 
@@ -119,8 +121,12 @@ public:
 		getSOList(".", files);
 
 		// Check number of so's to import.
-		if (files.size() == 0)
-			throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no dynamic libraries in the current directory."));
+		if (files.size() == 0) {
+			// I think, that throwing here is much to brutal
+			//throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no dynamic libraries in the current directory."));
+			cout << string(MANAGER_NAME) << "Manager: There are no dynamic libraries in the current directory.\n";
+			return;
+		}
 
 		// Iterate through so names and add retrieved kernels to list.
 		BOOST_FOREACH(string file, files)
@@ -165,7 +171,8 @@ public:
 		}//: ifBase
 
 		// Create regular expression.
-		regex_t reg;
+		// TODO: DO IT!
+/*		regex_t reg;
 		regcomp(&reg, ".*[.]so", REG_NOSUB);
 
 		// Iterate through files in directory.
@@ -173,11 +180,11 @@ public:
 			// If they fit to the regex - add them to list.
 			if (regexec(&reg, dirp->d_name, 0, NULL, REG_NOTEOL) == 0)
 				files.push_back(dir_ + "/" + string(dirp->d_name));
-
+*/
 		// Close directory.
 		closedir(dp);
 		// Free memory.
-		regfree(&reg);
+//		regfree(&reg);
 	}
 
 	/*!
