@@ -165,7 +165,7 @@ public:
 		// Set pointers to NULL.
 		panel=0;
 		object=0;
-#elif
+#else
 		// Hide panel.
 		//	panel->hide();
 #endif

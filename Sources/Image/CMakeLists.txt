@@ -6,3 +6,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(srcImage SHARED ${files})
+
+# Link external libraries
+TARGET_LINK_LIBRARIES(srcImage ${FraDIA_LIBRARIES})

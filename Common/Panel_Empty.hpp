@@ -23,10 +23,12 @@ class Panel_Empty: public Base::Panel
 {
 public:
 
-  /*!
-   * Method responsible for creation of panel's content.
-   */
-  void createContent();
+	/*!
+	* Method responsible for creation of panel's content.
+	*/
+	void createContent() {
+		cout << "Panel_Empty::createContent()\n";
+	}
 
 };
 
