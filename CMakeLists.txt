@@ -21,14 +21,20 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Required on Windows
 if(WIN32)
     SET(BOOST_ROOT D:/boost_1_42_0)
-    SET(FraDIA_LIBRARIES xml2 iconv wsock32)
 else()
-    SET(FraDIA_LIBRARIES xml2 iconv)
+
 endif()
 
 find_package( Boost REQUIRED )
+FIND_PACKAGE( LibXml2 REQUIRED )
 
-include_directories( . Base Core Common ${Boost_INCLUDE_DIRS})
+if(WIN32)
+    SET(FraDIA_LIBRARIES xml2 iconv wsock32  boost_thread)
+else()
+    SET(FraDIA_LIBRARIES xml2 boost_thread)
+endif()
+
+include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
 
 add_subdirectory(Core)
 add_subdirectory(Sources)
