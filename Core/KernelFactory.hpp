@@ -193,7 +193,7 @@ public:
 
 			// Try to retrieve method returning type.
 			Base::returnType ret_type;
-			ret_type = (Base::returnType) lib.getptr("returnType");
+			ret_type = lib.get<Base::kernelType>("returnType");
 			if (!ret_type)
 				throw Common::FraDIAException("Can't find returnType() in library!");
 			// Check type.
@@ -202,7 +202,7 @@ public:
 
 			// Try to retrieve method returning kernel name.
 			Base::returnName ret_name;
-			ret_name = (Base::returnName) lib.getptr("returnName");
+			ret_name = lib.get<std::string>("returnName");
 			if (!ret_name)
 				throw Common::FraDIAException("Can't find returnName() in library!");
 			// Retrieve kernel name.
@@ -216,12 +216,12 @@ public:
 				throw Common::FraDIAException("Can't load ret_object from library!");
 
 			// Try to retrieve method returning panel.
-			ret_panel = (Base::returnPanel) lib.getptr("returnPanel");
+			ret_panel = lib.get<Base::Panel*>("returnPanel");
 			if (!ret_panel)
 				throw Common::FraDIAException("Can't load ret_panel from library!");
 
 			// Try to retrieve method returning state instance.
-			ret_state = (Base::returnState) lib.getptr("returnState");
+			ret_state = lib.get<Base::XMLTranslatableState*>("returnState");
 			if (!ret_state)
 				throw Common::FraDIAException("Can't load ret_state from library!");
 

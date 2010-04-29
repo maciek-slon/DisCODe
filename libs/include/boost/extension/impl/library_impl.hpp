@@ -47,8 +47,9 @@ namespace impl {
 }  // namespace impl
 }  // namespace extensions
 }  // namespace boost
-
+#if (defined(MSVC))
 #   pragma comment(lib, "kernel32.lib")
+#endif
 #else
 #include <dlfcn.h>
 namespace boost {
