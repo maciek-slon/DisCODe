@@ -16,13 +16,22 @@
 namespace Processors {
 namespace Example {
 
-Example_Processor::Example_Processor()
-{
+Example_Processor::Example_Processor() {
 	cout<<"Hello Example_Processor\n";
+
+	initialize();
+}
+
+Example_Processor::~Example_Processor() {
+	finish();
+
+	cout<<"Good bye Example_Processor\n";
 }
 
 void Example_Processor::initialize() {
 	std::cout << "Example_Processor::initialize\n";
+	h_onNewImage.setup(this, &Example_Processor::onNewImage);
+	registerHandler("onNewImage", &h_onNewImage);
 }
 
 void Example_Processor::finish() {
@@ -33,7 +42,11 @@ int Example_Processor::step()
 {
 	cout<<"Example_Processor::step\n";
 	return 0;
-}//: process_frame
+}
+
+void Example_Processor::onNewImage() {
+	cout << "onNewImage() called!\n";
+}
 
 
 }//: namespace Example

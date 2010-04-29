@@ -43,6 +43,20 @@ int main(int argc_, char** argv_)
 		SOURCES_MANAGER.initializeKernelsList();
 		PROCESSORS_MANAGER.initializeKernelsList();
 
+		// Test code.
+		Base::Kernel * src = SOURCES_MANAGER.getActiveKernel()->getObject();
+		Base::Kernel * proc = PROCESSORS_MANAGER.getActiveKernel()->getObject();
+
+		src->printEvents();
+		src->printHandlers();
+
+		proc->printEvents();
+		proc->printHandlers();
+
+		src->getEvent("newImage")->addHandler(proc->getHandler("onNewImage"));
+		src->step();
+		// End of test code.
+
 		CONFIGURATOR.saveConfiguration();
 
 	}//: try

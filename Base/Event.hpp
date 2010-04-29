@@ -28,23 +28,31 @@ public:
 	/*!
 	 * Base constructor
 	 */
-	Event()
-	{
+	Event()	{
 	}
 
 	/*!
 	 * Virtual destructor
 	 */
-	virtual ~Event()
-	{
+	virtual ~Event() {
 	}
 
-	void addHandler(const EventHandler& h) {
+	void addHandler(EventHandlerInterface * h) {
 		handlers.push_back(h);
 	}
 
+	void raise() {
+		BOOST_FOREACH(EventHandlerInterface * h, handlers) {
+			h->execute();
+		}
+	}
+
+	void operator()() {
+		raise();
+	}
+
 protected:
-	std::list<EventHandler> handlers;
+	std::list<EventHandlerInterface *> handlers;
 
 };
 

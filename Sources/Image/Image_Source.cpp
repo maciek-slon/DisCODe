@@ -12,31 +12,32 @@
 namespace Sources {
 namespace Image {
 
-Image_Source::Image_Source()
-{
+Image_Source::Image_Source() {
 	cout << "Hello Image_Source from dl\n";
+
+	initialize();
 }
 
-Image_Source::~Image_Source()
-{
+Image_Source::~Image_Source() {
+	finish();
+
 	cout << "Goodbye Image_Source from dl\n";
 }
 
-void Image_Source::initialize()
-{
+void Image_Source::initialize() {
 	cout << "Image_Source::initialize\n";
+	newImage = registerEvent("newImage");
 }
 
 
-void Image_Source::finish()
-{
+void Image_Source::finish() {
 	cout << "Image_Source::finish\n";
 }
 
 
-int Image_Source::step()
-{
+int Image_Source::step() {
 	cout << "Image_Source::step\n";
+	newImage->raise();
 	return 0;
 }
 

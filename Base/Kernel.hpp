@@ -28,6 +28,8 @@ namespace Base {
  */
 class Kernel
 {
+	typedef std::pair<std::string, Event *> EventPair;
+	typedef std::pair<std::string, EventHandlerInterface *> HandlerPair;
 public:
 	/*!
 	 * Base constructor
@@ -43,13 +45,9 @@ public:
 	virtual ~Kernel()
 	{
 		// delete all events and handlers
-		/*BOOST_FOREACH(std::pair<std::string,Event *> event, events) {
+		BOOST_FOREACH(EventPair event, events) {
 			delete event.second;
 		}
-
-		BOOST_FOREACH(std::pair<std::string,EventHandler *> handler, handlers) {
-			delete handler.second;
-		}*/
 
 		std::cout << "Abstract Kernel: Bye \n";
 	}
@@ -73,6 +71,26 @@ public:
 	virtual int step() = 0;
 
 	/*!
+	 * Print list of all registered events.
+	 */
+	void printEvents() {
+		std::cout << "Registered events:\n";
+		BOOST_FOREACH(EventPair event, events) {
+			std::cout << "\t" << event.first << "\n";
+		}
+	}
+
+	/*!
+	 * Print list of all registered event handlers.
+	 */
+	void printHandlers() {
+		std::cout << "Registered handlers:\n";
+		BOOST_FOREACH(HandlerPair handler, handlers) {
+			std::cout << "\t" << handler.first << "\n";
+		}
+	}
+
+	/*!
 	 * Returns event with specified name if registered or NULL.
 	 * \param name event name
 	 * \returns pointer to event with specified name or NULL if no such event is registered.
@@ -90,7 +108,7 @@ public:
 	 * \param name event handler name
 	 * \returns pointer to event handler with specified name or NULL if no such event is registered.
 	 */
-	EventHandler * getHandler(const std::string& name) {
+	EventHandlerInterface * getHandler(const std::string& name) {
 		if (handlers.count(name) > 0) {
 			return handlers[name];
 		} else {
@@ -114,11 +132,11 @@ protected:
 	/*!
 	 * Register new event handler under specified name.
 	 * \param name event handler name
+	 * \param handlerFunc pointer to callback method
 	 * \returns pointer to newly created handler.
 	 */
-	EventHandler * registerHandler(const std::string& name) {
+	EventHandlerInterface * registerHandler(const std::string& name, EventHandlerInterface * handler) {
 		// TODO: check, if handler already exists
-		EventHandler * handler = new EventHandler();
 		handlers[name] = handler;
 		return handler;
 	}
@@ -128,7 +146,7 @@ private:
 	std::map<std::string, Event *> events;
 
 	/// all registered event handlers
-	std::map<std::string, EventHandler *> handlers;
+	std::map<std::string, EventHandlerInterface *> handlers;
 
 };
 

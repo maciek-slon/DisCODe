@@ -30,6 +30,11 @@ public:
 	Example_Processor();
 
 	/*!
+	 * Destructor
+	 */
+	~Example_Processor();
+
+	/*!
 	 * Processor initialization
 	 */
 	void initialize();
@@ -44,6 +49,16 @@ public:
 	 */
 	int step();
 
+protected:
+	/*!
+	 * Event handler function.
+	 */
+	void onNewImage();
+
+	/*!
+	 * Event handler.
+	 */
+	Base::EventHandler<Example_Processor> h_onNewImage;
 };
 
 }//: namespace Example

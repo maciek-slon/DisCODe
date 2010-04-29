@@ -136,6 +136,13 @@ public:
 	}
 
 	/*!
+	 * Return pointer to created object
+	 */
+	OBJECT_TYPE * getObject() {
+		return object;
+	}
+
+	/*!
 	 * Methods activates kernel - initializes its elements, etc.
 	 */
 	void activate()
@@ -152,6 +159,8 @@ public:
 
 		if (!object) {
 			object = ret_object();
+			// TODO: what if object haven't initialize function?
+			//object->initialize();
 		}//: if !processor
 	}
 

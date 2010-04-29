@@ -86,7 +86,7 @@ protected:
 	}
 
 	/*!
-	 * List of kernel factoriess properly loaded by the manager.
+	 * List of kernel factories properly loaded by the manager.
 	 */
 	boost::ptr_map <string, KRNL> kernel_factories;
 
@@ -113,6 +113,13 @@ public:
 			active_kernel_factory = 0;
 		}
 		// Kernel destructors are called automagically by ptr_map.
+	}
+
+	/*!
+	 * Return active kernel
+	 */
+	KRNL* getActiveKernel() {
+		return active_kernel_factory;
 	}
 
 	/*!
@@ -177,6 +184,8 @@ public:
 				files.push_back(itr->leaf());
 		}
 	}
+
+
 
 	/*!
 	 * Activates default kernel. Empty method - to predefine for Kernel_Source and Kernel_Task types.

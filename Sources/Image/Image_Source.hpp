@@ -10,7 +10,7 @@
 #define IMAGE_SOURCE_HPP_
 
 #include "Kernel_Aux.hpp"
-#include "DataSource.hpp"
+#include "Kernel.hpp"
 #include "Image_Panel.hpp"
 #include "StringState.hpp"
 
@@ -51,6 +51,11 @@ public:
 	 */
 	int step();
 
+protected:
+	/*!
+	 * Event signaling that new image was retrieved.
+	 */
+	Base::Event * newImage;
 
 };
 
