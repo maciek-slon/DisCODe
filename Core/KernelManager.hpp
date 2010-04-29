@@ -112,7 +112,7 @@ public:
 			active_kernel_factory->deactivate();
 			active_kernel_factory = 0;
 		}
-		// Kernel destructors are called automagically by prt_map.
+		// Kernel destructors are called automagically by ptr_map.
 	}
 
 	/*!
@@ -151,8 +151,8 @@ public:
 				kernel_factories.insert(k->getName(), k);
 			}
 			else
-			// Delete unpropper kernel.
-			delete (k);
+				// Delete unpropper kernel.
+				delete (k);
 		}//: FOREACH
 
 		// Check number of successfully loaded kernels.
@@ -164,7 +164,6 @@ public:
 		active_kernel_factory = kernel_factories.find(state)->second;
 		cout << "Activated kernel: " << active_kernel_factory->getName() << endl;
 		active_kernel_factory->activate();
-		//active_kernel_factory->
 	}
 
 	void getSOList(string dir_, vector <string>& files)

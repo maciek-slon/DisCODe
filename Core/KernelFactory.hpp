@@ -243,7 +243,7 @@ public:
  * \author tkornuta
  * \date Mar 13, 2010
  */
-typedef Core::KernelFactory <Base::KERNEL_SOURCE, Base::DataSource, Base::returnSource,
+typedef Core::KernelFactory <Base::KERNEL_SOURCE, Base::Kernel, Base::returnKernel,
 		KernelFactoryAux::functionName_returnSource, KernelFactoryAux::factoryName_SourceFactory> SourceFactory;
 
 
@@ -253,7 +253,7 @@ typedef Core::KernelFactory <Base::KERNEL_SOURCE, Base::DataSource, Base::return
  * \author tkornuta
  * \date Mar 13, 2010
  */
-typedef Core::KernelFactory <Base::KERNEL_PROCESSOR, Base::DataProcessor, Base::returnProcessor,
+typedef Core::KernelFactory <Base::KERNEL_PROCESSOR, Base::Kernel, Base::returnKernel,
 		KernelFactoryAux::functionName_returnProcessor, KernelFactoryAux::factoryName_ProcessorFactory>
 		ProcessorFactory;
 

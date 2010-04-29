@@ -23,7 +23,7 @@ namespace Image {
  * \author tkornuta
  * \date 2009-11-05
  */
-class Image_Source : public Base::DataSource {
+class Image_Source : public Base::Kernel {
 
 public:
 	/*!
@@ -39,17 +39,17 @@ public:
 	/*!
 	 * Connects source to given device.
 	 */
-	void connect();
+	void initialize();
 
 	/*!
 	 * Disconnect source from device, closes streams, etc.
 	 */
-	void disconnect();
+	void finish();
 
 	/*!
 	 * Retrieves data from device.
 	 */
-	void* retrieveData();
+	int step();
 
 
 };

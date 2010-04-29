@@ -21,10 +21,18 @@ Example_Processor::Example_Processor()
 	cout<<"Hello Example_Processor\n";
 }
 
-void* Example_Processor::processData(const void* data_)
+void Example_Processor::initialize() {
+	std::cout << "Example_Processor::initialize\n";
+}
+
+void Example_Processor::finish() {
+	std::cout << "Example_Processor::finish\n";
+}
+
+int Example_Processor::step()
 {
-	cout<<"Example_Processor::processData\n";
-	return NULL;
+	cout<<"Example_Processor::step\n";
+	return 0;
 }//: process_frame
 
 

@@ -13,6 +13,7 @@
 
 #include "DataProcessor.hpp"
 #include "DataSource.hpp"
+#include "Kernel.hpp"
 #include "State.hpp"
 #include "Panel.hpp"
 
@@ -64,6 +65,13 @@ typedef Base::DataSource* (*returnSource)(void);
 typedef Base::DataProcessor* (*returnProcessor)(void);
 
 /*!
+ * \typedef returnKernel
+ * \brief Functor used for retrieving kernel object (source, processor, ...) from SO.
+ * \author mstefanc
+ */
+typedef Base::Kernel* (*returnKernel)(void);
+
+/*!
  * \typedef returnPanel
  * \brief Functor used for retrieving Panel object from SO.
  * \author tkornuta
@@ -106,7 +114,7 @@ extern "C" { \
   { \
     return KERNEL_NAME; \
   } \
-  Base::DataSource* returnSource() \
+  Base::Kernel* returnSource() \
   { \
     return new SOURCE_CLASS_NAME(); \
   } \
@@ -145,7 +153,7 @@ extern "C" { \
   { \
     return KERNEL_NAME; \
   } \
-  Base::DataProcessor* returnProcessor() \
+  Base::Kernel* returnProcessor() \
   { \
     return new PROCESSOR_CLASS_NAME(); \
   } \

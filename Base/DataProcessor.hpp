@@ -16,7 +16,7 @@ namespace Base {
 //template <class in, class out>
 
 /*!
- * \class
+ * \class DataProcessor
  * \brief Abstract class for all data processors.
  * \author tkornuta
  * \date 2009-11-05

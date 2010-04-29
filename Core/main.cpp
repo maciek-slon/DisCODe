@@ -1,5 +1,5 @@
 /*!
- * \file main.cc
+ * \file main.cpp
  * \brief Main body responsible for menu showing
  * and image processing.
  * \author tkornuta
@@ -21,9 +21,6 @@
 using namespace std;
 using namespace Common;
 using namespace Core;
-
-xmlDocPtr configuration;
-char* configuration_filename;
 
 /*!
  * Main body - creates two threads - one for window and and one

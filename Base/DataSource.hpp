@@ -14,7 +14,7 @@
 namespace Base {
 
 /*!
- * \class
+ * \class DataSource
  * \brief Abstract interface class for all data sources.
  * Goal of every data source is to retrieve data from "device".
  * \author tkornuta

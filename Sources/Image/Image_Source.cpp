@@ -22,22 +22,22 @@ Image_Source::~Image_Source()
 	cout << "Goodbye Image_Source from dl\n";
 }
 
-void Image_Source::connect()
+void Image_Source::initialize()
 {
-	cout << "Image_Source::connect\n";
+	cout << "Image_Source::initialize\n";
 }
 
 
-void Image_Source::disconnect()
+void Image_Source::finish()
 {
-	cout << "Image_Source::disconnect\n";
+	cout << "Image_Source::finish\n";
 }
 
 
-void* Image_Source::retrieveData()
+int Image_Source::step()
 {
-	cout << "Image_Source::retrieveData\n";
-	return NULL;
+	cout << "Image_Source::step\n";
+	return 0;
 }
 
 

@@ -9,7 +9,7 @@
 #define EXAMPLE_PROCESSOR_HPP_
 
 #include "Kernel_Aux.hpp"
-#include "DataProcessor.hpp"
+#include "Kernel.hpp"
 #include "Panel_Empty.hpp"
 #include "StringState.hpp"
 
@@ -21,7 +21,7 @@ namespace Example {
  * \brief Example processor class.
  * \author tkornuta
  */
-class Example_Processor: public Base::DataProcessor
+class Example_Processor: public Base::Kernel
 {
 public:
 	/*!
@@ -30,9 +30,19 @@ public:
 	Example_Processor();
 
 	/*!
+	 * Processor initialization
+	 */
+	void initialize();
+
+	/*!
+	 * Release all resources
+	 */
+	void finish();
+
+	/*!
 	 * Processes given frame.
 	 */
-	void* processData(const void* data_);
+	int step();
 
 };
 
