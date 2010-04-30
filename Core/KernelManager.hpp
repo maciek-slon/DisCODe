@@ -180,8 +180,10 @@ public:
 		directory_iterator end_itr; // default construction yields past-the-end
 		for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
 		{
-			if ( itr->path().extension() == LIB_EXT )
-				files.push_back(itr->leaf());
+			if ( itr->path().extension() == LIB_EXT ) {
+				cout << "Found library: " << itr->path().file_string() << endl;
+				files.push_back(itr->path().file_string());
+			}
 		}
 	}
 
