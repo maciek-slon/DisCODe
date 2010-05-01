@@ -1,0 +1,81 @@
+<!-- This comment will put IE 6, 7 and 8 in quirks mode -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<title>$title</title>
+<link href="$relpath$search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javaScript" src="$relpath$search/search.js"></script>
+<link href="$relpath$stylesheet.css" rel="stylesheet" type="text/css"/>
+</head>
+<body onload='searchBox.OnSelectItem(0);'>
+<div style="background: #408090; padding: 0px; height: 125px"><img src="fradia.png" style="float: left; margin: 5px;" alt="FraDIA logo"/>
+<h1 class="title">FraDIA</h1>
+<h2 class="subtitle">Framework for Digital Image Analysis</h2>
+
+<div style="float: left; background: #206080; position: relative; top: 69px; left: 30px; border: 3px solid #206080; border-bottom: 0;">
+<div id="MSearchBox" class="MSearchBoxInactive" style="width: 300px; background: white; border: 0; float: left;">
+<img id="MSearchSelect" src="search/search.png"
+	 onmouseover="return searchBox.OnSearchSelectShow()"
+	 onmouseout="return searchBox.OnSearchSelectHide()"
+	 alt=""/>
+<input type="text" id="MSearchField" value="Search" accesskey="S"
+	 onfocus="searchBox.OnSearchFieldFocus(true)" 
+	 onblur="searchBox.OnSearchFieldFocus(false)" 
+	 onkeyup="searchBox.OnSearchFieldChange(event)" style="width: 240px"/>
+<a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+</div>
+</div>
+
+<br style="clear: both" />
+</div>
+<div style="background: #206080; height: 3px; border: 0; border-bottom: 1px solid #000000; clear: both; font-size: 1px">&nbsp;</div>
+
+<div style="background: white;">
+
+<div style="float: left; width: 200px; padding: 0 0 0 10px">
+<div id="menu">
+<ul>
+	<li><h2>Project</h2></li>
+	<li><ul>
+		<li><a href="index.html">Main page</a></li>
+	</ul></li>
+	<li><h2>Code documentation:</h2></li>
+	<li><ul>
+		<li><a href="namespaces.html">Namespaces</a></li>
+		<!--
+		<ul>
+		<li><a href="namespacemembers.html">All members</a></li>
+		<li><a href="namespacemembers_vars.html">Variables</a></li>
+		<li><a href="namespacemembers_type.html">Typedefs</a></li>
+		<li><a href="namespacemembers_enum.html">Enumerations</a></li>
+		<li><a href="namespacemembers_eval.html">Enumerator</a></li>
+		</ul>
+		-->
+		<li><a href="annotated.html">Classes</a></li>
+		<li><ul>
+			<li><a href="hierarchy.html">Class hierarchy</a></li>
+			<li><a href="inherits.html">Graphical class hierarchy</a></li>
+			<!--
+			<li><a href="functions.html">Class members</a></li>
+			<ul>
+			<li><a href="functions_func.html">Functions</a></li>
+			<li><a href="functions_vars.html">Variables</a></li>
+			<li><a href="functions_type.html">Typedefs</a></li>
+			<li><a href="functions_rela.html">Related</a></li>
+			</ul>
+			-->
+		</ul></li>
+		<li><a href="files.html">Files</a></li>
+		<!--
+		<li><a href="globals.html">File members</a></li>
+		<ul>
+		<li><a href="globals_func.html">Functions</a></li>
+		<li><a href="globals_defs.html">Definitions</a></li>
+		</ul>
+		-->
+	</ul></li>
+</ul>
+</div>
+</div>
+<div style="margin: 0 0 0 200px; border-left: 1px dotted #808080; padding: 0">

@@ -132,8 +132,8 @@ protected:
 	/*!
 	 * Register new event handler under specified name.
 	 * \param name event handler name
-	 * \param handlerFunc pointer to callback method
-	 * \returns pointer to newly created handler.
+	 * \param handler pointer to proper handler
+	 * \returns pointer to handler.
 	 */
 	EventHandlerInterface * registerHandler(const std::string& name, EventHandlerInterface * handler) {
 		// TODO: check, if handler already exists

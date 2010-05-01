@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Settings port="4000" gui="show" images="show">
-  <Sources default="Image">
-    <Image value="default"/>
-  </Sources>
-  <Processors default="Example">
-    <Example value="default"/>
-  </Processors>
-</Settings>
