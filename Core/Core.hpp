@@ -22,7 +22,7 @@
  * diplomants in one tool, which will provide standardized and rapid method for the
  * implementation of diverse image processing algorithms.
  *
- * Current version wrappes the functionality of the OpenCV library
+ * Current version wraps the functionality of the OpenCV library
  * (http://sourceforge.net/projects/opencv/), offering the possibility of retrieving
  * images from a range of sources (camera, movie, image), as well as recording movies
  * (avi files) and catching single frames (png files). All images are stored in the
@@ -47,4 +47,31 @@
  *
  * \author tkornuta
  * \date 10.08.2008
+ */
+
+/*!
+ * \page tutorials
+ *
+ * <h1>Tutorials</h1>
+ *
+ * There are some tutorials available concerning subjects such as configuration of various IDEs
+ * or creating new sources or processors.
+ *
+ * System and IDE configuration:
+ * - \subpage eclipseconfig "Configurating Eclipse": required plugins, importing repository, using cmake
+ *
+ * Developing new components:
+ * - \subpage newsource "Creating new Source"
+ */
+
+/*!
+ * \page eclipseconfig
+ *
+ * <h1>Configurating Eclipse</h1>
+ */
+
+/*!
+ * \page newsource
+ *
+ * <h1>Creating new Source</h1>
  */

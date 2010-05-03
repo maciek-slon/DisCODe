@@ -13,6 +13,9 @@
 
 #include "Example_Processor.hpp"
 
+#include <boost/thread.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 namespace Processors {
 namespace Example {
 
@@ -45,7 +48,9 @@ int Example_Processor::step()
 }
 
 void Example_Processor::onNewImage() {
-	cout << "onNewImage() called!\n";
+	cout << "Example_Processor::onNewImage() called!\n";
+	boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
+	cout << "Example_Processor::onNewImage() handler was 2 seconds long...\n";
 }
 
 

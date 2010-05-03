@@ -93,11 +93,9 @@ if(DOXYGEN_EXECUTABLE)
     ADD_CUSTOM_TARGET(
         doc
         COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/FraDIA.Doxyfile
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/fradia.png ${HTML_OUTPUT_DIR}/fradia.png
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         DEPENDS ${CMAKE_SOURCE_DIR}/FraDIA.Doxyfile
     )
-    
-    # Copy additional files to html output directory
-    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/doc_src/fradia.png ${HTML_OUTPUT_DIR}/fradia.png COPYONLY)
 
 endif(DOXYGEN_EXECUTABLE)

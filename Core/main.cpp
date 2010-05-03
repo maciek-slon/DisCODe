@@ -22,6 +22,8 @@ using namespace std;
 using namespace Common;
 using namespace Core;
 
+#include "Executor.hpp"
+
 /*!
  * Main body - creates two threads - one for window and and one
  * for images acquisition/processing.
@@ -44,6 +46,9 @@ int main(int argc_, char** argv_)
 		PROCESSORS_MANAGER.initializeKernelsList();
 
 		// Test code.
+
+		Core::Executor ex1, ex2;
+
 		Base::Kernel * src = SOURCES_MANAGER.getActiveKernel()->getObject();
 		Base::Kernel * proc = PROCESSORS_MANAGER.getActiveKernel()->getObject();
 
@@ -53,8 +58,19 @@ int main(int argc_, char** argv_)
 		proc->printEvents();
 		proc->printHandlers();
 
-		src->getEvent("newImage")->addHandler(proc->getHandler("onNewImage"));
-		src->step();
+		ex1.addKernel(src, true);
+		ex2.addKernel(proc);
+
+		Base::EventHandlerInterface * h = proc->getHandler("onNewImage");
+		src->getEvent("newImage")->addHandler(ex2.scheduleHandler(h));
+
+		ex1.setIterationsCount(5);
+
+		ex1.start();
+		ex2.start();
+
+		ex2.wait(12000);
+
 		// End of test code.
 
 		CONFIGURATOR.saveConfiguration();
