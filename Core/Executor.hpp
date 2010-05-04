@@ -86,6 +86,7 @@ public:
 	 * Queue event handler in internal FIFO buffer
 	 */
 	void queueEvent(Base::EventHandlerInterface * h) {
+		/// \todo Add synchronization
 		queue.push(h);
 	}
 

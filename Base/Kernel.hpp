@@ -123,7 +123,7 @@ protected:
 	 * \returns pointer to newly created event.
 	 */
 	Event * registerEvent(const std::string& name) {
-		// TODO: check, if event already exists
+		/// \todo check, if event already exists
 		Event * event = new Event();
 		events[name] = event;
 		return event;
@@ -136,7 +136,7 @@ protected:
 	 * \returns pointer to handler.
 	 */
 	EventHandlerInterface * registerHandler(const std::string& name, EventHandlerInterface * handler) {
-		// TODO: check, if handler already exists
+		/// \todo check, if handler already exists
 		handlers[name] = handler;
 		return handler;
 	}

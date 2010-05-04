@@ -76,6 +76,8 @@ protected:
 		boost::this_thread::sleep(boost::posix_time::milliseconds(msec));
 	}
 
+	/// \todo Add thread priority setting
+
 private:
 	/// Actual thread
 	boost::thread thread;

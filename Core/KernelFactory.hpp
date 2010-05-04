@@ -9,7 +9,6 @@
 #ifndef KERNELFACTORY_HPP_
 #define KERNELFACTORY_HPP_
 
-//#include <dlfcn.h>
 #include <boost/extension/shared_library.hpp>
 #include <boost/function.hpp>
 #include <boost/utility.hpp>
@@ -70,7 +69,6 @@ private:
 	/*!
 	 * Pointer to the associated dynamic library.
 	 */
-	//void *dl;
 	boost::extensions::shared_library lib;
 
 	/*!
@@ -159,9 +157,7 @@ public:
 
 		if (!object) {
 			object = ret_object();
-			// TODO: what if object haven't initialize function?
-			//object->initialize();
-		}//: if !processor
+		}//: if !object
 	}
 
 	/*!

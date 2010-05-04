@@ -75,3 +75,13 @@
  *
  * <h1>Creating new Source</h1>
  */
+
+/*!
+ * \page credits
+ *
+ * <h1>Credits</h1>
+ *
+ * \linkimage{boost_logo.png, www.boost.org}
+ * \linkimage{opencv_logo.png, opencv}
+ * \linkimage{cmake_logo.png, cmake}
+ */

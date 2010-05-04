@@ -71,7 +71,7 @@ public:
 			saveStateToNode(node);
 		}//: catch
 
-		// TODO: Add synchronization.
+		/// \todo Add synchronization.
 	}
 
 	/*!
@@ -87,7 +87,7 @@ public:
 	 */
 	/*	xmlNodePtr getNode()
 	 {
-	 // TODO: Add synchronization.
+	 /// \todo Add synchronization.
 	 return node;
 	 }*/
 
@@ -136,7 +136,7 @@ public:
 	 */
 	STATE_STRUCT getState() const
 	{
-		// TODO: Add synchronization.
+		/// \todo Add synchronization.
 		return state;
 	}
 
@@ -145,7 +145,7 @@ public:
 	 */
 	void setState(const STATE_STRUCT state_)
 	{
-		// TODO: Add synchronization.
+		/// \todo Add synchronization.
 		state = state_;
 	}
 

@@ -10,6 +10,32 @@ body, table, div, p, dl {
 	font-size: 12px;
 }
 
+div.linkimage {
+	border: 1px solid #808080;
+	width: 290px;
+	height: 120px;
+	padding: 4px;
+	float: left;
+	margin: 4px;
+
+	-webkit-border-radius: 6px;
+    -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
+	
+	-moz-border-radius: 6px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
+	
+	border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
+}
+
+div.linkimage img {
+	/*width: 180px;*/
+}
+
+div.linkimage div {
+
+}
+
 /* @group Heading Levels */
 
 h1 {
@@ -160,8 +186,17 @@ dl.el {
 pre.fragment {
 	border: 1px solid #CCCCCC;
 	background-color: #f5f5f5;
-	padding: 4px 6px;
+	padding: 5px 8px;
 	margin: 4px 8px 4px 2px;
+	
+	-webkit-border-radius: 6px;
+    -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
+	
+	-moz-border-radius: 6px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
+	
+	border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
 }
 
 div.ah {
@@ -242,7 +277,8 @@ img.footer {
 /* @group Code Colorization */
 
 span.keyword {
-	color: #008000
+	color: #008000;
+	font-weight: bold;
 }
 
 span.keywordtype {
@@ -254,7 +290,8 @@ span.keywordflow {
 }
 
 span.comment {
-	color: #800000
+	color: #808080;
+	font-style: italic;
 }
 
 span.preprocessor {
@@ -386,33 +423,34 @@ hr {
 	font-weight: bold;
 }
 
-.memproto, .memdoc {
-	border: 1px solid #84b0c7;	
-}
-
 .memproto {
+	border: 1px solid #84b0c7;	
 	padding: 0;
 	background-color: #d5e1e8;
 	font-weight: bold;
-	-webkit-border-top-left-radius: 8px;
-	-webkit-border-top-right-radius: 8px;
-        -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
-	-moz-border-radius-topleft: 8px;
-	-moz-border-radius-topright: 8px;
-        -moz-box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 5px;
-
+	
+	-webkit-border-radius: 6px;
+    -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
+	
+	-moz-border-radius: 6px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
+	
+	border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
 }
 
 .memdoc {
+	/*border: 1px solid #84b0c7;
+	border-top: 0;*/
 	padding: 2px 5px;
-	background-color: #eef3f5;
+	/*background-color: #eef3f5;
 	border-top-width: 0;
 	-webkit-border-bottom-left-radius: 8px;
 	-webkit-border-bottom-right-radius: 8px;
-        -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
 	-moz-border-radius-bottomleft: 8px;
 	-moz-border-radius-bottomright: 8px;
-        -moz-box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 5px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 5px;*/
 }
 
 .paramkey {
