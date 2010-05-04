@@ -6,8 +6,8 @@
  * \date 2010-02-26
  */
 
-#ifndef DATASTREAM_HPP_
-#define DATASTREAM_HPP_
+#ifndef DATASTREAMINTERFACE_HPP_
+#define DATASTREAMINTERFACE_HPP_
 
 #include <string>
 
@@ -15,6 +15,9 @@ namespace Base {
 
 class Connection;
 
+/*!
+ * \class DataStreamInterface
+ */
 class DataStreamInterface {
 public:
 
@@ -35,15 +38,21 @@ public:
     		throw "Output ports can't receive data!";
     }
 
+
+	void setConnection(Connection * con) {
+		conn = con;
+	}
+
 protected:
     virtual void internalSet(void * ptr) = 0;
+
+    Connection * conn;
 
 private:
     std::string name;
 
-    Connection * conn;
 };
 
 }//: namespace Base
 
-#endif /* DATASTREAM_HPP_ */
+#endif /* DATASTREAMINTERFACE_HPP_ */

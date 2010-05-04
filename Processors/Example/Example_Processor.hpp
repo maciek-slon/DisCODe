@@ -12,6 +12,7 @@
 #include "Kernel.hpp"
 #include "Panel_Empty.hpp"
 #include "StringState.hpp"
+#include "DataStream.hpp"
 
 namespace Processors {
 namespace Example {
@@ -55,10 +56,11 @@ protected:
 	 */
 	void onNewImage();
 
-	/*!
-	 * Event handler.
-	 */
+	/// Event handler.
 	Base::EventHandler<Example_Processor> h_onNewImage;
+
+	/// Input data stream
+	Base::DataStreamIn<int> in_delay;
 };
 
 }//: namespace Example

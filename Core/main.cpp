@@ -14,6 +14,7 @@
 
 #include "FraDIAException.hpp"
 
+#include "ConnectionManager.hpp"
 #include "KernelManager.hpp"
 #include "KernelFactory.hpp"
 #include "Configurator.hpp"
@@ -54,15 +55,23 @@ int main(int argc_, char** argv_)
 
 		src->printEvents();
 		src->printHandlers();
+		src->printStreams();
 
 		proc->printEvents();
 		proc->printHandlers();
+		proc->printStreams();
 
 		ex1.addKernel(src, true);
 		ex2.addKernel(proc);
 
+		// connect src -> newImage event to proc -> onNewImage handler
 		Base::EventHandlerInterface * h = proc->getHandler("onNewImage");
 		src->getEvent("newImage")->addHandler(ex2.scheduleHandler(h));
+
+		// connect src -> out_delay data stream to proc -> in_delay data stream
+		Base::Connection * con_1 = CONNECTION_MANAGER.get("con_1");
+		con_1->addListener(proc->getStream("in_delay"));
+		src->getStream("out_delay")->setConnection(con_1);
 
 		ex1.setIterationsCount(5);
 

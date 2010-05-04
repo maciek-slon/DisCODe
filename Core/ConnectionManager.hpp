@@ -45,9 +45,9 @@ public:
 	 * Returns connection with given name. If there's no such connection
 	 * then new one is created.
 	 */
-	Connection * get(const std::string & name) {
+	Base::Connection * get(const std::string & name) {
 		if (connections.count(name) == 0) {
-			Connection * con = new Connection(name);
+			Base::Connection * con = new Base::Connection(name);
 			connections[name] = con;
 		}
 
@@ -65,9 +65,11 @@ protected:
 	/*!
 	 * List of already created connections, name of connection is key value.
 	 */
-	std::map<std::string, Connection *> connections;
+	std::map<std::string, Base::Connection *> connections;
 };
 
 } //: namespace Core
+
+#define CONNECTION_MANAGER Core::ConnectionManager::instance()
 
 #endif /* CONNECTIONMANAGER_HPP_ */

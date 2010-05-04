@@ -13,6 +13,7 @@
 #include "Kernel.hpp"
 #include "Image_Panel.hpp"
 #include "StringState.hpp"
+#include "DataStream.hpp"
 
 namespace Sources {
 namespace Image {
@@ -52,11 +53,11 @@ public:
 	int step();
 
 protected:
-	/*!
-	 * Event signaling that new image was retrieved.
-	 */
+	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 
+	/// Output data stream
+	Base::DataStreamOut<int> out_delay;
 };
 
 }//: namespace Image

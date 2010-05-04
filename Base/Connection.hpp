@@ -20,7 +20,11 @@ namespace Base {
 
 /*!
  * \class Connection
- * \brief
+ * \brief Connection between \ref DataStreamInterface "data streams".
+ *
+ * Each connection keeps information about connected receivers, and when
+ * any of \ref DataStreamOut "output streams" sends data through this connection
+ * it's delivered to all connected streams.
  *
  * \author mstefanc
  */
@@ -29,7 +33,14 @@ public:
 	Connection(std::string n="unnamed_connection") : name(n) {};
 
 	template <class T>
-	void send(const T & t);
+	void send(const T & t) {
+		BOOST_FOREACH( DataStreamInterface * i, listeners )
+			i->set(t);
+	}
+
+	void addListener(DataStreamInterface * listener) {
+		listeners.push_back(listener);
+	}
 
 protected:
 
@@ -38,13 +49,6 @@ private:
 
 	std::vector<DataStreamInterface *> listeners;
 };
-
-template <class T>
-void Connection::send(const T & t) {
-	BOOST_FOREACH( DataStreamInterface * i, listeners ) {
-		i->set(t);
-	}
-}
 
 } //: namespace Base
 

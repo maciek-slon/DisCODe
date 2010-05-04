@@ -27,6 +27,8 @@ Image_Source::~Image_Source() {
 void Image_Source::initialize() {
 	cout << "Image_Source::initialize\n";
 	newImage = registerEvent("newImage");
+
+	registerStream("out_delay", &out_delay);
 }
 
 
@@ -36,7 +38,9 @@ void Image_Source::finish() {
 
 
 int Image_Source::step() {
-	cout << "Image_Source::step\n";
+	int del = rand()%20 * 100;
+	cout << "Image_Source::step -> del = " << del << endl;
+	out_delay.write(del);
 	newImage->raise();
 	return 0;
 }

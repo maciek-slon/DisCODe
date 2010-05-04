@@ -33,8 +33,11 @@ Example_Processor::~Example_Processor() {
 
 void Example_Processor::initialize() {
 	std::cout << "Example_Processor::initialize\n";
+
 	h_onNewImage.setup(this, &Example_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
+
+	registerStream("in_delay", &in_delay);
 }
 
 void Example_Processor::finish() {
@@ -49,8 +52,9 @@ int Example_Processor::step()
 
 void Example_Processor::onNewImage() {
 	cout << "Example_Processor::onNewImage() called!\n";
-	boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
-	cout << "Example_Processor::onNewImage() handler was 2 seconds long...\n";
+	int del = in_delay.read();
+	boost::this_thread::sleep(boost::posix_time::milliseconds(del));
+	cout << "Example_Processor::onNewImage() handler was " << del << " mseconds long...\n";
 }
 
 

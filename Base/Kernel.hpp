@@ -17,6 +17,7 @@
 
 #include "Event.hpp"
 #include "EventHandler.hpp"
+#include "DataStreamInterface.hpp"
 
 namespace Base {
 
@@ -30,6 +31,7 @@ class Kernel
 {
 	typedef std::pair<std::string, Event *> EventPair;
 	typedef std::pair<std::string, EventHandlerInterface *> HandlerPair;
+	typedef std::pair<std::string, DataStreamInterface *> StreamPair;
 public:
 	/*!
 	 * Base constructor
@@ -81,16 +83,6 @@ public:
 	}
 
 	/*!
-	 * Print list of all registered event handlers.
-	 */
-	void printHandlers() {
-		std::cout << "Registered handlers:\n";
-		BOOST_FOREACH(HandlerPair handler, handlers) {
-			std::cout << "\t" << handler.first << "\n";
-		}
-	}
-
-	/*!
 	 * Returns event with specified name if registered or NULL.
 	 * \param name event name
 	 * \returns pointer to event with specified name or NULL if no such event is registered.
@@ -104,6 +96,16 @@ public:
 	}
 
 	/*!
+	 * Print list of all registered event handlers.
+	 */
+	void printHandlers() {
+		std::cout << "Registered handlers:\n";
+		BOOST_FOREACH(HandlerPair handler, handlers) {
+			std::cout << "\t" << handler.first << "\n";
+		}
+	}
+
+	/*!
 	 * Returns event handler with specified name if registered or NULL.
 	 * \param name event handler name
 	 * \returns pointer to event handler with specified name or NULL if no such event is registered.
@@ -111,6 +113,29 @@ public:
 	EventHandlerInterface * getHandler(const std::string& name) {
 		if (handlers.count(name) > 0) {
 			return handlers[name];
+		} else {
+			return NULL;
+		}
+	}
+
+	/*!
+	 * Print list of all registered data streams.
+	 */
+	void printStreams() {
+		std::cout << "Registered data streams:\n";
+		BOOST_FOREACH(StreamPair stream, streams) {
+			std::cout << "\t" << stream.first << "\n";
+		}
+	}
+
+	/*!
+	 * Returns data stream with specified name if registered or NULL.
+	 * \param name data stream name
+	 * \returns pointer to data stream with specified name or NULL if no such stream is registered.
+	 */
+	DataStreamInterface * getStream(const std::string& name) {
+		if (streams.count(name) > 0) {
+			return streams[name];
 		} else {
 			return NULL;
 		}
@@ -141,12 +166,27 @@ protected:
 		return handler;
 	}
 
+	/*!
+	 * Register new data stream under specified name.
+	 * \param name stream name
+	 * \param stream pointer to proper stream
+	 * \returns pointer to handler.
+	 */
+	DataStreamInterface * registerStream(const std::string& name, DataStreamInterface * stream) {
+		/// \todo check, if handler already exists
+		streams[name] = stream;
+		return stream;
+	}
+
 private:
 	/// all registered events
 	std::map<std::string, Event *> events;
 
 	/// all registered event handlers
 	std::map<std::string, EventHandlerInterface *> handlers;
+
+	/// all registered data streams
+	std::map<std::string, DataStreamInterface *> streams;
 
 };
 
