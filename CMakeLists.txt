@@ -29,7 +29,7 @@ FIND_PACKAGE( Boost REQUIRED thread filesystem system)
 FIND_PACKAGE( LibXml2 REQUIRED )
 
 # Make makefiles more verbose
-SET(CMAKE_VERBOSE_MAKEFILE ON)
+SET(CMAKE_VERBOSE_MAKEFILE OFF)
 
 # Set libraries linked with project
 SET(FraDIA_LIBRARIES 
@@ -50,7 +50,7 @@ include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_D
 LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
-add_definitions(-Wall -pedantic -std=c++0x)
+add_definitions(-Wall -pedantic)
 
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)

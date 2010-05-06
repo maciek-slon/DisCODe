@@ -26,9 +26,15 @@ public:
 	/*!
 	 * Basic constructor.
 	 */
-	Panel()
-	{
+	Panel()	{
 		cout << "Hello abstract Panel\n";
+	}
+
+	/*!
+	 * Virtual destructor
+	 */
+	virtual ~Panel() {
+
 	}
 
 	/*!

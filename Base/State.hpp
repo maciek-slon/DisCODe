@@ -55,6 +55,13 @@ private:
 public:
 
 	/*!
+	 *
+	 */
+	virtual ~XMLTranslatableState() {
+
+	}
+
+	/*!
 	 * Copies reference to given node and tries to load state.
 	 * If unsuccesfull, creates default state and saves (translates) it to node.
 	 */

@@ -31,6 +31,12 @@ public:
 	 * Execute event handler function.
 	 */
 	virtual void execute() = 0;
+
+	/*!
+	 * Virtual destructor is needed
+	 */
+	virtual ~EventHandlerInterface() {
+	}
 };
 
 /*!
