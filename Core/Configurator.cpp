@@ -120,6 +120,8 @@ xmlNodePtr& Configurator::returnManagerNode(Base::kernelType kernel_type_){
 			return node_processors;
 			break;
 	}//: switch
+
+	throw Common::FraDIAException("Configurator::returnManagerNode(): unknown argument");
 }
 
 

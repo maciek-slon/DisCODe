@@ -216,7 +216,7 @@ public:
 			// The rest is "lazy" - retrieve only functors, leave pointers to processor and panel unset.
 
 			// Try to retrieve method returning processor.
-			ret_object = (OBJECT_FUNCTOR) lib.getptr(FUNCTION_NAME);
+			ret_object = lib.get<Base::Kernel*>("returnKernel");
 			if (!ret_object)
 				throw Common::FraDIAException("Can't load ret_object from library!");
 

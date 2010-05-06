@@ -78,8 +78,9 @@ int main(int argc_, char** argv_)
 		ex1.start();
 		ex2.start();
 
-		ex2.wait(12000);
+		ex2.wait(10000);
 		ex2.finish();
+		ex2.wait(1000);
 
 		// End of test code.
 

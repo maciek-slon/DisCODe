@@ -28,6 +28,10 @@ public:
 
     DataStreamInterface(std::string n="name") : name(n) {};
 
+    virtual ~DataStreamInterface() {
+
+    }
+
     virtual dsType type() = 0;
 
     template <class T>

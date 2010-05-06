@@ -114,7 +114,7 @@ extern "C" { \
   { \
     return KERNEL_NAME; \
   } \
-  Base::Kernel* returnSource() \
+  Base::Kernel* returnKernel() \
   { \
     return new SOURCE_CLASS_NAME(); \
   } \
@@ -153,7 +153,7 @@ extern "C" { \
   { \
     return KERNEL_NAME; \
   } \
-  Base::Kernel* returnProcessor() \
+  Base::Kernel* returnKernel() \
   { \
     return new PROCESSOR_CLASS_NAME(); \
   } \

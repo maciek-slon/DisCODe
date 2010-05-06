@@ -50,7 +50,7 @@ include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_D
 LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
-add_definitions(-Wall -pedantic)
+add_definitions(-Wall -pedantic -std=c++0x)
 
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)

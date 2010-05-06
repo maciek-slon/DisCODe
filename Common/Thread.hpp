@@ -12,6 +12,8 @@
 #include <boost/thread.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+#include "Thread_SystemSpecific.hpp"
+
 namespace Common {
 
 /*!
@@ -25,6 +27,11 @@ namespace Common {
  */
 class Thread {
 public:
+
+	virtual ~ Thread() {
+
+	}
+
 	/*!
 	 * Begins execution of the thread by calling run() method (which must be implemented in
 	 * derived classes).
@@ -62,6 +69,21 @@ public:
 		boost::this_thread::yield();
 	}
 
+	/*!
+	 * Set thread priority
+	 * \param priority new thread priority
+	 */
+	void setPriority(Priority priority)	{
+		Thread_SystemSpecific::setThreadPriority(thread.native_handle(), priority);
+	}
+
+	/**
+	 * Kill thread
+	 */
+	void kill() {
+		Thread_SystemSpecific::killThread(thread.native_handle());
+	}
+
 protected:
 	/*!
 	 * This method must be implemented in derived classes and is called when thread starts execution.
@@ -75,8 +97,6 @@ protected:
 	void sleep(int msec) {
 		boost::this_thread::sleep(boost::posix_time::milliseconds(msec));
 	}
-
-	/// \todo Add thread priority setting
 
 private:
 	/// Actual thread
