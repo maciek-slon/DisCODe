@@ -79,6 +79,7 @@ int main(int argc_, char** argv_)
 		ex2.start();
 
 		ex2.wait(12000);
+		ex2.finish();
 
 		// End of test code.
 
