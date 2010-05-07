@@ -12,8 +12,6 @@
 #include <boost/thread.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include "Thread_SystemSpecific.hpp"
-
 namespace Common {
 
 /*!
@@ -28,7 +26,19 @@ namespace Common {
 class Thread {
 public:
 
-	virtual ~ Thread() {
+	/*!
+	 * Possible thread priorities
+	 */
+	enum Priority {
+		tpRealtime,
+		tpHigh,
+		tpAbove,
+		tpNormal,
+		tpBelow,
+		tpIdle
+	};
+
+	virtual ~Thread() {
 
 	}
 
@@ -39,15 +49,6 @@ public:
 	void start() {
 		thread = boost::thread(boost::bind( &Thread::run, this ));
 	}
-
-	/*!
-	 * Finishes execution of thread (but not immediately, only sets flag
-	 * which is checked during thread execution). Method is non-blocking.
-	 * To wait for thread to finish execution use wait().
-	 */
-	/*void finish() {
-
-	}*/
 
 	/*!
 	 * Wait for thread to complete or the timeout has been reach.
@@ -73,16 +74,12 @@ public:
 	 * Set thread priority
 	 * \param priority new thread priority
 	 */
-	void setPriority(Priority priority)	{
-		Thread_SystemSpecific::setThreadPriority(thread.native_handle(), priority);
-	}
+	void setPriority(Priority priority);
 
 	/**
 	 * Kill thread
 	 */
-	void kill() {
-		Thread_SystemSpecific::killThread(thread.native_handle());
-	}
+	void kill();
 
 protected:
 	/*!

@@ -1,29 +1,14 @@
 /*!
- * \file Thread_SystemSpecific
+ * \file Thread.cpp
  * \brief System specific routines for handling threads
  *
  * \author mstefanc
  * \date 2010-05-06
  */
 
-#ifndef THREAD_SYSTEMSPECIFIC_HPP_
-#define THREAD_SYSTEMSPECIFIC_HPP_
+#include "Thread.hpp"
 
 namespace Common {
-
-/*!
- * Possible thread priorities
- */
-enum Priority {
-	tpRealtime,
-	tpHigh,
-	tpAbove,
-	tpNormal,
-	tpBelow,
-	tpIdle
-};
-
-namespace Thread_SystemSpecific {
 
 #ifdef WIN32 /* Windows platform */
 
@@ -33,9 +18,11 @@ namespace Thread_SystemSpecific {
 typedef HANDLE thread_handle;
 typedef DWORD err_core;
 
-inline bool setThreadPriority(thread_handle thread, Priority priority) {
-	if (!thread)
-		return;
+bool Thread::setPriority(Priority priority) {
+	thread_handle th = thread.native_handle;
+
+	if (!th)
+		return false;
 
 	BOOL res;
 
@@ -67,13 +54,14 @@ inline bool setThreadPriority(thread_handle thread, Priority priority) {
 		return true;
 }
 
-inline char * getLastError() {
-	return NULL;
-}
+bool Thread::kill() {
+	thread_handle th = thread.native_handle();
+	if (!th)
+		return false;
 
-inline bool killThread(thread_handle thread) {
 	BOOL res;
-	res = TerminateThread(thread, 0);
+
+	res = TerminateThread(th, 0);
 	if (res == FALSE)
 		return false;
 	else
@@ -85,23 +73,19 @@ inline bool killThread(thread_handle thread) {
 typedef pthread_t thread_handle;
 typedef int err_code;
 
-inline bool setThreadPriority(thread_handle thread, Priority priority) {
+bool Thread::setThreadPriority(Priority priority) {
 	return false;
 }
 
-inline char * getLastError() {
-	return NULL;
-}
+bool Thread::kill() {
+	thread_handle th = thread.native_handle();
+	if (!th)
+		return false;
 
-inline bool killThread(thread_handle thread) {
-	pthread_cancel(thread);
+	pthread_cancel(th);
 	return true;
 }
 
 #endif /* OS select */
 
-
-} //: namespace Thread_SystemSpecific
 } //: namespace Common
-
-#endif /* THREAD_SYSTEMSPECIFIC_HPP_ */

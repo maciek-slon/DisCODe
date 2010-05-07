@@ -9,14 +9,12 @@
 #ifndef KERNELFACTORY_HPP_
 #define KERNELFACTORY_HPP_
 
-#include <boost/extension/shared_library.hpp>
 #include <boost/function.hpp>
 #include <boost/utility.hpp>
 #include <string>
 
-using namespace boost::extensions;
-
 #include "Kernel_Aux.hpp"
+#include "SharedLibrary.hpp"
 
 /*!
  * \namespace KernelFactoryAux
@@ -69,7 +67,7 @@ private:
 	/*!
 	 * Pointer to the associated dynamic library.
 	 */
-	boost::extensions::shared_library lib;
+	Common::SharedLibrary lib;
 
 	/*!
 	 * Variable used for storing address of the functor returning created object.
@@ -115,8 +113,9 @@ public:
 	virtual ~KernelFactory()
 	{
 		// Close dl if required.
-		if (lib.is_open())
-			lib.close();
+		if (lib.loaded())
+			lib.unload();
+
 		// Free memory.
 		if (object)
 			delete (object);
@@ -191,16 +190,16 @@ public:
 		try {
 			// Try to open dll.
 			//dl = dlopen(filename_.c_str(), RTLD_LOCAL | RTLD_LAZY);
-			lib.set_location(filename_);
+			lib.setLocation(filename_);
 			// Validate operation.
-			if (!lib.open())
-				throw Common::FraDIAException("Library open error!");
+			if (!lib.load())
+				throw Common::FraDIAException(std::string("Library open error: ") + lib.error());
 
 			// Try to retrieve method returning type.
 			Base::returnType ret_type;
 			ret_type = lib.get<Base::kernelType>("returnType");
 			if (!ret_type)
-				throw Common::FraDIAException("Can't find returnType() in library!");
+				throw Common::FraDIAException(std::string("Can't find returnType() in library: ") + lib.error());
 			// Check type.
 			if (ret_type() != KERNEL_TYPE)
 				throw Common::FraDIAException(filename_ + string(" doesn't contain a kernel of given type."));
@@ -209,7 +208,7 @@ public:
 			Base::returnName ret_name;
 			ret_name = lib.get<std::string>("returnName");
 			if (!ret_name)
-				throw Common::FraDIAException("Can't find returnName() in library!");
+				throw Common::FraDIAException(std::string("Can't find returnName() in library: ") + lib.error());
 			// Retrieve kernel name.
 			name = ret_name();
 
@@ -218,17 +217,17 @@ public:
 			// Try to retrieve method returning processor.
 			ret_object = lib.get<Base::Kernel*>("returnKernel");
 			if (!ret_object)
-				throw Common::FraDIAException("Can't load ret_object from library!");
+				throw Common::FraDIAException(std::string("Can't load ret_object from library: ") + lib.error());
 
 			// Try to retrieve method returning panel.
 			ret_panel = lib.get<Base::Panel*>("returnPanel");
 			if (!ret_panel)
-				throw Common::FraDIAException("Can't load ret_panel from library!");
+				throw Common::FraDIAException(std::string("Can't load ret_panel from library: ") + lib.error());
 
 			// Try to retrieve method returning state instance.
 			ret_state = lib.get<Base::XMLTranslatableState*>("returnState");
 			if (!ret_state)
-				throw Common::FraDIAException("Can't load ret_state from library!");
+				throw Common::FraDIAException(std::string("Can't load ret_state from library: ") + lib.error());
 
 			// Kernel initialized properly.
 			cout << FACTORY_NAME << ": Dynamic library " << filename_ << " containing " << name

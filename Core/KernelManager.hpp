@@ -20,22 +20,23 @@
 #include "boost/filesystem.hpp"
 using namespace boost::filesystem;
 
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(MSC_VER)
-#  define LIB_EXT ".dll"
-#else
-#  define LIB_EXT ".so"
-#endif
-
 #include "Kernel_Aux.hpp"
 #include "FraDIAException.hpp"
 #include "Configurator.hpp"
 #include "State.hpp"
 #include "Singleton.hpp"
+#include "SharedLibraryCommon.hpp"
 
 // Forward declaration of classes required by specialized template methods.
 /*namespace Base {
  class Kernel_Task;
  }*/
+
+//#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(MSC_VER)
+//#  define LIB_EXT ".dll"
+//#else
+//#  define LIB_EXT ".so"
+//#endif
 
 using namespace std;
 
@@ -175,6 +176,7 @@ public:
 
 	void getSOList(string dir_, vector <string>& files)
 	{
+		cout << "LIB_EXT = " LIB_EXT << endl;
 		// find all libraries in current directory
 		path dir_path(dir_);
 		directory_iterator end_itr; // default construction yields past-the-end

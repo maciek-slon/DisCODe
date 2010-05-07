@@ -39,12 +39,8 @@ SET(FraDIA_LIBRARIES
     ${Boost_SYSTEM_LIBRARY}
 )
 
-if(WIN32)
-    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} iconv wsock32)    
-endif()
-
 # Specify include directories for the build
-include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR} libs/include)
+include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
 
 # Specify directories in which the linker will look for libraries
 LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
@@ -52,19 +48,14 @@ LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 # Add compiler directives
 add_definitions(-Wall -pedantic -std=c++0x)
 
+IF(WIN32)    
+    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} iconv wsock32 dl)
+ENDIF(WIN32)
+
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
-
-# Console commands
-IF(WIN32)
-    SET(RMRF "rmdir /s /q")
-    SET(CP "copy")
-ELSE(WIN32)
-    SET(RMRF "rm -rf")
-    SET(CP "cp")
-ENDIF(WIN32)
 
 # =======================================================================
 # doxygen support
