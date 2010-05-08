@@ -17,6 +17,11 @@ class Connection;
 
 /*!
  * \class DataStreamInterface
+ * \brief Interface class for DataStreams.
+ *
+ * Provides base functionalities for all data streams, and is used to keep
+ * track of already defined streams (pointers to data streams are hard to
+ * manage as DataStream is template class).
  */
 class DataStreamInterface {
 public:

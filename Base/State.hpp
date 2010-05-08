@@ -29,6 +29,10 @@ namespace Base {
 #define XMLCHARCAST (const xmlChar *)
 #endif
 
+/*!
+ * \class XMLTranslateblaState
+ * \brief
+ */
 class XMLTranslatableState
 {
 private:
@@ -159,6 +163,8 @@ public:
 };
 
 /////////////////////// TESTS /////////////////////////////////////////
+// hide tests from doxygen
+#ifndef DOXYGEN_INVOKED
 
 struct my_struct
 {
@@ -211,6 +217,8 @@ private:
 	}
 
 };
+
+#endif // DOXYGEN_INVOKED
 
 }//: namespace Base
 

@@ -47,13 +47,6 @@ public:
 	//virtual out& processData(const in& data_) = 0;
 };
 
-template <class in, class out>
-class processor1 : public Base::DataProcessor
-{
-public:
-in process (const out& out_) {};
-};
-
 }//: namespace Base
 
 #endif /* DATAPROCESSOR_HPP_ */

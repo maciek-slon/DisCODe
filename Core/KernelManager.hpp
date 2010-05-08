@@ -62,10 +62,8 @@ char Processors[] = PROCESSORS;
 
 
 /*!
- * \class KernelFactory
- * \brief Template factory class, responsible for loading kernels of given type from dynamic libraries (SO).
- * Inherits singleton-behavior from the Singleton class.
- * A behavior related with state is gained through the State class inheritance.
+ * \class KernelManager
+ * \brief
  * \author tkornuta
  */
 template <class KRNL, Base::kernelType KERNEL_TYPE, char* MANAGER_NAME>

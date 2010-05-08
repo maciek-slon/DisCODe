@@ -1,6 +1,6 @@
 /*!
  * \file ConnectionManager.hpp
- * \brief
+ * \brief DataStream connections management
  *
  * \author mstefanc
  * \date 2010-02-28
@@ -21,7 +21,10 @@ namespace Core {
 
 /*!
  * \class ConnectionManager
- * \brief
+ * \brief DataStream connections management class.
+ *
+ * DataStreams are connected through \ref Base::Connection "connections". If connection
+ * already exists new DataStreams are simply added to existing object, otherwise new connection is created.
  *
  * \author mstefanc
  */
