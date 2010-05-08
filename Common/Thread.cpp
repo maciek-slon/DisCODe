@@ -73,7 +73,7 @@ bool Thread::kill() {
 typedef pthread_t thread_handle;
 typedef int err_code;
 
-bool Thread::setThreadPriority(Priority priority) {
+bool Thread::setPriority(Priority priority) {
 	return false;
 }
 

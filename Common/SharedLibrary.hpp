@@ -18,22 +18,45 @@ namespace Common {
 
 /*!
  * \class SharedLibrary
- * \brief
+ * \brief Class representing shared object.
+ *
+ * It's responsible for loading and unloading library files and retrieving functions from them.
  *
  * \author mstefanc
  */
 class SharedLibrary {
 public:
-	SharedLibrary() : handle(0), auto_close(false) {};
-
-	SharedLibrary(const std::string & fname, bool auto_cl) :
+	/*!
+	 * SharedLibrary constructor.
+	 * \param fname library filename, on some systems it should also have path included (even if it's
+	 * located in the same directory as executable - then fname should be ./file.so)
+	 * \param auto_cl if set to true unload will be called in destructor, if false unload must be called explicitly.
+	 */
+	SharedLibrary(const std::string & fname = "", bool auto_cl = true) :
 		handle(0), auto_close(auto_cl), location(fname) {};
 
+	/*!
+	 * Destructor.
+	 *
+	 * If automatic library closing was set to true in constructor and library is loaded then destructor
+	 * unloads it from memory, in other situation it does nothing.
+	 */
 	~SharedLibrary() {
 		if (handle && auto_close)
 			dlclose(handle);
 	}
 
+	/*!
+	 * Set location of library.
+	 *
+	 * Usefull if empty constructor was used during initialization.
+	 * \param fname library filename, on some systems it should also have path included (even if it's
+	 * located in the same directory as executable - then fname should be ./file.so)
+	 * \param auto_open if set to true then library will be immediately loaded
+	 * \return
+	 * - false if auto_open was set but library can't be loaded
+	 * - true otherwise
+	 */
 	bool setLocation(const std::string& fname, bool auto_open = false) {
 		location = fname;
 		if (auto_open) {
@@ -43,6 +66,14 @@ public:
 		}
 	}
 
+	/*!
+	 * Load shared library.
+	 *
+	 * If library is already loaded then unload is called and then library is reloaded.
+	 *
+	 * \return true if load was succesfull, false if some error occurs (invalid file name, unsuccessful
+	 * library unload etc)
+	 */
 	bool load() {
 		if (location == "")
 			return false;
@@ -55,14 +86,29 @@ public:
 		return (handle != 0);
 	}
 
+	/*!
+	 * Check if library is loaded
+	 * \return true if library is loaded, false otherwise
+	 */
 	bool loaded() {
 		return (handle != 0);
 	}
 
+	/*!
+	 * Unload library from memory.
+	 *
+	 * \return true if library was unloaded, false otherwise
+	 */
 	bool unload() {
 		return (!dlclose(handle));
 	}
 
+	/*!
+	 * Return error from last call.
+	 *
+	 * \return pointer to textual description of last call errror (if there was any) or NULL
+	 * when last call was successful.
+	 */
 	char * error() {
 		return dlerror();
 	}
@@ -84,7 +130,7 @@ public:
 		 *
 		 * \warning If the function signature does not match, strange errors
 		 * can occur.
-		 * \pre is_open() == true.
+		 * \pre loaded() == true.
 		 * \post None.
 		 */
 		template <class RetValue, class Params...>
@@ -100,8 +146,13 @@ public:
 	#endif /* DOXYGEN_INVOKED */
 
 protected:
+	/// internal handle to opened library object
 	library_handle handle;
+
+	/// automatic library close flag
 	bool auto_close;
+
+	/// location of library
 	std::string location;
 };
 
