@@ -81,6 +81,13 @@ public:
 	 */
 	void kill();
 
+	/*!
+	 * Suspends the calling thread until the specified time in milliseconds has been reached.
+	 */
+	static void msleep(int msec) {
+		boost::this_thread::sleep(boost::posix_time::milliseconds(msec));
+	}
+
 protected:
 	/*!
 	 * This method must be implemented in derived classes and is called when thread starts execution.

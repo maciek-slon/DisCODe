@@ -73,13 +73,19 @@ int main(int argc_, char** argv_)
 		con_1->addListener(proc->getStream("in_delay"));
 		src->getStream("out_delay")->setConnection(con_1);
 
-		ex1.setIterationsCount(5);
+		//ex1.setIterationsCount(5);
+		ex1.setExecutionMode(Executor::ExecPeriodic);
+		ex1.setInterval(1.0);
+		ex2.setExecutionMode(Executor::ExecPassive);
 
 		ex1.start();
 		ex2.start();
 
-		ex2.wait(10000);
+		Common::Thread::msleep(10000);
+
+		ex1.finish();
 		ex2.finish();
+		ex1.wait(1000);
 		ex2.wait(1000);
 
 		// End of test code.

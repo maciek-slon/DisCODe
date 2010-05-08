@@ -49,7 +49,7 @@ public:
 	/*!
 	 * Set location of library.
 	 *
-	 * Usefull if empty constructor was used during initialization.
+	 * Useful if empty constructor was used during initialization.
 	 * \param fname library filename, on some systems it should also have path included (even if it's
 	 * located in the same directory as executable - then fname should be ./file.so)
 	 * \param auto_open if set to true then library will be immediately loaded
@@ -71,7 +71,7 @@ public:
 	 *
 	 * If library is already loaded then unload is called and then library is reloaded.
 	 *
-	 * \return true if load was succesfull, false if some error occurs (invalid file name, unsuccessful
+	 * \return true if load was successful, false if some error occurs (invalid file name, unsuccessful
 	 * library unload etc)
 	 */
 	bool load() {
@@ -100,13 +100,18 @@ public:
 	 * \return true if library was unloaded, false otherwise
 	 */
 	bool unload() {
-		return (!dlclose(handle));
+		if (!dlclose(handle)) {
+			handle = 0;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/*!
 	 * Return error from last call.
 	 *
-	 * \return pointer to textual description of last call errror (if there was any) or NULL
+	 * \return pointer to textual description of last call error (if there was any) or NULL
 	 * when last call was successful.
 	 */
 	char * error() {
@@ -115,9 +120,10 @@ public:
 
 	// If Doxygen is being run, use more readable definitions for the documentation.
 	#ifdef DOXYGEN_INVOKED
-		/** \brief Get a function reference.
+		/**
+		 * \brief Get a function reference.
 		 *
-		 * A templated function taking as template arguments the
+		 * A template function taking as template arguments the
 		 * type of the return value and parameters of a function
 		 * to look up in the shared library.
 		 *
@@ -128,8 +134,7 @@ public:
 		 * be necessary to prefix the function with BOOST_EXTENSION_DECL,
 		 * to make it externally visible.
 		 *
-		 * \warning If the function signature does not match, strange errors
-		 * can occur.
+		 * \warning If the function signature does not match, strange errors can occur.
 		 * \pre loaded() == true.
 		 * \post None.
 		 */

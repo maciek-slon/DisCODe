@@ -15,6 +15,7 @@
 #include "Thread.hpp"
 #include "Kernel.hpp"
 #include "EventHandler.hpp"
+#include "Timer.hpp"
 
 namespace Core {
 
@@ -53,6 +54,7 @@ public:
 		main_kernel = NULL;
 		running = false;
 		max_iter = -1;
+		interval = 1.0;
 	}
 
 	/*!
@@ -98,6 +100,23 @@ public:
 	}
 
 	/*!
+	 * Set interval in periodic mode.
+	 *
+	 * \param sec time interval in seconds
+	 */
+	void setInterval(float sec) {
+		interval = sec;
+	}
+
+	/*!
+	 * Set execution mode
+	 * \param mode new executioon mode
+	 */
+	void setExecutionMode(ExecOpMode mode) {
+		op_mode = mode;
+	}
+
+	/*!
 	 * Returns event handler scheduler for given handler.
 	 * \param h event handler to be scheduled
 	 * \returns pointer to event handler scheduler
@@ -115,6 +134,7 @@ protected:
 	 */
 	void run() {
 		running = true;
+		timer.restart();
 		while(running) {
 
 			while (!queue.empty()) {
@@ -135,6 +155,11 @@ protected:
 					main_kernel->step();
 				break;
 			case ExecPeriodic:
+				if (timer.elapsed() > interval) {
+					timer.restart();
+					if (main_kernel)
+						main_kernel->step();
+				}
 				break;
 			case ExecPassive:
 				break;
@@ -167,6 +192,12 @@ private:
 
 	/// Maximum number of iterations
 	int max_iter;
+
+	/// Timer used in periodic mode
+	Common::Timer timer;
+
+	/// Periodic mode interval in seconds
+	float interval;
 };
 
 }//: namespace Core
