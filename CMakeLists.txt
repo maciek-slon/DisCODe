@@ -1,3 +1,19 @@
+# =[ FraDIA ]============================================================
+#
+# CMake Build Rules for FraDIA
+#
+# =[ License ]===========================================================
+#
+# License information
+#
+# =[ CMake basic usage ]=================================================
+#
+# Basic Usage:
+#
+# For more information about CMake, see http://www.cmake.org
+#
+# =======================================================================
+
 # Project name
 project(FraDIA)
 
@@ -32,9 +48,9 @@ FIND_PACKAGE( LibXml2 REQUIRED )
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
 
 # Set libraries linked with project
-SET(FraDIA_LIBRARIES 
-    xml2 
-    ${Boost_THREAD_LIBRARY} 
+SET(FraDIA_LIBRARIES
+    xml2
+    ${Boost_THREAD_LIBRARY}
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
 )
@@ -48,17 +64,20 @@ LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 # Add compiler directives
 add_definitions(-Wall -pedantic -std=c++0x)
 
-IF(WIN32)    
-    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} iconv wsock32 dl)
+IF(WIN32)
+    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} iconv wsock32 dld)
 ENDIF(WIN32)
 
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
+add_subdirectory(Base)
+add_subdirectory(Common)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
 
+
 # =======================================================================
-# doxygen support
+# Doxygen support
 # =======================================================================
 
 find_package(Doxygen)
@@ -70,10 +89,10 @@ endif(NOT DOXYGEN_EXECUTABLE)
 # Generating documentation with doxygen
 #
 if(DOXYGEN_EXECUTABLE)
-  
+
     # Set html output directory location
     SET(HTML_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/doc/fradia.html)
-  
+
     # N.B. Both the following custom rules assume the doc directory exists
     # at make time, and the following install(DIRECTORY... must have doc exist
     # at cmake time.  Therefore, create the doc directory at CMake time.
@@ -90,3 +109,56 @@ if(DOXYGEN_EXECUTABLE)
     )
 
 endif(DOXYGEN_EXECUTABLE)
+
+
+# =======================================================================
+# CPack: binary installer generator
+# =======================================================================
+
+#
+# CPack variables used when generating binary installer
+#
+set(CPACK_PACKAGE_NAME "FraDIA")
+set(CPACK_PACKAGE_VENDOR "FraDIA")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "FraDIA - Framework for Digital Image Analysis")
+set(CPACK_PACKAGE_VERSION "2.0.0")
+set(CPACK_PACKAGE_VERSION_MAJOR "2")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "FraDIA")
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\icon.bmp")
+
+# License file
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
+
+# Tell CPack all of the components to install. The "ALL"
+# refers to the fact that this is the set of components that
+# will be included when CPack is instructed to put everything
+# into the binary installer (the default behavior).
+set(CPACK_COMPONENTS_ALL applications sources processors headers)
+
+# Applications component contains main FraDIA executable and libraries
+set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "FraDIA Executable")
+set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "Framework for Digital Image Analysis")
+set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
+
+# Sources component contains all data sources
+set(CPACK_COMPONENT_SOURCES_DISPLAY_NAME "Data sources")
+set(CPACK_COMPONENT_SOURCES_DESCRIPTION "Data sources description")
+set(CPACK_COMPONENT_SOURCES_GROUP "Runtime")
+set(CPACK_COMPONENT_SOURCES_DEPENDS applications)
+
+# Processors component contains all data processors
+set(CPACK_COMPONENT_PROCESSORS_DISPLAY_NAME "Data processors")
+set(CPACK_COMPONENT_PROCESSORS_DESCRIPTION "Data processors desctiption")
+set(CPACK_COMPONENT_PROCESSORS_GROUP "Runtime")
+set(CPACK_COMPONENT_PROCESSORS_DEPENDS applications)
+
+# Headers component contains all files necessary to develop
+# additional FraDIA modules (data sources and processors)
+set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "Development Headers")
+set(CPACK_COMPONENT_HEADERS_DESCRIPTION "All files necessary to develop additional components (data sources and processors)")
+set(CPACK_COMPONENT_HEADERS_GROUP "SDK")
+
+# This must always be last!
+include(CPack)

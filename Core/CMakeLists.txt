@@ -9,3 +9,8 @@ ADD_EXECUTABLE(FraDIA ${files})
 
 # Link required libraries
 TARGET_LINK_LIBRARIES(FraDIA ${FraDIA_LIBRARIES})
+
+ install(TARGETS FraDIA
+   RUNTIME
+   DESTINATION bin
+   COMPONENT applications)

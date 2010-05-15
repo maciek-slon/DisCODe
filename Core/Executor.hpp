@@ -9,6 +9,7 @@
 #ifndef EXECUTOR_HPP_
 #define EXECUTOR_HPP_
 
+#include <iostream>
 #include <vector>
 #include <queue>
 
@@ -157,8 +158,13 @@ protected:
 			case ExecPeriodic:
 				if (timer.elapsed() > interval) {
 					timer.restart();
+
+					step_time.restart();
+
 					if (main_kernel)
 						main_kernel->step();
+
+					std::cout << "Step time: " << step_time.elapsed() << "s\n";
 				}
 				break;
 			case ExecPassive:
@@ -166,6 +172,7 @@ protected:
 			default:
 				break;
 			}
+
 
 			yield();
 		}
@@ -194,7 +201,7 @@ private:
 	int max_iter;
 
 	/// Timer used in periodic mode
-	Common::Timer timer;
+	Common::Timer timer, step_time;
 
 	/// Periodic mode interval in seconds
 	float interval;

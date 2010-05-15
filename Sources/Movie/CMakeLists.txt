@@ -1,16 +1,19 @@
 # Include the directory itself as a path to include directories
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Find OpenCV library files
+FIND_PACKAGE( OpenCV REQUIRED )
+
 # Create a variable containing all .cpp files:
 FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
-ADD_LIBRARY(srcImage SHARED ${files})
+ADD_LIBRARY(srcMovie SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(srcImage ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(srcMovie ${OpenCV_LIBS} ${FraDIA_LIBRARIES} )
 
- install(TARGETS srcImage
+ install(TARGETS srcMovie
    ARCHIVE
    DESTINATION bin
    COMPONENT sources)

@@ -9,21 +9,16 @@
 #include <cstring>
 #include <iostream>
 
-#include <libxml/parser.h>
-#include <libxml/xpath.h>
-
 #include "FraDIAException.hpp"
-
 #include "ConnectionManager.hpp"
 #include "KernelManager.hpp"
 #include "KernelFactory.hpp"
 #include "Configurator.hpp"
+#include "Executor.hpp"
 
 using namespace std;
 using namespace Common;
 using namespace Core;
-
-#include "Executor.hpp"
 
 /*!
  * Main body - creates two threads - one for window and and one
@@ -61,32 +56,40 @@ int main(int argc_, char** argv_)
 		proc->printHandlers();
 		proc->printStreams();
 
+		// add components to separate threads
 		ex1.addKernel(src, true);
-		ex2.addKernel(proc);
+		ex1.addKernel(proc);
 
 		// connect src -> newImage event to proc -> onNewImage handler
 		Base::EventHandlerInterface * h = proc->getHandler("onNewImage");
-		src->getEvent("newImage")->addHandler(ex2.scheduleHandler(h));
+		//src->getEvent("newImage")->addHandler(ex2.scheduleHandler(h));
+		src->getEvent("newImage")->addHandler(h);
 
 		// connect src -> out_delay data stream to proc -> in_delay data stream
 		Base::Connection * con_1 = CONNECTION_MANAGER.get("con_1");
-		con_1->addListener(proc->getStream("in_delay"));
-		src->getStream("out_delay")->setConnection(con_1);
+		con_1->addListener(proc->getStream("in_img"));
+		if (src->getStream("out_img")) {
+			src->getStream("out_img")->setConnection(con_1);
+		} else {
+			cout << "Stream find error!\n";
+		}
 
-		//ex1.setIterationsCount(5);
+		// set parameters of each thread executor
 		ex1.setExecutionMode(Executor::ExecPeriodic);
-		ex1.setInterval(1.0);
+		ex1.setInterval(0.04);
+
 		ex2.setExecutionMode(Executor::ExecPassive);
 
+		// start both threads
 		ex1.start();
-		ex2.start();
 
 		Common::Thread::msleep(10000);
 
+		// stop threads
 		ex1.finish();
-		ex2.finish();
+
+		// wait for both threads to finish execution
 		ex1.wait(1000);
-		ex2.wait(1000);
 
 		// End of test code.
 
