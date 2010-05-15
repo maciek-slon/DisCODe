@@ -5,7 +5,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>FraDIA: FraDIA</title>
+<title>FraDIA: Member List</title>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javaScript" src="search/search.js"></script>
 <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
@@ -90,10 +90,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li class="current"><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -110,17 +110,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="annotated.html"><span>Class&nbsp;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&nbsp;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&nbsp;Members</span></a></li>
+    </ul>
+  </div>
 </div>
 <div class="contents">
-<h1>FraDIA </h1><h3 class="version">2.0 </h3><p>The main goal of the FraDIA (Framework for Digital Image Analysis) was the merging of image processing algorithms of all Robot Control and Recognition Systems Team's diplomants in one tool, which will provide standardized and rapid method for the implementation of diverse image processing algorithms.</p>
-<p>Current version wraps the functionality of the OpenCV library (<a href="http://sourceforge.net/projects/opencv/">http://sourceforge.net/projects/opencv/</a>), offering the possibility of retrieving images from a range of sources (camera, movie, image), as well as recording movies (avi files) and catching single frames (png files). All images are stored in the IplImage structure, derived from the Intel's IPP.</p>
-<p>User interface is constructed with the use of the FLTK (<a href="http://www.fltk.org/">http://www.fltk.org/</a>), which facilitates the UI modifications required for every user's task.</p>
-<p>Framework automates the way of adding new tasks (interfaces and processing algorithms) to the application - user has to implement two basic classes and enclose them in dynamic library (so). At the start application retrieves information from all shared objects found in current directory (.) and fills menu bar with names of tasks, which enables switching between tasks without application's restart.</p>
-<p>FraDIA can work as a stand-alone application or as one of the processes of the controller based on the MROCC++ framework. In the second case information retrieved from processed images is passed to the other processes of the controller.</p>
-<p>Currently FraDIA also enables the use of GPGPU computations (basing on the CUDA library), which can drastically reduce the time of images processing (e.g. filtering, color space transformations).</p>
-<dl class="author"><dt><b>Author:</b></dt><dd>tkornuta </dd></dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>10.08.2008 </dd></dl>
-</div>
+<h1>Base::myState Member List</h1>This is the complete list of members for <a class="el" href="classBase_1_1myState.html">Base::myState</a>, including all inherited members.<table>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1myState.html#aa52d25719d5cebf8d3cda41cce2e446d">Base::Singleton&lt; myState &gt;</a> class</td><td><a class="el" href="classBase_1_1myState.html">Base::myState</a></td><td><code> [friend]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1State.html#a93fbacdd47cb14182ca8d0a082926cf4">getState</a>() const</td><td><a class="el" href="classBase_1_1State.html">Base::State&lt; my_struct &gt;</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1Singleton.html#aec2e1b51309df8084334381630b1559e">init</a>()</td><td><a class="el" href="classBase_1_1Singleton.html">Base::Singleton&lt; myState &gt;</a></td><td><code> [inline, static]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1Singleton.html#ad0b7769fc100bfacfed28fae917b2b38">instance</a>()</td><td><a class="el" href="classBase_1_1Singleton.html">Base::Singleton&lt; myState &gt;</a></td><td><code> [inline, static]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1myState.html#aadc509f2b55a5de9474389de8e45c022">loadStateFromNode</a>(const xmlNodePtr node_)</td><td><a class="el" href="classBase_1_1myState.html">Base::myState</a></td><td><code> [inline, private, virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1myState.html#a768550b65b03b3618c86ec6f2281dcdf">myState</a>()</td><td><a class="el" href="classBase_1_1myState.html">Base::myState</a></td><td><code> [inline, private]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1myState.html#ad5d73056545ee09b20b94940de5bdfe3">saveStateToNode</a>(xmlNodePtr &amp;node_)</td><td><a class="el" href="classBase_1_1myState.html">Base::myState</a></td><td><code> [inline, private, virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1XMLTranslatableState.html#adda9c19e3668859a8396cd0c5f8b15b0">State&lt; my_struct &gt;::saveStateToNode</a>()</td><td><a class="el" href="classBase_1_1XMLTranslatableState.html">Base::XMLTranslatableState</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1myState.html#a46e7af08747663924394faaa10dafb75">setDefaultState</a>()</td><td><a class="el" href="classBase_1_1myState.html">Base::myState</a></td><td><code> [inline, private, virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1XMLTranslatableState.html#af479ce728f7c14d0a4f61577ce1a11b4">setNode</a>(xmlNodePtr &amp;node_)</td><td><a class="el" href="classBase_1_1XMLTranslatableState.html">Base::XMLTranslatableState</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1State.html#a4506bc7e57db8ac66dda733569fdbe47">setState</a>(const my_structstate_)</td><td><a class="el" href="classBase_1_1State.html">Base::State&lt; my_struct &gt;</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1Singleton.html#a64c8ae4ab1775e5e8490982c17cb5b81">Singleton</a>()</td><td><a class="el" href="classBase_1_1Singleton.html">Base::Singleton&lt; myState &gt;</a></td><td><code> [inline, protected]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1State.html#a2df09c103da60b01867fb5d1b2d76502">State</a>()</td><td><a class="el" href="classBase_1_1State.html">Base::State&lt; my_struct &gt;</a></td><td><code> [inline, protected]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1State.html#a36193bbdc643304831b2b72eb53685d2">state</a></td><td><a class="el" href="classBase_1_1State.html">Base::State&lt; my_struct &gt;</a></td><td><code> [protected]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1Singleton.html#a6a20059c2861458faeaaf79ecbda76f1">~Singleton</a>()</td><td><a class="el" href="classBase_1_1Singleton.html">Base::Singleton&lt; myState &gt;</a></td><td><code> [inline, protected, virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1State.html#a4ae7dcf88dd007ad5fc2b0ce86e64f31">~State</a>()</td><td><a class="el" href="classBase_1_1State.html">Base::State&lt; my_struct &gt;</a></td><td><code> [inline, virtual]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classBase_1_1XMLTranslatableState.html#a45da22df4f63ca476fcbf8a2f389944e">~XMLTranslatableState</a>()</td><td><a class="el" href="classBase_1_1XMLTranslatableState.html">Base::XMLTranslatableState</a></td><td><code> [inline, virtual]</code></td></tr>
+</table></div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -140,7 +157,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div style="background: #206080; height: 3px; border: 0; border-top: 1px solid #000000; clear: both; font-size: 1px">&nbsp;</div>
 <div style="background: #408090">
 <address style="text-align: center;"><small>
-Generated on Sat May 8 11:32:03 2010 for FraDIA by&nbsp;<a href="http://www.doxygen.org/index.html">Doxygen</a> 1.6.3</small></address><br/>
+Generated on Sat May 8 11:19:55 2010 for FraDIA by&nbsp;<a href="http://www.doxygen.org/index.html">Doxygen</a> 1.6.3</small></address><br/>
 <br/>
 <br/>
 <br/>

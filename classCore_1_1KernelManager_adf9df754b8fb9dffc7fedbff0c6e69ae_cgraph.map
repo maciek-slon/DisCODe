@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classCore_1_1KernelManager.html#a54e7635ff0c9030591b7f1b6e5012bc4" title="Core::KernelManager::getSOList" alt="" coords="333,5,544,35"/>
+<area shape="rect" id="node5" href="$classBase_1_1XMLTranslatableState.html#af479ce728f7c14d0a4f61577ce1a11b4" title="Base::XMLTranslatableState::setNode" alt="" coords="317,59,560,88"/>
+<area shape="rect" id="node7" href="$classBase_1_1XMLTranslatableState.html#a871de84289c10a94058f392a758ca8cc" title="Base::XMLTranslatableState::loadStateFromNode" alt="" coords="608,5,917,35"/>
+<area shape="rect" id="node9" href="$classBase_1_1XMLTranslatableState.html#adda9c19e3668859a8396cd0c5f8b15b0" title="Base::XMLTranslatableState::saveStateToNode" alt="" coords="616,59,909,88"/>
+<area shape="rect" id="node11" href="$classBase_1_1XMLTranslatableState.html#a69fab1e8954b68e08e1b49e651239586" title="Base::XMLTranslatableState::setDefaultState" alt="" coords="621,112,904,141"/>
+</map>

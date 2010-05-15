@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node7" href="$Thread_8hpp.html" title="Thread object responsible for handling and executing threads." alt="" coords="289,83,375,112"/>
+<area shape="rect" id="node13" href="$Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="731,83,813,112"/>
+<area shape="rect" id="node28" href="$EventHandler_8hpp.html" title="Kernel event handler." alt="" coords="539,237,661,267"/>
+<area shape="rect" id="node23" href="$Event_8hpp.html" title="Kernel event." alt="" coords="696,160,773,189"/>
+<area shape="rect" id="node37" href="$DataStreamInterface_8hpp.html" title="DataStreamInterface.hpp" alt="" coords="848,237,1013,267"/>
+<area shape="rect" id="node31" href="$FraDIAException_8hpp.html" title="Class used for exception handling." alt="" coords="543,315,687,344"/>
+</map>

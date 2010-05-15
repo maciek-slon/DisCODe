@@ -1,0 +1,19 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$main_8cpp.html#a73df23ab851a91f06e21d676e56bcacd" title="main" alt="" coords="229,299,280,328"/>
+<area shape="rect" id="node6" href="$classBase_1_1Connection.html#ad9ab56cd4bfc0c53fc053a49060ad129" title="Base::Connection::addListener" alt="" coords="340,5,540,35"/>
+<area shape="rect" id="node8" href="$classCore_1_1Executor.html#a2506e67ef665eae5dca105fccbd1f510" title="Core::Executor::finish" alt="" coords="367,59,513,88"/>
+<area shape="rect" id="node10" href="$classBase_1_1Kernel.html#a3d597d1a60dc707c6b5fb577fbdd34f3" title="Base::Kernel::getEvent" alt="" coords="363,112,517,141"/>
+<area shape="rect" id="node12" href="$classBase_1_1Kernel.html#a1255e606a22bb091802cb808e2682d0e" title="Base::Kernel::getHandler" alt="" coords="357,165,523,195"/>
+<area shape="rect" id="node14" href="$classBase_1_1Kernel.html#a816f105962578b59ab7de5747911b81a" title="Base::Kernel::getStream" alt="" coords="357,219,523,248"/>
+<area shape="rect" id="node16" href="$classBase_1_1Kernel.html#a986724c9ee3fadd4e44dda52d7a2e7b6" title="Base::Kernel::printEvents" alt="" coords="356,272,524,301"/>
+<area shape="rect" id="node18" href="$classBase_1_1Kernel.html#a11570d0089f75e9db31cfcf996e0c7fe" title="Base::Kernel::printHandlers" alt="" coords="349,325,531,355"/>
+<area shape="rect" id="node20" href="$classBase_1_1Kernel.html#a0e0fc44b5ecb031372d747c2545bf87e" title="Base::Kernel::printStreams" alt="" coords="351,379,529,408"/>
+<area shape="rect" id="node22" href="$classCore_1_1Executor.html#ad9043829f3561476e9190fb1914e729d" title="Core::Executor::scheduleHandler" alt="" coords="333,432,547,461"/>
+<area shape="rect" id="node30" href="$classCore_1_1Executor.html#a9e1ccb3aa86d252fb1283e26f3849ef7" title="Core::Executor::setIterationsCount" alt="" coords="329,485,551,515"/>
+<area shape="rect" id="node32" href="$classCommon_1_1Thread.html#a74ae55f25fe29113d4340baec13b2d52" title="Common::Thread::start" alt="" coords="363,539,517,568"/>
+<area shape="rect" id="node36" href="$classCommon_1_1Thread.html#a40f3dc23916eade6212e5a2851dcc59f" title="Common::Thread::wait" alt="" coords="364,592,516,621"/>
+<area shape="rect" id="node24" href="$classCore_1_1Executor.html#af2ddf6de5591f0f7c0b5a2e67d65576a" title="Core::Executor::queueEvent" alt="" coords="631,379,815,408"/>
+<area shape="rect" id="node26" href="$classBase_1_1EventScheduler.html#a09b19f2a3dc134c1ec837ff97fe716a8" title="Base::EventScheduler::registerHandler" alt="" coords="600,432,845,461"/>
+<area shape="rect" id="node28" href="$classBase_1_1EventScheduler.html#ae17da487fc78ba12fffb428383bab2e9" title="Base::EventScheduler::setup" alt="" coords="628,485,817,515"/>
+<area shape="rect" id="node34" href="$classCommon_1_1Thread.html#a18e7839141333b1f2784d9dade0f48e2" title="Common::Thread::run" alt="" coords="649,539,796,568"/>
+</map>

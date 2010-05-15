@@ -1,0 +1,9 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classBase_1_1Singleton.html" title="Base::Singleton\&lt; Configurator \&gt;" alt="" coords="299,5,504,35"/>
+<area shape="rect" id="node5" href="$classBase_1_1Singleton.html" title="Base::Singleton\&lt; ConnectionManager \&gt;" alt="" coords="275,59,528,88"/>
+<area shape="rect" id="node9" href="$classBase_1_1Singleton.html" title="Base::Singleton\&lt; KernelManager\&lt; KRNL, KERNEL_TYPE, MANAGER_NAME \&gt; \&gt;" alt="" coords="151,112,652,141"/>
+<area shape="rect" id="node13" href="$classBase_1_1Singleton.html" title="Base::Singleton\&lt; StringState \&gt;" alt="" coords="300,165,503,195"/>
+<area shape="rect" id="node7" href="$classCore_1_1ConnectionManager.html" title="DataStream connections management class." alt="" coords="828,59,999,88"/>
+<area shape="rect" id="node11" href="$classCore_1_1KernelManager.html" title="Core::KernelManager\&lt; KRNL, KERNEL_TYPE, MANAGER_NAME \&gt;" alt="" coords="703,112,1124,141"/>
+<area shape="rect" id="node15" href="$classCommon_1_1StringState.html" title="State class storing only one field with string&#45;typed value." alt="" coords="840,165,987,195"/>
+</map>

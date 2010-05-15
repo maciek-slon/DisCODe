@@ -1,0 +1,16 @@
+<map id="G" name="G">
+<area shape="rect" id="node17" href="$Kernel__Aux_8hpp.html" title="File containing definitions of kernel&#45;related functors and macros." alt="" coords="749,160,864,189"/>
+<area shape="rect" id="node41" href="$FraDIAException_8hpp.html" title="Class used for exception handling." alt="" coords="1013,469,1157,499"/>
+<area shape="rect" id="node50" href="$State_8hpp.html" title="File containing the State template class." alt="" coords="376,237,453,267"/>
+<area shape="rect" id="node60" href="$Singleton_8hpp.html" title="File containing the declaration of the Singleton template class." alt="" coords="1649,315,1751,344"/>
+<area shape="rect" id="node72" href="$Configurator_8hpp.html" title="File containing the declaration of Configurator class." alt="" coords="1365,83,1480,112"/>
+<area shape="rect" id="node86" href="$SharedLibraryCommon_8hpp.html" title="SharedLibraryCommon.hpp" alt="" coords="2512,83,2691,112"/>
+<area shape="rect" id="node20" href="$DataProcessor_8hpp.html" title="File containing the declaration of template DataProcessor class." alt="" coords="936,237,1069,267"/>
+<area shape="rect" id="node23" href="$DataSource_8hpp.html" title="Abstract interface for all data sources." alt="" coords="1155,237,1269,267"/>
+<area shape="rect" id="node26" href="$Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="813,237,896,267"/>
+<area shape="rect" id="node68" href="$Panel_8hpp.html" title="Base class for all task panels.class declaration." alt="" coords="704,237,784,267"/>
+<area shape="rect" id="node33" href="$Event_8hpp.html" title="Kernel event." alt="" coords="821,315,899,344"/>
+<area shape="rect" id="node38" href="$EventHandler_8hpp.html" title="Kernel event handler." alt="" coords="959,392,1081,421"/>
+<area shape="rect" id="node47" href="$DataStreamInterface_8hpp.html" title="DataStreamInterface.hpp" alt="" coords="644,469,809,499"/>
+<area shape="rect" id="node81" href="$Names__Aux_8hpp.html" title="File containing the declaration of Aux.hpp class." alt="" coords="1624,160,1741,189"/>
+</map>

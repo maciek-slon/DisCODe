@@ -1,0 +1,13 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$Connection_8hpp.html" title="Base/Connection.hpp" alt="" coords="95,83,241,112"/>
+<area shape="rect" id="node10" href="$DataStream_8hpp.html" title="Base/DataStream.hpp" alt="" coords="265,83,415,112"/>
+<area shape="rect" id="node13" href="$Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="463,83,580,112"/>
+<area shape="rect" id="node5" href="$ConnectionManager_8hpp.html" title="DataStream connections management." alt="" coords="5,160,197,189"/>
+<area shape="rect" id="node7" href="$main_8cpp.html" title="Main body responsible for menu showing and image processing." alt="" coords="257,315,364,344"/>
+<area shape="rect" id="node15" href="$Kernel__Aux_8hpp.html" title="File containing definitions of kernel&#45;related functors and macros." alt="" coords="448,160,595,189"/>
+<area shape="rect" id="node29" href="$Executor_8hpp.html" title="Core/Executor.hpp" alt="" coords="619,160,749,189"/>
+<area shape="rect" id="node17" href="$Configurator_8cpp.html" title="File containing definitions of Configurator class methods." alt="" coords="373,237,520,267"/>
+<area shape="rect" id="node20" href="$Configurator_8hpp.html" title="File containing the declaration of Configurator class." alt="" coords="568,237,715,267"/>
+<area shape="rect" id="node22" href="$KernelManager_8hpp.html" title="Core/KernelManager.hpp" alt="" coords="613,315,779,344"/>
+<area shape="rect" id="node25" href="$KernelFactory_8hpp.html" title="File containing the KernelFactory template class." alt="" coords="789,237,947,267"/>
+</map>

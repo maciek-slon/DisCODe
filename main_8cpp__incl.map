@@ -1,0 +1,19 @@
+<map id="G" name="G">
+<area shape="rect" id="node11" href="$FraDIAException_8hpp.html" title="Class used for exception handling." alt="" coords="93,470,237,499"/>
+<area shape="rect" id="node23" href="$Singleton_8hpp.html" title="File containing the declaration of the Singleton template class." alt="" coords="1936,315,2037,344"/>
+<area shape="rect" id="node31" href="$Connection_8hpp.html" title="Connection.hpp" alt="" coords="732,238,844,267"/>
+<area shape="rect" id="node47" href="$Kernel__Aux_8hpp.html" title="File containing definitions of kernel&#45;related functors and macros." alt="" coords="1041,160,1156,190"/>
+<area shape="rect" id="node56" href="$Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="505,238,588,267"/>
+<area shape="rect" id="node67" href="$EventHandler_8hpp.html" title="Kernel event handler." alt="" coords="312,392,435,422"/>
+<area shape="rect" id="node73" href="$State_8hpp.html" title="File containing the State template class." alt="" coords="1447,238,1524,267"/>
+<area shape="rect" id="node86" href="$Configurator_8hpp.html" title="File containing the declaration of Configurator class." alt="" coords="1729,83,1844,112"/>
+<area shape="rect" id="node98" href="$SharedLibraryCommon_8hpp.html" title="SharedLibraryCommon.hpp" alt="" coords="2480,83,2659,112"/>
+<area shape="rect" id="node115" href="$SharedLibrary_8hpp.html" title="SharedLibrary.hpp" alt="" coords="2732,83,2857,112"/>
+<area shape="rect" id="node129" href="$Thread_8hpp.html" title="Thread object responsible for handling and executing threads." alt="" coords="3705,83,3791,112"/>
+<area shape="rect" id="node37" href="$DataStreamInterface_8hpp.html" title="DataStreamInterface.hpp" alt="" coords="464,315,629,344"/>
+<area shape="rect" id="node50" href="$DataProcessor_8hpp.html" title="File containing the declaration of template DataProcessor class." alt="" coords="1051,392,1184,422"/>
+<area shape="rect" id="node53" href="$DataSource_8hpp.html" title="Abstract interface for all data sources." alt="" coords="1136,238,1251,267"/>
+<area shape="rect" id="node83" href="$Panel_8hpp.html" title="Base class for all task panels.class declaration." alt="" coords="1275,238,1355,267"/>
+<area shape="rect" id="node62" href="$Event_8hpp.html" title="Kernel event." alt="" coords="363,315,440,344"/>
+<area shape="rect" id="node94" href="$Names__Aux_8hpp.html" title="File containing the declaration of Aux.hpp class." alt="" coords="1625,160,1743,190"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classBase_1_1XMLTranslatableState.html#a871de84289c10a94058f392a758ca8cc" title="Base::XMLTranslatableState::loadStateFromNode" alt="" coords="296,5,605,35"/>
+<area shape="rect" id="node5" href="$classBase_1_1XMLTranslatableState.html#adda9c19e3668859a8396cd0c5f8b15b0" title="Base::XMLTranslatableState::saveStateToNode" alt="" coords="304,59,597,88"/>
+<area shape="rect" id="node7" href="$classBase_1_1XMLTranslatableState.html#a69fab1e8954b68e08e1b49e651239586" title="Base::XMLTranslatableState::setDefaultState" alt="" coords="309,112,592,141"/>
+</map>

@@ -5,7 +5,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>FraDIA: FraDIA</title>
+<title>FraDIA: Member List</title>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javaScript" src="search/search.js"></script>
 <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
@@ -90,10 +90,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li class="current"><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -110,17 +110,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="annotated.html"><span>Class&nbsp;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&nbsp;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&nbsp;Members</span></a></li>
+    </ul>
+  </div>
 </div>
 <div class="contents">
-<h1>FraDIA </h1><h3 class="version">2.0 </h3><p>The main goal of the FraDIA (Framework for Digital Image Analysis) was the merging of image processing algorithms of all Robot Control and Recognition Systems Team's diplomants in one tool, which will provide standardized and rapid method for the implementation of diverse image processing algorithms.</p>
-<p>Current version wraps the functionality of the OpenCV library (<a href="http://sourceforge.net/projects/opencv/">http://sourceforge.net/projects/opencv/</a>), offering the possibility of retrieving images from a range of sources (camera, movie, image), as well as recording movies (avi files) and catching single frames (png files). All images are stored in the IplImage structure, derived from the Intel's IPP.</p>
-<p>User interface is constructed with the use of the FLTK (<a href="http://www.fltk.org/">http://www.fltk.org/</a>), which facilitates the UI modifications required for every user's task.</p>
-<p>Framework automates the way of adding new tasks (interfaces and processing algorithms) to the application - user has to implement two basic classes and enclose them in dynamic library (so). At the start application retrieves information from all shared objects found in current directory (.) and fills menu bar with names of tasks, which enables switching between tasks without application's restart.</p>
-<p>FraDIA can work as a stand-alone application or as one of the processes of the controller based on the MROCC++ framework. In the second case information retrieved from processed images is passed to the other processes of the controller.</p>
-<p>Currently FraDIA also enables the use of GPGPU computations (basing on the CUDA library), which can drastically reduce the time of images processing (e.g. filtering, color space transformations).</p>
-<dl class="author"><dt><b>Author:</b></dt><dd>tkornuta </dd></dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>10.08.2008 </dd></dl>
-</div>
+<h1>Common::SharedLibrary Member List</h1>This is the complete list of members for <a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a>, including all inherited members.<table>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a572e0d55d6f1159cb455b39c46e48210">auto_close</a></td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [protected]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#aa5197a81813181fd82a8791c530adc2b">error</a>()</td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a46ffd8e856172767cd4e307c65784f86">get</a>(const std::string &amp;name) const </td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a0cde0bdf61d83837447b47a1254c238b">handle</a></td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [protected]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a8c4e629fb9d8149fb9523162513f0c64">load</a>()</td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a298ca642825485c06f2f231dea8dd13f">loaded</a>()</td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a0e333e65ffa3b23d16508906105b5f1d">location</a></td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [protected]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a7458996b4f16c6ab8f87e10fed156a12">setLocation</a>(const std::string &amp;fname, bool auto_open=false)</td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a93872b6cce7db834b087f4116a079ced">SharedLibrary</a>(const std::string &amp;fname=&quot;&quot;, bool auto_cl=true)</td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a08c6d908abd1bf8570252fbebd29de5d">unload</a>()</td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [inline]</code></td></tr>
+  <tr class="memlist"><td><a class="el" href="classCommon_1_1SharedLibrary.html#a80932e3d11d3bfdeb76f6c6a3ec57c5d">~SharedLibrary</a>()</td><td><a class="el" href="classCommon_1_1SharedLibrary.html">Common::SharedLibrary</a></td><td><code> [inline]</code></td></tr>
+</table></div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"

@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classCommon_1_1Thread.html" title="Thread object responsible for handling and executing threads." alt="" coords="7,5,127,35"/>
+<area shape="rect" id="node3" href="$classCore_1_1Executor.html" title="Executor object holds kernels and implements message queue." alt="" coords="176,5,285,35"/>
+</map>

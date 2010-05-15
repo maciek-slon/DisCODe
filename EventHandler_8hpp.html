@@ -5,7 +5,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>FraDIA: FraDIA</title>
+<title>FraDIA: Base/EventHandler.hpp File Reference</title>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javaScript" src="search/search.js"></script>
 <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
@@ -90,11 +90,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li class="current"><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <img id="MSearchSelect" src="search/search.png"
@@ -110,16 +110,52 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="files.html"><span>File&nbsp;List</span></a></li>
+      <li><a href="globals.html"><span>File&nbsp;Members</span></a></li>
+    </ul>
+  </div>
 </div>
 <div class="contents">
-<h1>FraDIA </h1><h3 class="version">2.0 </h3><p>The main goal of the FraDIA (Framework for Digital Image Analysis) was the merging of image processing algorithms of all Robot Control and Recognition Systems Team's diplomants in one tool, which will provide standardized and rapid method for the implementation of diverse image processing algorithms.</p>
-<p>Current version wraps the functionality of the OpenCV library (<a href="http://sourceforge.net/projects/opencv/">http://sourceforge.net/projects/opencv/</a>), offering the possibility of retrieving images from a range of sources (camera, movie, image), as well as recording movies (avi files) and catching single frames (png files). All images are stored in the IplImage structure, derived from the Intel's IPP.</p>
-<p>User interface is constructed with the use of the FLTK (<a href="http://www.fltk.org/">http://www.fltk.org/</a>), which facilitates the UI modifications required for every user's task.</p>
-<p>Framework automates the way of adding new tasks (interfaces and processing algorithms) to the application - user has to implement two basic classes and enclose them in dynamic library (so). At the start application retrieves information from all shared objects found in current directory (.) and fills menu bar with names of tasks, which enables switching between tasks without application's restart.</p>
-<p>FraDIA can work as a stand-alone application or as one of the processes of the controller based on the MROCC++ framework. In the second case information retrieved from processed images is passed to the other processes of the controller.</p>
-<p>Currently FraDIA also enables the use of GPGPU computations (basing on the CUDA library), which can drastically reduce the time of images processing (e.g. filtering, color space transformations).</p>
-<dl class="author"><dt><b>Author:</b></dt><dd>tkornuta </dd></dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>10.08.2008 </dd></dl>
+<h1>Base/EventHandler.hpp File Reference</h1>
+<p>Kernel event handler.  
+<a href="#_details">More...</a></p>
+<code>#include &lt;iostream&gt;</code><br/>
+<code>#include &quot;<a class="el" href="FraDIAException_8hpp.html">FraDIAException.hpp</a>&quot;</code><br/>
+<div class="dynheader">
+Include dependency graph for EventHandler.hpp:</div>
+<div class="dynsection">
+<div class="center"><img src="EventHandler_8hpp__incl.png" border="0" usemap="#Base_2EventHandler_8hpp_map" alt=""/></div>
+<map name="Base_2EventHandler_8hpp_map" id="Base_2EventHandler_8hpp">
+<area shape="rect" id="node5" href="FraDIAException_8hpp.html" title="Class used for exception handling." alt="" coords="101,83,245,112"/></map>
+</div>
+<div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dynsection">
+<div class="center"><img src="EventHandler_8hpp__dep__incl.png" border="0" usemap="#Base_2EventHandler_8hppdep_map" alt=""/></div>
+<map name="Base_2EventHandler_8hppdep_map" id="Base_2EventHandler_8hppdep">
+<area shape="rect" id="node3" href="Base_8hpp.html" title="Documentation and include file for Base namespace." alt="" coords="452,83,561,112"/><area shape="rect" id="node6" href="Event_8hpp.html" title="Kernel event." alt="" coords="660,83,772,112"/><area shape="rect" id="node8" href="Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="621,160,739,189"/><area shape="rect" id="node19" href="main_8cpp.html" title="Main body responsible for menu showing and image processing." alt="" coords="601,392,708,421"/><area shape="rect" id="node26" href="Executor_8hpp.html" title="Core/Executor.hpp" alt="" coords="717,237,848,267"/><area shape="rect" id="node10" href="Kernel__Aux_8hpp.html" title="File containing definitions of kernel&#45;related functors and macros." alt="" coords="333,237,480,267"/><area shape="rect" id="node12" href="Configurator_8cpp.html" title="File containing definitions of Configurator class methods." alt="" coords="421,315,568,344"/><area shape="rect" id="node15" href="Configurator_8hpp.html" title="File containing the declaration of Configurator class." alt="" coords="69,315,216,344"/><area shape="rect" id="node17" href="KernelManager_8hpp.html" title="Core/KernelManager.hpp" alt="" coords="5,392,171,421"/><area shape="rect" id="node22" href="KernelFactory_8hpp.html" title="File containing the KernelFactory template class." alt="" coords="240,315,397,344"/></map>
+</div>
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Classes</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase_1_1EventHandlerInterface.html">Base::EventHandlerInterface</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Interface for <a class="el" href="classBase_1_1EventHandler.html" title="EventHandler is called when associated Event is raised.">EventHandler</a> class.  <a href="classBase_1_1EventHandlerInterface.html#_details">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase_1_1EventHandler.html">Base::EventHandler&lt; Class &gt;</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classBase_1_1EventHandler.html" title="EventHandler is called when associated Event is raised.">EventHandler</a> is called when associated <a class="el" href="classBase_1_1Event.html" title="Event raised by Kernel. Keeps list of it&#39;s handlers and calls them when raised...">Event</a> is raised.  <a href="classBase_1_1EventHandler.html#_details">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase_1_1EventScheduler.html">Base::EventScheduler&lt; Class &gt;</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><a class="el" href="classBase_1_1EventScheduler.html" title="EventScheduler is proxy object used to queue events raised between threads.">EventScheduler</a> is proxy object used to queue events raised between threads.  <a href="classBase_1_1EventScheduler.html#_details">More...</a><br/></td></tr>
+<tr><td colspan="2"><h2>Namespaces</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">namespace &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceBase.html">Base</a></td></tr>
+
+<p><tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><p>Contains abstract base classes, e.g. task panel, image processor and drawable object. </p>
+<br/></td></tr>
+</p>
+</table>
+<hr/><a name="_details"></a><h2>Detailed Description</h2>
+<p>Kernel event handler. </p>
+<dl class="author"><dt><b>Author:</b></dt><dd>mstefanc </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>2010-04-29 </dd></dl>
 </div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"

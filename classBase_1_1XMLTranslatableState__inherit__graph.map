@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classBase_1_1State.html" title="Template class responsible for storing different components state. Each state&#45;able..." alt="" coords="5,83,219,112"/>
+<area shape="rect" id="node5" href="$classBase_1_1State.html" title="Base::State\&lt; std::string \&gt;" alt="" coords="243,83,416,112"/>
+<area shape="rect" id="node7" href="$classCommon_1_1StringState.html" title="State class storing only one field with string&#45;typed value." alt="" coords="101,160,248,189"/>
+<area shape="rect" id="node9" href="$classCore_1_1KernelManager.html" title="Core::KernelManager\&lt; KRNL, KERNEL_TYPE, MANAGER_NAME \&gt;" alt="" coords="272,160,693,189"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classBase_1_1Singleton.html" title="Base::Singleton\&lt; Configurator \&gt;" alt="" coords="389,5,595,35"/>
+<area shape="rect" id="node5" href="$classBase_1_1Singleton.html" title="Base::Singleton\&lt; ConnectionManager \&gt;" alt="" coords="365,59,619,88"/>
+<area shape="rect" id="node9" href="$classBase_1_1Singleton.html" title="Base::Singleton\&lt; KernelManager\&lt; KRNL, KERNEL_TYPE, MANAGER_NAME \&gt; \&gt;" alt="" coords="241,165,743,195"/>
+<area shape="rect" id="node13" href="$classBase_1_1Singleton.html" title="Base::Singleton\&lt; StringState \&gt;" alt="" coords="391,112,593,141"/>
+<area shape="rect" id="node7" href="$classCore_1_1ConnectionManager.html" title="DataStream connections management class." alt="" coords="919,59,1089,88"/>
+<area shape="rect" id="node11" href="$classCore_1_1KernelManager.html" title="Core::KernelManager\&lt; KRNL, KERNEL_TYPE, MANAGER_NAME \&gt;" alt="" coords="793,205,1215,235"/>
+<area shape="rect" id="node15" href="$classCommon_1_1StringState.html" title="State class storing only one field with string&#45;typed value." alt="" coords="931,125,1077,155"/>
+<area shape="rect" id="node16" href="$classBase_1_1XMLTranslatableState.html" title="Base::XMLTranslatableState" alt="" coords="5,245,192,275"/>
+<area shape="rect" id="node18" href="$classBase_1_1State.html" title="Template class responsible for storing different components state. Each state&#45;able..." alt="" coords="385,272,599,301"/>
+<area shape="rect" id="node20" href="$classBase_1_1State.html" title="Base::State\&lt; std::string \&gt;" alt="" coords="405,219,579,248"/>
+</map>

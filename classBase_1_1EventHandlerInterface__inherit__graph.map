@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$classBase_1_1EventHandler.html" title="EventHandler is called when associated Event is raised." alt="" coords="5,83,197,112"/>
+<area shape="rect" id="node5" href="$classBase_1_1EventScheduler.html" title="EventScheduler is proxy object used to queue events raised between threads." alt="" coords="221,83,427,112"/>
+</map>

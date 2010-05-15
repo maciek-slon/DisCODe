@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classBase_1_1Panel.html" title="Base of all panels." alt="" coords="5,5,99,35"/>
+<area shape="rect" id="node3" href="$classCommon_1_1Panel__Empty.html" title="Empty panel &#45; used for all kernels that doesn&#39;t require task panel." alt="" coords="147,5,307,35"/>
+</map>

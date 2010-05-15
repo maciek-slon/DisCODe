@@ -1,0 +1,14 @@
+<map id="G" name="G">
+<area shape="rect" id="node11" href="$Singleton_8hpp.html" title="File containing the declaration of the Singleton template class." alt="" coords="1293,237,1395,267"/>
+<area shape="rect" id="node19" href="$Names__Aux_8hpp.html" title="File containing the declaration of Aux.hpp class." alt="" coords="757,83,875,112"/>
+<area shape="rect" id="node21" href="$Kernel__Aux_8hpp.html" title="File containing definitions of kernel&#45;related functors and macros." alt="" coords="507,83,621,112"/>
+<area shape="rect" id="node25" href="$DataProcessor_8hpp.html" title="File containing the declaration of template DataProcessor class." alt="" coords="277,160,411,189"/>
+<area shape="rect" id="node28" href="$DataSource_8hpp.html" title="Abstract interface for all data sources." alt="" coords="568,160,683,189"/>
+<area shape="rect" id="node31" href="$Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="461,160,544,189"/>
+<area shape="rect" id="node56" href="$State_8hpp.html" title="File containing the State template class." alt="" coords="987,160,1064,189"/>
+<area shape="rect" id="node66" href="$Panel_8hpp.html" title="Base class for all task panels.class declaration." alt="" coords="120,160,200,189"/>
+<area shape="rect" id="node39" href="$Event_8hpp.html" title="Kernel event." alt="" coords="464,237,541,267"/>
+<area shape="rect" id="node44" href="$EventHandler_8hpp.html" title="Kernel event handler." alt="" coords="291,315,413,344"/>
+<area shape="rect" id="node53" href="$DataStreamInterface_8hpp.html" title="DataStreamInterface.hpp" alt="" coords="768,392,933,421"/>
+<area shape="rect" id="node47" href="$FraDIAException_8hpp.html" title="Class used for exception handling." alt="" coords="272,392,416,421"/>
+</map>

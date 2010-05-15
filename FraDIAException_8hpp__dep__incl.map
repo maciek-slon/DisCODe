@@ -1,0 +1,13 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$Base_8hpp.html" title="Documentation and include file for Base namespace." alt="" coords="43,160,152,189"/>
+<area shape="rect" id="node6" href="$EventHandler_8hpp.html" title="Kernel event handler." alt="" coords="228,83,385,112"/>
+<area shape="rect" id="node15" href="$Configurator_8cpp.html" title="File containing definitions of Configurator class methods." alt="" coords="663,392,809,421"/>
+<area shape="rect" id="node20" href="$KernelManager_8hpp.html" title="Core/KernelManager.hpp" alt="" coords="543,469,708,499"/>
+<area shape="rect" id="node22" href="$main_8cpp.html" title="Main body responsible for menu showing and image processing." alt="" coords="119,469,225,499"/>
+<area shape="rect" id="node9" href="$Event_8hpp.html" title="Kernel event." alt="" coords="251,160,363,189"/>
+<area shape="rect" id="node11" href="$Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="280,237,397,267"/>
+<area shape="rect" id="node29" href="$Executor_8hpp.html" title="Core/Executor.hpp" alt="" coords="436,315,567,344"/>
+<area shape="rect" id="node13" href="$Kernel__Aux_8hpp.html" title="File containing definitions of kernel&#45;related functors and macros." alt="" coords="265,315,412,344"/>
+<area shape="rect" id="node18" href="$Configurator_8hpp.html" title="File containing the declaration of Configurator class." alt="" coords="441,392,588,421"/>
+<area shape="rect" id="node25" href="$KernelFactory_8hpp.html" title="File containing the KernelFactory template class." alt="" coords="260,392,417,421"/>
+</map>

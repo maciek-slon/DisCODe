@@ -5,7 +5,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>FraDIA: FraDIA</title>
+<title>FraDIA: Class Members - Enumerator</title>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javaScript" src="search/search.js"></script>
 <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
@@ -90,10 +90,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="navigation" id="top">
   <div class="tabs">
     <ul>
-      <li class="current"><a href="index.html"><span>Main&nbsp;Page</span></a></li>
+      <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -110,16 +110,61 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="annotated.html"><span>Class&nbsp;List</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&nbsp;Hierarchy</span></a></li>
+      <li class="current"><a href="functions.html"><span>Class&nbsp;Members</span></a></li>
+    </ul>
+  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="functions.html"><span>All</span></a></li>
+      <li><a href="functions_func.html"><span>Functions</span></a></li>
+      <li><a href="functions_vars.html"><span>Variables</span></a></li>
+      <li><a href="functions_type.html"><span>Typedefs</span></a></li>
+      <li><a href="functions_enum.html"><span>Enumerations</span></a></li>
+      <li class="current"><a href="functions_eval.html"><span>Enumerator</span></a></li>
+      <li><a href="functions_rela.html"><span>Related&nbsp;Functions</span></a></li>
+    </ul>
+  </div>
 </div>
 <div class="contents">
-<h1>FraDIA </h1><h3 class="version">2.0 </h3><p>The main goal of the FraDIA (Framework for Digital Image Analysis) was the merging of image processing algorithms of all Robot Control and Recognition Systems Team's diplomants in one tool, which will provide standardized and rapid method for the implementation of diverse image processing algorithms.</p>
-<p>Current version wraps the functionality of the OpenCV library (<a href="http://sourceforge.net/projects/opencv/">http://sourceforge.net/projects/opencv/</a>), offering the possibility of retrieving images from a range of sources (camera, movie, image), as well as recording movies (avi files) and catching single frames (png files). All images are stored in the IplImage structure, derived from the Intel's IPP.</p>
-<p>User interface is constructed with the use of the FLTK (<a href="http://www.fltk.org/">http://www.fltk.org/</a>), which facilitates the UI modifications required for every user's task.</p>
-<p>Framework automates the way of adding new tasks (interfaces and processing algorithms) to the application - user has to implement two basic classes and enclose them in dynamic library (so). At the start application retrieves information from all shared objects found in current directory (.) and fills menu bar with names of tasks, which enables switching between tasks without application's restart.</p>
-<p>FraDIA can work as a stand-alone application or as one of the processes of the controller based on the MROCC++ framework. In the second case information retrieved from processed images is passed to the other processes of the controller.</p>
-<p>Currently FraDIA also enables the use of GPGPU computations (basing on the CUDA library), which can drastically reduce the time of images processing (e.g. filtering, color space transformations).</p>
-<dl class="author"><dt><b>Author:</b></dt><dd>tkornuta </dd></dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>10.08.2008 </dd></dl>
+&nbsp;<ul>
+<li>dsIn
+: <a class="el" href="classBase_1_1DataStreamInterface.html#a16c6523e68b621d3409815df3ab35db2a2ea4f1d11629adf94e45c4ccdd669bed">Base::DataStreamInterface</a>
+</li>
+<li>dsOut
+: <a class="el" href="classBase_1_1DataStreamInterface.html#a16c6523e68b621d3409815df3ab35db2a9825114660896068f9239248a073a52a">Base::DataStreamInterface</a>
+</li>
+<li>ExecContinous
+: <a class="el" href="classCore_1_1Executor.html#af73cd908f7b7bc7d53043f687da85ff5a26386603035c0485062d1a7d472669ac">Core::Executor</a>
+</li>
+<li>ExecPassive
+: <a class="el" href="classCore_1_1Executor.html#af73cd908f7b7bc7d53043f687da85ff5aea0dd2b2774f62a1cd2ff021dc1f1db7">Core::Executor</a>
+</li>
+<li>ExecPeriodic
+: <a class="el" href="classCore_1_1Executor.html#af73cd908f7b7bc7d53043f687da85ff5a72a231b55527b697e1a43a5f2331c92e">Core::Executor</a>
+</li>
+<li>tpAbove
+: <a class="el" href="classCommon_1_1Thread.html#a91db81d7aeaa6112b25a92d802825359a608a2fbc8a311b778a0baed03e60f1cb">Common::Thread</a>
+</li>
+<li>tpBelow
+: <a class="el" href="classCommon_1_1Thread.html#a91db81d7aeaa6112b25a92d802825359ae8d5d3f7ffa2c42c6ac3a51e85ffed96">Common::Thread</a>
+</li>
+<li>tpHigh
+: <a class="el" href="classCommon_1_1Thread.html#a91db81d7aeaa6112b25a92d802825359ad1a9212d793a9f6534af5b412a1dce2a">Common::Thread</a>
+</li>
+<li>tpIdle
+: <a class="el" href="classCommon_1_1Thread.html#a91db81d7aeaa6112b25a92d802825359a30bf7a94acffd3098d540815739b5e6a">Common::Thread</a>
+</li>
+<li>tpNormal
+: <a class="el" href="classCommon_1_1Thread.html#a91db81d7aeaa6112b25a92d802825359ad1ea9c1790fec30db50a3f441371c54e">Common::Thread</a>
+</li>
+<li>tpRealtime
+: <a class="el" href="classCommon_1_1Thread.html#a91db81d7aeaa6112b25a92d802825359a7054148e35eb114945360a2e50abac0d">Common::Thread</a>
+</li>
+</ul>
 </div>
 <!--- window showing the filter options -->
 <div id="MSearchSelectWindow"
