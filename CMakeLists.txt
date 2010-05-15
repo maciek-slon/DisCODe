@@ -129,7 +129,7 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY "FraDIA")
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\icon.bmp")
 
 # License file
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.txt")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 
 # Tell CPack all of the components to install. The "ALL"
 # refers to the fact that this is the set of components that

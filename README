@@ -1,0 +1,13 @@
+FraDIA - Framework for Digital Image Analysis
+
+The main goal of the FraDIA was the merging of image processing algorithms of 
+all Robot Control and Recognition Systems Team's diplomants in one tool, which 
+will provide standardized and rapid method for the implementation of diverse 
+image processing algorithms.
+
+This software was developed at:
+Warsaw University of Technology, Poland
+
+Main authors:
+  Tomasz Kornuta
+  Maciej Stefanczyk

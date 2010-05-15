@@ -62,6 +62,11 @@
 </tool>
 </toolChain>
 </folderInfo>
+<fileInfo id="0.207492275.1206861239" name="Example_Processor.cpp" rcbsApplicability="disable" resourcePath="Processors/Example/Example_Processor.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1746183211">
+<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1746183211" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
+<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.159750234" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+</tool>
+</fileInfo>
 <fileInfo id="0.207492275.1978195504" name="Configurator.cpp" rcbsApplicability="disable" resourcePath="Core/Configurator.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.2085940622">
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.2085940622" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.409047729" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -70,6 +75,16 @@
 <fileInfo id="0.207492275.311526936" name="main.cpp" rcbsApplicability="disable" resourcePath="Core/main.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1958595919">
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1958595919" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.603492720" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+</tool>
+</fileInfo>
+<fileInfo id="0.207492275.708771742" name="Image_Source.cpp" rcbsApplicability="disable" resourcePath="Sources/Image/Image_Source.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.854694124">
+<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.854694124" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
+<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.529530145" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+</tool>
+</fileInfo>
+<fileInfo id="0.207492275.1396242496" name="Image_Panel.cpp" rcbsApplicability="disable" resourcePath="Sources/Image/Image_Panel.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1350226505">
+<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1350226505" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
+<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1887012794" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 </tool>
 </fileInfo>
 <sourceEntries>
