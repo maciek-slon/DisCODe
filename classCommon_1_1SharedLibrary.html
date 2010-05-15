@@ -11,6 +11,9 @@
 <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body onload='searchBox.OnSelectItem(0);'>
+
+<a href="http://github.com/maciek-slon/FraDIA"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
 <div style="background: #408090; padding: 0px; height: 125px"><img src="fradia.png" style="float: left; margin: 5px;" alt="FraDIA logo"/>
 <h1 class="title">FraDIA</h1>
 <h2 class="subtitle">Framework for Digital Image Analysis</h2>
@@ -223,7 +226,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="memdoc">
 <p>Return error from last call.</p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to textual description of last call errror (if there was any) or NULL when last call was successful. </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>pointer to textual description of last call error (if there was any) or NULL when last call was successful. </dd></dl>
 
 </div>
 </div>
@@ -246,7 +249,7 @@ template&lt;class RetValue , class Params... &gt; </div>
 <div class="memdoc">
 
 <p>Get a function reference. </p>
-<p>A templated function taking as template arguments the type of the return value and parameters of a function to look up in the shared library.</p>
+<p>A template function taking as template arguments the type of the return value and parameters of a function to look up in the shared library.</p>
 <p>This function must have been declared with the same parameters and return type and marked as extern "C".</p>
 <p>Depending on platform and compiler settings, it may also be necessary to prefix the function with BOOST_EXTENSION_DECL, to make it externally visible.</p>
 <dl class="warning"><dt><b>Warning:</b></dt><dd>If the function signature does not match, strange errors can occur. </dd></dl>
@@ -271,7 +274,7 @@ template&lt;class RetValue , class Params... &gt; </div>
 <div class="memdoc">
 <p>Load shared library.</p>
 <p>If library is already loaded then unload is called and then library is reloaded.</p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>true if load was succesfull, false if some error occurs (invalid file name, unsuccessful library unload etc) </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>true if load was successful, false if some error occurs (invalid file name, unsuccessful library unload etc) </dd></dl>
 
 </div>
 </div>
@@ -319,7 +322,7 @@ template&lt;class RetValue , class Params... &gt; </div>
 </div>
 <div class="memdoc">
 <p>Set location of library.</p>
-<p>Usefull if empty constructor was used during initialization. </p>
+<p>Useful if empty constructor was used during initialization. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>fname</em>&nbsp;</td><td>library filename, on some systems it should also have path included (even if it's located in the same directory as executable - then fname should be ./file.so) </td></tr>
@@ -423,7 +426,7 @@ template&lt;class RetValue , class Params... &gt; </div>
 <div style="background: #206080; height: 3px; border: 0; border-top: 1px solid #000000; clear: both; font-size: 1px">&nbsp;</div>
 <div style="background: #408090">
 <address style="text-align: center;"><small>
-Generated on Sat May 8 11:32:03 2010 for FraDIA by&nbsp;<a href="http://www.doxygen.org/index.html">Doxygen</a> 1.6.3</small></address><br/>
+Generated on Sat May 15 22:36:58 2010 for FraDIA by&nbsp;<a href="http://www.doxygen.org/index.html">Doxygen</a> 1.6.3</small></address><br/>
 <br/>
 <br/>
 <br/>

@@ -1,8 +1,9 @@
 <map id="G" name="G">
-<area shape="rect" id="node7" href="$Thread_8hpp.html" title="Thread object responsible for handling and executing threads." alt="" coords="289,83,375,112"/>
-<area shape="rect" id="node13" href="$Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="731,83,813,112"/>
-<area shape="rect" id="node28" href="$EventHandler_8hpp.html" title="Kernel event handler." alt="" coords="539,237,661,267"/>
-<area shape="rect" id="node23" href="$Event_8hpp.html" title="Kernel event." alt="" coords="696,160,773,189"/>
-<area shape="rect" id="node37" href="$DataStreamInterface_8hpp.html" title="DataStreamInterface.hpp" alt="" coords="848,237,1013,267"/>
-<area shape="rect" id="node31" href="$FraDIAException_8hpp.html" title="Class used for exception handling." alt="" coords="543,315,687,344"/>
+<area shape="rect" id="node9" href="$Thread_8hpp.html" title="Thread object responsible for handling and executing threads." alt="" coords="241,83,327,112"/>
+<area shape="rect" id="node15" href="$Kernel_8hpp.html" title="Abstract interface for all kernels." alt="" coords="688,83,771,112"/>
+<area shape="rect" id="node29" href="$EventHandler_8hpp.html" title="Kernel event handler." alt="" coords="709,237,832,267"/>
+<area shape="rect" id="node42" href="$Timer_8hpp.html" title="Simple timer object." alt="" coords="1069,83,1147,112"/>
+<area shape="rect" id="node24" href="$Event_8hpp.html" title="Kernel event." alt="" coords="867,160,944,189"/>
+<area shape="rect" id="node38" href="$DataStreamInterface_8hpp.html" title="DataStreamInterface.hpp" alt="" coords="376,237,541,267"/>
+<area shape="rect" id="node32" href="$FraDIAException_8hpp.html" title="Class used for exception handling." alt="" coords="640,315,784,344"/>
 </map>

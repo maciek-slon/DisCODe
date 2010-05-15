@@ -11,6 +11,9 @@
 <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body onload='searchBox.OnSelectItem(0);'>
+
+<a href="http://github.com/maciek-slon/FraDIA"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
 <div style="background: #408090; padding: 0px; height: 125px"><img src="fradia.png" style="float: left; margin: 5px;" alt="FraDIA logo"/>
 <h1 class="title">FraDIA</h1>
 <h2 class="subtitle">Framework for Digital Image Analysis</h2>
@@ -154,6 +157,8 @@ Inheritance diagram for Common::Thread:</div>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommon_1_1Thread.html#a8c46c8315587738bab66aef6cd16bc01">yield</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommon_1_1Thread.html#a210534ad76813fb0c13cfe811ae5119a">setPriority</a> (<a class="el" href="classCommon_1_1Thread.html#a91db81d7aeaa6112b25a92d802825359">Priority</a> priority)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommon_1_1Thread.html#af6dd58da48b19aba3967feefd84d80dd">kill</a> ()</td></tr>
+<tr><td colspan="2"><h2>Static Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommon_1_1Thread.html#a737906940b0ad63989657b11b80ca9ac">msleep</a> (int msec)</td></tr>
 <tr><td colspan="2"><h2>Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommon_1_1Thread.html#a18e7839141333b1f2784d9dade0f48e2">run</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommon_1_1Thread.html#aff9c047717fe23d4617fa8b90a01b6d7">sleep</a> (int msec)</td></tr>
@@ -230,6 +235,34 @@ Inheritance diagram for Common::Thread:</div>
 </div>
 <div class="memdoc">
 <p>Kill thread </p>
+
+</div>
+</div>
+<a class="anchor" id="a737906940b0ad63989657b11b80ca9ac"></a><!-- doxytag: member="Common::Thread::msleep" ref="a737906940b0ad63989657b11b80ca9ac" args="(int msec)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Common::Thread::msleep </td>
+          <td>(</td>
+          <td class="paramtype">int&nbsp;</td>
+          <td class="paramname"> <em>msec</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline, static]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Suspends the calling thread until the specified time in milliseconds has been reached. </p>
+
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dynsection">
+<div class="center"><img src="classCommon_1_1Thread_a737906940b0ad63989657b11b80ca9ac_cgraph.png" border="0" usemap="#classCommon_1_1Thread_a737906940b0ad63989657b11b80ca9ac_cgraph_map" alt=""></div>
+<map name="classCommon_1_1Thread_a737906940b0ad63989657b11b80ca9ac_cgraph_map" id="classCommon_1_1Thread_a737906940b0ad63989657b11b80ca9ac_cgraph">
+<area shape="rect" id="node3" href="classCommon_1_1Thread.html#aff9c047717fe23d4617fa8b90a01b6d7" title="Common::Thread::sleep" alt="" coords="224,5,384,35"/></map>
+</div>
+</p>
 
 </div>
 </div>
@@ -407,7 +440,7 @@ Here is the call graph for this function:</div>
 <div style="background: #206080; height: 3px; border: 0; border-top: 1px solid #000000; clear: both; font-size: 1px">&nbsp;</div>
 <div style="background: #408090">
 <address style="text-align: center;"><small>
-Generated on Sat May 8 11:32:03 2010 for FraDIA by&nbsp;<a href="http://www.doxygen.org/index.html">Doxygen</a> 1.6.3</small></address><br/>
+Generated on Sat May 15 22:36:58 2010 for FraDIA by&nbsp;<a href="http://www.doxygen.org/index.html">Doxygen</a> 1.6.3</small></address><br/>
 <br/>
 <br/>
 <br/>

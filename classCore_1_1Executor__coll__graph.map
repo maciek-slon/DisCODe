@@ -1,4 +1,5 @@
 <map id="G" name="G">
 <area shape="rect" id="node2" href="$classCommon_1_1Thread.html" title="Thread object responsible for handling and executing threads." alt="" coords="5,5,125,35"/>
 <area shape="rect" id="node4" href="$classBase_1_1Kernel.html" title="Abstract interface class for all modules &#45; data sources, processors etc." alt="" coords="149,5,245,35"/>
+<area shape="rect" id="node6" href="$classCommon_1_1Timer.html" title="Simple timer object that measures elapsed time." alt="" coords="269,5,384,35"/>
 </map>

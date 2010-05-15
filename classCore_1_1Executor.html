@@ -11,6 +11,9 @@
 <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
 </head>
 <body onload='searchBox.OnSelectItem(0);'>
+
+<a href="http://github.com/maciek-slon/FraDIA"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
 <div style="background: #408090; padding: 0px; height: 125px"><img src="fradia.png" style="float: left; margin: 5px;" alt="FraDIA logo"/>
 <h1 class="title">FraDIA</h1>
 <h2 class="subtitle">Framework for Digital Image Analysis</h2>
@@ -138,7 +141,7 @@ Collaboration diagram for Core::Executor:</div>
 <div class="dynsection">
 <div class="center"><img src="classCore_1_1Executor__coll__graph.png" border="0" usemap="#Core_1_1Executor_coll__map" alt="Collaboration graph"/></div>
 <map name="Core_1_1Executor_coll__map" id="Core_1_1Executor_coll__map">
-<area shape="rect" id="node2" href="classCommon_1_1Thread.html" title="Thread object responsible for handling and executing threads." alt="" coords="5,5,125,35"/><area shape="rect" id="node4" href="classBase_1_1Kernel.html" title="Abstract interface class for all modules &#45; data sources, processors etc." alt="" coords="149,5,245,35"/></map>
+<area shape="rect" id="node2" href="classCommon_1_1Thread.html" title="Thread object responsible for handling and executing threads." alt="" coords="5,5,125,35"/><area shape="rect" id="node4" href="classBase_1_1Kernel.html" title="Abstract interface class for all modules &#45; data sources, processors etc." alt="" coords="149,5,245,35"/><area shape="rect" id="node6" href="classCommon_1_1Timer.html" title="Simple timer object that measures elapsed time." alt="" coords="269,5,384,35"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 
 <p><a href="classCore_1_1Executor-members.html">List of all members.</a></p>
@@ -155,6 +158,8 @@ Collaboration diagram for Core::Executor:</div>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#a2506e67ef665eae5dca105fccbd1f510">finish</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#af2ddf6de5591f0f7c0b5a2e67d65576a">queueEvent</a> (<a class="el" href="classBase_1_1EventHandlerInterface.html">Base::EventHandlerInterface</a> *h)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#a9e1ccb3aa86d252fb1283e26f3849ef7">setIterationsCount</a> (int i)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#a7a179953b9eb7bfa3933f29f5400a0ed">setInterval</a> (float sec)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#ac6bafa8a0b3e182f406e0dc777cea27a">setExecutionMode</a> (<a class="el" href="classCore_1_1Executor.html#af73cd908f7b7bc7d53043f687da85ff5">ExecOpMode</a> mode)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classBase_1_1EventHandlerInterface.html">Base::EventHandlerInterface</a> *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#ad9043829f3561476e9190fb1914e729d">scheduleHandler</a> (<a class="el" href="classBase_1_1EventHandlerInterface.html">Base::EventHandlerInterface</a> *h)</td></tr>
 <tr><td colspan="2"><h2>Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#a32aefa7592cc1be33729e42f3e9c2aac">run</a> ()</td></tr>
@@ -178,6 +183,11 @@ Collaboration diagram for Core::Executor:</div>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">FIFO queue for incoming events.  <a href="#a1accc47e4c0145c10a2fe8cd074534a6"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#adacb98793a35aaa5d08ae9ad04957c86">max_iter</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Maximum number of iterations.  <a href="#adacb98793a35aaa5d08ae9ad04957c86"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCommon_1_1Timer.html">Common::Timer</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#a18aaf76b97fdc684df3db99b54a1db24">timer</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Timer used in periodic mode.  <a href="#a18aaf76b97fdc684df3db99b54a1db24"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCommon_1_1Timer.html">Common::Timer</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#a9817b0a9717f6ae556b56e73d507ecdc">step_time</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCore_1_1Executor.html#a5b55cafa15475c092057794f21033d52">interval</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Periodic mode interval in seconds.  <a href="#a5b55cafa15475c092057794f21033d52"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p><a class="el" href="classCore_1_1Executor.html" title="Executor object holds kernels and implements message queue.">Executor</a> object holds <a class="el" href="classBase_1_1Kernel.html">kernels</a> and implements message queue. </p>
@@ -304,7 +314,7 @@ Here is the call graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="classCore_1_1Executor_ad71bebc6702a7dc1a44a63bb60e0afe2_cgraph.png" border="0" usemap="#classCore_1_1Executor_ad71bebc6702a7dc1a44a63bb60e0afe2_cgraph_map" alt=""></div>
 <map name="classCore_1_1Executor_ad71bebc6702a7dc1a44a63bb60e0afe2_cgraph_map" id="classCore_1_1Executor_ad71bebc6702a7dc1a44a63bb60e0afe2_cgraph">
-<area shape="rect" id="node3" href="main_8cpp.html#a73df23ab851a91f06e21d676e56bcacd" title="main" alt="" coords="229,299,280,328"/><area shape="rect" id="node6" href="classBase_1_1Connection.html#ad9ab56cd4bfc0c53fc053a49060ad129" title="Base::Connection::addListener" alt="" coords="340,5,540,35"/><area shape="rect" id="node8" href="classCore_1_1Executor.html#a2506e67ef665eae5dca105fccbd1f510" title="Core::Executor::finish" alt="" coords="367,59,513,88"/><area shape="rect" id="node10" href="classBase_1_1Kernel.html#a3d597d1a60dc707c6b5fb577fbdd34f3" title="Base::Kernel::getEvent" alt="" coords="363,112,517,141"/><area shape="rect" id="node12" href="classBase_1_1Kernel.html#a1255e606a22bb091802cb808e2682d0e" title="Base::Kernel::getHandler" alt="" coords="357,165,523,195"/><area shape="rect" id="node14" href="classBase_1_1Kernel.html#a816f105962578b59ab7de5747911b81a" title="Base::Kernel::getStream" alt="" coords="357,219,523,248"/><area shape="rect" id="node16" href="classBase_1_1Kernel.html#a986724c9ee3fadd4e44dda52d7a2e7b6" title="Base::Kernel::printEvents" alt="" coords="356,272,524,301"/><area shape="rect" id="node18" href="classBase_1_1Kernel.html#a11570d0089f75e9db31cfcf996e0c7fe" title="Base::Kernel::printHandlers" alt="" coords="349,325,531,355"/><area shape="rect" id="node20" href="classBase_1_1Kernel.html#a0e0fc44b5ecb031372d747c2545bf87e" title="Base::Kernel::printStreams" alt="" coords="351,379,529,408"/><area shape="rect" id="node22" href="classCore_1_1Executor.html#ad9043829f3561476e9190fb1914e729d" title="Core::Executor::scheduleHandler" alt="" coords="333,432,547,461"/><area shape="rect" id="node30" href="classCore_1_1Executor.html#a9e1ccb3aa86d252fb1283e26f3849ef7" title="Core::Executor::setIterationsCount" alt="" coords="329,485,551,515"/><area shape="rect" id="node32" href="classCommon_1_1Thread.html#a74ae55f25fe29113d4340baec13b2d52" title="Common::Thread::start" alt="" coords="363,539,517,568"/><area shape="rect" id="node36" href="classCommon_1_1Thread.html#a40f3dc23916eade6212e5a2851dcc59f" title="Common::Thread::wait" alt="" coords="364,592,516,621"/><area shape="rect" id="node24" href="classCore_1_1Executor.html#af2ddf6de5591f0f7c0b5a2e67d65576a" title="Core::Executor::queueEvent" alt="" coords="631,379,815,408"/><area shape="rect" id="node26" href="classBase_1_1EventScheduler.html#a09b19f2a3dc134c1ec837ff97fe716a8" title="Base::EventScheduler::registerHandler" alt="" coords="600,432,845,461"/><area shape="rect" id="node28" href="classBase_1_1EventScheduler.html#ae17da487fc78ba12fffb428383bab2e9" title="Base::EventScheduler::setup" alt="" coords="628,485,817,515"/><area shape="rect" id="node34" href="classCommon_1_1Thread.html#a18e7839141333b1f2784d9dade0f48e2" title="Common::Thread::run" alt="" coords="649,539,796,568"/></map>
+<area shape="rect" id="node3" href="main_8cpp.html#a73df23ab851a91f06e21d676e56bcacd" title="main" alt="" coords="229,325,280,355"/><area shape="rect" id="node6" href="classBase_1_1Connection.html#ad9ab56cd4bfc0c53fc053a49060ad129" title="Base::Connection::addListener" alt="" coords="341,5,541,35"/><area shape="rect" id="node8" href="classCore_1_1Executor.html#a2506e67ef665eae5dca105fccbd1f510" title="Core::Executor::finish" alt="" coords="368,59,515,88"/><area shape="rect" id="node10" href="classBase_1_1Kernel.html#a3d597d1a60dc707c6b5fb577fbdd34f3" title="Base::Kernel::getEvent" alt="" coords="364,112,519,141"/><area shape="rect" id="node12" href="classBase_1_1Kernel.html#a1255e606a22bb091802cb808e2682d0e" title="Base::Kernel::getHandler" alt="" coords="359,165,524,195"/><area shape="rect" id="node14" href="classBase_1_1Kernel.html#a816f105962578b59ab7de5747911b81a" title="Base::Kernel::getStream" alt="" coords="359,219,524,248"/><area shape="rect" id="node16" href="classCommon_1_1Thread.html#a737906940b0ad63989657b11b80ca9ac" title="Common::Thread::msleep" alt="" coords="356,272,527,301"/><area shape="rect" id="node20" href="classBase_1_1Kernel.html#a986724c9ee3fadd4e44dda52d7a2e7b6" title="Base::Kernel::printEvents" alt="" coords="357,325,525,355"/><area shape="rect" id="node22" href="classBase_1_1Kernel.html#a11570d0089f75e9db31cfcf996e0c7fe" title="Base::Kernel::printHandlers" alt="" coords="351,379,532,408"/><area shape="rect" id="node24" href="classBase_1_1Kernel.html#a0e0fc44b5ecb031372d747c2545bf87e" title="Base::Kernel::printStreams" alt="" coords="352,432,531,461"/><area shape="rect" id="node26" href="classCore_1_1Executor.html#ac6bafa8a0b3e182f406e0dc777cea27a" title="Core::Executor::setExecutionMode" alt="" coords="329,485,553,515"/><area shape="rect" id="node28" href="classCore_1_1Executor.html#a7a179953b9eb7bfa3933f29f5400a0ed" title="Core::Executor::setInterval" alt="" coords="355,539,528,568"/><area shape="rect" id="node30" href="classCommon_1_1Thread.html#a74ae55f25fe29113d4340baec13b2d52" title="Common::Thread::start" alt="" coords="364,592,519,621"/><area shape="rect" id="node34" href="classCommon_1_1Thread.html#a40f3dc23916eade6212e5a2851dcc59f" title="Common::Thread::wait" alt="" coords="365,645,517,675"/><area shape="rect" id="node18" href="classCommon_1_1Thread.html#aff9c047717fe23d4617fa8b90a01b6d7" title="Common::Thread::sleep" alt="" coords="603,272,763,301"/><area shape="rect" id="node32" href="classCommon_1_1Thread.html#a18e7839141333b1f2784d9dade0f48e2" title="Common::Thread::run" alt="" coords="609,592,756,621"/></map>
 </div>
 </p>
 
@@ -373,7 +383,7 @@ Here is the call graph for this function:</div>
 <div class="dynsection">
 <div class="center"><img src="classCore_1_1Executor_a32aefa7592cc1be33729e42f3e9c2aac_cgraph.png" border="0" usemap="#classCore_1_1Executor_a32aefa7592cc1be33729e42f3e9c2aac_cgraph_map" alt=""></div>
 <map name="classCore_1_1Executor_a32aefa7592cc1be33729e42f3e9c2aac_cgraph_map" id="classCore_1_1Executor_a32aefa7592cc1be33729e42f3e9c2aac_cgraph">
-<area shape="rect" id="node3" href="classBase_1_1Kernel.html#a0771cc3c84c0ee52c582d1d90f5444fd" title="Base::Kernel::step" alt="" coords="203,5,333,35"/><area shape="rect" id="node5" href="classCommon_1_1Thread.html#a8c46c8315587738bab66aef6cd16bc01" title="Common::Thread::yield" alt="" coords="191,59,345,88"/></map>
+<area shape="rect" id="node3" href="classCommon_1_1Timer.html#a39d4ef32eb3f781a32f403130d70f74a" title="Common::Timer::elapsed" alt="" coords="191,5,356,35"/><area shape="rect" id="node5" href="classCommon_1_1Timer.html#ad1177c7ace7d64260f42983e2bbe941d" title="Common::Timer::restart" alt="" coords="195,59,352,88"/><area shape="rect" id="node7" href="classBase_1_1Kernel.html#a0771cc3c84c0ee52c582d1d90f5444fd" title="Base::Kernel::step" alt="" coords="208,112,339,141"/><area shape="rect" id="node9" href="classCommon_1_1Thread.html#a8c46c8315587738bab66aef6cd16bc01" title="Common::Thread::yield" alt="" coords="196,165,351,195"/></map>
 </div>
 </p>
 
@@ -414,6 +424,56 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="ac6bafa8a0b3e182f406e0dc777cea27a"></a><!-- doxytag: member="Core::Executor::setExecutionMode" ref="ac6bafa8a0b3e182f406e0dc777cea27a" args="(ExecOpMode mode)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Core::Executor::setExecutionMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCore_1_1Executor.html#af73cd908f7b7bc7d53043f687da85ff5">ExecOpMode</a>&nbsp;</td>
+          <td class="paramname"> <em>mode</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Set execution mode </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>mode</em>&nbsp;</td><td>new executioon mode </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a7a179953b9eb7bfa3933f29f5400a0ed"></a><!-- doxytag: member="Core::Executor::setInterval" ref="a7a179953b9eb7bfa3933f29f5400a0ed" args="(float sec)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Core::Executor::setInterval </td>
+          <td>(</td>
+          <td class="paramtype">float&nbsp;</td>
+          <td class="paramname"> <em>sec</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Set interval in periodic mode.</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>sec</em>&nbsp;</td><td>time interval in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a9e1ccb3aa86d252fb1283e26f3849ef7"></a><!-- doxytag: member="Core::Executor::setIterationsCount" ref="a9e1ccb3aa86d252fb1283e26f3849ef7" args="(int i)" -->
 <div class="memitem">
 <div class="memproto">
@@ -446,6 +506,21 @@ Here is the call graph for this function:</div>
 <div class="memdoc">
 
 <p>List of all handler schedulers associated for managed kernels. </p>
+
+</div>
+</div>
+<a class="anchor" id="a5b55cafa15475c092057794f21033d52"></a><!-- doxytag: member="Core::Executor::interval" ref="a5b55cafa15475c092057794f21033d52" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="classCore_1_1Executor.html#a5b55cafa15475c092057794f21033d52">Core::Executor::interval</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Periodic mode interval in seconds. </p>
 
 </div>
 </div>
@@ -539,6 +614,34 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a9817b0a9717f6ae556b56e73d507ecdc"></a><!-- doxytag: member="Core::Executor::step_time" ref="a9817b0a9717f6ae556b56e73d507ecdc" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCommon_1_1Timer.html">Common::Timer</a> <a class="el" href="classCore_1_1Executor.html#a9817b0a9717f6ae556b56e73d507ecdc">Core::Executor::step_time</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a18aaf76b97fdc684df3db99b54a1db24"></a><!-- doxytag: member="Core::Executor::timer" ref="a18aaf76b97fdc684df3db99b54a1db24" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCommon_1_1Timer.html">Common::Timer</a> <a class="el" href="classCore_1_1Executor.html#a18aaf76b97fdc684df3db99b54a1db24">Core::Executor::timer</a><code> [private]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Timer used in periodic mode. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Core/<a class="el" href="Executor_8hpp.html">Executor.hpp</a></li>
 </ul>
@@ -562,7 +665,7 @@ Here is the call graph for this function:</div>
 <div style="background: #206080; height: 3px; border: 0; border-top: 1px solid #000000; clear: both; font-size: 1px">&nbsp;</div>
 <div style="background: #408090">
 <address style="text-align: center;"><small>
-Generated on Sat May 8 11:32:03 2010 for FraDIA by&nbsp;<a href="http://www.doxygen.org/index.html">Doxygen</a> 1.6.3</small></address><br/>
+Generated on Sat May 15 22:37:00 2010 for FraDIA by&nbsp;<a href="http://www.doxygen.org/index.html">Doxygen</a> 1.6.3</small></address><br/>
 <br/>
 <br/>
 <br/>
