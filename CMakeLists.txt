@@ -64,9 +64,19 @@ LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 # Add compiler directives
 add_definitions(-Wall -pedantic -std=c++0x)
 
+set(WITH_UNIFIED_TIMER OFF CACHE BOOL "Use unified timer (based on ctime)")
+set(WITH_STH OFF CACHE BOOL "Something")
+
 IF(WIN32)
     SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} iconv wsock32 dld)
+    add_definitions(-DWIN32)
+ELSE(WIN32)
+    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} rt)
 ENDIF(WIN32)
+
+IF(WITH_UNIFIED_TIMER)
+    add_definitions(-DINIFIED_TIMER)
+ENDIF(WITH_UNIFIED_TIMER)
 
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
