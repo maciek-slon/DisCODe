@@ -29,6 +29,9 @@ include(MacroOutOfSourceBuild)
 
 macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source build.")
 
+# Include ADD_PROCESSOR and ADD_SOURCE macros
+include(AddModules)
+
 # Define place for all created executables and libraries
 SET(LIBRARY_OUTPUT_PATH    ${CMAKE_SOURCE_DIR}/bin)
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
@@ -65,7 +68,6 @@ LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 add_definitions(-Wall -pedantic -std=c++0x)
 
 set(WITH_UNIFIED_TIMER OFF CACHE BOOL "Use unified timer (based on ctime)")
-set(WITH_STH OFF CACHE BOOL "Something")
 
 IF(WIN32)
     SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} iconv wsock32 dld)

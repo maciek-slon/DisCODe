@@ -10,7 +10,8 @@ ADD_LIBRARY(srcImage SHARED ${files})
 # Link external libraries
 TARGET_LINK_LIBRARIES(srcImage ${FraDIA_LIBRARIES})
 
- install(TARGETS srcImage
+install(TARGETS srcImage
    LIBRARY
+   ARCHIVE
    DESTINATION bin
    COMPONENT sources)
