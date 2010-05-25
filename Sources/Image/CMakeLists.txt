@@ -11,6 +11,6 @@ ADD_LIBRARY(srcImage SHARED ${files})
 TARGET_LINK_LIBRARIES(srcImage ${FraDIA_LIBRARIES})
 
  install(TARGETS srcImage
-   ARCHIVE
+   LIBRARY
    DESTINATION bin
    COMPONENT sources)

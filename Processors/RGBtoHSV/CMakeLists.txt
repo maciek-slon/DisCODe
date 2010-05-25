@@ -12,6 +12,6 @@ add_library(procRGBtoHSV SHARED ${files})
 target_link_libraries(procRGBtoHSV ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
 
  install(TARGETS procRGBtoHSV
-   ARCHIVE
+   LIBRARY
    DESTINATION bin
    COMPONENT processors)

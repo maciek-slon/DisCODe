@@ -9,6 +9,6 @@ add_library(procExample SHARED ${files})
 target_link_libraries(procExample ${FraDIA_LIBRARIES})
 
  install(TARGETS procExample
-   ARCHIVE
+   LIBRARY
    DESTINATION bin
    COMPONENT processors)
