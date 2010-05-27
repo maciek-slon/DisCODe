@@ -8,8 +8,4 @@ FILE(GLOB files *.cpp)
 add_library(procExample SHARED ${files})
 target_link_libraries(procExample ${FraDIA_LIBRARIES})
 
-install(TARGETS procExample
-   LIBRARY
-   ARCHIVE
-   DESTINATION bin
-   COMPONENT processors)
+INSTALL_PROCESSOR(procExample)

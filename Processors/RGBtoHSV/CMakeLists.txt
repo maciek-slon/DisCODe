@@ -11,8 +11,4 @@ FILE(GLOB files *.cpp)
 add_library(procRGBtoHSV SHARED ${files})
 target_link_libraries(procRGBtoHSV ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
 
-install(TARGETS procRGBtoHSV
-   LIBRARY
-   ARCHIVE
-   DESTINATION bin
-   COMPONENT processors)
+INSTALL_PROCESSOR(procRGBtoHSV)

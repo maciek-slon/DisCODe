@@ -32,6 +32,9 @@ macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source buil
 # Include ADD_PROCESSOR and ADD_SOURCE macros
 include(AddModules)
 
+# Checking compiler flags
+include(CheckCXXCompilerFlag)
+
 # Define place for all created executables and libraries
 SET(LIBRARY_OUTPUT_PATH    ${CMAKE_SOURCE_DIR}/bin)
 SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
@@ -65,7 +68,19 @@ include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_D
 LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
-add_definitions(-Wall -pedantic -std=c++0x)
+add_definitions(-Wall -pedantic)
+
+# Checking if compiler supports C++0x standard
+CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)
+
+# If C++0x is supported then use it
+if(CPP0x)
+    MESSAGE(STATUS "c++0x supported")
+    add_definitions(-std=c++0x)
+else(CPP0x)
+    MESSAGE(STATUS "c++0x NOT supported")
+endif(CPP0x)
+
 
 set(WITH_UNIFIED_TIMER OFF CACHE BOOL "Use unified timer (based on ctime)")
 
@@ -86,6 +101,8 @@ add_subdirectory(Base)
 add_subdirectory(Common)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
+
+add_subdirectory(Tmp)
 
 
 # =======================================================================

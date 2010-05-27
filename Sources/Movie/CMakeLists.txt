@@ -13,8 +13,4 @@ ADD_LIBRARY(srcMovie SHARED ${files})
 # Link external libraries
 TARGET_LINK_LIBRARIES(srcMovie ${OpenCV_LIBS} ${FraDIA_LIBRARIES} )
 
- install(TARGETS srcMovie
-   LIBRARY
-   ARCHIVE
-   DESTINATION bin
-   COMPONENT sources)
+INSTALL_SOURCE(srcMovie)
