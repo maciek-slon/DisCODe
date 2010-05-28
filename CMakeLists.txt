@@ -68,7 +68,7 @@ include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_D
 LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
-add_definitions(-Wall -pedantic)
+add_definitions(-Wall)
 
 # Checking if compiler supports C++0x standard
 CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)

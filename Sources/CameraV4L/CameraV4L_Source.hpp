@@ -17,6 +17,8 @@
 namespace Sources {
 namespace CameraV4L {
 
+class VL;
+
 /*!
  * \class CameraV4L_Source
  * \brief
@@ -50,6 +52,10 @@ public:
 	int step();
 
 protected:
+
+private:
+	/// pointer to specific camera object (V4L or V4L2, depending on hardware support)
+	VL * cam;
 };
 
 }//: namespace CameraV4L

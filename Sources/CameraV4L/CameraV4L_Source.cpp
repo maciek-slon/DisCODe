@@ -9,6 +9,8 @@
 
 #include "CameraV4L_Source.hpp"
 
+#include "VL.hpp"
+
 namespace Sources {
 namespace CameraV4L {
 
@@ -26,6 +28,24 @@ CameraV4L_Source::~CameraV4L_Source() {
 
 void CameraV4L_Source::initialize() {
 	cout << "CameraV4L_Source::initialize\n";
+	int whichCam = VL::tryLib();
+	switch (whichCam)
+	{
+		case 0:
+			cam = NULL;
+			break;
+		case 1:
+			cam = new V4L();
+			break;
+		case 2:
+			cam = new V4L2();
+			break;
+		default:
+			cam = NULL;
+	}
+	if (cam != NULL) {
+		cam->loadFrameGrabber(1);
+	}
 }
 
 
