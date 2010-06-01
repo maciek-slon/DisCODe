@@ -44,7 +44,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Required on Windows
 if(WIN32)
     SET(BOOST_ROOT D:/boost_1_42_0)
-endif()
+endif(WIN32)
+
+SET(Boost_DEBUG FALSE)
 
 # Find all required packages
 FIND_PACKAGE( Boost REQUIRED thread filesystem system)

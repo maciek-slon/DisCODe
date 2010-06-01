@@ -13,29 +13,16 @@
 namespace Sources {
 namespace CameraV4L {
 
-static int convStandard(string palette) {
-	if (palette.compare("PAL") == 0)
-		return 0;
-	if (palette.compare("NTSC") == 0)
-		return 1;
-	if (palette.compare("SECAM") == 0)
-		return 2;
-}
+#include "VL_Common.hpp"
 
-static int convChannel(string palette) {
-	vector<string> channels = getChannels();
-	vector<string>::iterator it;
-	int i_chan = 0;
-	for (it = channels.begin(); it != channels.end(); it++) {
-		if (it->compare(palette) == 0)
-			return i_chan;
-		i_chan++;
-	}
-	return 0;
-}
+class VL;
 
 struct CameraProps : public Common::Props {
-	// framegrabber settings
+	// device settings
+	/// device name
+	std::string device;
+	/// input method
+	io_method io;
 	/// Video standard
 	int standard;
 	/// frame width
@@ -65,19 +52,20 @@ struct CameraProps : public Common::Props {
 	/*!
 	 * \copydoc Common::Props::load
 	 */
-	void load(const ptree & pt) {
-		standard = convStandard(pt.get("input_device.video_standard", "PAL"));
-		width = pt.get("input_device.width", 640);
-		height = pt.get("input_device.height", 480);
-		channel = convChannel(pt.get("input_device.channel", "Composite"));
-	}
+	void load(const ptree & pt);
 
 	/*!
 	 * \copydoc Common::Props::save
 	 */
-	void save(ptree & pt) {
+	void save(ptree & pt);
 
+	void setDevice(VL * dev) {
+		cam = dev;
 	}
+
+private:
+	/// device to query some attributes from
+	VL * cam;
 
 };
 

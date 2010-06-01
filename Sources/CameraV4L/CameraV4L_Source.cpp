@@ -9,7 +9,10 @@
 
 #include "CameraV4L_Source.hpp"
 
+#include "VL_Common.hpp"
 #include "VL.hpp"
+#include "V4L.hpp"
+#include "V4L2.hpp"
 
 namespace Sources {
 namespace CameraV4L {
@@ -28,7 +31,7 @@ CameraV4L_Source::~CameraV4L_Source() {
 
 void CameraV4L_Source::initialize() {
 	cout << "CameraV4L_Source::initialize\n";
-	int whichCam = VL::tryLib();
+	int whichCam = tryLib();
 	switch (whichCam)
 	{
 		case 0:
