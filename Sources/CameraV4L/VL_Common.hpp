@@ -13,6 +13,15 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <linux/videodev.h>
+#include <string>
+#include <cstdlib>
+#include <cstring>
+
+#define CLEAR(x) memset (&(x), 0, sizeof (x))
+
+namespace Sources {
+namespace CameraV4L {
+
 
 typedef enum {
 	IO_METHOD_READ,
@@ -20,38 +29,24 @@ typedef enum {
 	IO_METHOD_USERPTR
 } io_method;
 
-int xioctl(int fd, int request, void * arg) {
-	int r;
-	do
-		r = ioctl(fd, request, arg);
-	while (-1 == r && EINTR == errno);
-	return r;
+/*!
+ *
+ * @param fd
+ * @param request
+ * @param arg
+ * @return
+ */
+int xioctl(int fd, int request, void * arg);
+
+/*!
+ *
+ * @param device name of device to probe
+ * @param io io method to check
+ * @return
+ */
+int tryLib(const std::string & device, io_method io);
+
 }
-
-int tryLib(const std::string & device, io_method io) {
-
-	int fdes = open(device, O_RDWR /* required */| O_NONBLOCK, 0);
-	if (fdes >= 0) {
-		struct v4l2_capability cap;
-		CLEAR(cap);
-		if (io != IO_METHOD_READ) {
-			if (xioctl(fdes, VIDIOC_QUERYCAP, &cap) == -1) {
-				close(fdes);
-				return 1;
-			} else {
-				struct video_capability caps;
-				CLEAR(caps);
-				caps.type = cap.capabilities;
-				if (xioctl(fdes, VIDIOC_G_INPUT, &(caps.channels)) != -1) {
-					close(fdes);
-					return 2;
-				}
-			}
-		}
-	} else {
-		return 0;
-	}
 }
-
 
 #endif /* VL_COMMON_HPP_ */

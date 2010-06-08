@@ -10,9 +10,10 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+using boost::property_tree::ptree;
+
 namespace Base {
 
-using boost::property_tree::ptree;
 
 /*!
  * \class Props

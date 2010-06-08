@@ -10,26 +10,20 @@
 using namespace std;
 using std::string;
 
-/*!
- * Method creates object: V4L or V4L2. It depends on 'paramOfCreateClass".
- * paramOfCreateClass: 0 - V4L, 1 - V4L2
- */
-int VL::xioctl(int fd, int request, void * arg) {
-	int r;
-	do
-		r = ioctl(fd, request, arg);
-	while (-1 == r && EINTR == errno);
-	return r;
-}
+#include "boost/filesystem.hpp"
+using namespace boost::filesystem;
+
+namespace Sources {
+namespace CameraV4L {
 
 vector<string> VL::getDevices() {
 
 	vector<string> tmp;
-	DIR * dirp = opendir("/dev/");
+	/*DIR * dirp = opendir("/dev/");
 	if (dirp) {
 		struct dirent *dp = NULL;
 		while ((dp = readdir(dirp)) != NULL) {
-			char * file(dp->d_name);
+			string file(dp->d_name);
 			if (file == "." || file == "..") // skip these
 				continue;
 
@@ -41,7 +35,19 @@ vector<string> VL::getDevices() {
 		}
 
 		closedir(dirp);
+	}*/
+
+	path dir_path("/dev/");
+	directory_iterator end_itr; // default construction yields past-the-end
+	for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
+	{
+		std::string fname = itr->path().filename();
+		if (fname.compare(0, 5, "video") == 0) {
+			cout << "Found video device: " << itr->path().file_string() << endl;
+			tmp.push_back(itr->path().file_string());
+		}
 	}
+
 	return tmp;
 }
 
@@ -157,12 +163,14 @@ int VL::convChannel(string palette) {
  * Method converts string to int
  */
 int VL::convStandard(string palette) {
-	if (palette.compare("PAL") == 0)
+	if (palette == "PAL")
 		return 0;
-	if (palette.compare("NTSC") == 0)
+	else if (palette == "NTSC")
 		return 1;
-	if (palette.compare("SECAM") == 0)
+	else if (palette == "SECAM")
 		return 2;
+	else
+		return -1;
 }
 
 io_method VL::convIOMethod(string method) {
@@ -188,13 +196,7 @@ vector<string> VL::getInterlace() {
 	tmp.push_back("INTERLACED_BT");
 	return tmp;
 }
-/*
- vector<string> VL::getIOMethod(){
- vector<string> tmp;
- tmp.push_back("MMAP");
- return tmp;
- }
- */
+
 v4l2_field VL::convInterlace(int i) {
 
 	switch (i) {
@@ -259,41 +261,5 @@ int VL::convInterlace2String(string i) {
 	return 4;
 }
 
-/*!
- * Method checks device standard.
- */
-int VL::tryLib() {
-	XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
-
-	string which_dev = xmlds->getAttributeValue(
-			"/settings/sources/CameraV4L/input_device", "device");
-	string dev_name = "/dev/" + which_dev;
-	char * device = (char*) (dev_name.c_str());
-
-	string method = xmlds->getAttributeValue(
-			"/settings/sources/CameraV4L/input_device", "io_method");
-	io_method io = convIOMethod(method);
-
-	int fdes = open(device, O_RDWR /* required */| O_NONBLOCK, 0);
-	if (fdes >= 0) {
-		struct v4l2_capability cap;
-		CLEAR(cap);
-		if (io != IO_METHOD_READ) {
-			if (xioctl(fdes, VIDIOC_QUERYCAP, &cap) == -1) {
-				close(fdes);
-				return 1;
-			} else {
-				struct video_capability caps;
-				CLEAR(caps);
-				caps.type = cap.capabilities;
-				if (xioctl(fdes, VIDIOC_G_INPUT, &(caps.channels)) != -1) {
-					close(fdes);
-					return 2;
-				}
-			}
-		}
-	} else {
-		return 0;
-	}
 }
-
+}

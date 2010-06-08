@@ -4,10 +4,8 @@
  * \date 05.03.2009
  */
 
-
 #ifndef _V4L_H_
 #define _V4L_H_
-
 
 #include <unistd.h>
 
@@ -26,155 +24,156 @@
 
 #include <linux/videodev.h>
 #include "VL.hpp"
+#include "CameraProps.hpp"
+
+namespace Sources {
+namespace CameraV4L {
+
 /*!
  * \class V4L
  * \author szymek
  */
-class V4L: public VL
-{
+class V4L: public VL {
 private:
 	/*!
-	   * Device name.
-	   */
-	const char * dev_name;
+	 * Device name.
+	 */
+	string dev_name;
 	/*!
-	   * Device descriptor.
-	   */
+	 * Device descriptor.
+	 */
 	int video_dev;
 	/*!
-	   * Buffer index.
-	   */
+	 * Buffer index.
+	 */
 	int bufferIndex;
 	/*!
-	   * First capture flag.
-	   */
+	 * First capture flag.
+	 */
 	int FirstCapture;
 	/*!
-	   * Struct video_capability where we can find information about standard capabilities.
-	   */
+	 * Struct video_capability where we can find information about standard capabilities.
+	 */
 	struct video_capability capabilities;
 	/*!
-	   * Struct video_channel where we can find information about channels.
-	   */
+	 * Struct video_channel where we can find information about channels.
+	 */
 	struct video_channel vidchan;
 	/*!
-	   * Struct video_window where we can find information about window.
-	   */
+	 * Struct video_window where we can find information about window.
+	 */
 	struct video_window win;
 	/*!
-	   * Struct video_picture where we can find information about picture.
-	   */
+	 * Struct video_picture where we can find information about picture.
+	 */
 	struct video_picture pic;
 	/*!
-	   * Struct video_mbuf where we can find information about buffer for single frame from frame grabber.
-	   */
+	 * Struct video_mbuf where we can fi
+	V4L(string param, string value);nd information about buffer for single frame from frame grabber.
+	 */
 	struct video_mbuf m_buf;
 	/*!
-	   * Pointer to frame with data.
-	   */
- 	char * map ;
+	 * Pointer to frame with data.
+	 */
+	char * map;
 	/*!
-	   * Pointer to struct video_mmap.
-	   */
+	 * Pointer to struct video_mmap.
+	 */
 	struct video_mmap * v_map;
 	/*!
-	   * Single frame.
-	   */
+	 * Single frame.
+	 */
 	IplImage frame;
 	/*!
-	   * (Original) Single frame.
-	   */
+	 * (Original) Single frame.
+	 */
 	IplImage original_frame;
-
-
-
-
 
 public:
 
-	  /*!
-	   * Method opens device.
-	   */
+	void init(const CameraProps & props);
+
+	/*!
+	 * Method opens device.
+	 */
 	bool openDevice();
-	  /*!
-	   * Method closes device.
-	   */
+	/*!
+	 * Method closes device.
+	 */
 	void closeDevice();
 
-	  /*!
-	   * Method gets and shows actual device capabilities.
-	   */
+	/*!
+	 * Method gets and shows actual device capabilities.
+	 */
 	bool getDeviceCapabilities();
-	  /*!
-	   * Method gets buffer size for single frame.
-	   */
+	/*!
+	 * Method gets buffer size for single frame.
+	 */
 	bool getBufferSize();
 
-	  /*!
-	   * Method sets memory for buffer.
-	   */
+	/*!
+	 * Method sets memory for buffer.
+	 */
 	bool setMemBuf();
-	  /*!
-	   * Method sets memory for memory mapping.
-	   */
+	/*!
+	 * Method sets memory for memory mapping.
+	 */
 	bool setMemMap();
-	  /*!
-	   * Method gets one frame (raw data).
-	   */
+	/*!
+	 * Method gets one frame (raw data).
+	 */
 	bool grabFrame();
-	  /*!
-	   * Method returns one frame (IplImage).
-	   */
+	/*!
+	 * Method returns one frame (IplImage).
+	 */
 	bool retFrame();
 
-
-	  /*!
-	   * Constructor.
-	   */
+	/*!
+	 * Constructor.
+	 */
 	V4L();
 
-	V4L(string param, string value);
-	  /*!
-	   * Destructor.
-	   */
+	/*!
+	 * Destructor.
+	 */
 	~V4L();
-	  /*!
-	   * Method loads standard settings like brightness, contrast etc (without source_settings).
-	  */
-	bool loadFrameGrabber(int i);
-	  /*!
-	   * Method gets one frame from frame grabber.
-	   */
+	/*!
+	 * Method loads standard settings like brightness, contrast etc (without source_settings).
+	 */
+	bool loadFrameGrabber(int i, const CameraProps & props);
+	/*!
+	 * Method gets one frame from frame grabber.
+	 */
 	IplImage * getOneFrame();
-	  /*!
-		* Method  stops frame grabber and deallocate memory.
-		*/
+	/*!
+	 * Method  stops frame grabber and deallocate memory.
+	 */
 	bool releaseFrameGrabber();
 
-	  /*!
-		* Method  gets video property value like video standard or channel.
-		*/
-	int  getVideoProperty(int property);
-	  /*!
-		* Method  gets window property value like window width or height.
-		*/
-	int  getWinProperty(int property);
-	  /*!
-		* Method  gets picture property value like brightness or contrast.
-		*/
-	int  getPicProperty(int property);
+	/*!
+	 * Method  gets video property value like video standard or channel.
+	 */
+	int getVideoProperty(int property);
+	/*!
+	 * Method  gets window property value like window width or height.
+	 */
+	int getWinProperty(int property);
+	/*!
+	 * Method  gets picture property value like brightness or contrast.
+	 */
+	int getPicProperty(int property);
 
-	  /*!
-		* Method  sets video property value like video standard or channel.
-		*/
-	bool setVideoProperty(int channel, int norm );
-	 /*!
-		* Method  sets window property value like window width or height.
-		*/
+	/*!
+	 * Method  sets video property value like video standard or channel.
+	 */
+	bool setVideoProperty(int channel, int norm);
+	/*!
+	 * Method  sets window property value like window width or height.
+	 */
 	bool setWinProperty(int property, int value);
-	  /*!
-		* Method  sets picture property value like brightness or contrast.
-		*/
+	/*!
+	 * Method  sets picture property value like brightness or contrast.
+	 */
 	bool setPicProperty(int property, int value);
 	/*!
 	 * Method gets number of frame grabber channels.
@@ -189,4 +188,8 @@ public:
 	 */
 	string getFrameGrabberOptions();
 };
+
+}
+}
+
 #endif

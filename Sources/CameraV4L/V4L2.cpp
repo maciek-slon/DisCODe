@@ -5,6 +5,9 @@
 #include <sstream>
 #include <string>
 
+namespace Sources {
+namespace CameraV4L {
+
 /*!
  * Constructor
  * char * device - device name
@@ -12,77 +15,29 @@
  */
 V4L2::V4L2() {
 
-	XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
-
-	string which_dev = xmlds->getAttributeValue(
-			"/settings/sources/CameraV4L/input_device", "device");
-	string dev_name = "/dev/" + which_dev;
-	char * device = (char*) (dev_name.c_str());
-
-	string method = xmlds->getAttributeValue(
-			"/settings/sources/CameraV4L/input_device", "io_method");
-	io = convIOMethod(method);
-
-	fd = -1;
-	buffers = NULL;
-	n_buffers = 0;
-
-	strcpy(this->device, device);
-	struct stat st;
-	if (-1 == stat(device, &st)) {
-		printf("Cannot identify %s\n", device);
-	}
-
-	if (!S_ISCHR(st.st_mode)) {
-		printf("%s is no device\n", device);
-	}
-
-	fd = open(device, O_RDWR /* required */| O_NONBLOCK, 0);
-
-	if (-1 == fd) {
-		printf("Cannot open %s\n", device);
-	}
-
 }
 
-V4L2::V4L2(string param, string value) {
-	XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
-	char * device;
-	if (param.compare("device") == 0) {
-		string dev_name = "/dev/" + value;
-		device = (char*) (dev_name.c_str());
-
-		string method = xmlds->getAttributeValue(
-				"/settings/sources/CameraV4L/input_device", "io_method");
-		io = convIOMethod(method);
-	} else {
-		string which_dev = xmlds->getAttributeValue(
-				"/settings/sources/CameraV4L/input_device", "device");
-		string dev_name = "/dev/" + which_dev;
-		device = (char*) (dev_name.c_str());
-		io = convIOMethod(value);
-	}
+void V4L2::init(const CameraProps & props) {
+	dev_name = "/dev/" + props.device;
 
 	fd = -1;
 	buffers = NULL;
 	n_buffers = 0;
 
-	strcpy(this->device, device);
 	struct stat st;
-	if (-1 == stat(device, &st)) {
-		printf("Cannot identify %s\n", device);
+	if (-1 == stat(dev_name.c_str(), &st)) {
+		printf("Cannot identify %s\n", props.device);
 	}
 
 	if (!S_ISCHR(st.st_mode)) {
-		printf("%s is no device\n", device);
+		printf("%s is no device\n", props.device);
 	}
 
-	fd = open(device, O_RDWR /* required */| O_NONBLOCK, 0);
+	fd = open(dev_name.c_str(), O_RDWR /* required */| O_NONBLOCK, 0);
 
 	if (-1 == fd) {
-		printf("Cannot open %s\n", device);
+		printf("Cannot open %s\n", props.device);
 	}
-
 }
 
 const string Int2Char(int i) {
@@ -421,14 +376,14 @@ void V4L2::init_mmap(void) {
 	req.memory = V4L2_MEMORY_MMAP;
 	if (-1 == xioctl(fd, VIDIOC_REQBUFS, &req)) {
 		if (EINVAL == errno) {
-			printf("%s does not support memory mapping\n", device);
+			printf("%s does not support memory mapping\n", dev_name);
 		} else {
 			printf("ERROR: VIDIOC_REQBUFS\n");
 		}
 	}
 
 	if (req.count < 2) {
-		printf("Insufficient buffer memory on %s\n", device);
+		printf("Insufficient buffer memory on %s\n", dev_name);
 	}
 
 	buffers = (buffer *) (calloc(req.count, sizeof(*buffers)));
@@ -464,7 +419,7 @@ void V4L2::init_userp(unsigned int buffer_size) {
 	req.memory = V4L2_MEMORY_USERPTR;
 	if (-1 == xioctl(fd, VIDIOC_REQBUFS, &req)) {
 		if (EINVAL == errno) {
-			printf("%s does not support user pointer i/o\n", device);
+			printf("%s does not support user pointer i/o\n", dev_name);
 		} else {
 			printf("ERROR: VIDIOC_REQBUFS\n");
 		}
@@ -563,7 +518,7 @@ bool V4L2::setWinProperty(int property, int newValue) {
 		videoformat.fmt.pix.height = height;
 		videoformat.fmt.pix.pixelformat = palette;
 		videoformat.fmt.pix.field = interlace;
-		XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
+		//XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
 
 		switch (property) {
 		case 0:
@@ -604,8 +559,7 @@ bool V4L2::setWinProperty(int property, int newValue) {
 				break;
 			case 1:
 				height = newValue;
-				xmlds->raiseEvent("CameraV4L_Panel", "image_size", Int2Char(
-						width) + "x" + Int2Char(height));
+				//xmlds->raiseEvent("CameraV4L_Panel", "image_size", Int2Char(width) + "x" + Int2Char(height));
 				break;
 			case 2:
 				palette = newValue;
@@ -618,8 +572,7 @@ bool V4L2::setWinProperty(int property, int newValue) {
 				if (convInterlace(newValue) != 4) {
 					width = 320;
 					height = 240;
-					xmlds->raiseEvent("CameraV4L_Panel", "image_size",
-							"320x240");
+					//xmlds->raiseEvent("CameraV4L_Panel", "image_size", "320x240");
 				}
 				break;
 			}
@@ -848,79 +801,40 @@ IplImage * V4L2::getOneFrame() {
 /*!
  * Method loads standard settings like brightness, contrast etc (with source_settings).
  */
-bool V4L2::loadFrameGrabber(int version) {
-
+bool V4L2::loadFrameGrabber(int version, const CameraProps & props) {
 	if (version > 0) {
-		XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
-
-		int i_standard = convStandard(xmlds->getAttributeValue(
-				"/settings/sources/CameraV4L/input_device", "video_standard"));
-		int i_width =
-				atoi(
-						(xmlds->getAttributeValue(
-								"/settings/sources/CameraV4L/picture_settings",
-								"width")).c_str());
-		int i_height = atoi(
-				(xmlds->getAttributeValue(
-						"/settings/sources/CameraV4L/picture_settings",
-						"height")).c_str());
-		int i_palette = convPalette(xmlds->getAttributeValue(
-				"/settings/sources/CameraV4L/picture_settings", "palette"));
-		int i_whiteness = atoi(
-				(xmlds->getAttributeValue(
-						"/settings/sources/CameraV4L/picture_settings",
-						"whiteness")).c_str());
-		int i_brightness = atoi(
-				(xmlds->getAttributeValue(
-						"/settings/sources/CameraV4L/picture_settings",
-						"brightness")).c_str());
-		int i_contrast = atoi(
-				(xmlds->getAttributeValue(
-						"/settings/sources/CameraV4L/picture_settings",
-						"contrast")).c_str());
-		int i_hue =
-				atoi(
-						(xmlds->getAttributeValue(
-								"/settings/sources/CameraV4L/picture_settings",
-								"hue")).c_str());
-		int i_channel = convChannel(xmlds->getAttributeValue(
-				"/settings/sources/CameraV4L/input_device", "video_input"));
-		string s_interlace = xmlds->getAttributeValue(
-				"/settings/sources/CameraV4L/input_device", "interlace");
-
 		tryPalettes();
-		string s_palette = xmlds->getAttributeValue(
-				"/settings/sources/CameraV4L/picture_settings", "palette");
 
-		if (!findPalette(s_palette))
-			i_palette = convPalette(*(V4L2_palettes.begin()));
+		//if (!findPalette(s_palette))
+		//	i_palette = convPalette(*(V4L2_palettes.begin()));
 
 		while (1) {
 			if (!setWinProperty(-1, 0))
 				break;
-			if (!setWinProperty(0, i_width))
+			if (!setWinProperty(0, props.width))
 				break;
-			if (!setWinProperty(1, i_height))
+			if (!setWinProperty(1, props.height))
 				break;
-			if (!setWinProperty(2, i_palette))
+			if (!setWinProperty(2, props.palette))
 				break;
-			if (!setWinProperty(3, convInterlace2String(s_interlace)))
+			if (!setWinProperty(3, props.interlace))
 				break;
-			if (!setPicProperty(0, i_brightness))
+			if (!setPicProperty(0, props.brightness))
 				break;
-			if (!setPicProperty(2, i_contrast))
+			if (!setPicProperty(2, props.contrast))
 				break;
-			if (!setPicProperty(3, i_hue))
+			if (!setPicProperty(3, props.hue))
 				break;
 			if (!setVideoProperty(-1, 0))
 				break;
-			if (!setVideoProperty(i_channel, 0))
+			if (!setVideoProperty(props.channel, 0))
 				break;
-			if (!setVideoProperty(1, i_standard))
+			if (!setVideoProperty(1, props.standard))
 				break;
 			break;
 		}
 	}
+
 	initBuffers();
 	startCapture();
 	return true;
@@ -1152,3 +1066,5 @@ vector<string> V4L2::getIOMethod() {
 	return tmp;
 }
 
+}
+}

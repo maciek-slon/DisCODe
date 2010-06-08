@@ -13,6 +13,7 @@
 #include "Panel_Empty.hpp"
 #include "StringState.hpp"
 #include "DataStream.hpp"
+#include "CameraProps.hpp"
 
 namespace Sources {
 namespace CameraV4L {
@@ -56,6 +57,9 @@ protected:
 private:
 	/// pointer to specific camera object (V4L or V4L2, depending on hardware support)
 	VL * cam;
+
+	/// camera properties
+	CameraProps props;
 };
 
 }//: namespace CameraV4L

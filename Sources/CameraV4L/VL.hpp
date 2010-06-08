@@ -6,7 +6,9 @@
 
 #ifndef VL_HPP_
 #define VL_HPP_
-#include <string.h>
+
+#include <string>
+
 #include <assert.h>
 #include <getopt.h>
 #include <fcntl.h>
@@ -21,19 +23,18 @@
 #include <stdio.h>
 #include "cv.h"
 #include "cvaux.h"
-#include "V4L_define.hpp"
 
-//#include "XMLDataSynchronizer.h"
-//#include "DataAux.h"
+#include "V4L_define.hpp"
+#include "VL_Common.hpp"
+#include "CameraProps.hpp"
 
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-typedef enum {
-	IO_METHOD_READ, IO_METHOD_MMAP, IO_METHOD_USERPTR
-} io_method;
+namespace Sources {
+namespace CameraV4L {
 
 /*!
  * \class VL
@@ -54,9 +55,15 @@ public:
 	}
 
 	/*!
+	 * Initialize object with given properties
+	 * @param props
+	 */
+	virtual void init(const CameraProps & props)=0;
+
+	/*!
 	 * Method loads standard settings like brightness, contrast etc (with source_settings).
 	 */
-	virtual bool loadFrameGrabber(int i)=0;
+	virtual bool loadFrameGrabber(int i, const CameraProps & props)=0;
 
 	/*!
 	 * Method gets one frame from frame grabber.
@@ -160,9 +167,11 @@ public:
 
 	static io_method convIOMethod(string method);
 
-	static int tryLib();
-
 	static int xioctl(int fd, int request, void * arg);
 };
+
+}
+}
+
 #endif /* _VL_HPP_ */
 

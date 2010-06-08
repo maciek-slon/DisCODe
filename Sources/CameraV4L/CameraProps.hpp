@@ -9,15 +9,15 @@
 #define CAMERAPROPS_HPP_
 
 #include "Props.hpp"
+#include "VL_Common.hpp"
 
 namespace Sources {
 namespace CameraV4L {
 
-#include "VL_Common.hpp"
 
 class VL;
 
-struct CameraProps : public Common::Props {
+struct CameraProps : public Base::Props {
 	// device settings
 	/// device name
 	std::string device;

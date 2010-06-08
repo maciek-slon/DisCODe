@@ -10,6 +10,7 @@
 #include "CameraV4L_Source.hpp"
 
 #include "VL_Common.hpp"
+
 #include "VL.hpp"
 #include "V4L.hpp"
 #include "V4L2.hpp"
@@ -31,7 +32,8 @@ CameraV4L_Source::~CameraV4L_Source() {
 
 void CameraV4L_Source::initialize() {
 	cout << "CameraV4L_Source::initialize\n";
-	int whichCam = tryLib();
+
+	int whichCam = tryLib(props.device, props.io);
 	switch (whichCam)
 	{
 		case 0:
@@ -47,7 +49,7 @@ void CameraV4L_Source::initialize() {
 			cam = NULL;
 	}
 	if (cam != NULL) {
-		cam->loadFrameGrabber(1);
+		cam->loadFrameGrabber(1, props);
 	}
 }
 

@@ -5,40 +5,19 @@
 
 using namespace std;
 
+namespace Sources {
+namespace CameraV4L {
+
 /*!
  * Constructor.
  */
 V4L::V4L() {
-	//XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
-	//string which_dev = xmlds->getAttributeValue("/settings/sources/CameraV4L/input_device", "device");
-	string which_dev="video0";
 
-	string dev_name = "/dev/" + which_dev;
-	char * device = (char*) (dev_name.c_str());
-
-	dev_name = device;
-	if (openDevice()) {
-		getDeviceCapabilities();
-		getVideoProperty(0);
-		getBufferSize();
-
-	} else
-		printf("ERROR: function: V4L\n");
 }
 
-V4L::V4L(string param, string value) {
-	string which_dev;
-	if (param.compare("device") == 0)
-		which_dev = value;
-	else {
-		//XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
-		//which_dev = xmlds->getAttributeValue("/settings/sources/CameraV4L/input_device", "device");
-		which_dev = "video0";
-	}
-	string dev_name = "/dev/" + which_dev;
-	char * device = (char*) (dev_name.c_str());
+void V4L::init(const CameraProps & props) {
+	dev_name = "/dev/" + props.device;
 
-	dev_name = device;
 	if (openDevice()) {
 		getDeviceCapabilities();
 		getVideoProperty(0);
@@ -52,7 +31,7 @@ V4L::V4L(string param, string value) {
  * Method opens device.
  */
 bool V4L::openDevice() {
-	video_dev = open(dev_name, O_RDONLY);
+	video_dev = open(dev_name.c_str(), O_RDONLY);
 	if (video_dev < 0) {
 		printf("ERROR: function: openDevice\n");
 		return false;
@@ -329,6 +308,9 @@ bool V4L::setMemMap() {
 	frame.imageData = (char *) cvAlloc(frame.imageSize);
 
 	FirstCapture = 1;
+
+	/// \todo: always true?
+	return true;
 }
 
 /*!
@@ -431,27 +413,17 @@ IplImage * V4L::getOneFrame() {
 /*!
  * Method loads standard settings like brightness, contrast etc (with source_settings).
  */
-bool V4L::loadFrameGrabber(int version) {
+bool V4L::loadFrameGrabber(int version, const CameraProps & props) {
 
 	if (version > 0) {
-		XMLDataSynchronizer* xmlds = XMLDataSynchronizer::getInstance();
 
-		int i_standard = convStandard(xmlds->getAttributeValue("/settings/sources/CameraV4L/input_device", "video_standard"));
-		int i_width  = atoi( (xmlds->getAttributeValue("/settings/sources/CameraV4L/picture_settings", "width")).c_str() );
-		int i_height = atoi( (xmlds->getAttributeValue("/settings/sources/CameraV4L/picture_settings", "height")).c_str() );
-		int i_palette = convPalette(xmlds->getAttributeValue("/settings/sources/CameraV4L/picture_settings", "palette"));
-		int i_whiteness = atoi( (xmlds->getAttributeValue("/settings/sources/CameraV4L/picture_settings", "whiteness")).c_str());
-		int i_brightness = atoi( (xmlds->getAttributeValue("/settings/sources/CameraV4L/picture_settings", "brightness")).c_str());
-		int i_contrast = atoi( (xmlds->getAttributeValue("/settings/sources/CameraV4L/picture_settings", "contrast")).c_str());
-		int i_hue = atoi( (xmlds->getAttributeValue("/settings/sources/CameraV4L/picture_settings", "hue")).c_str());
-		int i_channel = convChannel(xmlds->getAttributeValue("/settings/sources/CameraV4L/input_device", "video_input"));
-		string s_min_settings = xmlds->getAttributeValue("/settings/sources/CameraV4L/input_device", "min_settings");
+		/// \todo: use CameraProps
 
 		if (version == 1) {
 			setWinProperty(-1, 0);
-			setWinProperty(0, i_width);
-			setWinProperty(1, i_height);
-			setWinProperty(2, i_palette);
+			setWinProperty(0, props.width);
+			setWinProperty(1, props.height);
+			setWinProperty(2, props.palette);
 		} else {
 			if (!setWinProperty(-1, 0))
 				return false;
@@ -459,21 +431,21 @@ bool V4L::loadFrameGrabber(int version) {
 				return false;
 			if (!setVideoProperty(1, 0))
 				return false;
-			if (!setVideoProperty(1, i_standard))
+			if (!setVideoProperty(1, props.standard))
 				return false;
-			if (!setWinProperty(0, i_width))
+			if (!setWinProperty(0, props.width))
 				return false;
-			if (!setWinProperty(1, i_height))
+			if (!setWinProperty(1, props.height))
 				return false;
-			if (!setWinProperty(2, i_palette))
+			if (!setWinProperty(2, props.palette))
 				return false;
-			if (!setPicProperty(0, i_brightness))
+			if (!setPicProperty(0, props.brightness))
 				return false;
-			if (!setPicProperty(1, i_whiteness))
+			if (!setPicProperty(1, props.whiteness))
 				return false;
-			if (!setPicProperty(2, i_contrast))
+			if (!setPicProperty(2, props.contrast))
 				return false;
-			if (!setPicProperty(3, i_hue))
+			if (!setPicProperty(3, props.hue))
 				return false;
 		}
 	}
@@ -552,3 +524,5 @@ vector<string> V4L::getIOMethod() {
 	return tmp;
 }
 
+}
+}

@@ -49,7 +49,7 @@ endif(WIN32)
 SET(Boost_DEBUG FALSE)
 
 # Find all required packages
-FIND_PACKAGE( Boost REQUIRED thread filesystem system)
+FIND_PACKAGE( Boost REQUIRED thread filesystem system regex)
 FIND_PACKAGE( LibXml2 REQUIRED )
 
 # Make makefiles more verbose
@@ -61,6 +61,7 @@ SET(FraDIA_LIBRARIES
     ${Boost_THREAD_LIBRARY}
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
+    ${Boost_REGEX_LIBRARY}
 )
 
 # Specify include directories for the build
