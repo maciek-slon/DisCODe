@@ -89,7 +89,7 @@ set(WITH_UNIFIED_TIMER OFF CACHE BOOL "Use unified timer (based on ctime)")
 
 IF(WIN32)
     SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} iconv wsock32 dld)
-    add_definitions(-DWIN32)
+    ADD_DEFINITIONS(-DWIN32)
 ELSE(WIN32)
     SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} rt)
 ENDIF(WIN32)
@@ -98,14 +98,27 @@ IF(WITH_UNIFIED_TIMER)
     add_definitions(-DINIFIED_TIMER)
 ENDIF(WITH_UNIFIED_TIMER)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -fPIC")
+
+# Create Common library
+add_subdirectory(Common)
+
+# Use created library
+SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} Common)
+
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
 add_subdirectory(Base)
-add_subdirectory(Common)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
 
-add_subdirectory(Tmp)
+# Small test programs
+set(WITH_TMP_PROGRAMS OFF CACHE BOOL "Build temporary programs")
+
+IF (WITH_TMP_PROGRAMS)
+    MESSAGE(STATUS "Building temporary programs")
+    add_subdirectory(Tmp)
+ENDIF(WITH_TMP_PROGRAMS)
 
 
 # =======================================================================
