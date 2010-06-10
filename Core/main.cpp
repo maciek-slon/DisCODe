@@ -28,13 +28,13 @@ int main(int argc_, char** argv_)
 {
 	try {
 		// FraDIA config filename.
-		char *config_name;
+		std::string config_name;
 		// Check whether other file wasn't pointed.
 		if (argc_ == 2)
 			config_name = argv_[1];
 		else
 			// Default configuration file.
-			config_name = (char*)"config.xml";
+			config_name = "config.xml";
 
 		CONFIGURATOR.loadConfiguration(config_name);
 
@@ -83,7 +83,7 @@ int main(int argc_, char** argv_)
 		// start both threads
 		ex1.start();
 
-		Common::Thread::msleep(10000);
+		Common::Thread::msleep(2000);
 
 		// stop threads
 		ex1.finish();

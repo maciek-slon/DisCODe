@@ -63,7 +63,7 @@ protected:
 	Base::DataStreamOut<Mat> out_img;
 
 	/// Capture device
-	VideoCapture * cap;
+	VideoCapture cap;
 
 	/// Movie frame
 	Mat frame;

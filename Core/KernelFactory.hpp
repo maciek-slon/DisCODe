@@ -189,7 +189,6 @@ public:
 	{
 		try {
 			// Try to open dll.
-			//dl = dlopen(filename_.c_str(), RTLD_LOCAL | RTLD_LAZY);
 			lib.setLocation(filename_);
 			// Validate operation.
 			if (!lib.load())

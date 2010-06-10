@@ -16,6 +16,7 @@ Movie_Source::Movie_Source() {
 	cout << "Movie_Source::Movie_Source()\n";
 
 	fname = "zakaz_1.avi";
+	cap = NULL;
 
 	initialize();
 }
@@ -32,20 +33,19 @@ void Movie_Source::initialize() {
 
 	registerStream("out_img", &out_img);
 
-	capture = cvCaptureFromAVI(fname.c_str());
+	cap.open(fname);
 }
 
 
 void Movie_Source::finish() {
 	cout << "Movie_Source::finish()\n";
-	cvReleaseCapture( &capture );
+	cap.release();
 }
 
 
 int Movie_Source::step() {
 
-	frame = cvQueryFrame( capture );
-	if( !frame ) return 0;
+	cap >> frame;
 
 	out_img.write(frame);
 

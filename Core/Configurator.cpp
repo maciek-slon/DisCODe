@@ -8,19 +8,18 @@
 
 #include "Configurator.hpp"
 #include "FraDIAException.hpp"
+#include "Logger.hpp"
+
+#include <boost/filesystem.hpp>
 
 namespace Core {
 
-/*!
- * Macro used during xml strings casting.
- */
-#ifndef XMLCHARCAST
-#define XMLCHARCAST (const xmlChar *)
-#endif
+using namespace boost;
 
 Configurator::Configurator()
 {
-
+	node_sources = NULL;
+	node_processors = NULL;
 }
 
 Configurator::~Configurator()
@@ -28,15 +27,14 @@ Configurator::~Configurator()
 	std::cout << "Elo koniec\n";
 }
 
-void Configurator::loadConfiguration(char* filename_)
+void Configurator::loadConfiguration(std::string filename_)
 {
 	// Set filename pointer to given one.
 	configuration_filename = filename_;
 
 	// Check whether config file exists.
-	struct stat buffer;
-	if (stat(configuration_filename, &buffer) < 0) {
-		std::cout << "Configuration: File \'" << configuration_filename << "\' doesn\'t exist.\n";
+	if (!filesystem::exists(configuration_filename)) {
+		LOG(WARNING) << "Configuration: File \'" << configuration_filename << "\' doesn\'t exist.\n";
 		// Create default configuration.
 		createDefaultConfiguration();
 		// Save it to file.
@@ -44,13 +42,27 @@ void Configurator::loadConfiguration(char* filename_)
 	}//: if stat
 	else {
 		// Load and parse configuration from file.
-		configuration = xmlParseFile(configuration_filename);
-		if (configuration == NULL)
-			throw Common::FraDIAException(std::string("Configuration: Couldn\'t parse \'") + std::string(configuration_filename)
-					+ std::string("\' file.\n"));
+		try {
+			read_xml(configuration_filename, configuration);
+		}
+		catch(xml_parser_error) {
+			throw Common::FraDIAException(std::string("Configuration: Couldn\'t parse \'") + configuration_filename + "\' file.\n");
+		}
 
-		// Get root node.
-		node_settings = xmlDocGetRootElement(configuration);
+		try {
+			node_sources = & (configuration.get_child("Settings.Sources"));
+		}
+		catch(ptree_bad_path) {
+			LOG(FATAL) << "No Sources branch in configuration file!\n";
+		}
+
+		try {
+			node_processors = & (configuration.get_child("Settings.Processors"));
+		}
+		catch(ptree_bad_path) {
+			LOG(FATAL) << "No Processors branch in configuration file!\n";
+		}
+/*
 		// Retrieve sources and processors nodes.
 		for (xmlNodePtr node = node_settings->children; node != node_settings->next; node = node->next) {
 			// Check node.
@@ -60,17 +72,18 @@ void Configurator::loadConfiguration(char* filename_)
 				node_sources = node;
 			else if (strcmp((char*) node->name, PROCESSORS) == 0)
 				node_processors = node;
-		}//: for
+		}//: for*/
+
 		// Check whether nodes were found.
 		assert(node_sources);
 		assert(node_processors);
 
-		std::cout << "Configuration: File \'" << configuration_filename << "\' loaded.\n";
+		LOG(INFO) << "Configuration: File \'" << configuration_filename << "\' loaded.\n";
 	}//: else
 }
 
 void Configurator::createDefaultConfiguration()
-{
+{/*
 	// Temporary variables.
 	//xmlNodePtr root, node_sources, node_processors;
 
@@ -96,37 +109,34 @@ void Configurator::createDefaultConfiguration()
 	node_processors = xmlNewChild(node_settings, NULL, XMLCHARCAST PROCESSORS, NULL);
 	xmlNewProp(node_processors, XMLCHARCAST "default", XMLCHARCAST "");
 
-	std::cout << "Configuration: Default configuration created.\n";
+	LOG(INFO) << "Configuration: Default configuration created.\n";*/
 }
 
 void Configurator::saveConfiguration() {
 	// Save current configuration to remembered filename.
-	xmlSaveFormatFileEnc(configuration_filename, configuration, "UTF-8", 1);
-	std::cout << "Configuration: Saved to file "<<configuration_filename<<".\n";
+	//xmlSaveFormatFileEnc(configuration_filename.c_str(), configuration, "UTF-8", 1);
+	write_xml(configuration_filename, configuration);
+	LOG(INFO) << "Configuration: Saved to file " << configuration_filename << ".\n";
 }
 
 
-xmlNodePtr& Configurator::returnManagerNode(Base::kernelType kernel_type_){
+ptree * Configurator::returnManagerNode(Base::kernelType kernel_type_){
 	switch(kernel_type_)
 	{
 		case Base::KERNEL_SOURCE :
-			cout<<"!!KERNEL_SOURCE: !!"<<node_sources->name<<endl;
 			return node_sources;
-			break;
 		case Base::KERNEL_PROCESSOR :
-			cout<<"!!KERNEL_PROCESSOR: !!"<<node_processors->name<<endl;
 			return node_processors;
-			break;
 	}//: switch
 
 	throw Common::FraDIAException("Configurator::returnManagerNode(): unknown argument");
 }
 
 
-xmlNodePtr Configurator::returnKernelNode(Base::kernelType kernel_type_, const char* node_name_) {
+ptree * Configurator::returnKernelNode(Base::kernelType kernel_type_, const char* node_name_) {
 	cout<<node_name_<<": ";
 	// Get "root" node for given type of kernels.
-	xmlNodePtr tmp_root;
+	ptree * tmp_root = NULL;
 	switch(kernel_type_)
 	{
 		case Base::KERNEL_SOURCE :
@@ -143,7 +153,7 @@ xmlNodePtr Configurator::returnKernelNode(Base::kernelType kernel_type_, const c
 	assert(tmp_root);
 
 	// Try to find node related to given kernel.
-	if (xmlChildElementCount(tmp_root)) {
+	/*if (xmlChildElementCount(tmp_root)) {
 		cout<<"szukam";
 		for (xmlNodePtr node = tmp_root->children; node && node != tmp_root->next; node = node->next) {
 			// Check node.
@@ -159,10 +169,10 @@ xmlNodePtr Configurator::returnKernelNode(Base::kernelType kernel_type_, const c
 			}
 		}//: for
 	}//: if
-	cout<<"nie mam!\n";
+	cout<<"nie mam!\n";*/
+
 	// Otherwise - create new child node.
-	xmlNodePtr newnode = xmlNewChild(tmp_root, NULL, XMLCHARCAST node_name_, NULL);
-	return newnode;
+	return &(tmp_root->put_child(node_name, ptree()));
 }
 
 

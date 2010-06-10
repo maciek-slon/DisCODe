@@ -21,6 +21,8 @@
 namespace Sources {
 namespace Movie {
 
+using namespace cv;
+
 /*!
  * \class Movie_Source
  * \brief Class responsible for retrieving images from movies.
@@ -58,13 +60,13 @@ protected:
 	Base::Event * newImage;
 
 	/// Output data stream
-	Base::DataStreamOut<IplImage *> out_img;
+	Base::DataStreamOut<Mat> out_img;
 
 	/// Capture device
-	CvCapture *capture;
+	VideoCapture cap;
 
 	/// Movie frame
-	IplImage * frame;
+	Mat frame;
 
 	/// File name
 	std::string fname;
