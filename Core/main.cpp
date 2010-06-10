@@ -15,6 +15,7 @@
 #include "KernelFactory.hpp"
 #include "Configurator.hpp"
 #include "Executor.hpp"
+#include "Logger.hpp"
 
 using namespace std;
 using namespace Common;
@@ -83,7 +84,7 @@ int main(int argc_, char** argv_)
 		// start both threads
 		ex1.start();
 
-		Common::Thread::msleep(2000);
+		Common::Thread::msleep(5000);
 
 		// stop threads
 		ex1.finish();
@@ -100,7 +101,8 @@ int main(int argc_, char** argv_)
 		cout << "Fatal error:\n";
 		// If required print exception description.
 		if (!strcmp(ex.what(), ""))
-			cout << ex.what() << endl;
+			LOG(FATAL) << ex.what() << "\n";
+
 		exit(EXIT_FAILURE);
 	}//: catch
 }

@@ -153,26 +153,16 @@ ptree * Configurator::returnKernelNode(Base::kernelType kernel_type_, const char
 	assert(tmp_root);
 
 	// Try to find node related to given kernel.
-	/*if (xmlChildElementCount(tmp_root)) {
-		cout<<"szukam";
-		for (xmlNodePtr node = tmp_root->children; node && node != tmp_root->next; node = node->next) {
-			// Check node.
-			assert(node);
-			if (node->type != XML_ELEMENT_NODE)
-				continue;
-			cout<<"("<<node->name<<") ";
-			// Return node if found.
-			if (strcmp((char*) node->name, node_name_) == 0)
-			{
-				cout<<"MAM!\n";
-				return node;
-			}
-		}//: for
-	}//: if
-	cout<<"nie mam!\n";*/
-
-	// Otherwise - create new child node.
-	return &(tmp_root->put_child(node_name, ptree()));
+	try {
+		ptree * ret = &(tmp_root->get_child(node_name_));
+		LOG(INFO) << "Mam " << node_name_ << "\n";
+		return ret;
+	}
+	catch(ptree_bad_path) {
+		// Otherwise - create new child node.
+		LOG(INFO) << "Nie mam, tworzę " << node_name_ << "\n";
+		return &(tmp_root->put_child(node_name_, ptree()));
+	}
 }
 
 

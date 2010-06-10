@@ -27,6 +27,7 @@ using namespace boost::filesystem;
 #include "Singleton.hpp"
 #include "SharedLibraryCommon.hpp"
 #include "Utils.hpp"
+#include "Logger.hpp"
 
 // Forward declaration of classes required by specialized template methods.
 /*namespace Base {
@@ -68,12 +69,15 @@ char Processors[] = PROCESSORS;
  * \author tkornuta
  */
 template <class KRNL, Base::kernelType KERNEL_TYPE, char* MANAGER_NAME>
-class KernelManager: public Base::State <std::string>, public Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >
+class KernelManager: public Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >
 {
 	/*!
 	 * Singleton class must be a friend, because only it can call protected constructor.
 	 */
 	friend class Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >;
+
+	/// Default kernel
+	std::string default_kernel;
 
 protected:
 	/*!
@@ -83,6 +87,7 @@ protected:
 	{
 		cout << MANAGER_NAME << "Manager: Hello private \n";//<<name<<endl;
 		active_kernel_factory = 0;
+		default_kernel = "";
 	}
 
 	/*!
@@ -128,8 +133,8 @@ public:
 	void initializeKernelsList()
 	{
 		// Retrieve node with default settings from configurator.
-		xmlNodePtr tmp_node = CONFIGURATOR.returnManagerNode(KERNEL_TYPE);
-		cout<<"!!returned "<<string(MANAGER_NAME)<<":node name:"<<tmp_node->name<<endl;
+		ptree * tmp_node = CONFIGURATOR.returnManagerNode(KERNEL_TYPE);
+		cout<<"!!returned "<<string(MANAGER_NAME)<<":node name:"<<tmp_node->data()<<endl;
 
 		// Get filenames.
 		vector <string> files = vector <string> ();
@@ -152,13 +157,15 @@ public:
 			if (k->lazyInitialize(file))
 			{
 				// Retrieve configuration from config.
-				xmlNodePtr node = CONFIGURATOR.returnKernelNode(KERNEL_TYPE, k->getName().c_str());
-				k->ret_state()->setNode(node);
+				ptree * node = CONFIGURATOR.returnKernelNode(KERNEL_TYPE, k->getName().c_str());
+				/// \todo pass property tree to kernel
+				//k->ret_state()->setNode(node);
+
 				// Add kernel to list.
 				kernel_factories.insert(k->getName(), k);
 			}
 			else
-				// Delete unpropper kernel.
+				// Delete incorrect kernel.
 				delete (k);
 		}//: FOREACH
 
@@ -166,9 +173,15 @@ public:
 		if (!kernel_factories.size())
 			throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no compatible dynamic libraries in current directory."));
 
-		setNode(tmp_node);
+		// find default kernel
+		default_kernel = tmp_node->get("<xmlattr>.default","");
+		if (kernel_factories.find(default_kernel) == kernel_factories.end()) {
+			LOG(ERROR) << MANAGER_NAME << "Manager: invalid default kernel '" << default_kernel << "'\n";
+			throw Common::FraDIAException(string(MANAGER_NAME)+"Manager: Invalid default kernel \'" + default_kernel + "\'.");
+		}
+
 		// Activate kernel.
-		active_kernel_factory = kernel_factories.find(state)->second;
+		active_kernel_factory = kernel_factories.find(default_kernel)->second;
 		cout << "Activated kernel: " << active_kernel_factory->getName() << endl;
 		active_kernel_factory->activate();
 	}
@@ -183,71 +196,8 @@ public:
 		files = Utils::searchFiles(dir_, regexp);
 	}
 
-
-
-	/*!
-	 * Activates default kernel. Empty method - to predefine for Kernel_Source and Kernel_Task types.
-	 */
-/*	void selectDefaultKernel()
-	{
-		// TODO read which to load from the configuration file.
-		cout << "STATE:" << state << endl;
-		//active_kernel_factory = kernel_factories.begin()->second;
-
-
-		if (kernel_factories.find(state) == kernel_factories.end()) {
-			// Load first kernel and set default state.
-			active_kernel_factory = kernel_factories.begin()->second;
-			setDefaultState();
-		} else
-			active_kernel_factory = kernel_factories.find(state)->second;
-		cout << "Selected: " << active_kernel_factory->getName() << endl;
-		active_kernel_factory->activate();
-	}*/
-
-	/*!
-	 * Loads the values of the state from the xml node.
-	 */
-	void loadStateFromNode(const xmlNodePtr node_)
-	{
-		cout<<"!!loadState:"<<string(MANAGER_NAME)<<":node name:"<<node_->name<<endl;
-		state = string((char*) xmlGetProp(node_, XMLCHARCAST"default"));
-		if (kernel_factories.find(state) == kernel_factories.end())
-			throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: Invalid default kernel \'")+state+string("\'."));
-	}
-
-	/*!
-	 * Fills the xml node basing on the values of the state.
-	 */
-	void saveStateToNode(xmlNodePtr& node_)
-	{
-		xmlSetProp(node_, XMLCHARCAST "default", XMLCHARCAST state.c_str());
-	}
-
-	/*!
-	 * Fills state with default values.
-	 */
-	void setDefaultState()
-	{
-		// Set first kernel as default.
-		state = kernel_factories.begin()->first;
-	}
-
 };
 
-/*!
- * Activates default kernel. Specialized method for Kernel_Source type.
- */
-/*template <>
- void Core::KernelFactory <Base::Kernel_Source>::selectDefaultKernel()
- {
- cout << "Source kernel activation\n";
- // TODO read from config.
- active_kernel = kernels.begin()->second;
- active_kernel->activate();
-
- }
- */
 }//: namespace Core
 
 
