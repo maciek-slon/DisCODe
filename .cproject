@@ -45,9 +45,21 @@
 <builder arguments="-C ${ProjDirPath}/build --no-print-directory" buildPath="${workspace_loc:/FraDIA/Default}" command="make" id="cdt.managedbuild.target.gnu.builder.base.218704458" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 <tool id="cdt.managedbuild.tool.gnu.archiver.base.407691313" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
+<option id="gnu.cpp.compiler.option.include.paths.923415515" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="/usr/include"/>
+<listOptionValue builtIn="false" value="/usr/local/include/boost-1.41.0"/>
+<listOptionValue builtIn="false" value="/usr/include/c++/4.4"/>
+<listOptionValue builtIn="false" value="/usr/local/include/opencv/"/>
+</option>
 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1715385179" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.c.compiler.base.2040950196" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
+<option id="gnu.c.compiler.option.include.paths.720216141" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="/usr/include"/>
+<listOptionValue builtIn="false" value="/usr/local/include/boost-1.41.0"/>
+<listOptionValue builtIn="false" value="/usr/include/c++/4.4"/>
+<listOptionValue builtIn="false" value="/usr/local/include/opencv/"/>
+</option>
 <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.550436015" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.c.linker.base.114035423" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
@@ -58,15 +70,17 @@
 </inputType>
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.assembler.base.940054550" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base">
+<option id="gnu.both.asm.option.include.paths.1898955241" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+<listOptionValue builtIn="false" value="/usr/include"/>
+<listOptionValue builtIn="false" value="/usr/local/include"/>
+<listOptionValue builtIn="false" value="/usr/local/include/boost-1.41.0"/>
+<listOptionValue builtIn="false" value="/usr/include/c++/4.4"/>
+<listOptionValue builtIn="false" value="/usr/local/include/opencv/"/>
+</option>
 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.123090491" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 </tool>
 </toolChain>
 </folderInfo>
-<fileInfo id="0.207492275.1206861239" name="Example_Processor.cpp" rcbsApplicability="disable" resourcePath="Processors/Example/Example_Processor.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1746183211">
-<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1746183211" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
-<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.159750234" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-</tool>
-</fileInfo>
 <fileInfo id="0.207492275.1978195504" name="Configurator.cpp" rcbsApplicability="disable" resourcePath="Core/Configurator.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.2085940622">
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.2085940622" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.409047729" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -75,16 +89,6 @@
 <fileInfo id="0.207492275.311526936" name="main.cpp" rcbsApplicability="disable" resourcePath="Core/main.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1958595919">
 <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1958595919" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
 <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.603492720" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-</tool>
-</fileInfo>
-<fileInfo id="0.207492275.708771742" name="Image_Source.cpp" rcbsApplicability="disable" resourcePath="Sources/Image/Image_Source.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.854694124">
-<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.854694124" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
-<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.529530145" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-</tool>
-</fileInfo>
-<fileInfo id="0.207492275.1396242496" name="Image_Panel.cpp" rcbsApplicability="disable" resourcePath="Sources/Image/Image_Panel.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1350226505">
-<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840.1350226505" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.1312077840">
-<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1887012794" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 </tool>
 </fileInfo>
 <sourceEntries>

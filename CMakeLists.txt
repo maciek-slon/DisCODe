@@ -44,10 +44,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Required on Windows
 if(WIN32)
     SET(BOOST_ROOT D:/boost_1_42_0)
-endif()
+endif(WIN32)
+
+SET(Boost_DEBUG FALSE)
 
 # Find all required packages
-FIND_PACKAGE( Boost REQUIRED thread filesystem system)
+FIND_PACKAGE( Boost REQUIRED thread filesystem system regex)
 FIND_PACKAGE( LibXml2 REQUIRED )
 
 # Make makefiles more verbose
@@ -59,6 +61,7 @@ SET(FraDIA_LIBRARIES
     ${Boost_THREAD_LIBRARY}
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
+    ${Boost_REGEX_LIBRARY}
 )
 
 # Specify include directories for the build
@@ -68,7 +71,7 @@ include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_D
 LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
-add_definitions(-Wall -pedantic)
+add_definitions(-Wall)
 
 # Checking if compiler supports C++0x standard
 CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)

@@ -18,6 +18,7 @@
 #include "Event.hpp"
 #include "EventHandler.hpp"
 #include "DataStreamInterface.hpp"
+#include "Props.hpp"
 
 namespace Base {
 
