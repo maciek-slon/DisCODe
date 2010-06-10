@@ -12,7 +12,6 @@
 #include "Kernel_Aux.hpp"
 #include "Kernel.hpp"
 #include "Image_Panel.hpp"
-#include "StringState.hpp"
 #include "DataStream.hpp"
 
 namespace Sources {
@@ -66,6 +65,6 @@ protected:
 /*
  * Register source kernel.
  */
-REGISTER_SOURCE_KERNEL("Image", Sources::Image::Image_Source, Sources::Image::Image_Panel, Common::StringState::instance())
+REGISTER_SOURCE_KERNEL("Image", Sources::Image::Image_Source, Sources::Image::Image_Panel)
 
 #endif /* IMAGE_SOURCE_HPP_ */

@@ -11,7 +11,6 @@
 #include "Kernel_Aux.hpp"
 #include "Kernel.hpp"
 #include "Panel_Empty.hpp"
-#include "StringState.hpp"
 #include "DataStream.hpp"
 #include "CameraProps.hpp"
 
@@ -68,6 +67,6 @@ private:
 /*
  * Register source kernel.
  */
-REGISTER_SOURCE_KERNEL("CameraV4L", Sources::CameraV4L::CameraV4L_Source, Common::Panel_Empty, Common::StringState::instance())
+REGISTER_SOURCE_KERNEL("CameraV4L", Sources::CameraV4L::CameraV4L_Source, Common::Panel_Empty)
 
 #endif /* CAMERAV4L_SOURCE_HPP_ */

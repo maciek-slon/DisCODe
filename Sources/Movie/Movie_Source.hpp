@@ -12,8 +12,8 @@
 #include "Kernel_Aux.hpp"
 #include "Kernel.hpp"
 #include "Panel_Empty.hpp"
-#include "StringState.hpp"
 #include "DataStream.hpp"
+#include "Props.hpp"
 
 #include <cv.h>
 #include <highgui.h>
@@ -22,6 +22,29 @@ namespace Sources {
 namespace Movie {
 
 using namespace cv;
+
+/*!
+ * \class MovieProps
+ * \brief Movie_Source properties
+ */
+struct MovieProps : public Base::Props {
+
+	std::string filename;
+
+	/*!
+	 * \copydoc Common::Props::load
+	 */
+	void load(const ptree & pt) {
+		filename = pt.get("filename", "");
+	}
+
+	/*!
+	 * \copydoc Common::Props::save
+	 */
+	void save(ptree & pt) {
+		pt.put("filename", filename);
+	}
+};
 
 /*!
  * \class Movie_Source
@@ -55,6 +78,13 @@ public:
 	 */
 	int step();
 
+	/*!
+	 * Return movie properties
+	 */
+	Base::Props * getProperties() {
+		return &props;
+	}
+
 protected:
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
@@ -68,8 +98,8 @@ protected:
 	/// Movie frame
 	Mat frame;
 
-	/// File name
-	std::string fname;
+	/// Movie properties
+	MovieProps props;
 };
 
 }//: namespace Movie
@@ -78,6 +108,6 @@ protected:
 /*
  * Register source kernel.
  */
-REGISTER_SOURCE_KERNEL("Movie", Sources::Movie::Movie_Source, Common::Panel_Empty, Common::StringState::instance())
+REGISTER_SOURCE_KERNEL("Movie", Sources::Movie::Movie_Source, Common::Panel_Empty)
 
 #endif /* MOVIE_SOURCE_HPP_ */

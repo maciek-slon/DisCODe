@@ -12,7 +12,6 @@
 #include "Kernel_Aux.hpp"
 #include "Kernel.hpp"
 #include "Panel_Empty.hpp"
-#include "StringState.hpp"
 #include "DataStream.hpp"
 
 #include <cv.h>
@@ -75,6 +74,6 @@ protected:
 /*
  * Register source kernel.
  */
-REGISTER_SOURCE_KERNEL("CameraOpenCV", Sources::CameraOpenCV::CameraOpenCV_Source, Common::Panel_Empty, Common::StringState::instance())
+REGISTER_SOURCE_KERNEL("CameraOpenCV", Sources::CameraOpenCV::CameraOpenCV_Source, Common::Panel_Empty)
 
 #endif /* CAMERAOPENCV_SOURCE_HPP_ */

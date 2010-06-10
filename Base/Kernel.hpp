@@ -142,6 +142,14 @@ public:
 		}
 	}
 
+	/*!
+	 * Return pointer to properties of this object
+	 */
+	virtual Props * getProperties() {
+		// by default return NULL indicating, that given kernel has no properties
+		return NULL;
+	}
+
 protected:
 	/*!
 	 * Register new event under specified name.

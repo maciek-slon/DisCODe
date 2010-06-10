@@ -94,7 +94,8 @@ int main(int argc_, char** argv_)
 
 		// End of test code.
 
-		CONFIGURATOR.saveConfiguration();
+		SOURCES_MANAGER.stopAll();
+		PROCESSORS_MANAGER.stopAll();
 
 	}//: try
 	catch (exception& ex){
@@ -105,4 +106,6 @@ int main(int argc_, char** argv_)
 
 		exit(EXIT_FAILURE);
 	}//: catch
+
+	CONFIGURATOR.saveConfiguration();
 }

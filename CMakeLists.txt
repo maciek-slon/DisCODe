@@ -50,14 +50,12 @@ SET(Boost_DEBUG FALSE)
 
 # Find all required packages
 FIND_PACKAGE( Boost REQUIRED thread filesystem system regex)
-FIND_PACKAGE( LibXml2 REQUIRED )
 
 # Make makefiles more verbose
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
 
 # Set libraries linked with project
 SET(FraDIA_LIBRARIES
-    xml2
     ${Boost_THREAD_LIBRARY}
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
@@ -65,7 +63,7 @@ SET(FraDIA_LIBRARIES
 )
 
 # Specify include directories for the build
-include_directories( . Base Core Common ${Boost_INCLUDE_DIR} ${LIBXML2_INCLUDE_DIR})
+include_directories( . Base Core Common ${Boost_INCLUDE_DIR})
 
 # Specify directories in which the linker will look for libraries
 LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
@@ -88,14 +86,14 @@ endif(CPP0x)
 set(WITH_UNIFIED_TIMER OFF CACHE BOOL "Use unified timer (based on ctime)")
 
 IF(WIN32)
-    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} iconv wsock32 dld)
+    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} )
     ADD_DEFINITIONS(-DWIN32)
 ELSE(WIN32)
-    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} rt)
+    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} rt dl)
 ENDIF(WIN32)
 
 IF(WITH_UNIFIED_TIMER)
-    add_definitions(-DINIFIED_TIMER)
+    add_definitions(-DUNIFIED_TIMER)
 ENDIF(WITH_UNIFIED_TIMER)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -fPIC")

@@ -11,8 +11,9 @@
 #include "Kernel_Aux.hpp"
 #include "Kernel.hpp"
 #include "Panel_Empty.hpp"
-#include "StringState.hpp"
 #include "DataStream.hpp"
+#include "Props.hpp"
+#include "Logger.hpp"
 
 #include <cv.h>
 #include <highgui.h>
@@ -21,6 +22,31 @@ namespace Processors {
 namespace OpenCVWnd {
 
 using namespace cv;
+
+/*!
+ * \brief OpenCVWnd properties
+ *
+ * WndProps contain window properties, such as title
+ */
+struct WndProps : public Base::Props {
+
+	std::string title;
+
+	/*!
+	 * \copydoc Common::Props::load
+	 */
+	void load(const ptree & pt) {
+		title = pt.get("name", "video");
+	}
+
+	/*!
+	 * \copydoc Common::Props::save
+	 */
+	void save(ptree & pt) {
+		LOG(INFO) << "Savinh OpenCVWnd props\n";
+		pt.put("name", title);
+	}
+};
 
 /*!
  * \class RGBtoHSV_Processor
@@ -54,6 +80,13 @@ public:
 	 */
 	int step();
 
+	/*!
+	 * Return window properties
+	 */
+	Base::Props * getProperties() {
+		return &props;
+	}
+
 protected:
 	/*!
 	 * Event handler function.
@@ -65,6 +98,9 @@ protected:
 
 	/// Input data stream
 	Base::DataStreamIn<Mat> in_img;
+
+	/// Window properties
+	WndProps props;
 };
 
 }//: namespace OpenCVWnd
@@ -74,7 +110,7 @@ protected:
 /*
  * Register processor kernel.
  */
-REGISTER_PROCESSOR_KERNEL("OpenCVWnd", Processors::OpenCVWnd::OpenCVWnd_Processor, Common::Panel_Empty, Common::StringState::instance())
+REGISTER_PROCESSOR_KERNEL("OpenCVWnd", Processors::OpenCVWnd::OpenCVWnd_Processor, Common::Panel_Empty)
 
 #endif /* OPENCVWND_PROCESSOR_HPP_ */
 

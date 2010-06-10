@@ -14,7 +14,6 @@
 #include "DataProcessor.hpp"
 #include "DataSource.hpp"
 #include "Kernel.hpp"
-#include "State.hpp"
 #include "Panel.hpp"
 
 namespace Base {
@@ -78,14 +77,6 @@ typedef Base::Kernel* (*returnKernel)(void);
  */
 typedef Base::Panel* (*returnPanel)(void);
 
-/*!
- * \typedef returnState
- * \brief Functor used for retrieving instance of State object from SO.
- * \date Apr 9, 2010
- * \author tkornuta
- */
-typedef Base::XMLTranslatableState* (*returnState)(void);
-
 
 }//: namespace Base
 
@@ -101,10 +92,9 @@ typedef Base::XMLTranslatableState* (*returnState)(void);
  * \param KERNEL_NAME the kernel name.
  * \param SOURCE_CLASS_NAME the class name of the source you are adding to the library.
  * \param PANEL_CLASS_NAME the class name of the panel you are adding to the library.
- * \param STATE_INSTANCE instance of the component state.
  * \author tkornuta
  */
-#define REGISTER_SOURCE_KERNEL(KERNEL_NAME, SOURCE_CLASS_NAME, PANEL_CLASS_NAME, STATE_INSTANCE) \
+#define REGISTER_SOURCE_KERNEL(KERNEL_NAME, SOURCE_CLASS_NAME, PANEL_CLASS_NAME) \
 extern "C" { \
   Base::kernelType returnType() \
   { \
@@ -122,10 +112,6 @@ extern "C" { \
   { \
     return new PANEL_CLASS_NAME(); \
   } \
-  Base::XMLTranslatableState* returnState() \
-  { \
-    return &STATE_INSTANCE; \
-  } \
 } /* extern "C" */
 
 
@@ -140,10 +126,9 @@ extern "C" { \
  * \param KERNEL_NAME the kernel name.
  * \param PROCESSOR_CLASS_NAME the class name of the processor you are adding to the library.
  * \param PANEL_CLASS_NAME the class name of the panel you are adding to the library.
- * \param STATE_INSTANCE instance of the component state.
  * \author tkornuta
  */
-#define REGISTER_PROCESSOR_KERNEL(KERNEL_NAME, PROCESSOR_CLASS_NAME, PANEL_CLASS_NAME, STATE_INSTANCE) \
+#define REGISTER_PROCESSOR_KERNEL(KERNEL_NAME, PROCESSOR_CLASS_NAME, PANEL_CLASS_NAME) \
 extern "C" { \
   Base::kernelType returnType() \
   { \
@@ -160,10 +145,6 @@ extern "C" { \
   Base::Panel* returnPanel() \
   { \
     return new PANEL_CLASS_NAME(); \
-  } \
-  Base::XMLTranslatableState* returnState() \
-  { \
-    return &STATE_INSTANCE; \
   } \
 } /* extern "C" */
 

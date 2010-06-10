@@ -23,7 +23,6 @@ using namespace boost::filesystem;
 #include "Kernel_Aux.hpp"
 #include "FraDIAException.hpp"
 #include "Configurator.hpp"
-#include "State.hpp"
 #include "Singleton.hpp"
 #include "SharedLibraryCommon.hpp"
 #include "Utils.hpp"
@@ -121,6 +120,13 @@ public:
 	}
 
 	/*!
+	 * Stop all active kernels
+	 */
+	void stopAll() {
+		active_kernel_factory->deactivate();
+	}
+
+	/*!
 	 * Return active kernel
 	 */
 	KRNL* getActiveKernel() {
@@ -158,8 +164,7 @@ public:
 			{
 				// Retrieve configuration from config.
 				ptree * node = CONFIGURATOR.returnKernelNode(KERNEL_TYPE, k->getName().c_str());
-				/// \todo pass property tree to kernel
-				//k->ret_state()->setNode(node);
+				k->setConfigNode(node);
 
 				// Add kernel to list.
 				kernel_factories.insert(k->getName(), k);

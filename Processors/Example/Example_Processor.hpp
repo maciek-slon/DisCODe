@@ -11,7 +11,6 @@
 #include "Kernel_Aux.hpp"
 #include "Kernel.hpp"
 #include "Panel_Empty.hpp"
-#include "StringState.hpp"
 #include "DataStream.hpp"
 
 namespace Processors {
@@ -70,7 +69,7 @@ protected:
 /*
  * Register processor kernel.
  */
-REGISTER_PROCESSOR_KERNEL("Example", Processors::Example::Example_Processor, Common::Panel_Empty, Common::StringState::instance())
+REGISTER_PROCESSOR_KERNEL("Example", Processors::Example::Example_Processor, Common::Panel_Empty)
 
 #endif
 

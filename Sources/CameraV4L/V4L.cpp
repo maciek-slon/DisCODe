@@ -282,6 +282,7 @@ bool V4L::getBufferSize() {
 		return false;
 	}
 
+	return true;
 }
 
 /*!

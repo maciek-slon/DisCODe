@@ -11,6 +11,8 @@
 
 #include <boost/function.hpp>
 #include <boost/utility.hpp>
+#include <boost/property_tree/ptree.hpp>
+
 #include <string>
 
 #include "Kernel_Aux.hpp"
@@ -23,6 +25,8 @@
  */
 
 namespace KernelFactoryAux {
+
+using namespace boost::property_tree;
 
 /*!
  * Name of function returning source from kernel.
@@ -89,11 +93,10 @@ private:
 	 */
 	Base::Panel* panel;
 
-public:
 	/*!
-	 * Variable used for storing address of the functor returning instance of state object.
+	 * Pointer to node containing kernel configuration
 	 */
-	Base::returnState ret_state;
+	ptree * config_node;
 
 public:
 	/*!
@@ -104,6 +107,7 @@ public:
 		// NULL pointers.
 		panel = 0;
 		object = 0;
+		config_node = 0;
 		cout << FACTORY_NAME << ": Hello\n";
 	}
 
@@ -112,6 +116,8 @@ public:
 	 */
 	virtual ~KernelFactory()
 	{
+		deactivate();
+
 		// Close dl if required.
 		if (lib.loaded())
 			lib.unload();
@@ -156,6 +162,8 @@ public:
 
 		if (!object) {
 			object = ret_object();
+			if (object->getProperties())
+				object->getProperties()->load(*config_node);
 		}//: if !object
 	}
 
@@ -169,6 +177,8 @@ public:
 		//	panel->hide();
 		// Destroy objects.
 		if (object)
+			if (object->getProperties())
+				object->getProperties()->save(*config_node);
 			delete (object);
 		if (panel)
 			delete (panel);
@@ -223,11 +233,6 @@ public:
 			if (!ret_panel)
 				throw Common::FraDIAException(std::string("Can't load ret_panel from library: ") + lib.error());
 
-			// Try to retrieve method returning state instance.
-			ret_state = lib.get<Base::XMLTranslatableState*>("returnState");
-			if (!ret_state)
-				throw Common::FraDIAException(std::string("Can't load ret_state from library: ") + lib.error());
-
 			// Kernel initialized properly.
 			cout << FACTORY_NAME << ": Dynamic library " << filename_ << " containing " << name
 					<< " kernel was properly loaded." << endl;
@@ -236,6 +241,13 @@ public:
 			cout << FACTORY_NAME << ": " << ex.what() << endl;
 		}
 		return false;
+	}
+
+	/*!
+	 * Set config node associated to this kernel
+	 */
+	void setConfigNode(ptree * node) {
+		config_node = node;
 	}
 
 };

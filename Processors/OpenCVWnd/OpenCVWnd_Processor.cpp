@@ -46,7 +46,7 @@ int OpenCVWnd_Processor::step()
 }
 
 void OpenCVWnd_Processor::onNewImage() {
-	imshow( "video", in_img.read() );
+	imshow( props.title, in_img.read() );
 	waitKey( 2 );
 }
 

@@ -15,7 +15,6 @@ namespace Movie {
 Movie_Source::Movie_Source() {
 	cout << "Movie_Source::Movie_Source()\n";
 
-	fname = "zakaz_1.avi";
 	cap = NULL;
 
 	initialize();
@@ -33,7 +32,7 @@ void Movie_Source::initialize() {
 
 	registerStream("out_img", &out_img);
 
-	cap.open(fname);
+	cap.open(props.filename);
 }
 
 
