@@ -8,7 +8,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
-add_library(procRGBtoHSV SHARED ${files})
-target_link_libraries(procRGBtoHSV ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
+add_library(procOpenCVWnd SHARED ${files})
+target_link_libraries(procOpenCVWnd ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
 
-INSTALL_PROCESSOR(procRGBtoHSV)
+INSTALL_PROCESSOR(procOpenCVWnd)

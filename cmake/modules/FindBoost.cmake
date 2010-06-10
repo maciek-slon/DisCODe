@@ -269,9 +269,6 @@ ENDFUNCTION()
 #  
 #-------------------------------------------------------------------------------
 
-MESSAGE(STATUS "Searching for Boost in our way...")
-
-
 IF(NOT DEFINED Boost_USE_MULTITHREADED)
     SET(Boost_USE_MULTITHREADED TRUE)
 ENDIF()

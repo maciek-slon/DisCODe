@@ -33,7 +33,7 @@
 
 
 MACRO(DBG_MSG _MSG)
-    MESSAGE(STATUS "${CMAKE_CURRENT_LIST_FILE}(${CMAKE_CURRENT_LIST_LINE}): ${_MSG}")
+#    MESSAGE(STATUS "${CMAKE_CURRENT_LIST_FILE}(${CMAKE_CURRENT_LIST_LINE}): ${_MSG}")
 ENDMACRO(DBG_MSG)
 
 
@@ -71,9 +71,7 @@ SET (OpenCV_POSSIBLE_ROOT_DIRS
 # MIP Uni Kiel /opt/net network installation 
 # get correct prefix for current gcc compiler version for gcc 3.x  4.x
 IF    (${CMAKE_COMPILER_IS_GNUCXX})
-  IF    (NOT OpenCV_FIND_QUIETLY)
-    MESSAGE(STATUS "Checking GNUCXX version 3/4 to determine  OpenCV /opt/net/ path")
-  ENDIF (NOT OpenCV_FIND_QUIETLY)
+  DBG_MSG("Checking GNUCXX version 3/4 to determine  OpenCV /opt/net/ path")
   EXEC_PROGRAM(${CMAKE_CXX_COMPILER} ARGS --version OUTPUT_VARIABLE CXX_COMPILER_VERSION)  
   IF   (CXX_COMPILER_VERSION MATCHES ".*3\\.[0-9].*")
     SET(IS_GNUCXX3 TRUE)

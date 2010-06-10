@@ -1,12 +1,12 @@
 /*!
- * \file RGBtoHSV_Processor.hpp
+ * \file OpenCVWnd_Processor.hpp
  * \brief Declaration of an example class, responsible for image processing.
  * \author tkornuta
  * \date 11.03.2008
  */
 
-#ifndef RGBTOHSV_PROCESSOR_HPP_
-#define RGBTOHSV_PROCESSOR_HPP_
+#ifndef OPENCVWND_PROCESSOR_HPP_
+#define OPENCVWND_PROCESSOR_HPP_
 
 #include "Kernel_Aux.hpp"
 #include "Kernel.hpp"
@@ -18,24 +18,24 @@
 #include <highgui.h>
 
 namespace Processors {
-namespace RGBtoHSV {
+namespace OpenCVWnd {
 
 /*!
  * \class RGBtoHSV_Processor
  * \brief Example processor class.
  */
-class RGBtoHSV_Processor: public Base::Kernel
+class OpenCVWnd_Processor: public Base::Kernel
 {
 public:
 	/*!
 	 * Constructor.
 	 */
-	RGBtoHSV_Processor();
+	OpenCVWnd_Processor();
 
 	/*!
 	 * Destructor
 	 */
-	~RGBtoHSV_Processor();
+	~OpenCVWnd_Processor();
 
 	/*!
 	 * Processor initialization
@@ -59,20 +59,20 @@ protected:
 	void onNewImage();
 
 	/// Event handler.
-	Base::EventHandler<RGBtoHSV_Processor> h_onNewImage;
+	Base::EventHandler<OpenCVWnd_Processor> h_onNewImage;
 
 	/// Input data stream
 	Base::DataStreamIn<IplImage *> in_img;
 };
 
-}//: namespace RGBtoHSV
+}//: namespace OpenCVWnd
 }//: namespace Processors
 
 
 /*
  * Register processor kernel.
  */
-REGISTER_PROCESSOR_KERNEL("RGBtoHSV", Processors::RGBtoHSV::RGBtoHSV_Processor, Common::Panel_Empty, Common::StringState::instance())
+REGISTER_PROCESSOR_KERNEL("OpenCVWnd", Processors::OpenCVWnd::OpenCVWnd_Processor, Common::Panel_Empty, Common::StringState::instance())
 
-#endif /* RGBTOHSV_PROCESSOR_HPP_ */
+#endif /* OPENCVWND_PROCESSOR_HPP_ */
 

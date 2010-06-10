@@ -9,47 +9,47 @@
 #include <string>
 #include <iostream>
 
-#include "RGBtoHSV_Processor.hpp"
+#include "OpenCVWnd_Processor.hpp"
 
 namespace Processors {
-namespace RGBtoHSV {
+namespace OpenCVWnd {
 
-RGBtoHSV_Processor::RGBtoHSV_Processor() {
+OpenCVWnd_Processor::OpenCVWnd_Processor() {
 	cout<<"Hello RGBtoHSV_Processor\n";
 
 	initialize();
 }
 
-RGBtoHSV_Processor::~RGBtoHSV_Processor() {
+OpenCVWnd_Processor::~OpenCVWnd_Processor() {
 	finish();
 
 	cout<<"Good bye RGBtoHSV_Processor\n";
 }
 
-void RGBtoHSV_Processor::initialize() {
+void OpenCVWnd_Processor::initialize() {
 	std::cout << "RGBtoHSV_Processor::initialize\n";
 
-	h_onNewImage.setup(this, &RGBtoHSV_Processor::onNewImage);
+	h_onNewImage.setup(this, &OpenCVWnd_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
 
 	registerStream("in_img", &in_img);
 }
 
-void RGBtoHSV_Processor::finish() {
+void OpenCVWnd_Processor::finish() {
 	std::cout << "RGBtoHSV_Processor::finish\n";
 }
 
-int RGBtoHSV_Processor::step()
+int OpenCVWnd_Processor::step()
 {
 	cout<<"RGBtoHSV_Processor::step\n";
 	return 0;
 }
 
-void RGBtoHSV_Processor::onNewImage() {
+void OpenCVWnd_Processor::onNewImage() {
 	cvShowImage( "video", in_img.read() );
 	cvWaitKey( 1 );
 }
 
 
-}//: namespace RGBtoHSV
+}//: namespace OpenCVWnd
 }//: namespace Processors
