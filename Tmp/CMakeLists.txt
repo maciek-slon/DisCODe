@@ -13,3 +13,12 @@ target_link_libraries(fs ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
 
 ADD_EXECUTABLE(LoggerTest LoggerTest.cpp)
 TARGET_LINK_LIBRARIES(LoggerTest ${Boost_THREAD_LIBRARY})
+
+# Find OpenCV library files
+FIND_PACKAGE( OpenCV REQUIRED )
+
+ADD_EXECUTABLE(TestOpenCV TestOpenCV.cpp)
+
+MESSAGE(STATUS "OpenCV_LIBRARIES=${OpenCV_LIBRARIES}")
+
+TARGET_LINK_LIBRARIES(TestOpenCV ${OpenCV_LIBRARIES})

@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 add_library(procOpenCVWnd SHARED ${files})
-target_link_libraries(procOpenCVWnd ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
+target_link_libraries(procOpenCVWnd ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
 
 INSTALL_PROCESSOR(procOpenCVWnd)

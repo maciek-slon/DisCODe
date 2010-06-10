@@ -15,6 +15,8 @@ namespace CameraOpenCV {
 CameraOpenCV_Source::CameraOpenCV_Source() {
 	cout << "CameraOpenCV_Source::CameraOpenCV_Source()\n";
 
+	cap = NULL;
+
 	initialize();
 }
 
@@ -30,22 +32,25 @@ void CameraOpenCV_Source::initialize() {
 
 	registerStream("out_img", &out_img);
 
-	capture = cvCaptureFromCAM(-1);
+	if (!cap)
+		cap = new VideoCapture(0);
 }
 
 
 void CameraOpenCV_Source::finish() {
 	cout << "CameraOpenCV_Source::finish()\n";
-	cvReleaseCapture( &capture );
+	delete cap;
+	cap = NULL;
 }
 
 
 int CameraOpenCV_Source::step() {
 
-	frame = cvQueryFrame( capture );
-	if( !frame ) return 0;
+	cap->operator>>(frame);
 
 	out_img.write(frame);
+
+	//imshow( "video2", frame );
 
 	newImage->raise();
 	return 0;

@@ -20,6 +20,8 @@
 namespace Processors {
 namespace OpenCVWnd {
 
+using namespace cv;
+
 /*!
  * \class RGBtoHSV_Processor
  * \brief Example processor class.
@@ -62,7 +64,7 @@ protected:
 	Base::EventHandler<OpenCVWnd_Processor> h_onNewImage;
 
 	/// Input data stream
-	Base::DataStreamIn<IplImage *> in_img;
+	Base::DataStreamIn<Mat> in_img;
 };
 
 }//: namespace OpenCVWnd

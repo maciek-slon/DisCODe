@@ -46,8 +46,8 @@ int OpenCVWnd_Processor::step()
 }
 
 void OpenCVWnd_Processor::onNewImage() {
-	cvShowImage( "video", in_img.read() );
-	cvWaitKey( 1 );
+	imshow( "video", in_img.read() );
+	waitKey( 2 );
 }
 
 
