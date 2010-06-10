@@ -26,6 +26,7 @@ using namespace boost::filesystem;
 #include "State.hpp"
 #include "Singleton.hpp"
 #include "SharedLibraryCommon.hpp"
+#include "Utils.hpp"
 
 // Forward declaration of classes required by specialized template methods.
 /*namespace Base {
@@ -174,17 +175,12 @@ public:
 
 	void getSOList(string dir_, vector <string>& files)
 	{
+		std::string regexp = "\\w*.";
+		regexp += LIB_EXT;
+
 		cout << "LIB_EXT = " LIB_EXT << endl;
-		// find all libraries in current directory
-		path dir_path(dir_);
-		directory_iterator end_itr; // default construction yields past-the-end
-		for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
-		{
-			if ( itr->path().extension() == LIB_EXT ) {
-				cout << "Found library: " << itr->path().file_string() << endl;
-				files.push_back(itr->path().file_string());
-			}
-		}
+
+		files = Utils::searchFiles(dir_, regexp);
 	}
 
 

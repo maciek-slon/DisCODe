@@ -13,6 +13,8 @@ using std::string;
 #include "boost/filesystem.hpp"
 using namespace boost::filesystem;
 
+#include "Utils.hpp"
+
 namespace Sources {
 namespace CameraV4L {
 
@@ -37,7 +39,7 @@ vector<string> VL::getDevices() {
 		closedir(dirp);
 	}*/
 
-	path dir_path("/dev/");
+	/*path dir_path("/dev/");
 	directory_iterator end_itr; // default construction yields past-the-end
 	for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
 	{
@@ -48,7 +50,9 @@ vector<string> VL::getDevices() {
 		}
 	}
 
-	return tmp;
+	return tmp;*/
+
+	return Utils::searchFiles("/dev", "video\\d*", false);
 }
 
 vector<string> VL::getWidth() {

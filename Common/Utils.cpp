@@ -1,4 +1,12 @@
-#include <iostream>
+/*!
+ * \file Utils.cpp
+ * \brief Utility functions - implementation
+ * \author mstefanc
+ * \date Jun 9, 2010
+ */
+
+#include "Utils.hpp"
+
 #include <string>
 #include <vector>
 
@@ -9,8 +17,9 @@ using namespace boost::filesystem;
 
 using namespace std;
 
+namespace Utils {
 
-std::vector<std::string> searchFiles(const std::string & root, const std::string & regexp, bool with_path = true) {
+std::vector<std::string> searchFiles(const std::string & root, const std::string & regexp, bool with_path) {
 	boost::regex e(regexp);
 	std::vector<std::string> ret;
 
@@ -30,17 +39,4 @@ std::vector<std::string> searchFiles(const std::string & root, const std::string
 	return ret;
 }
 
-int main(int argc, char * argv[]) {
-	if (argc != 3) {
-		cout << "Usage: " << argv[0] << " root regex\n";
-		return 0;
-	}
-
-	cout << "Searching in [" << argv[1] << "] with regex [" << argv[2] << "]\n";
-	std::vector<std::string> ret = searchFiles(argv[1], argv[2]);
-
-	for (size_t i = 0; i < ret.size(); ++i)
-		std::cout << ret[i] << std::endl;
-
-	return 0;
-}
+} //: namespace Utils

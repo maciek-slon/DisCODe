@@ -74,12 +74,12 @@ public:
 	 * Set thread priority
 	 * \param priority new thread priority
 	 */
-	void setPriority(Priority priority);
+	bool setPriority(Priority priority);
 
 	/**
 	 * Kill thread
 	 */
-	void kill();
+	 bool kill();
 
 	/*!
 	 * Suspends the calling thread until the specified time in milliseconds has been reached.

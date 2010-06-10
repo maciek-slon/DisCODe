@@ -23,9 +23,9 @@ namespace Common {
 #endif
 
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(MSC_VER)
-#  define LIB_EXT ".dll"
+#  define LIB_EXT "dll"
 #else
-#  define LIB_EXT ".so"
+#  define LIB_EXT "so"
 #endif
 
 typedef void* library_handle;
