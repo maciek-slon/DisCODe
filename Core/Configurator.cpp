@@ -20,13 +20,11 @@ namespace Core {
 
 Configurator::Configurator()
 {
-	// TODO Auto-generated constructor stub
 
 }
 
 Configurator::~Configurator()
 {
-	// TODO Auto-generated destructor stub
 	std::cout << "Elo koniec\n";
 }
 

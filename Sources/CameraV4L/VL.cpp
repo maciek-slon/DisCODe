@@ -184,6 +184,9 @@ io_method VL::convIOMethod(string method) {
 		return IO_METHOD_READ;
 	if (method.compare("USRPTR") == 0)
 		return IO_METHOD_USERPTR;
+
+	/// \todo default return?
+	return IO_METHOD_MMAP;
 }
 
 vector<string> VL::getInterlace() {

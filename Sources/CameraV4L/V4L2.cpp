@@ -1,9 +1,12 @@
-#include "V4L2.hpp"
-#include "PrintV4L2.hpp"
-#include "PixelFormats.hpp"
 #include <algorithm>
 #include <sstream>
 #include <string>
+
+#include "V4L2.hpp"
+#include "PrintV4L2.hpp"
+#include "PixelFormats.hpp"
+
+#include "Logger.hpp"
 
 namespace Sources {
 namespace CameraV4L {
@@ -26,17 +29,17 @@ void V4L2::init(const CameraProps & props) {
 
 	struct stat st;
 	if (-1 == stat(dev_name.c_str(), &st)) {
-		printf("Cannot identify %s\n", props.device);
+		LOG(ERROR) << "Cannot identify " << props.device << "\n";
 	}
 
 	if (!S_ISCHR(st.st_mode)) {
-		printf("%s is no device\n", props.device);
+		LOG(ERROR) << props.device << " is no device\n";
 	}
 
 	fd = open(dev_name.c_str(), O_RDWR /* required */| O_NONBLOCK, 0);
 
 	if (-1 == fd) {
-		printf("Cannot open %s\n", props.device);
+		LOG(ERROR) << "Cannot open " << props.device << "\n";
 	}
 }
 
@@ -376,19 +379,19 @@ void V4L2::init_mmap(void) {
 	req.memory = V4L2_MEMORY_MMAP;
 	if (-1 == xioctl(fd, VIDIOC_REQBUFS, &req)) {
 		if (EINVAL == errno) {
-			printf("%s does not support memory mapping\n", dev_name);
+			LOG(ERROR) << dev_name << " does not support memory mapping\n";
 		} else {
-			printf("ERROR: VIDIOC_REQBUFS\n");
+			LOG(ERROR) << "VIDIOC_REQBUFS\n";
 		}
 	}
 
 	if (req.count < 2) {
-		printf("Insufficient buffer memory on %s\n", dev_name);
+		LOG(ERROR) << "Insufficient buffer memory on " << dev_name << "\n";
 	}
 
 	buffers = (buffer *) (calloc(req.count, sizeof(*buffers)));
 	if (!buffers) {
-		printf("Out of memory\n");
+		LOG(ERROR) << "Out of memory\n";
 	}
 	for (n_buffers = 0; n_buffers < req.count; ++n_buffers) {
 		struct v4l2_buffer buf;
@@ -397,14 +400,14 @@ void V4L2::init_mmap(void) {
 		buf.memory = V4L2_MEMORY_MMAP;
 		buf.index = n_buffers;
 		if (-1 == xioctl(fd, VIDIOC_QUERYBUF, &buf))
-			printf("ERROR: VIDIOC_QUERYBUF\n");
+			LOG(ERROR) << "VIDIOC_QUERYBUF\n";
 		buffers[n_buffers].length = buf.length;
 		buffers[n_buffers].start = mmap(NULL /* start anywhere */, buf.length,
 				PROT_READ | PROT_WRITE /* required */,
 				MAP_SHARED /* recommended */, fd, buf.m.offset);
 
 		if (MAP_FAILED == buffers[n_buffers].start)
-			printf("mmap\n");
+			LOG(WARNING) << "mmap\n";
 	}
 }
 
@@ -419,14 +422,14 @@ void V4L2::init_userp(unsigned int buffer_size) {
 	req.memory = V4L2_MEMORY_USERPTR;
 	if (-1 == xioctl(fd, VIDIOC_REQBUFS, &req)) {
 		if (EINVAL == errno) {
-			printf("%s does not support user pointer i/o\n", dev_name);
+			LOG(ERROR) << dev_name << " does not support user pointer i/o\n";
 		} else {
-			printf("ERROR: VIDIOC_REQBUFS\n");
+			LOG(ERROR) << "VIDIOC_REQBUFS\n";
 		}
 	}
 	buffers = (buffer *) (calloc(4, sizeof(*buffers)));
 	if (!buffers) {
-		printf("Out of memory\n");
+		LOG(ERROR) << "Out of memory\n";
 	}
 
 	for (n_buffers = 0; n_buffers < 4; ++n_buffers) {
@@ -434,7 +437,7 @@ void V4L2::init_userp(unsigned int buffer_size) {
 		buffers[n_buffers].start = malloc(buffer_size);
 
 		if (!buffers[n_buffers].start) {
-			printf("Out of memory\n");
+			LOG(ERROR) << "Out of memory\n";
 		}
 	}
 }
@@ -903,6 +906,8 @@ int V4L2::imageBits(int palette) {
 		return 32;
 	}
 
+	/// \todo what is default?
+	return 0;
 }
 
 void V4L2::tryPalettes() {

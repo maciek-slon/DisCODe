@@ -10,3 +10,6 @@ ADD_EXECUTABLE(ptree ${ptree_files})
 SET(fs_files fileSearch.cpp)
 ADD_EXECUTABLE(fs ${fs_files})
 target_link_libraries(fs ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
+
+ADD_EXECUTABLE(LoggerTest LoggerTest.cpp)
+TARGET_LINK_LIBRARIES(LoggerTest ${Boost_THREAD_LIBRARY})

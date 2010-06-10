@@ -21,7 +21,7 @@ CameraV4L_Panel::CameraV4L_Panel() :
 }
 
 CameraV4L_Panel::~CameraV4L_Panel() {
-	// TODO Auto-generated destructor stub
+
 }
 
 /*
