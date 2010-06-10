@@ -1,6 +1,8 @@
 #include "V4L.hpp"
 #include "PixelFormats.hpp"
 
+#include "Logger.hpp"
+
 #include <iostream>
 
 using namespace std;
@@ -24,7 +26,7 @@ void V4L::init(const CameraProps & props) {
 		getBufferSize();
 
 	} else
-		printf("ERROR: function: V4L\n");
+		LOG(ERROR) << "function: V4L\n";
 }
 
 /*!
@@ -33,7 +35,7 @@ void V4L::init(const CameraProps & props) {
 bool V4L::openDevice() {
 	video_dev = open(dev_name.c_str(), O_RDONLY);
 	if (video_dev < 0) {
-		printf("ERROR: function: openDevice\n");
+		LOG(ERROR) << "function: openDevice\n";
 		return false;
 	}
 	return true;
@@ -78,7 +80,7 @@ vector<string> V4L::getChannels() {
 bool V4L::getDeviceCapabilities() {
 
 	if (ioctl(video_dev, VIDIOCGCAP, &capabilities) == -1) {
-		printf("ERROR: function: getDeviceCapabilities\n");
+		LOG(ERROR) << "function: getDeviceCapabilities\n";
 		close(video_dev);
 		return false;
 	}
@@ -95,7 +97,7 @@ int V4L::getVideoProperty(int property) {
 	for (i = 0; i < capabilities.channels; i++) {
 		vidchan.channel = i;
 		if (ioctl(video_dev, VIDIOCGCHAN, &vidchan) == -1) {
-			printf("ERROR: function: getChannelCapabilities\n");
+			LOG(ERROR) << "function: getChannelCapabilities\n";
 			return 0;
 		}
 	}
@@ -112,7 +114,7 @@ bool V4L::setVideoProperty(int number, int norm) {
 	vidchan.norm = norm;
 
 	if (ioctl(video_dev, VIDIOCSCHAN, &vidchan) == -1) {
-		printf("ERROR: function: setChannelCapabilities\n");
+		LOG(ERROR) << "function: setChannelCapabilities\n";
 		return false;
 	} else
 		return true;
@@ -130,7 +132,7 @@ int V4L::getWinProperty(int property) {
 
 	if (property < 2) {
 		if (ioctl(video_dev, VIDIOCGWIN, &win) == -1) {
-			printf("ERROR: function: getWinProperties\n");
+			LOG(ERROR) << "function: getWinProperties\n";
 			return 0;
 		} else {
 			if (property == 0)
@@ -175,13 +177,13 @@ bool V4L::setWinProperty(int property, int value) {
 	}
 	if (property != 2) {
 		if (ioctl(video_dev, VIDIOCSWIN, &win) == -1) {
-			printf("ERROR: function: setWinProperties\n");
+			LOG(ERROR) << "function: setWinProperties\n";
 			return false;
 		} else
 			return true;
 	} else {
 		if (ioctl(video_dev, VIDIOCSPICT, &pic) == -1) {
-			printf("ERROR: function: setWinProperties\n");
+			LOG(ERROR) << "function: setWinProperties\n";
 
 			return false;
 		} else
@@ -263,7 +265,7 @@ bool V4L::setPicProperty(int property, int value) {
 	}
 
 	if (ioctl(video_dev, VIDIOCSPICT, &pic) == -1) {
-		printf("ERROR: function: setPicProperties\n");
+		LOG(ERROR) << "function: setPicProperties\n";
 		return false;
 	} else
 		return true;
@@ -276,7 +278,7 @@ bool V4L::getBufferSize() {
 
 	/* Retrieve sizes and offsets */
 	if (ioctl(video_dev, VIDIOCGMBUF, &m_buf) == -1) {
-		printf("ERROR: function: getBufferSize\n");
+		LOG(ERROR) << "function: getBufferSize\n";
 		return false;
 	}
 
@@ -288,7 +290,7 @@ bool V4L::getBufferSize() {
 bool V4L::setMemBuf() {
 	map = (char*) mmap(0, m_buf.size, PROT_READ, MAP_SHARED, video_dev, 0);
 	if ((unsigned char *) -1 == (unsigned char *) video_dev) {
-		printf("ERROR: function: setMemBuf\n");
+		LOG(ERROR) << "function: setMemBuf\n";
 		return false;
 	}
 	return true;
@@ -354,7 +356,7 @@ bool V4L::grabFrame() {
  */
 bool V4L::retFrame() {
 	if (ioctl(video_dev, VIDIOCSYNC, &((*(v_map + bufferIndex)).frame)) == -1) {
-		printf("ERROR: function: retFrame\n");
+		LOG(ERROR) << "function: retFrame\n";
 		return false;
 	}
 

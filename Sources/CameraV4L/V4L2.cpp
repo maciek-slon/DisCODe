@@ -217,11 +217,11 @@ void V4L2::startCapture() {
 			buf.m.userptr = (unsigned long) buffers[i].start;
 			buf.length = buffers[i].length;
 			if (-1 == xioctl(fd, VIDIOC_QBUF, &buf))
-				printf("ERROR: VIDIOC_QBUF\n");
+				LOG(ERROR) << "VIDIOC_QBUF\n";
 		}
 		type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 		if (-1 == xioctl(fd, VIDIOC_STREAMON, &type))
-			printf("ERROR: VIDIOC_STREAMON\n");
+			LOG(ERROR) << "VIDIOC_STREAMON\n";
 		break;
 	}
 
@@ -244,7 +244,7 @@ void V4L2::stopCapture() {
 	case IO_METHOD_USERPTR:
 		type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 		if (-1 == xioctl(fd, VIDIOC_STREAMOFF, &type))
-			printf("ERROR: VIDIOC_STREAMOFF\n");
+			LOG(ERROR) << "VIDIOC_STREAMOFF\n";
 		break;
 	}
 	cvFree(&(img.imageData));
@@ -315,12 +315,12 @@ void *V4L2::readFrame() {
 				/* Could ignore EIO, see spec. */
 				/* fall through */
 			default:
-				printf("ERROR: VIDIOC_DQBUF\n");
+				LOG(ERROR) << "VIDIOC_DQBUF\n";
 			}
 		}
 		assert(buf.index < n_buffers);
 		if (-1 == xioctl(fd, VIDIOC_QBUF, &buf))
-			printf("ERROR: VIDIOC_QBUF\n");
+			LOG(ERROR) << "VIDIOC_QBUF\n";
 		return buffers[buf.index].start;
 		break;
 
@@ -336,7 +336,7 @@ void *V4L2::readFrame() {
 				/* Could ignore EIO, see spec. */
 				/* fall through */
 			default:
-				printf("ERROR: VIDIOC_DQBUF\n");
+				LOG(ERROR) << "VIDIOC_DQBUF\n";
 			}
 		}
 		for (i = 0; i < n_buffers; ++i)
@@ -345,7 +345,7 @@ void *V4L2::readFrame() {
 				break;
 		assert(i < n_buffers);
 		if (-1 == xioctl(fd, VIDIOC_QBUF, &buf))
-			printf("ERROR: VIDIOC_QBUF\n");
+			LOG(ERROR) << "VIDIOC_QBUF\n";
 		return (void *) (buf.m.userptr);
 		break;
 
@@ -649,7 +649,7 @@ int V4L2::getWinProperty(int property) {
 	videoformat.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 
 	if (-1 == ioctl(fd, VIDIOC_G_FMT, &videoformat))
-		printf("ERROR: VIDIOC_G_FMT\n");
+		LOG(ERROR) << "VIDIOC_G_FMT\n";
 
 	fmtdesc.index = 0;
 	while (0 == ioctl(fd, VIDIOC_ENUM_FMT, &fmtdesc)) {

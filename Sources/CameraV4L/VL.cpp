@@ -19,39 +19,6 @@ namespace Sources {
 namespace CameraV4L {
 
 vector<string> VL::getDevices() {
-
-	vector<string> tmp;
-	/*DIR * dirp = opendir("/dev/");
-	if (dirp) {
-		struct dirent *dp = NULL;
-		while ((dp = readdir(dirp)) != NULL) {
-			string file(dp->d_name);
-			if (file == "." || file == "..") // skip these
-				continue;
-
-			if (!(dp->d_type & DT_DIR)) {
-				if (strncmp(file, "video", 5) == 0) {
-					tmp.push_back(file);
-				}
-			}
-		}
-
-		closedir(dirp);
-	}*/
-
-	/*path dir_path("/dev/");
-	directory_iterator end_itr; // default construction yields past-the-end
-	for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
-	{
-		std::string fname = itr->path().filename();
-		if (fname.compare(0, 5, "video") == 0) {
-			cout << "Found video device: " << itr->path().file_string() << endl;
-			tmp.push_back(itr->path().file_string());
-		}
-	}
-
-	return tmp;*/
-
 	return Utils::searchFiles("/dev", "video\\d*", false);
 }
 
