@@ -1,213 +1,98 @@
-/*
-** tut_2_3.c
-**
-**
-** Started on  Mon Nov 27 17:10:52 2006 Arne Caspari
-** Last update Sun Feb  4 18:40:13 2007 Arne Caspari
-*/
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unicap.h>
+#include <unicapgtk.h>
+#include <string.h>
 
-#define MAX_DEVICES 64
-#define MAX_FORMATS 64
-#define MAX_PROPERTIES 64
-
-unicap_handle_t
-open_device ()
+struct widgets
 {
-  int dev_count;
-  int status = STATUS_SUCCESS;
-  unicap_device_t devices[MAX_DEVICES];
+  GtkWidget *video_display;
+  GtkWidget *format_selection;
+  GtkWidget *property_dialog;
+};
+
+static void
+format_change_cb (GtkWidget * ugtk, unicap_format_t * format,
+                  struct widgets *widgets)
+{
+  unicapgtk_video_display_set_format (UNICAPGTK_VIDEO_DISPLAY
+                                      (widgets->video_display), format);
+}
+
+static void
+device_change_cb (UnicapgtkDeviceSelection * selection, gchar * device_id,
+                  struct widgets *widgets)
+{
+  unicap_device_t device;
   unicap_handle_t handle;
-  int d = -1;
 
-  for (dev_count = 0; SUCCESS (status) && (dev_count < MAX_DEVICES);
-       dev_count++)
+  unicap_void_device (&device);
+  strcpy (device.identifier, device_id);
+
+  if (!SUCCESS (unicap_enumerate_devices (&device, &device, 0)) ||
+      !SUCCESS (unicap_open (&handle, &device)))
     {
-      // (1)
-      status =
-	unicap_enumerate_devices (NULL, &devices[dev_count], dev_count);
-      if (SUCCESS (status))
-	{
-	  printf ("%d: %s\n", dev_count, devices[dev_count].identifier);
-	}
-      else
-	{
-	  break;
-	}
-    }
-
-  if (dev_count == 0)
-    {
-      // no device selected
-      return NULL;
-    }
-
-
-  while ((d < 0) || (d >= dev_count))
-    {
-      printf ("Open Device f: ");
-      scanf ("%d", &d);
-    }
-
-  unicap_open (&handle, &devices[d]);
-
-  return handle;
-}
-
-void
-set_format (unicap_handle_t handle)
-{
-  unicap_format_t formats[MAX_FORMATS];
-  int format_count;
-  unicap_status_t status = STATUS_SUCCESS;
-  int f = -1;
-
-  for (format_count = 0; SUCCESS (status) && (format_count < MAX_FORMATS);
-       format_count++)
-    {
-      status = unicap_enumerate_formats (handle, NULL, &formats[format_count],
-					 format_count);
-      if (SUCCESS (status))
-	{
-	  printf ("%d: %s\n", format_count, formats[format_count].identifier);
-	}
-      else
-	{
-	  break;
-	}
-    }
-
-  if (format_count == 0)
-    {
-      // no video formats
+      // device is not available anymore
+      g_printerr ("device '%s' not available!\n", device_id);
       return;
     }
 
-  while ((f < 0) || (f >= format_count))
-    {
-      printf ("Use Format: ");
-      scanf ("%d", &f);
-    }
+  unicapgtk_video_format_selection_set_handle
+    (UNICAPGTK_VIDEO_FORMAT_SELECTION (widgets->format_selection), handle);
 
-  if (formats[f].size_count)
-    {
-      int i;
-      int s = -1;
+  unicapgtk_video_display_stop (UNICAPGTK_VIDEO_DISPLAY
+                                (widgets->video_display));
+  unicapgtk_video_display_set_handle (UNICAPGTK_VIDEO_DISPLAY
+                                      (widgets->video_display), handle);
+  unicapgtk_video_display_start (UNICAPGTK_VIDEO_DISPLAY
+                                 (widgets->video_display));
 
-      for (i = 0; i < formats[f].size_count; i++)
-	{
-	  printf ("%d: %dx%d\n", i, formats[f].sizes[i].width,
-		  formats[f].sizes[i].height);
-	}
-
-      while ((s < 0) || (s >= formats[f].size_count))
-	{
-	  printf ("Select Size: ");
-	  scanf ("%d", &s);
-	}
-
-      formats[f].size.width = formats[f].sizes[s].width;
-      formats[f].size.height = formats[f].sizes[s].height;
-    }
-
-  if (!SUCCESS (unicap_set_format (handle, &formats[f])))
-    {
-      fprintf (stderr, "Failed to set the format!\n");
-      exit (-1);
-    }
-}
-
-void set_menu_property( unicap_handle_t handle )
-{
-   unicap_property_t properties[MAX_PROPERTIES];
-   int property_count;
-   int menu_ppty_count;
-   unicap_status_t status = STATUS_SUCCESS;
-   int p = -1;
-   int item = -1;
-   int i;
-
-   for( property_count = menu_ppty_count = 0; SUCCESS( status ) && ( property_count < MAX_PROPERTIES ); property_count++ )
-   {
-      status = unicap_enumerate_properties( handle, NULL, &properties[menu_ppty_count], property_count );
-      if( SUCCESS( status ) )
-      {
-	 if( properties[menu_ppty_count].type == UNICAP_PROPERTY_TYPE_MENU )
-	 {
-	    printf( "%d: %s\n", menu_ppty_count, properties[menu_ppty_count].identifier );
-	    menu_ppty_count++;
-	 }
-      }
-      else
-      {
-	 break;
-      }
-   }
-
-   if( menu_ppty_count == 0 )
-   {
-      // no menu properties
-      return;
-   }
-
-   while( ( p < 0 ) || ( p > menu_ppty_count ) )
-   {
-      printf( "Property: " );
-      scanf( "%d", &p );
-   }
-
-   status = unicap_get_property( handle, &properties[p] );
-   if( !SUCCESS( status ) )
-   {
-      fprintf( stderr, "Failed to inquire property '%s'\n", properties[p].identifier );
-      exit( -1 );
-   }
-
-   printf( "Property '%s': Current = %s\n", properties[p].identifier,
-	   properties[p].menu_item ); // (1)
-
-   printf( "Menu Items: \n" );
-   for( i = 0; i < properties[p].menu.menu_item_count; i++ ) // (2)
-   {
-      printf( "\t%d : %s\n", i, properties[p].menu.menu_items[i] ); // (3)
-   }
-
-   while( ( item < 0 ) || ( item >= properties[p].menu.menu_item_count ) )
-   {
-      printf( "Select menu item for property: " );
-      scanf( "%d", &item );
-   }
-
-   strcpy( properties[p].menu_item, properties[p].menu.menu_items[item] ); // (4)
-
-   if( !SUCCESS( unicap_set_property( handle, &properties[p] ) ) )
-   {
-      fprintf( stderr, "Failed to set property!\n" );
-      exit( -1 );
-   }
+  unicapgtk_property_dialog_set_handle (UNICAPGTK_PROPERTY_DIALOG (widgets->property_dialog), handle);  // (2)
 }
 
 
 int
 main (int argc, char **argv)
 {
-  unicap_handle_t handle;
-  handle = open_device ();
-  if (!handle)
-  {
-     fprintf( stderr, "Could not open video device\n" );
-     return -1;
-  }
+  GtkWidget *window;
+  GtkWidget *vbox;
+  GtkWidget *hbox;
+  GtkWidget *device_selection;
+  struct widgets widgets;
 
-  set_format(handle);
+  gtk_init (&argc, &argv);
 
-  set_menu_property( handle );
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit),
+                    NULL);
 
-  unicap_close (handle);
+  vbox = gtk_vbox_new (FALSE, 10);
+  gtk_container_add (GTK_CONTAINER (window), vbox);
+
+  hbox = gtk_hbox_new (FALSE, 10);
+  gtk_box_pack_start_defaults (GTK_BOX (vbox), hbox);
+
+  widgets.video_display = unicapgtk_video_display_new ();
+  widgets.format_selection = unicapgtk_video_format_selection_new ();
+  widgets.property_dialog = unicapgtk_property_dialog_new ();   // (1)
+
+  device_selection = unicapgtk_device_selection_new (TRUE);
+  gtk_box_pack_start_defaults (GTK_BOX (hbox), device_selection);
+  gtk_box_pack_start_defaults (GTK_BOX (hbox), widgets.format_selection);
+  unicapgtk_device_selection_rescan (UNICAPGTK_DEVICE_SELECTION
+                                     (device_selection));
+  g_signal_connect (G_OBJECT (device_selection),
+                    "unicapgtk_device_selection_changed",
+                    G_CALLBACK (device_change_cb), &widgets);
+  gtk_combo_box_set_active (GTK_COMBO_BOX (device_selection), 0);
+
+  g_signal_connect (G_OBJECT (widgets.format_selection),
+                    "unicapgtk_video_format_changed",
+                    G_CALLBACK (format_change_cb), &widgets);
+
+  gtk_box_pack_start_defaults (GTK_BOX (vbox), widgets.video_display);
+
+  gtk_widget_show_all (window);
+  gtk_widget_show_all (widgets.property_dialog);
+  gtk_main ();
+
   return 0;
 }
