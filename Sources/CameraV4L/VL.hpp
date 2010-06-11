@@ -166,8 +166,6 @@ public:
 	virtual int convInterlace2String(string i);
 
 	static io_method convIOMethod(string method);
-
-	static int xioctl(int fd, int request, void * arg);
 };
 
 }

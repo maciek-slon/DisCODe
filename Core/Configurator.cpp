@@ -62,17 +62,6 @@ void Configurator::loadConfiguration(std::string filename_)
 		catch(ptree_bad_path) {
 			LOG(FATAL) << "No Processors branch in configuration file!\n";
 		}
-/*
-		// Retrieve sources and processors nodes.
-		for (xmlNodePtr node = node_settings->children; node != node_settings->next; node = node->next) {
-			// Check node.
-			if (node->type != XML_ELEMENT_NODE)
-				continue;
-			if (strcmp((char*) node->name, SOURCES) == 0)
-				node_sources = node;
-			else if (strcmp((char*) node->name, PROCESSORS) == 0)
-				node_processors = node;
-		}//: for*/
 
 		// Check whether nodes were found.
 		assert(node_sources);
@@ -83,40 +72,24 @@ void Configurator::loadConfiguration(std::string filename_)
 }
 
 void Configurator::createDefaultConfiguration()
-{/*
-	// Temporary variables.
-	//xmlNodePtr root, node_sources, node_processors;
+{
+	configuration.clear();
 
-	// Creates a new document representing configuration.
-	configuration = xmlNewDoc(XMLCHARCAST"1.0");
-	// Add main node with settings.
-	node_settings = xmlNewNode(NULL, XMLCHARCAST "Settings");
-	xmlDocSetRootElement(configuration, node_settings);
+	configuration.put("Settings.<xmlattr>.port", 4000);
+	configuration.put("Settings.<xmlattr>.gui", "show");
+	configuration.put("Settings.<xmlattr>.images", "show");
 
-	// Creates a DTD declaration. Isn't mandatory.
-	//    dtd = xmlCreateIntSubset(doc, BAD_CAST "root", NULL, BAD_CAST "tree2.dtd");
+	configuration.put("Settings.Sources.<xmlattr>.default", "");
+	configuration.put("Settings.Processors.<xmlattr>.default", "");
 
-	// Add root node new properties.
-	xmlNewProp(node_settings, XMLCHARCAST "port", XMLCHARCAST "4000");
-	xmlNewProp(node_settings, XMLCHARCAST "gui", XMLCHARCAST "show");
-	xmlNewProp(node_settings, XMLCHARCAST "images", XMLCHARCAST "show");
-
-	// Add sources node.
-	node_sources = xmlNewChild(node_settings, NULL, XMLCHARCAST SOURCES, NULL);
-	xmlNewProp(node_sources, XMLCHARCAST "default", XMLCHARCAST "");
-
-	// Add processors node.
-	node_processors = xmlNewChild(node_settings, NULL, XMLCHARCAST PROCESSORS, NULL);
-	xmlNewProp(node_processors, XMLCHARCAST "default", XMLCHARCAST "");
-
-	LOG(INFO) << "Configuration: Default configuration created.\n";*/
+	LOG(INFO) << "Configuration: Default configuration created.\n";
 }
 
 void Configurator::saveConfiguration() {
 	// Save current configuration to remembered filename.
-	//xmlSaveFormatFileEnc(configuration_filename.c_str(), configuration, "UTF-8", 1);
 	xml_writer_settings<ptree::key_type::value_type> settings('\t', 1, "utf-8");
 	write_xml(configuration_filename, configuration, std::locale(), settings);
+
 	LOG(INFO) << "Configuration: Saved to file " << configuration_filename << ".\n";
 }
 

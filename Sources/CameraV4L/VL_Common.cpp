@@ -36,5 +36,54 @@ int tryLib(const std::string & device, io_method io) {
 	}
 }
 
+io_method convIOMethod(const std::string & method) {
+	if (method.compare("MMAP") == 0)
+		return IO_METHOD_MMAP;
+	if (method.compare("READ") == 0)
+		return IO_METHOD_READ;
+	if (method.compare("USRPTR") == 0)
+		return IO_METHOD_USERPTR;
+
+	/// \todo default return?
+	return IO_METHOD_MMAP;
+}
+
+std::string convIOMethod(io_method meth) {
+	switch(meth) {
+		case IO_METHOD_MMAP:
+			return "MMAP";
+		case IO_METHOD_READ:
+			return "READ";
+		case IO_METHOD_USERPTR:
+			return "USERPTR";
+	}
+
+	return "MMAP";
+}
+
+int convStandard(const std::string & standard) {
+	if (standard == "PAL")
+		return STD_PAL;
+	else if (standard == "NTSC")
+		return STD_NTSC;
+	else if (standard == "SECAM")
+		return STD_SECAM;
+	else
+		return STD_PAL;
+}
+
+std::string convStandard(int standard) {
+	switch (standard) {
+		case STD_PAL:
+			return "PAL";
+		case STD_NTSC:
+			return "NTSC";
+		case STD_SECAM:
+			return "SECAM";
+	}
+
+	return "PAL";
+}
+
 }
 }

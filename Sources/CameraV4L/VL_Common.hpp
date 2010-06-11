@@ -19,6 +19,10 @@
 
 #define CLEAR(x) memset (&(x), 0, sizeof (x))
 
+#define STD_PAL 0
+#define STD_NTSC 1
+#define STD_SECAM 2
+
 namespace Sources {
 namespace CameraV4L {
 
@@ -28,6 +32,7 @@ typedef enum {
 	IO_METHOD_MMAP,
 	IO_METHOD_USERPTR
 } io_method;
+
 
 /*!
  *
@@ -45,6 +50,24 @@ int xioctl(int fd, int request, void * arg);
  * @return
  */
 int tryLib(const std::string & device, io_method io);
+
+/*!
+ * Convert string to io_method
+ * @param meth string
+ * @return io_method
+ */
+io_method convIOMethod(const std::string & meth);
+
+std::string convIOMethod(io_method meth);
+
+/*!
+ * Convert string do video standard
+ * @param std
+ * @return
+ */
+int convStandard(const std::string & standard);
+
+std::string convStandard(int standard);
 
 }
 }

@@ -15,13 +15,13 @@
 #include "V4L.hpp"
 #include "V4L2.hpp"
 
+#include "Logger.hpp"
+
 namespace Sources {
 namespace CameraV4L {
 
 CameraV4L_Source::CameraV4L_Source() {
 	cout << "Hello CameraV4L_Source from dl\n";
-
-	initialize();
 }
 
 CameraV4L_Source::~CameraV4L_Source() {
@@ -33,16 +33,24 @@ CameraV4L_Source::~CameraV4L_Source() {
 void CameraV4L_Source::initialize() {
 	cout << "CameraV4L_Source::initialize\n";
 
+	newImage = registerEvent("newImage");
+
+	registerStream("out_img", &out_img);
+
+	LOG(INFO) << "Trying possible libraries...\n";
 	int whichCam = tryLib(props.device, props.io);
+	LOG(INFO) << "device: " << props.device << " | tryLib=" << whichCam << "\n";
 	switch (whichCam)
 	{
 		case 0:
 			cam = NULL;
 			break;
 		case 1:
+			LOG(INFO) << "Using V4L\n";
 			cam = new V4L();
 			break;
 		case 2:
+			LOG(INFO) << "Using V4L2\n";
 			cam = new V4L2();
 			break;
 		default:
@@ -60,6 +68,12 @@ void CameraV4L_Source::finish() {
 
 
 int CameraV4L_Source::step() {
+	frame = Mat(cam->getOneFrame());
+
+	out_img.write(frame);
+
+	newImage->raise();
+
 	return 0;
 }
 

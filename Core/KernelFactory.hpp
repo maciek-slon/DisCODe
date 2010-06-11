@@ -164,6 +164,7 @@ public:
 			object = ret_object();
 			if (object->getProperties())
 				object->getProperties()->load(*config_node);
+			object->initialize();
 		}//: if !object
 	}
 

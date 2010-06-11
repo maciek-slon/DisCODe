@@ -1,3 +1,5 @@
+include(FindPkgConfig)
+
 # Include the directory itself as a path to include directories
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -22,3 +24,10 @@ ADD_EXECUTABLE(TestOpenCV TestOpenCV.cpp)
 MESSAGE(STATUS "OpenCV_LIBRARIES=${OpenCV_LIBRARIES}")
 
 TARGET_LINK_LIBRARIES(TestOpenCV ${OpenCV_LIBRARIES})
+
+
+pkg_search_module(Unicap REQUIRED libunicapgtk)
+MESSAGE(STATUS "Unicap: ${Unicap_INCLUDE_DIRS}")
+include_directories(${Unicap_INCLUDE_DIRS})
+ADD_EXECUTABLE(TestUnicap TestUnicap.cpp)
+TARGET_LINK_LIBRARIES(TestUnicap ${Unicap_LIBRARIES})

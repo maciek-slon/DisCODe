@@ -14,10 +14,14 @@
 #include "DataStream.hpp"
 #include "CameraProps.hpp"
 
+#include <cv.h>
+
 namespace Sources {
 namespace CameraV4L {
 
 class VL;
+
+using namespace cv;
 
 /*!
  * \class CameraV4L_Source
@@ -51,11 +55,27 @@ public:
 	 */
 	int step();
 
+	/*!
+	 * Return movie properties
+	 */
+	Base::Props * getProperties() {
+		return &props;
+	}
+
 protected:
 
 private:
 	/// pointer to specific camera object (V4L or V4L2, depending on hardware support)
 	VL * cam;
+
+	// last grabbed frame
+	Mat frame;
+
+	/// Event signaling that new image was retrieved.
+	Base::Event * newImage;
+
+	/// Output data stream
+	Base::DataStreamOut<Mat> out_img;
 
 	/// camera properties
 	CameraProps props;

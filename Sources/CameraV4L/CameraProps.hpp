@@ -30,7 +30,7 @@ struct CameraProps : public Base::Props {
 	/// frame height
 	int height;
 	/// selected channel
-	int channel;
+	std::string channel;
 	/// interlace mode
 	int interlace;
 

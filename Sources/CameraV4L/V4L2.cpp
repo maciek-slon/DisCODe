@@ -260,6 +260,7 @@ void *V4L2::getFrame() {
 		int r;
 		FD_ZERO(&fds);
 		FD_SET(fd, &fds);
+
 		/* Timeout. */
 		tv.tv_sec = 2;
 		tv.tv_usec = 0;
@@ -267,16 +268,15 @@ void *V4L2::getFrame() {
 		if (-1 == r) {
 			if (EINTR == errno)
 				continue;
-			printf("select\n");
+			LOG(WARNING) << "select\n";
 		}
 		if (0 == r) {
-			printf("select timeout\n");
+			LOG(ERROR) << "select timeout\n";
 		}
 
 		void *p = readFrame();
 
-		if (p != NULL)
-			return p;
+		return p;
 	}
 }
 
@@ -764,6 +764,11 @@ IplImage * V4L2::getOneFrame() {
 
 	void *frame = getFrame();
 
+	if (!frame) {
+		LOG(ERROR) << "Empty frame!\n";
+		return NULL;
+	}
+
 	unsigned char* tmp = NULL;
 
 	int switchOnConversionToRGB = 1;
@@ -830,7 +835,7 @@ bool V4L2::loadFrameGrabber(int version, const CameraProps & props) {
 				break;
 			if (!setVideoProperty(-1, 0))
 				break;
-			if (!setVideoProperty(props.channel, 0))
+			if (!setVideoProperty(convChannel(props.channel), 0))
 				break;
 			if (!setVideoProperty(1, props.standard))
 				break;

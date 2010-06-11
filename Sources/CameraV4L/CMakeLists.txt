@@ -11,6 +11,6 @@ FILE(GLOB files *.cpp)
 ADD_LIBRARY(srcCameraV4L SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(srcCameraV4L ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(srcCameraV4L ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
 
 INSTALL_SOURCE(srcCameraV4L)
