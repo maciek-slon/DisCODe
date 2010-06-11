@@ -115,7 +115,8 @@ void Configurator::createDefaultConfiguration()
 void Configurator::saveConfiguration() {
 	// Save current configuration to remembered filename.
 	//xmlSaveFormatFileEnc(configuration_filename.c_str(), configuration, "UTF-8", 1);
-	write_xml(configuration_filename, configuration);
+	xml_writer_settings<ptree::key_type::value_type> settings('\t', 1, "utf-8");
+	write_xml(configuration_filename, configuration, std::locale(), settings);
 	LOG(INFO) << "Configuration: Saved to file " << configuration_filename << ".\n";
 }
 
