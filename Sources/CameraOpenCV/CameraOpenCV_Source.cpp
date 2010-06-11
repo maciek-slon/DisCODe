@@ -8,14 +8,13 @@
 #include <iostream>
 
 #include "CameraOpenCV_Source.hpp"
+#include "Logger.hpp"
 
 namespace Sources {
 namespace CameraOpenCV {
 
 CameraOpenCV_Source::CameraOpenCV_Source() {
 	cout << "CameraOpenCV_Source::CameraOpenCV_Source()\n";
-
-	initialize();
 }
 
 CameraOpenCV_Source::~CameraOpenCV_Source() {
@@ -31,6 +30,10 @@ void CameraOpenCV_Source::initialize() {
 	registerStream("out_img", &out_img);
 
 	cap.open(0);
+
+	if (!cap.isOpened()) {
+		throw Common::FraDIAException("Couldn't open camera device!");
+	}
 }
 
 
@@ -44,9 +47,11 @@ int CameraOpenCV_Source::step() {
 
 	cap >> frame;
 
-	out_img.write(frame);
+	if (frame.empty()) {
+		return 0;
+	}
 
-	//imshow( "video2", frame );
+	out_img.write(frame);
 
 	newImage->raise();
 	return 0;

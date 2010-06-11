@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "OpenCVWnd_Processor.hpp"
+#include "Logger.hpp"
 
 namespace Processors {
 namespace OpenCVWnd {
@@ -46,8 +47,13 @@ int OpenCVWnd_Processor::step()
 }
 
 void OpenCVWnd_Processor::onNewImage() {
-	imshow( props.title, in_img.read() );
-	waitKey( 2 );
+	try {
+		imshow( props.title, in_img.read() );
+		waitKey( 2 );
+	}
+	catch(...) {
+		LOG(ERROR) << "OpenCVWnd\n";
+	}
 }
 
 
