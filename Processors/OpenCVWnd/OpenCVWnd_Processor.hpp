@@ -43,7 +43,6 @@ struct WndProps : public Base::Props {
 	 * \copydoc Common::Props::save
 	 */
 	void save(ptree & pt) {
-		LOG(INFO) << "Savinh OpenCVWnd props\n";
 		pt.put("name", title);
 	}
 };

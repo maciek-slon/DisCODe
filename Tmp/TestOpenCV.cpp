@@ -11,7 +11,9 @@
 using namespace cv;
 
 int main() {
-	VideoCapture cap(0); // open the default camera
+	VideoCapture cap;
+
+	cap.open(0); // open the default camera
 	if(!cap.isOpened())  // check if we succeeded
 		return -1;
 
