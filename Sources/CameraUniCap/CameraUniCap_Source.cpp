@@ -16,6 +16,8 @@ namespace CameraUniCap {
 
 #define MAX_DEVICES 64
 #define MAX_FORMATS 64
+#define MAX_PROPERTIES 64
+
 CameraUniCap_Source::CameraUniCap_Source() {
 
 }
@@ -28,9 +30,12 @@ void CameraUniCap_Source::initialize() {
 
 	unicap_device_t devices[MAX_DEVICES];
 	unicap_format_t formats[MAX_FORMATS];
+	unicap_property_t properties[MAX_PROPERTIES];
 
 	int dev_count;
 	int format_count;
+	int property_count;
+
 	unicap_status_t status = STATUS_SUCCESS;
 
 	LOG(INFO) << "CameraOpenCV_Source::initialize()\n";
@@ -76,14 +81,15 @@ void CameraUniCap_Source::initialize() {
 		status = unicap_enumerate_formats(handle, NULL, &formats[format_count], // (1)
 				format_count);
 		if (SUCCESS(status)) {
-			LOG(INFO) << format_count << ": " << formats[format_count].identifier << '\n';
+			LOG(INFO) << format_count << ": "
+					<< formats[format_count].identifier << '\n';
 		} else {
 			break;
 		}
 	}
 
 	for (int i = 0; i < format_count; i++) {
-		if (props.format == (char*)&formats[i].fourcc ) {
+		if (props.format == (char*) &formats[i].fourcc) {
 			format = formats[i];
 			LOG(INFO) << "format found\n";
 			break;
@@ -91,12 +97,13 @@ void CameraUniCap_Source::initialize() {
 	}
 
 	for (int i = 0; i < format.size_count; i++) {
-			if ((props.width == format.sizes[i].width) && (props.height == format.sizes[i].height) ) {
-				format.size = format.sizes[i];
-				LOG(INFO) << "size found\n";
-				break;
-			}
+		if ((props.width == format.sizes[i].width) && (props.height
+				== format.sizes[i].height)) {
+			format.size = format.sizes[i];
+			LOG(INFO) << "size found\n";
+			break;
 		}
+	}
 
 	format.buffer_type = UNICAP_BUFFER_TYPE_SYSTEM;
 
@@ -106,6 +113,74 @@ void CameraUniCap_Source::initialize() {
 	if (!SUCCESS(unicap_set_format(handle, &format))) {
 		LOG(ERROR) << "Failed to set video format\n";
 
+	}
+
+	status = STATUS_SUCCESS;
+
+	for (property_count = 0; SUCCESS(status) && (property_count
+			< MAX_PROPERTIES); property_count++) {
+		status = unicap_enumerate_properties(handle, NULL,
+				&properties[property_count], property_count); // (1)
+		if (SUCCESS(status)) {
+			unicap_get_property(handle, &properties[property_count]);
+			printf("Property '%s': Current = %f, Range = [%f..%f]\n",
+					properties[property_count].identifier,
+					properties[property_count].value,
+					properties[property_count].range.min,
+					properties[property_count].range.max);
+			if (std::string("Brightness")
+					== properties[property_count].identifier) {
+				if ((props.brightness <= properties[property_count].range.max)
+						&& (props.brightness
+								>= properties[property_count].range.min)) {
+					properties[property_count].value = props.brightness;
+					unicap_set_property(handle, &properties[property_count]);
+				} else {
+					LOG(WARNING) << "Property "
+							<< properties[property_count].identifier
+							<< " out of range \n";
+				}
+			} else if (std::string("Contrast")
+					== properties[property_count].identifier) {
+				if ((props.contrast <= properties[property_count].range.max)
+						&& (props.contrast
+								>= properties[property_count].range.min)) {
+					properties[property_count].value = props.contrast;
+					unicap_set_property(handle, &properties[property_count]);
+				} else {
+					LOG(WARNING) << "Property "
+							<< properties[property_count].identifier
+							<< " out of range \n";
+				}
+			} else if (std::string("Saturation")
+					== properties[property_count].identifier) {
+				if ((props.saturation <= properties[property_count].range.max)
+						&& (props.saturation
+								>= properties[property_count].range.min)) {
+					properties[property_count].value = props.saturation;
+					unicap_set_property(handle, &properties[property_count]);
+				} else {
+					LOG(WARNING) << "Property "
+							<< properties[property_count].identifier
+							<< " out of range \n";
+				}
+			} else if (std::string("Hue")
+					== properties[property_count].identifier) {
+				if ((props.hue <= properties[property_count].range.max)
+						&& (props.hue
+								>= properties[property_count].range.min)) {
+					properties[property_count].value = props.hue;
+					unicap_set_property(handle, &properties[property_count]);
+				} else {
+					LOG(WARNING) << "Property "
+							<< properties[property_count].identifier
+							<< " out of range \n";
+				}
+			}
+
+		} else {
+			break;
+		}
 	}
 
 	unicap_register_callback(handle, UNICAP_EVENT_NEW_FRAME,
@@ -135,9 +210,10 @@ void CameraUniCap_Source::finish() {
 
 	 This invalidates the handle
 	 */
-		if (!SUCCESS(unicap_close(handle))) {
-			LOG(ERROR) << "Failed to close the device: " << device.identifier << '\n';
-	 }
+	if (!SUCCESS(unicap_close(handle))) {
+		LOG(ERROR) << "Failed to close the device: " << device.identifier
+				<< '\n';
+	}
 
 }
 
@@ -149,9 +225,14 @@ int CameraUniCap_Source::step() {
 void CameraUniCap_Source::new_frame_cb(unicap_event_t event,
 		unicap_handle_t handle, unicap_data_buffer_t *buffer, void *usr_data) {
 
-	Mat frame = Mat(((CameraUniCap_Source*) (usr_data))->format.size.height,
-			((CameraUniCap_Source*) (usr_data))->format.size.width,(std::string("GREY") == (char*)&((CameraUniCap_Source*) (usr_data))->format.fourcc) ? CV_8UC1 : CV_8UC3,
-			(void *) buffer->data).clone();
+	Mat
+			frame =
+					Mat(
+							((CameraUniCap_Source*) (usr_data))->format.size.height,
+							((CameraUniCap_Source*) (usr_data))->format.size.width,
+							(std::string("GREY")
+									== (char*) &((CameraUniCap_Source*) (usr_data))->format.fourcc) ? CV_8UC1
+									: CV_8UC3, (void *) buffer->data).clone();
 
 	((CameraUniCap_Source*) (usr_data))->out_img.write(frame);
 	((CameraUniCap_Source*) (usr_data))->newImage->raise();

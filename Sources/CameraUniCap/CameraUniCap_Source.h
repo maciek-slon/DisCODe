@@ -28,11 +28,20 @@ using namespace cv;
  */
 struct CameraUniCapProps : public Base::Props {
 
+	// Device properties
 	std::string device;
 	std::string format;
 
 	int width;
 	int height;
+
+	// Image properties
+
+	double brightness;
+	double contrast;
+	double saturation;
+	double hue;
+
 
 	/*!
 	 * \copydoc Common::Props::load
@@ -42,6 +51,11 @@ struct CameraUniCapProps : public Base::Props {
 		format = pt.get("dev.format", "BGR3");
 		width = pt.get("dev.width", 640);
 		height = pt.get("dev.height", 480);
+
+		brightness = pt.get("image.brightness", 127.0);
+		contrast = pt.get("image.contrast", 127.0);
+		saturation = pt.get("image.saturation", 127.0);
+		hue = pt.get("image.hue", 127.0);
 	}
 
 	/*!
@@ -52,6 +66,11 @@ struct CameraUniCapProps : public Base::Props {
 		pt.put("dev.format", format);
 		pt.put("dev.width", width);
 		pt.put("dev.height", height);
+
+		pt.put("image.brightness", brightness);
+		pt.put("image.contrast", contrast);
+		pt.put("image.saturation", saturation);
+		pt.put("image.hue", hue);
 	}
 };
 
