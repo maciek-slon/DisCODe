@@ -2,7 +2,7 @@
  * CameraUniCap.h
  *
  *  Created on: 2010-06-11
- *      Author: konradb3
+ *      Author: Konrad Banachowicz
  */
 
 #ifndef CAMERAUNICAP_H_
@@ -126,11 +126,12 @@ protected:
 	unicap_format_t format;
 	unicap_data_buffer_t buffer;
 
-	static void new_frame_cb(unicap_event_t event, unicap_handle_t handle,
-			unicap_data_buffer_t *buffer, void *usr_data);
-
 	/// Movie properties
 	CameraUniCapProps props;
+
+private:
+	static void new_frame_cb(unicap_event_t event, unicap_handle_t handle,
+				unicap_data_buffer_t *buffer, void *usr_data);
 };
 
 }

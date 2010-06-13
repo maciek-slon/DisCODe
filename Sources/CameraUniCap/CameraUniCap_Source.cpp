@@ -2,7 +2,7 @@
  * CameraUniCap.cpp
  *
  *  Created on: 2010-06-11
- *      Author: konradb3
+ *      Author: Konrad Banachowicz
  */
 
 #include "Logger.hpp"
@@ -78,7 +78,7 @@ void CameraUniCap_Source::initialize() {
 	status = STATUS_SUCCESS;
 
 	for (format_count = 0; SUCCESS(status) && (format_count < MAX_FORMATS); format_count++) {
-		status = unicap_enumerate_formats(handle, NULL, &formats[format_count], // (1)
+		status = unicap_enumerate_formats(handle, NULL, &formats[format_count],
 				format_count);
 		if (SUCCESS(status)) {
 			LOG(INFO) << format_count << ": "
@@ -120,15 +120,16 @@ void CameraUniCap_Source::initialize() {
 	for (property_count = 0; SUCCESS(status) && (property_count
 			< MAX_PROPERTIES); property_count++) {
 		status = unicap_enumerate_properties(handle, NULL,
-				&properties[property_count], property_count); // (1)
+				&properties[property_count], property_count);
 		if (SUCCESS(status)) {
 			unicap_get_property(handle, &properties[property_count]);
-			if(properties[property_count].type == UNICAP_PROPERTY_TYPE_RANGE)
-			printf("Property '%s': Current = %f, Range = [%f..%f]\n",
-					properties[property_count].identifier,
-					properties[property_count].value,
-					properties[property_count].range.min,
-					properties[property_count].range.max);
+			if (properties[property_count].type == UNICAP_PROPERTY_TYPE_RANGE)
+				LOG(INFO) << "Property "
+						<< properties[property_count].identifier
+						<< ": Current = " << properties[property_count].value
+						<< ", Range = ["
+						<< properties[property_count].range.min << ".."
+						<< properties[property_count].range.max << "]\n";
 
 			if (std::string("Brightness")
 					== properties[property_count].identifier) {
@@ -169,8 +170,7 @@ void CameraUniCap_Source::initialize() {
 			} else if (std::string("Hue")
 					== properties[property_count].identifier) {
 				if ((props.hue <= properties[property_count].range.max)
-						&& (props.hue
-								>= properties[property_count].range.min)) {
+						&& (props.hue >= properties[property_count].range.min)) {
 					properties[property_count].value = props.hue;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
@@ -180,27 +180,33 @@ void CameraUniCap_Source::initialize() {
 				}
 			} else
 
-			if (std::string("video source") == properties[property_count].identifier)
-			{
+			if (std::string("video source")
+					== properties[property_count].identifier) {
 				LOG(INFO) << "video sources : \n";
-				for(int i = 0; i < properties[property_count].menu.menu_item_count; i++)
-				{
-					LOG(INFO) << i << " : " << properties[property_count].menu.menu_items[i] << '\n';
-					if(props.input == properties[property_count].menu.menu_items[i])
-					{
-						strcpy(properties[property_count].menu_item,properties[property_count].menu.menu_items[i]);
+				for (int i = 0; i
+						< properties[property_count].menu.menu_item_count; i++) {
+					LOG(INFO) << i << " : "
+							<< properties[property_count].menu.menu_items[i]
+							<< '\n';
+					if (props.input
+							== properties[property_count].menu.menu_items[i]) {
+						strcpy(properties[property_count].menu_item,
+								properties[property_count].menu.menu_items[i]);
 						unicap_set_property(handle, &properties[property_count]);
 					}
 				}
-			} else if (std::string("video norm") == properties[property_count].identifier)
-			{
+			} else if (std::string("video norm")
+					== properties[property_count].identifier) {
 				LOG(INFO) << "video norms : \n";
-				for(int i = 0; i < properties[property_count].menu.menu_item_count; i++)
-				{
-					LOG(INFO) << i << " : " << properties[property_count].menu.menu_items[i] << '\n';
-					if(props.norm == properties[property_count].menu.menu_items[i])
-					{
-						strcpy(properties[property_count].menu_item,properties[property_count].menu.menu_items[i]);
+				for (int i = 0; i
+						< properties[property_count].menu.menu_item_count; i++) {
+					LOG(INFO) << i << " : "
+							<< properties[property_count].menu.menu_items[i]
+							<< '\n';
+					if (props.norm
+							== properties[property_count].menu.menu_items[i]) {
+						strcpy(properties[property_count].menu_item,
+								properties[property_count].menu.menu_items[i]);
 						unicap_set_property(handle, &properties[property_count]);
 					}
 				}
