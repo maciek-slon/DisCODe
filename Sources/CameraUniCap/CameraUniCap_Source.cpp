@@ -123,11 +123,13 @@ void CameraUniCap_Source::initialize() {
 				&properties[property_count], property_count); // (1)
 		if (SUCCESS(status)) {
 			unicap_get_property(handle, &properties[property_count]);
+			if(properties[property_count].type == UNICAP_PROPERTY_TYPE_RANGE)
 			printf("Property '%s': Current = %f, Range = [%f..%f]\n",
 					properties[property_count].identifier,
 					properties[property_count].value,
 					properties[property_count].range.min,
 					properties[property_count].range.max);
+
 			if (std::string("Brightness")
 					== properties[property_count].identifier) {
 				if ((props.brightness <= properties[property_count].range.max)
@@ -176,8 +178,33 @@ void CameraUniCap_Source::initialize() {
 							<< properties[property_count].identifier
 							<< " out of range \n";
 				}
-			}
+			} else
 
+			if (std::string("video source") == properties[property_count].identifier)
+			{
+				LOG(INFO) << "video sources : \n";
+				for(int i = 0; i < properties[property_count].menu.menu_item_count; i++)
+				{
+					LOG(INFO) << i << " : " << properties[property_count].menu.menu_items[i] << '\n';
+					if(props.input == properties[property_count].menu.menu_items[i])
+					{
+						strcpy(properties[property_count].menu_item,properties[property_count].menu.menu_items[i]);
+						unicap_set_property(handle, &properties[property_count]);
+					}
+				}
+			} else if (std::string("video norm") == properties[property_count].identifier)
+			{
+				LOG(INFO) << "video norms : \n";
+				for(int i = 0; i < properties[property_count].menu.menu_item_count; i++)
+				{
+					LOG(INFO) << i << " : " << properties[property_count].menu.menu_items[i] << '\n';
+					if(props.norm == properties[property_count].menu.menu_items[i])
+					{
+						strcpy(properties[property_count].menu_item,properties[property_count].menu.menu_items[i]);
+						unicap_set_property(handle, &properties[property_count]);
+					}
+				}
+			}
 		} else {
 			break;
 		}

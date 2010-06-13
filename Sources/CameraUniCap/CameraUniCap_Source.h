@@ -31,6 +31,8 @@ struct CameraUniCapProps : public Base::Props {
 	// Device properties
 	std::string device;
 	std::string format;
+	std::string input;
+	std::string norm;
 
 	int width;
 	int height;
@@ -48,6 +50,8 @@ struct CameraUniCapProps : public Base::Props {
 	 */
 	void load(const ptree & pt) {
 		device = pt.get("dev.device", "video0");
+		input = pt.get("dev.input", "Composite1");
+		norm = pt.get("dev.norm", "PAL-BG");
 		format = pt.get("dev.format", "BGR3");
 		width = pt.get("dev.width", 640);
 		height = pt.get("dev.height", 480);
@@ -63,6 +67,8 @@ struct CameraUniCapProps : public Base::Props {
 	 */
 	void save(ptree & pt) {
 		pt.put("dev.device", device);
+		pt.put("dev.input", input);
+		pt.put("dev.norm", norm);
 		pt.put("dev.format", format);
 		pt.put("dev.width", width);
 		pt.put("dev.height", height);
