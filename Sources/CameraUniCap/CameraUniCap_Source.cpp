@@ -133,10 +133,9 @@ void CameraUniCap_Source::initialize() {
 
 			if (std::string("Brightness")
 					== properties[property_count].identifier) {
-				if ((props.brightness <= properties[property_count].range.max)
-						&& (props.brightness
-								>= properties[property_count].range.min)) {
-					properties[property_count].value = props.brightness;
+				if ((props.brightness <= 1.0) && (props.brightness >= 0.0)) {
+					properties[property_count].value = props.brightness
+							* properties[property_count].range.max;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
 					LOG(WARNING) << "Property "
@@ -145,10 +144,9 @@ void CameraUniCap_Source::initialize() {
 				}
 			} else if (std::string("Contrast")
 					== properties[property_count].identifier) {
-				if ((props.contrast <= properties[property_count].range.max)
-						&& (props.contrast
-								>= properties[property_count].range.min)) {
-					properties[property_count].value = props.contrast;
+				if ((props.contrast <= 1.0) && (props.contrast >= 0.0)) {
+					properties[property_count].value = props.contrast
+							* properties[property_count].range.max;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
 					LOG(WARNING) << "Property "
@@ -157,10 +155,9 @@ void CameraUniCap_Source::initialize() {
 				}
 			} else if (std::string("Saturation")
 					== properties[property_count].identifier) {
-				if ((props.saturation <= properties[property_count].range.max)
-						&& (props.saturation
-								>= properties[property_count].range.min)) {
-					properties[property_count].value = props.saturation;
+				if ((props.saturation <= 1.0) && (props.saturation >= 0.0)) {
+					properties[property_count].value = props.saturation
+							* properties[property_count].range.max;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
 					LOG(WARNING) << "Property "
@@ -169,9 +166,9 @@ void CameraUniCap_Source::initialize() {
 				}
 			} else if (std::string("Hue")
 					== properties[property_count].identifier) {
-				if ((props.hue <= properties[property_count].range.max)
-						&& (props.hue >= properties[property_count].range.min)) {
-					properties[property_count].value = props.hue;
+				if ((props.hue <= 1.0) && (props.hue >= 0.0)) {
+					properties[property_count].value = props.hue
+							* properties[property_count].range.max;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
 					LOG(WARNING) << "Property "

@@ -49,17 +49,17 @@ struct CameraUniCapProps : public Base::Props {
 	 * \copydoc Common::Props::load
 	 */
 	void load(const ptree & pt) {
-		device = pt.get("dev.device", "video0");
+		device = pt.get("dev.device", "/dev/video0");
 		input = pt.get("dev.input", "Composite1");
 		norm = pt.get("dev.norm", "PAL-BG");
 		format = pt.get("dev.format", "BGR3");
 		width = pt.get("dev.width", 640);
 		height = pt.get("dev.height", 480);
 
-		brightness = pt.get("image.brightness", 127.0);
-		contrast = pt.get("image.contrast", 127.0);
-		saturation = pt.get("image.saturation", 127.0);
-		hue = pt.get("image.hue", 127.0);
+		brightness = pt.get("image.brightness", 0.5);
+		contrast = pt.get("image.contrast", 0.5);
+		saturation = pt.get("image.saturation", 0.5);
+		hue = pt.get("image.hue", 0.5);
 	}
 
 	/*!
