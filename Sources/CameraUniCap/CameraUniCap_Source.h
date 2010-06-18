@@ -13,8 +13,8 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 
-#include <unicap.h>
-#include <cv.h>
+#include <unicap/unicap.h>
+#include <opencv/cv.h>
 
 namespace Sources {
 
