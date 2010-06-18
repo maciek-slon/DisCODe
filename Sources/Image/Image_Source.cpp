@@ -14,13 +14,9 @@ namespace Image {
 
 Image_Source::Image_Source() {
 	cout << "Hello Image_Source from dl\n";
-
-	initialize();
 }
 
 Image_Source::~Image_Source() {
-	finish();
-
 	cout << "Goodbye Image_Source from dl\n";
 }
 

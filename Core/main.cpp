@@ -114,5 +114,5 @@ int main(int argc_, char** argv_)
 		exit(EXIT_FAILURE);
 	}//: catch
 
-	//CONFIGURATOR.saveConfiguration();
+	configurator.saveConfiguration();
 }

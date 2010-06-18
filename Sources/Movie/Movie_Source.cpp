@@ -16,13 +16,9 @@ Movie_Source::Movie_Source() {
 	cout << "Movie_Source::Movie_Source()\n";
 
 	cap = NULL;
-
-	initialize();
 }
 
 Movie_Source::~Movie_Source() {
-	finish();
-
 	cout << "Movie_Source::~Movie_Source()\n";
 }
 

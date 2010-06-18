@@ -25,8 +25,6 @@ CameraV4L_Source::CameraV4L_Source() {
 }
 
 CameraV4L_Source::~CameraV4L_Source() {
-	finish();
-
 	cout << "Goodbye CameraV4L_Source from dl\n";
 }
 

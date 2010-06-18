@@ -14,13 +14,9 @@ namespace CameraOpenCV {
 
 CameraOpenCV_Source::CameraOpenCV_Source() {
 	cout << "CameraOpenCV_Source::CameraOpenCV_Source()\n";
-
-	initialize();
 }
 
 CameraOpenCV_Source::~CameraOpenCV_Source() {
-	finish();
-
 	cout << "CameraOpenCV_Source::~CameraOpenCV_Source()\n";
 }
 
