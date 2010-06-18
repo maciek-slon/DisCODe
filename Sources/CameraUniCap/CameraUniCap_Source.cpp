@@ -8,7 +8,7 @@
 #include "Logger.hpp"
 
 #include "CameraUniCap_Source.h"
-#include <highgui.h>
+#include <opencv/highgui.h>
 
 namespace Sources {
 
