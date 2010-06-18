@@ -177,12 +177,15 @@ public:
 		// Hide panel.
 		//	panel->hide();
 		// Destroy objects.
-		if (object)
+		if (object) {
 			if (object->getProperties())
 				object->getProperties()->save(*config_node);
+			object->finish();
 			delete (object);
-		if (panel)
+		}
+		if (panel) {
 			delete (panel);
+		}
 		// Set pointers to NULL.
 		panel=0;
 		object=0;

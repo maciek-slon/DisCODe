@@ -21,12 +21,16 @@
 using namespace boost::filesystem;
 
 #include "Kernel_Aux.hpp"
+#include "Names_Aux.hpp"
 #include "FraDIAException.hpp"
-#include "Configurator.hpp"
 #include "Singleton.hpp"
 #include "SharedLibraryCommon.hpp"
 #include "Utils.hpp"
 #include "Logger.hpp"
+#include "KernelFactory.hpp"
+
+
+using namespace boost::property_tree;
 
 // Forward declaration of classes required by specialized template methods.
 /*namespace Base {
@@ -68,27 +72,17 @@ char Processors[] = PROCESSORS;
  * \author tkornuta
  */
 template <class KRNL, Base::kernelType KERNEL_TYPE, char* MANAGER_NAME>
-class KernelManager: public Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >
+class KernelManager //: public Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >
 {
 	/*!
 	 * Singleton class must be a friend, because only it can call protected constructor.
 	 */
-	friend class Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >;
+	//friend class Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >;
 
 	/// Default kernel
 	std::string default_kernel;
 
 protected:
-	/*!
-	 * Private constructor, called only by the Singleton::init() method.
-	 */
-	KernelManager()
-	{
-		cout << MANAGER_NAME << "Manager: Hello private \n";//<<name<<endl;
-		active_kernel_factory = 0;
-		default_kernel = "";
-	}
-
 	/*!
 	 * List of kernel factories properly loaded by the manager.
 	 */
@@ -105,6 +99,17 @@ protected:
 	KRNL* active_kernel_factory;
 
 public:
+	/*!
+	 * Constructor
+	 */
+	KernelManager()
+	{
+		cout << MANAGER_NAME << "Manager: Hello private \n";//<<name<<endl;
+		active_kernel_factory = 0;
+		default_kernel = "";
+	}
+
+
 	/*!
 	 * Public destructor.
 	 */
@@ -136,10 +141,11 @@ public:
 	/*!
 	 * Method tries to create kernels from all shared libraries loaded from the . directory.
 	 */
-	void initializeKernelsList()
+	void initializeKernelsList(ptree * tmp_node)
 	{
 		// Retrieve node with default settings from configurator.
-		ptree * tmp_node = CONFIGURATOR.returnManagerNode(KERNEL_TYPE);
+		//ptree * tmp_node = CONFIGURATOR.returnManagerNode(KERNEL_TYPE);
+
 		cout<<"!!returned "<<string(MANAGER_NAME)<<":node name:"<<tmp_node->data()<<endl;
 
 		// Get filenames.
@@ -163,7 +169,17 @@ public:
 			if (k->lazyInitialize(file))
 			{
 				// Retrieve configuration from config.
-				ptree * node = CONFIGURATOR.returnKernelNode(KERNEL_TYPE, k->getName().c_str());
+				ptree * node;
+				try {
+					node = &(tmp_node->get_child(k->getName()));
+					LOG(INFO) << "Mam " << k->getName() << "\n";
+				}
+				catch(ptree_bad_path) {
+					// Otherwise - create new child node.
+					LOG(INFO) << "Nie mam, tworzę " << k->getName() << "\n";
+					node = &(tmp_node->put_child(k->getName(), ptree()));
+				}
+				//CONFIGURATOR.returnKernelNode(KERNEL_TYPE, k->getName().c_str());
 				k->setConfigNode(node);
 
 				// Add kernel to list.
@@ -191,6 +207,10 @@ public:
 		active_kernel_factory->activate();
 	}
 
+	void deactivateKernelList() {
+		kernel_factories.release();
+	}
+
 	void getSOList(string dir_, vector <string>& files)
 	{
 		std::string regexp = "\\w*.";
@@ -212,7 +232,8 @@ public:
  * \author tkornuta
  * \date Mar 13, 2010
  */
-#define SOURCES_MANAGER Core::KernelManager<Core::SourceFactory, Base::KERNEL_SOURCE, KernelManagerAux::Sources>::instance()
+//#define SOURCES_MANAGER Core::KernelManager<Core::SourceFactory, Base::KERNEL_SOURCE, KernelManagerAux::Sources>::instance()
+typedef Core::KernelManager<Core::SourceFactory, Base::KERNEL_SOURCE, Core::KernelManagerAux::Sources> SourcesManager;
 
 /*!
  * \def PROCESSORS_MANAGER
@@ -220,6 +241,7 @@ public:
  * \author tkornuta
  * \date Mar 13, 2010
  */
-#define PROCESSORS_MANAGER Core::KernelManager<Core::ProcessorFactory, Base::KERNEL_PROCESSOR, KernelManagerAux::Processors>::instance()
+//#define PROCESSORS_MANAGER Core::KernelManager<Core::ProcessorFactory, Base::KERNEL_PROCESSOR, KernelManagerAux::Processors>::instance()
+typedef Core::KernelManager<Core::ProcessorFactory, Base::KERNEL_PROCESSOR, Core::KernelManagerAux::Processors> ProcessorsManager;
 
 #endif /* KERNELMANAGER_HPP_ */

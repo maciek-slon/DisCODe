@@ -26,19 +26,23 @@ Movie_Source::~Movie_Source() {
 	cout << "Movie_Source::~Movie_Source()\n";
 }
 
-void Movie_Source::initialize() {
+bool Movie_Source::initialize() {
 	cout << "Movie_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_img", &out_img);
 
 	cap.open(props.filename);
+
+	return true;
 }
 
 
-void Movie_Source::finish() {
+bool Movie_Source::finish() {
 	cout << "Movie_Source::finish()\n";
 	cap.release();
+
+	return true;
 }
 
 

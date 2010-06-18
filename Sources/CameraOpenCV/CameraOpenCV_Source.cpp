@@ -24,19 +24,23 @@ CameraOpenCV_Source::~CameraOpenCV_Source() {
 	cout << "CameraOpenCV_Source::~CameraOpenCV_Source()\n";
 }
 
-void CameraOpenCV_Source::initialize() {
+bool CameraOpenCV_Source::initialize() {
 	cout << "CameraOpenCV_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_img", &out_img);
 
 	cap.open(0);
+
+	return cap.isOpened();
 }
 
 
-void CameraOpenCV_Source::finish() {
+bool CameraOpenCV_Source::finish() {
 	cout << "CameraOpenCV_Source::finish()\n";
 	cap.release();
+
+	return !cap.isOpened();
 }
 
 

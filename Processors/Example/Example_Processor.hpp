@@ -37,12 +37,12 @@ public:
 	/*!
 	 * Processor initialization
 	 */
-	void initialize();
+	bool initialize();
 
 	/*!
 	 * Release all resources
 	 */
-	void finish();
+	bool finish();
 
 	/*!
 	 * Processes given frame.

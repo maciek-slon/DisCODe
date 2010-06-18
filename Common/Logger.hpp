@@ -31,15 +31,21 @@ public:
 		Info = 0,
 		Warning,
 		Error,
-		Fatal
+		Fatal,
+		Debug
 	};
 
 	virtual ~Logger() {};
 
 
 	Logger & log(const char * file, int line, Severity sev) {
-		sum[sev]++;
-		std::cout << sev2str(sev) << " in " << file << " [" << line << "]: ";
+		if (sev == Debug) {
+			std::cout << sev2str(sev) << " in " << file << " [" << line << "]: ";
+		} else {
+			sum[sev]++;
+			std::cout << sev2str(sev) << ": ";
+		}
+
 		return *this;
 	}
 
@@ -67,6 +73,8 @@ protected:
 
 	std::string sev2str(Severity sev) {
 		switch (sev) {
+		case Debug:
+			return "DEBUG";
 		case Info:
 			return "INFO";
 		case Warning:
@@ -89,6 +97,7 @@ protected:
 #define WARNING  Utils::Logger::Warning
 #define ERROR    Utils::Logger::Error
 #define FATAL    Utils::Logger::Fatal
+#define DEBUG    Utils::Logger::Debug
 
 #define LOG(level) (Utils::Logger::instance().log(__FILE__, __LINE__, level))
 
