@@ -26,7 +26,7 @@ CameraUniCap_Source::~CameraUniCap_Source() {
 
 }
 
-void CameraUniCap_Source::initialize() {
+bool CameraUniCap_Source::initialize() {
 
 	unicap_device_t devices[MAX_DEVICES];
 	unicap_format_t formats[MAX_FORMATS];
@@ -223,9 +223,11 @@ void CameraUniCap_Source::initialize() {
 				<< device.identifier << '\n';
 
 	}
+
+	return true;
 }
 
-void CameraUniCap_Source::finish() {
+bool CameraUniCap_Source::finish() {
 	LOG(INFO) << "CameraOpenCV_Source::finish()\n";
 	/*
 	 Stop the device
@@ -244,6 +246,8 @@ void CameraUniCap_Source::finish() {
 		LOG(ERROR) << "Failed to close the device: " << device.identifier
 				<< '\n';
 	}
+
+	return true;
 
 }
 

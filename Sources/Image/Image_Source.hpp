@@ -39,12 +39,12 @@ public:
 	/*!
 	 * Connects source to given device.
 	 */
-	void initialize();
+	bool initialize();
 
 	/*!
 	 * Disconnect source from device, closes streams, etc.
 	 */
-	void finish();
+	bool finish();
 
 	/*!
 	 * Retrieves data from device.

@@ -30,7 +30,7 @@ CameraV4L_Source::~CameraV4L_Source() {
 	cout << "Goodbye CameraV4L_Source from dl\n";
 }
 
-void CameraV4L_Source::initialize() {
+bool CameraV4L_Source::initialize() {
 	cout << "CameraV4L_Source::initialize\n";
 
 	newImage = registerEvent("newImage");
@@ -58,12 +58,16 @@ void CameraV4L_Source::initialize() {
 	}
 	if (cam != NULL) {
 		cam->loadFrameGrabber(1, props);
+		return true;
+	} else {
+		return false;
 	}
 }
 
 
-void CameraV4L_Source::finish() {
+bool CameraV4L_Source::finish() {
 	cout << "CameraV4L_Source::finish\n";
+	return true;
 }
 
 

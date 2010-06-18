@@ -31,18 +31,14 @@ using namespace boost::property_tree;
  * \date April 8 2010
  * \author tkornuta
  */
-class Configurator: public Base::Singleton <Configurator>
+class Configurator//: public Base::Singleton <Configurator>
 {
 
 	/*!
 	 * Singleton class must be a friend, because only it can call protected constructor.
 	 */
-	friend class Base::Singleton <Configurator>;
+	//friend class Base::Singleton <Configurator>;
 private:
-	/*!
-	 * Private constructor.
-	 */
-	Configurator();
 
 //protected:
 
@@ -74,6 +70,8 @@ private:
 	ptree * node_processors;
 
 public:
+	Configurator();
+
 	virtual ~Configurator();
 
 	/*!

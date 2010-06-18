@@ -27,6 +27,10 @@ using namespace Core;
  */
 int main(int argc_, char** argv_)
 {
+	Configurator configurator;
+	SourcesManager sourcesManager;
+	ProcessorsManager processorsManager;
+
 	try {
 		// FraDIA config filename.
 		std::string config_name;
@@ -37,17 +41,17 @@ int main(int argc_, char** argv_)
 			// Default configuration file.
 			config_name = "config.xml";
 
-		CONFIGURATOR.loadConfiguration(config_name);
+		configurator.loadConfiguration(config_name);
 
-		SOURCES_MANAGER.initializeKernelsList();
-		PROCESSORS_MANAGER.initializeKernelsList();
+		sourcesManager.initializeKernelsList(configurator.returnManagerNode(Base::KERNEL_SOURCE));
+		processorsManager.initializeKernelsList(configurator.returnManagerNode(Base::KERNEL_PROCESSOR));
 
 		// Test code.
 
 		Core::Executor ex1, ex2;
 
-		Base::Kernel * src = SOURCES_MANAGER.getActiveKernel()->getObject();
-		Base::Kernel * proc = PROCESSORS_MANAGER.getActiveKernel()->getObject();
+		Base::Kernel * src = sourcesManager.getActiveKernel()->getObject();
+		Base::Kernel * proc = processorsManager.getActiveKernel()->getObject();
 
 		src->printEvents();
 		src->printHandlers();
@@ -84,7 +88,7 @@ int main(int argc_, char** argv_)
 		// start both threads
 		ex1.start();
 
-		Common::Thread::msleep(5000);
+		Common::Thread::msleep(1000);
 
 		// stop threads
 		ex1.finish();
@@ -94,8 +98,11 @@ int main(int argc_, char** argv_)
 
 		// End of test code.
 
-		SOURCES_MANAGER.stopAll();
-		PROCESSORS_MANAGER.stopAll();
+		sourcesManager.stopAll();
+		sourcesManager.deactivateKernelList();
+
+		processorsManager.stopAll();
+		processorsManager.deactivateKernelList();
 
 	}//: try
 	catch (exception& ex){
@@ -107,5 +114,5 @@ int main(int argc_, char** argv_)
 		exit(EXIT_FAILURE);
 	}//: catch
 
-	CONFIGURATOR.saveConfiguration();
+	//CONFIGURATOR.saveConfiguration();
 }
