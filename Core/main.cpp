@@ -28,8 +28,7 @@ using namespace Core;
 int main(int argc, char* argv[])
 {
 	Configurator configurator;
-	SourcesManager sourcesManager;
-	ProcessorsManager processorsManager;
+	KernelManager kernelManager;
 
 	try {
 		// FraDIA config filename.
@@ -43,15 +42,23 @@ int main(int argc, char* argv[])
 
 		configurator.loadConfiguration(config_name);
 
-		sourcesManager.initializeKernelsList(configurator.returnManagerNode(Base::KERNEL_SOURCE));
-		processorsManager.initializeKernelsList(configurator.returnManagerNode(Base::KERNEL_PROCESSOR));
+		kernelManager.initializeKernelsList();
 
 		// Test code.
 
-		Core::Executor ex1, ex2;
+		Core::Executor ex1;
 
-		Base::Kernel * src = sourcesManager.getActiveKernel()->getObject();
-		Base::Kernel * proc = processorsManager.getActiveKernel()->getObject();
+		Base::Kernel * src = kernelManager.createKernel("Source", "CameraUniCap");
+
+		if (src->getProperties())
+			src->getProperties()->load(ptree());
+		src->initialize();
+
+		Base::Kernel * proc = kernelManager.createKernel("Window", "OpenCVWnd");
+
+		if (proc->getProperties())
+			proc->getProperties()->load(ptree());
+		proc->initialize();
 
 		src->printEvents();
 		src->printHandlers();
@@ -83,12 +90,10 @@ int main(int argc, char* argv[])
 		ex1.setExecutionMode(Executor::ExecPeriodic);
 		ex1.setInterval(0.04);
 
-		ex2.setExecutionMode(Executor::ExecPassive);
-
 		// start both threads
 		ex1.start();
 
-		Common::Thread::msleep(1000);
+		Common::Thread::msleep(3000);
 
 		// stop threads
 		ex1.finish();
@@ -98,11 +103,7 @@ int main(int argc, char* argv[])
 
 		// End of test code.
 
-		sourcesManager.stopAll();
-		sourcesManager.deactivateKernelList();
-
-		processorsManager.stopAll();
-		processorsManager.deactivateKernelList();
+		kernelManager.deactivateKernelList();
 
 	}//: try
 	catch (exception& ex){

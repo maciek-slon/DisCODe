@@ -17,7 +17,6 @@
 #include <string>
 
 #include "Singleton.hpp"
-#include "Names_Aux.hpp"
 #include "Kernel_Aux.hpp"
 
 namespace Core {
