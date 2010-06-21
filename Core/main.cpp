@@ -25,7 +25,7 @@ using namespace Core;
  * Main body - creates two threads - one for window and and one
  * for images acquisition/processing.
  */
-int main(int argc_, char** argv_)
+int main(int argc, char* argv[])
 {
 	Configurator configurator;
 	SourcesManager sourcesManager;
@@ -35,8 +35,8 @@ int main(int argc_, char** argv_)
 		// FraDIA config filename.
 		std::string config_name;
 		// Check whether other file wasn't pointed.
-		if (argc_ == 2)
-			config_name = argv_[1];
+		if (argc == 2)
+			config_name = argv[1];
 		else
 			// Default configuration file.
 			config_name = "config.xml";

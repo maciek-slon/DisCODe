@@ -36,15 +36,14 @@ struct WndProps : public Base::Props {
 	 * \copydoc Common::Props::load
 	 */
 	void load(const ptree & pt) {
-		title = pt.get("name", "video");
+		title = pt.get("title", "video");
 	}
 
 	/*!
 	 * \copydoc Common::Props::save
 	 */
 	void save(ptree & pt) {
-		LOG(INFO) << "Savinh OpenCVWnd props\n";
-		pt.put("name", title);
+		pt.put("title", title);
 	}
 };
 

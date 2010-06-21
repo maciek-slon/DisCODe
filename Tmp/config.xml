@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Camera type="CameraUniCap" thread="Thread1">
+			<dev>
+				<device>/dev/video0</device>		
+			</dev>
+		</Camera>
+		
+		<Window type="WndOpenCV" thread="Thread1">
+			<title>Preview</title>
+		</Window>
+	</Components>
+	
+	<!-- Threads of execution -->
+	<Executors>
+		<Thread1 type="Passive">
+		</Thread1>
+	</Executors>
+	
+	<!-- Event connections -->
+	<Events>
+		<Event source="Camera.newImage" destination="Window.onNewImage"/>
+	</Events>
+	
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<Camera>
+			<out_img type="out" group="Con1"/>	
+		</Camera>
+		<Window>
+			<in_img type="in" group="Con1"/>	
+		</Window>
+	</DataStreams>
+		
+</Task>
