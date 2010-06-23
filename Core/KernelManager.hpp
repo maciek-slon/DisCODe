@@ -12,7 +12,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include <dirent.h>
+#include <map>
 
 #include <boost/foreach.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
@@ -22,115 +22,51 @@ using namespace boost::filesystem;
 
 #include "Kernel_Aux.hpp"
 #include "FraDIAException.hpp"
-#include "Configurator.hpp"
-#include "Singleton.hpp"
 #include "SharedLibraryCommon.hpp"
 #include "Utils.hpp"
 #include "Logger.hpp"
+#include "KernelFactory.hpp"
 
-// Forward declaration of classes required by specialized template methods.
-/*namespace Base {
- class Kernel_Task;
- }*/
 
-//#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(MSC_VER)
-//#  define LIB_EXT ".dll"
-//#else
-//#  define LIB_EXT ".so"
-//#endif
+using namespace boost::property_tree;
 
 using namespace std;
 
 namespace Core {
 
 /*!
- * \namespace KernelManagerAux
- * \brief The KernelManagerAux namespace contains names used for passing manager name as "Template Non-Type Parameters".
- * \author tkornuta
- */
-namespace KernelManagerAux {
-/*!
- * Name of Sources KernelManager as well as its xml node.
- */
-char Sources[] = SOURCES;
-
-/*!
- * Name of Processors KernelManager as well as its xml node.
- */
-char Processors[] = PROCESSORS;
-
-}//: namespace KernelManagerAux
-
-
-/*!
  * \class KernelManager
  * \brief
  * \author tkornuta
  */
-template <class KRNL, Base::kernelType KERNEL_TYPE, char* MANAGER_NAME>
-class KernelManager: public Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >
+class KernelManager
 {
-	/*!
-	 * Singleton class must be a friend, because only it can call protected constructor.
-	 */
-	friend class Base::Singleton <KernelManager <KRNL, KERNEL_TYPE, MANAGER_NAME> >;
-
-	/// Default kernel
-	std::string default_kernel;
-
 protected:
-	/*!
-	 * Private constructor, called only by the Singleton::init() method.
-	 */
-	KernelManager()
-	{
-		cout << MANAGER_NAME << "Manager: Hello private \n";//<<name<<endl;
-		active_kernel_factory = 0;
-		default_kernel = "";
-	}
-
 	/*!
 	 * List of kernel factories properly loaded by the manager.
 	 */
-	boost::ptr_map <string, KRNL> kernel_factories;
+	boost::ptr_map <string, Core::KernelFactory> kernel_factories;
 
 	/*!
-	 * Kernel iterator
+	 * List of created kernels
 	 */
-	//boost::ptr_map <string, KRNL>::const_iterator it;
-
-	/*!
-	 * Active kernel.
-	 */
-	KRNL* active_kernel_factory;
+	std::map <string, Base::Kernel*> kernels;
 
 public:
+	/*!
+	 * Constructor
+	 */
+	KernelManager()
+	{
+		cout << "KernelManager: Hello private \n";
+	}
+
 	/*!
 	 * Public destructor.
 	 */
 	~KernelManager()
 	{
-		cout << MANAGER_NAME << "Manager: Goodbye public\n";
-		// Deactivate kernel.
-		if (active_kernel_factory) {
-			active_kernel_factory->deactivate();
-			active_kernel_factory = 0;
-		}
-		// Kernel destructors are called automagically by ptr_map.
-	}
-
-	/*!
-	 * Stop all active kernels
-	 */
-	void stopAll() {
-		active_kernel_factory->deactivate();
-	}
-
-	/*!
-	 * Return active kernel
-	 */
-	KRNL* getActiveKernel() {
-		return active_kernel_factory;
+		cout << "KernelManager: Goodbye public\n";
 	}
 
 	/*!
@@ -139,8 +75,7 @@ public:
 	void initializeKernelsList()
 	{
 		// Retrieve node with default settings from configurator.
-		ptree * tmp_node = CONFIGURATOR.returnManagerNode(KERNEL_TYPE);
-		cout<<"!!returned "<<string(MANAGER_NAME)<<":node name:"<<tmp_node->data()<<endl;
+		//ptree * tmp_node = CONFIGURATOR.returnManagerNode(KERNEL_TYPE);
 
 		// Get filenames.
 		vector <string> files = vector <string> ();
@@ -150,7 +85,7 @@ public:
 		if (files.size() == 0) {
 			// I think, that throwing here is much to brutal
 			//throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no dynamic libraries in the current directory."));
-			cout << string(MANAGER_NAME) << "Manager: There are no dynamic libraries in the current directory.\n";
+			cout << "KernelManager: There are no dynamic libraries in the current directory.\n";
 			return;
 		}
 
@@ -158,14 +93,10 @@ public:
 		BOOST_FOREACH(string file, files)
 		{
 			// Create kernel empty "shell".
-			KRNL* k = new KRNL();
+			KernelFactory* k = new KernelFactory();
 			// Try to initialize kernel.
 			if (k->lazyInitialize(file))
 			{
-				// Retrieve configuration from config.
-				ptree * node = CONFIGURATOR.returnKernelNode(KERNEL_TYPE, k->getName().c_str());
-				k->setConfigNode(node);
-
 				// Add kernel to list.
 				kernel_factories.insert(k->getName(), k);
 			}
@@ -175,22 +106,59 @@ public:
 		}//: FOREACH
 
 		// Check number of successfully loaded kernels.
-		if (!kernel_factories.size())
-			throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no compatible dynamic libraries in current directory."));
-
-		// find default kernel
-		default_kernel = tmp_node->get("<xmlattr>.default","");
-		if (kernel_factories.find(default_kernel) == kernel_factories.end()) {
-			LOG(ERROR) << MANAGER_NAME << "Manager: invalid default kernel '" << default_kernel << "'\n";
-			throw Common::FraDIAException(string(MANAGER_NAME)+"Manager: Invalid default kernel \'" + default_kernel + "\'.");
-		}
-
-		// Activate kernel.
-		active_kernel_factory = kernel_factories.find(default_kernel)->second;
-		cout << "Activated kernel: " << active_kernel_factory->getName() << endl;
-		active_kernel_factory->activate();
+		//if (!kernel_factories.size())
+		//	throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no compatible dynamic libraries in current directory."));
+		LOG(INFO) << "Found " << kernel_factories.size() << " components\n";
 	}
 
+	/*!
+	 *
+	 */
+	void deactivateKernelList() {
+		kernel_factories.release();
+	}
+
+	/*!
+	 *
+	 * @param name
+	 * @param type
+	 * @return
+	 */
+	Base::Kernel* createKernel(const std::string & name, const std::string & type) {
+		if (kernels.count(name) > 0) {
+			LOG(WARNING) << "Module " << name << " already created. Returning previous one.\n";
+			return kernels[name];
+		}
+
+		if (kernel_factories.count(type) < 1) {
+			LOG(ERROR) << "Module type " << type << " not found!\n";
+			throw Common::FraDIAException("createKernel");
+		}
+
+		return (kernels[name] = kernel_factories[type].create());
+	}
+
+	/*!
+	 *
+	 * @param name
+	 * @return
+	 */
+	Base::Kernel * getKernel(const std::string & name) {
+		if (kernels.count(name) < 1) {
+			LOG(ERROR) << "Module " << name << " can't be found!";
+			throw Common::FraDIAException("getKernel");
+		}
+
+		return kernels[name];
+	}
+
+protected:
+
+	/*!
+	 *
+	 * @param dir_
+	 * @param files
+	 */
 	void getSOList(string dir_, vector <string>& files)
 	{
 		std::string regexp = "\\w*.";
@@ -204,22 +172,5 @@ public:
 };
 
 }//: namespace Core
-
-
-/*!
- * \def SOURCES_MANAGER
- * \brief A macro for shorten the call to retrieve the instance of source-factories manager.
- * \author tkornuta
- * \date Mar 13, 2010
- */
-#define SOURCES_MANAGER Core::KernelManager<Core::SourceFactory, Base::KERNEL_SOURCE, KernelManagerAux::Sources>::instance()
-
-/*!
- * \def PROCESSORS_MANAGER
- * \brief A macro for shorten the call to retrieve the instance of processor-factories manager.
- * \author tkornuta
- * \date Mar 13, 2010
- */
-#define PROCESSORS_MANAGER Core::KernelManager<Core::ProcessorFactory, Base::KERNEL_PROCESSOR, KernelManagerAux::Processors>::instance()
 
 #endif /* KERNELMANAGER_HPP_ */

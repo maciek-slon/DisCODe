@@ -18,39 +18,6 @@
 #include "Kernel_Aux.hpp"
 #include "SharedLibrary.hpp"
 
-/*!
- * \namespace KernelFactoryAux
- * \brief The KernelFactoryAux namespace contains names used for passing kernel functions and kernel factories names as "Template Non-Type Parameters".
- * \author tkornuta
- */
-
-namespace KernelFactoryAux {
-
-using namespace boost::property_tree;
-
-/*!
- * Name of function returning source from kernel.
- */
-char functionName_returnSource[] = "returnSource";
-
-/*!
- * Name of kernel factory producing sources.
- */
-char factoryName_SourceFactory[] = "SourceFactory";
-
-/*!
- * Name of function returning data processor from kernel.
- */
-char functionName_returnProcessor[] = "returnProcessor";
-
-/*!
- * Name of kernel factory producing data processors.
- */
-char factoryName_ProcessorFactory[] = "ProcessorFactory";
-
-}//: namespace KernelFactoryAux
-
-
 namespace Core {
 
 /*!
@@ -58,8 +25,6 @@ namespace Core {
  * \brief Template factory producing different kernel types.
  * \author tkornuta
  */
-template <Base::kernelType KERNEL_TYPE, typename OBJECT_TYPE, typename OBJECT_FUNCTOR, char* FUNCTION_NAME,
-		char* FACTORY_NAME>
 class KernelFactory: boost::noncopyable
 {
 private:
@@ -76,12 +41,12 @@ private:
 	/*!
 	 * Variable used for storing address of the functor returning created object.
 	 */
-	OBJECT_FUNCTOR ret_object;
+	Base::returnKernel ret_object;
 
 	/*!
 	 * Pointer to object.
 	 */
-	OBJECT_TYPE* object;
+	Base::Kernel* object;
 
 	/*!
 	 * Variable used for storing address of the functor returning created panel.
@@ -108,7 +73,6 @@ public:
 		panel = 0;
 		object = 0;
 		config_node = 0;
-		cout << FACTORY_NAME << ": Hello\n";
 	}
 
 	/*!
@@ -127,7 +91,6 @@ public:
 			delete (object);
 		if (panel)
 			delete (panel);
-		cout << FACTORY_NAME << ": Goodbye\n";
 	}
 
 	/*!
@@ -141,8 +104,12 @@ public:
 	/*!
 	 * Return pointer to created object
 	 */
-	OBJECT_TYPE * getObject() {
-		return object;
+	Base::Kernel * create() {
+		return ret_object();
+	}
+
+	Base::Kernel * operator()() {
+		return ret_object();
 	}
 
 	/*!
@@ -150,7 +117,7 @@ public:
 	 */
 	void activate()
 	{
-		cout << FACTORY_NAME << ": Lazy activate!\n";
+		cout << "KernelFactory: Lazy activate!\n";
 		if (!panel) {
 			// Get task panel.
 			panel = ret_panel();
@@ -177,12 +144,15 @@ public:
 		// Hide panel.
 		//	panel->hide();
 		// Destroy objects.
-		if (object)
+		if (object) {
 			if (object->getProperties())
 				object->getProperties()->save(*config_node);
+			object->finish();
 			delete (object);
-		if (panel)
+		}
+		if (panel) {
 			delete (panel);
+		}
 		// Set pointers to NULL.
 		panel=0;
 		object=0;
@@ -211,8 +181,8 @@ public:
 			if (!ret_type)
 				throw Common::FraDIAException(std::string("Can't find returnType() in library: ") + lib.error());
 			// Check type.
-			if (ret_type() != KERNEL_TYPE)
-				throw Common::FraDIAException(filename_ + string(" doesn't contain a kernel of given type."));
+			/*if (ret_type() != KERNEL_TYPE)
+				throw Common::FraDIAException(filename_ + string(" doesn't contain a kernel of given type."));*/
 
 			// Try to retrieve method returning kernel name.
 			Base::returnName ret_name;
@@ -235,11 +205,11 @@ public:
 				throw Common::FraDIAException(std::string("Can't load ret_panel from library: ") + lib.error());
 
 			// Kernel initialized properly.
-			cout << FACTORY_NAME << ": Dynamic library " << filename_ << " containing " << name
+			cout << "KernelFactory: Dynamic library " << filename_ << " containing " << name
 					<< " kernel was properly loaded." << endl;
 			return true;
 		} catch (Common::FraDIAException& ex) {
-			cout << FACTORY_NAME << ": " << ex.what() << endl;
+			cout << "KernelFactory: " << ex.what() << endl;
 		}
 		return false;
 	}
@@ -252,27 +222,6 @@ public:
 	}
 
 };
-
-/*!
- * \typedef SourceFactory
- * \brief Factory loading source-type kernels from shared objects (so).
- * \author tkornuta
- * \date Mar 13, 2010
- */
-typedef Core::KernelFactory <Base::KERNEL_SOURCE, Base::Kernel, Base::returnKernel,
-		KernelFactoryAux::functionName_returnSource, KernelFactoryAux::factoryName_SourceFactory> SourceFactory;
-
-
-/*!
- * \typedef ProcessorFactory
- * \brief Factory loading processor-type kernels from shared objects (so).
- * \author tkornuta
- * \date Mar 13, 2010
- */
-typedef Core::KernelFactory <Base::KERNEL_PROCESSOR, Base::Kernel, Base::returnKernel,
-		KernelFactoryAux::functionName_returnProcessor, KernelFactoryAux::factoryName_ProcessorFactory>
-		ProcessorFactory;
-
 
 }//: namespace Core
 

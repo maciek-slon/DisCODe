@@ -36,14 +36,14 @@ struct WndProps : public Base::Props {
 	 * \copydoc Common::Props::load
 	 */
 	void load(const ptree & pt) {
-		title = pt.get("name", "video");
+		title = pt.get("title", "video");
 	}
 
 	/*!
 	 * \copydoc Common::Props::save
 	 */
 	void save(ptree & pt) {
-		pt.put("name", title);
+		pt.put("title", title);
 	}
 };
 
@@ -67,12 +67,12 @@ public:
 	/*!
 	 * Processor initialization
 	 */
-	void initialize();
+	bool initialize();
 
 	/*!
 	 * Release all resources
 	 */
-	void finish();
+	bool finish();
 
 	/*!
 	 * Processes given frame.

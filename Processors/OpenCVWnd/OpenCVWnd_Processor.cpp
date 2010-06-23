@@ -17,27 +17,27 @@ namespace OpenCVWnd {
 
 OpenCVWnd_Processor::OpenCVWnd_Processor() {
 	cout<<"Hello RGBtoHSV_Processor\n";
-
-	initialize();
 }
 
 OpenCVWnd_Processor::~OpenCVWnd_Processor() {
-	finish();
-
 	cout<<"Good bye RGBtoHSV_Processor\n";
 }
 
-void OpenCVWnd_Processor::initialize() {
+bool OpenCVWnd_Processor::initialize() {
 	std::cout << "RGBtoHSV_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &OpenCVWnd_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
 
 	registerStream("in_img", &in_img);
+
+	return true;
 }
 
-void OpenCVWnd_Processor::finish() {
+bool OpenCVWnd_Processor::finish() {
 	std::cout << "RGBtoHSV_Processor::finish\n";
+
+	return true;
 }
 
 int OpenCVWnd_Processor::step()

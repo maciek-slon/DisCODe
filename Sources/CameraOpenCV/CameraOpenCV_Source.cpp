@@ -18,12 +18,10 @@ CameraOpenCV_Source::CameraOpenCV_Source() {
 }
 
 CameraOpenCV_Source::~CameraOpenCV_Source() {
-	finish();
-
 	cout << "CameraOpenCV_Source::~CameraOpenCV_Source()\n";
 }
 
-void CameraOpenCV_Source::initialize() {
+bool CameraOpenCV_Source::initialize() {
 	cout << "CameraOpenCV_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
@@ -31,15 +29,15 @@ void CameraOpenCV_Source::initialize() {
 
 	cap.open(0);
 
-	if (!cap.isOpened()) {
-		throw Common::FraDIAException("Couldn't open camera device!");
-	}
+	return cap.isOpened();
 }
 
 
-void CameraOpenCV_Source::finish() {
+bool CameraOpenCV_Source::finish() {
 	cout << "CameraOpenCV_Source::finish()\n";
 	cap.release();
+
+	return !cap.isOpened();
 }
 
 

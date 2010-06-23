@@ -25,29 +25,40 @@ using namespace Core;
  * Main body - creates two threads - one for window and and one
  * for images acquisition/processing.
  */
-int main(int argc_, char** argv_)
+int main(int argc, char* argv[])
 {
+	Configurator configurator;
+	KernelManager kernelManager;
+
 	try {
 		// FraDIA config filename.
 		std::string config_name;
 		// Check whether other file wasn't pointed.
-		if (argc_ == 2)
-			config_name = argv_[1];
+		if (argc == 2)
+			config_name = argv[1];
 		else
 			// Default configuration file.
 			config_name = "config.xml";
 
-		CONFIGURATOR.loadConfiguration(config_name);
+		kernelManager.initializeKernelsList();
 
-		SOURCES_MANAGER.initializeKernelsList();
-		PROCESSORS_MANAGER.initializeKernelsList();
+		configurator.loadConfiguration(config_name);
 
 		// Test code.
 
-		Core::Executor ex1, ex2;
+		Core::Executor ex1;
 
-		Base::Kernel * src = SOURCES_MANAGER.getActiveKernel()->getObject();
-		Base::Kernel * proc = PROCESSORS_MANAGER.getActiveKernel()->getObject();
+		Base::Kernel * src = kernelManager.createKernel("Source", "CameraUniCap");
+
+		if (src->getProperties())
+			src->getProperties()->load(ptree());
+		src->initialize();
+
+		Base::Kernel * proc = kernelManager.createKernel("Window", "OpenCVWnd");
+
+		if (proc->getProperties())
+			proc->getProperties()->load(ptree());
+		proc->initialize();
 
 		src->printEvents();
 		src->printHandlers();
@@ -76,15 +87,13 @@ int main(int argc_, char** argv_)
 		}
 
 		// set parameters of each thread executor
-		ex1.setExecutionMode(Executor::ExecPeriodic);
+		ex1.setExecutionMode(Executor::ExecPassive);
 		ex1.setInterval(0.04);
-
-		ex2.setExecutionMode(Executor::ExecPassive);
 
 		// start both threads
 		ex1.start();
 
-		Common::Thread::msleep(5000);
+		Common::Thread::msleep(3000);
 
 		// stop threads
 		ex1.finish();
@@ -94,8 +103,10 @@ int main(int argc_, char** argv_)
 
 		// End of test code.
 
-		SOURCES_MANAGER.stopAll();
-		PROCESSORS_MANAGER.stopAll();
+		src->finish();
+		proc->finish();
+
+		kernelManager.deactivateKernelList();
 
 	}//: try
 	catch (exception& ex){
@@ -106,6 +117,4 @@ int main(int argc_, char** argv_)
 
 		exit(EXIT_FAILURE);
 	}//: catch
-
-	CONFIGURATOR.saveConfiguration();
 }

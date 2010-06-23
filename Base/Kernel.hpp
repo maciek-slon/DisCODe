@@ -58,12 +58,12 @@ public:
 	/*!
 	 * Initialize kernel. For example for sources it would be opening streams or devices.
 	 */
-	virtual void initialize() = 0;
+	virtual bool initialize() = 0;
 
 	/*!
 	 * Finish kernel work. Here all resources should be released.
 	 */
-	virtual void finish() = 0;
+	virtual bool finish() = 0;
 
 	/*!
 	 * Single work step. For example sources would retrieve single frame,

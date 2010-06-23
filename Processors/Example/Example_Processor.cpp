@@ -31,17 +31,21 @@ Example_Processor::~Example_Processor() {
 	cout<<"Good bye Example_Processor\n";
 }
 
-void Example_Processor::initialize() {
+bool Example_Processor::initialize() {
 	std::cout << "Example_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &Example_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
 
 	registerStream("in_delay", &in_delay);
+
+	return true;
 }
 
-void Example_Processor::finish() {
+bool Example_Processor::finish() {
 	std::cout << "Example_Processor::finish\n";
+
+	return true;
 }
 
 int Example_Processor::step()

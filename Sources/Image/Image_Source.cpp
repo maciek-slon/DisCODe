@@ -14,26 +14,26 @@ namespace Image {
 
 Image_Source::Image_Source() {
 	cout << "Hello Image_Source from dl\n";
-
-	initialize();
 }
 
 Image_Source::~Image_Source() {
-	finish();
-
 	cout << "Goodbye Image_Source from dl\n";
 }
 
-void Image_Source::initialize() {
+bool Image_Source::initialize() {
 	cout << "Image_Source::initialize\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_delay", &out_delay);
+
+	return true;
 }
 
 
-void Image_Source::finish() {
+bool Image_Source::finish() {
 	cout << "Image_Source::finish\n";
+
+	return true;
 }
 
 
