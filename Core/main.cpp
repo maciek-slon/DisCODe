@@ -40,9 +40,9 @@ int main(int argc, char* argv[])
 			// Default configuration file.
 			config_name = "config.xml";
 
-		configurator.loadConfiguration(config_name);
-
 		kernelManager.initializeKernelsList();
+
+		configurator.loadConfiguration(config_name);
 
 		// Test code.
 
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 		}
 
 		// set parameters of each thread executor
-		ex1.setExecutionMode(Executor::ExecPeriodic);
+		ex1.setExecutionMode(Executor::ExecPassive);
 		ex1.setInterval(0.04);
 
 		// start both threads
@@ -103,6 +103,9 @@ int main(int argc, char* argv[])
 
 		// End of test code.
 
+		src->finish();
+		proc->finish();
+
 		kernelManager.deactivateKernelList();
 
 	}//: try
@@ -114,6 +117,4 @@ int main(int argc, char* argv[])
 
 		exit(EXIT_FAILURE);
 	}//: catch
-
-	configurator.saveConfiguration();
 }
