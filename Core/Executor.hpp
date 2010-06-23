@@ -164,7 +164,7 @@ protected:
 					if (main_kernel)
 						main_kernel->step();
 
-					std::cout << "Step time: " << step_time.elapsed() << "s\n";
+					//std::cout << "Step time: " << step_time.elapsed() << "s\n";
 				}
 				break;
 			case ExecPassive:

@@ -1,6 +1,6 @@
 /*!
- * \file KernelFactory.hpp
- * \brief File containing the KernelFactory template class.
+ * \file KernelManager.hpp
+ * \brief File containing the KernelManager class
  *
  * \author tkornuta
  * \date Feb 10, 2010
@@ -135,7 +135,9 @@ public:
 			throw Common::FraDIAException("createKernel");
 		}
 
-		return (kernels[name] = kernel_factories[type].create());
+		kernels[name] = kernel_factories[type].create();
+		LOG(INFO) << name << " (" << type << ") component created\n";
+		return kernels[name];
 	}
 
 	/*!

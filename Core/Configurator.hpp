@@ -19,6 +19,9 @@
 #include "Singleton.hpp"
 #include "Kernel_Aux.hpp"
 
+#include "KernelManager.hpp"
+#include "ExecutorManager.hpp"
+
 namespace Core {
 
 using namespace boost::property_tree;
@@ -46,6 +49,9 @@ private:
 	 */
 	std::string configuration_filename;
 
+	ExecutorManager * executorManager;
+	KernelManager * kernelManager;
+
 public:
 	Configurator();
 
@@ -56,7 +62,16 @@ public:
 	 */
 	void loadConfiguration(std::string filename);
 
+	void loadExecutors(const ptree * node);
 	void loadKernels(const ptree * node);
+
+	void setExecutorManager(ExecutorManager * em) {
+		executorManager = em;
+	}
+
+	void setKernelManager(KernelManager * km) {
+		kernelManager = km;
+	}
 };
 
 }//: namespace Core
