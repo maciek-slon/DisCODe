@@ -49,7 +49,7 @@ endif(WIN32)
 SET(Boost_DEBUG FALSE)
 
 # Find all required packages
-FIND_PACKAGE( Boost REQUIRED thread filesystem system regex)
+FIND_PACKAGE( Boost REQUIRED thread filesystem system regex program_options)
 
 # Make makefiles more verbose
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
@@ -60,6 +60,7 @@ SET(FraDIA_LIBRARIES
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_REGEX_LIBRARY}
+    ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )
 
 # Specify include directories for the build

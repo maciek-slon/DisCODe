@@ -75,10 +75,13 @@ void Configurator::loadConfiguration(std::string filename_)
 
 void Configurator::loadExecutors(const ptree * node) {
 	LOG(INFO) << "Creating execution threads\n";
+
+	Executor * ex;
+
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
-		executorManager->createExecutor(nd.first, tmp.get("<xmlattr>.type", "UNKNOWN"));
-		/// \todo Set executor parameters from config file
+		ex = executorManager->createExecutor(nd.first, tmp.get("<xmlattr>.type", "UNKNOWN"));
+		ex->load(tmp);
 	}
 }
 

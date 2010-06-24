@@ -18,9 +18,13 @@
 #include "Executor.hpp"
 #include "Logger.hpp"
 
+#include <boost/program_options.hpp>
+
 using namespace std;
 using namespace Common;
 using namespace Core;
+
+namespace po = boost::program_options;
 
 /*!
  * Main body - creates two threads - one for window and and one
@@ -28,6 +32,34 @@ using namespace Core;
  */
 int main(int argc, char* argv[])
 {
+	// FraDIA config filename.
+	std::string config_name;
+
+	// =========================================================================
+	// === Program command-line options
+	// =========================================================================
+
+	// Declare the supported options.
+	po::options_description desc("Allowed options");
+	desc.add_options()
+		("help", "produce help message")
+		("config,C", po::value<std::string>(&config_name)->default_value("config.xml"), "choose config file")
+	;
+
+	po::variables_map vm;
+	po::store(po::parse_command_line(argc, argv, desc), vm);
+	po::notify(vm);
+
+	if (vm.count("help")) {
+		cout << desc << "\n";
+		return 1;
+	}
+
+	config_name = vm["config"].as<std::string>();
+
+
+
+
 	Configurator configurator;
 	KernelManager km;
 	ExecutorManager em;
@@ -36,15 +68,6 @@ int main(int argc, char* argv[])
 	configurator.setKernelManager(&km);
 
 	try {
-		// FraDIA config filename.
-		std::string config_name;
-		// Check whether other file wasn't pointed.
-		if (argc == 2)
-			config_name = argv[1];
-		else
-			// Default configuration file.
-			config_name = "config.xml";
-
 		km.initializeKernelsList();
 
 		configurator.loadConfiguration(config_name);
@@ -106,6 +129,10 @@ int main(int argc, char* argv[])
 		if (!strcmp(ex.what(), ""))
 			LOG(FATAL) << ex.what() << "\n";
 
+		exit(EXIT_FAILURE);
+	}
+	catch (...) {
+		LOG(FATAL) << "Unhandled exception.\n";
 		exit(EXIT_FAILURE);
 	}//: catch
 }

@@ -17,6 +17,7 @@
 #include "Kernel.hpp"
 #include "EventHandler.hpp"
 #include "Timer.hpp"
+#include "Props.hpp"
 
 namespace Core {
 
@@ -34,7 +35,7 @@ namespace Core {
  *
  * \author mstefanc
  */
-class Executor : public Common::Thread {
+class Executor : public Common::Thread, public Base::Props {
 	typedef std::pair<std::string, Base::EventHandlerInterface *> HandlerPair;
 public:
 	/*!
@@ -127,6 +128,15 @@ public:
 		handler->setup(this, &Executor::queueEvent);
 		handler->registerHandler(h);
 		return handler;
+	}
+
+	void load(const ptree & pt) {
+		max_iter = pt.get("iterations", -1);
+		interval = pt.get("interval", 1.0f);
+		std::cout << "Executor: iteraions = " << max_iter << "; interval = " << interval << "\n";
+	}
+
+	void save(ptree & pt) {
 	}
 
 protected:
