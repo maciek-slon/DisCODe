@@ -27,34 +27,37 @@ class Logger : public Base::Singleton <Logger>
 
 public:
 
+	/*!
+	 * Severity level of message
+	 */
 	enum Severity {
-		Info = 0,
-		Warning,
-		Error,
-		Fatal,
-		Debug
+		Info = 0, ///< Information
+		Warning,  ///< Warning, continue execution
+		Error,    ///< Something bad happened
+		Fatal,    ///< Something very bad happened, no chance to continue execution
+		Debug     ///< Debug message with file and line number
 	};
 
 	virtual ~Logger() {};
 
+	/*!
+	 * Start message. Prints severity info and - if required - file name and line number
+	 * from where printing is called.
+	 */
+	Logger & log(const char * file, int line, Severity sev);
 
-	Logger & log(const char * file, int line, Severity sev) {
-		if (sev == Debug) {
-			std::cout << sev2str(sev) << " in " << file << " [" << line << "]: ";
-		} else {
-			sum[sev]++;
-			std::cout << sev2str(sev) << ": ";
-		}
-
-		return *this;
-	}
-
+	/*!
+	 * Template stream operator used for printing any type of data.
+	 */
 	template<class T>
 	Logger & operator<<(const T & data) {
 		std::cout << data;
 		return *this;
 	}
 
+	/*!
+	 * Print out summary (number of warnings, errors etc).
+	 */
 	void summary() {
 		std::cout <<
 				sum[Info] << " informations\n" <<
@@ -70,26 +73,10 @@ protected:
 
 	Logger(const Logger &) {}
 
-
-	std::string sev2str(Severity sev) {
-		switch (sev) {
-		case Debug:
-			return "DEBUG";
-		case Info:
-			return "INFO";
-		case Warning:
-			return "WARNING";
-		case Error:
-			return "ERROR";
-		case Fatal:
-			return "FATAL";
-		default:
-			return "UNDEFINED";
-		}
-	}
-
-	int sum[4];
+	/// sum of messages of each type
+	int sum[10];
 };
+
 
 #define LOGGER Utils::Logger::instance()
 
@@ -99,6 +86,7 @@ protected:
 #define FATAL    Utils::Logger::Fatal
 #define DEBUG    Utils::Logger::Debug
 
+/// Start message printing
 #define LOG(level) (Utils::Logger::instance().log(__FILE__, __LINE__, level))
 
 }

@@ -8,6 +8,7 @@
 #include "../Common/Logger.hpp"
 
 int main() {
+	LOG(DEBUG) << "Debug information\n";
 	LOG(INFO) << "Info with numbers " << 5 << " and strings " << std::string(":-)") << "\n";
 	LOG(WARNING) << "Warning, something painfull but not lethal.\n";
 	LOG(ERROR) << "Error, bad bad bad\n";

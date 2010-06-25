@@ -56,9 +56,8 @@ void Configurator::loadConfiguration(std::string filename_)
 			LOG(FATAL) << "No Executors branch in configuration file!\n";
 		}
 
+
 		loadExecutors(tmp_node);
-
-
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Components"));
@@ -94,7 +93,6 @@ void Configurator::loadKernels(const ptree * node) {
 	std::string type;
 	std::string thread;
 	bool main;
-
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
 		name = nd.first;
