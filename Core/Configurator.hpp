@@ -21,6 +21,7 @@
 
 #include "KernelManager.hpp"
 #include "ExecutorManager.hpp"
+#include "ConnectionManager.hpp"
 
 namespace Core {
 
@@ -51,6 +52,7 @@ private:
 
 	ExecutorManager * executorManager;
 	KernelManager * kernelManager;
+	ConnectionManager * connectionManager;
 
 public:
 	Configurator();
@@ -65,6 +67,7 @@ public:
 	void loadExecutors(const ptree * node);
 	void loadKernels(const ptree * node);
 	void loadEvents(const ptree * node);
+	void loadConnections(const ptree * node);
 
 	void setExecutorManager(ExecutorManager * em) {
 		executorManager = em;
@@ -72,6 +75,10 @@ public:
 
 	void setKernelManager(KernelManager * km) {
 		kernelManager = km;
+	}
+
+	void setConnectionManager(ConnectionManager * cm) {
+		connectionManager = cm;
 	}
 };
 

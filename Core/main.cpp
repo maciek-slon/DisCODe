@@ -1,7 +1,6 @@
 /*!
  * \file main.cpp
- * \brief Main body responsible for menu showing
- * and image processing.
+ * \brief Main body responsible for menu showing and image processing.
  * \author tkornuta
  * \date 11.09.2007
  */
@@ -44,29 +43,44 @@ int main(int argc, char* argv[])
 	desc.add_options()
 		("help", "produce help message")
 		("config,C", po::value<std::string>(&config_name)->default_value("config.xml"), "choose config file")
-		("create-config,D", po::value<std::string>(&config_name)->default_value("config.xml"), "create default configuration file")
+		("create-config,D", "create default configuration file")
 	;
 
 	po::variables_map vm;
-	po::store(po::parse_command_line(argc, argv, desc), vm);
-	po::notify(vm);
+
+	try {
+		po::store(po::parse_command_line(argc, argv, desc), vm);
+		po::notify(vm);
+	}
+	catch (po::unknown_option & u) {
+		LOG(FATAL) << u.what() << "\n";
+		return 0;
+	}
 
 	if (vm.count("help")) {
 		cout << desc << "\n";
-		return 1;
+		return 0;
+	}
+
+	if (vm.count("create-config")) {
+		cout << "Creating config file " << config_name << "\n";
+		return 0;
 	}
 
 	config_name = vm["config"].as<std::string>();
 
-
-
+	// =========================================================================
+	// === Main program part
+	// =========================================================================
 
 	Configurator configurator;
 	KernelManager km;
 	ExecutorManager em;
+	ConnectionManager cm;
 
 	configurator.setExecutorManager(&em);
 	configurator.setKernelManager(&km);
+	configurator.setConnectionManager(&cm);
 
 	try {
 		km.initializeKernelsList();
@@ -78,30 +92,7 @@ int main(int argc, char* argv[])
 		Core::Executor * ex1;
 
 		Base::Kernel * src = km.getKernel("Camera");
-
 		Base::Kernel * proc = km.getKernel("Window");
-
-		src->printEvents();
-		src->printHandlers();
-		src->printStreams();
-
-		proc->printEvents();
-		proc->printHandlers();
-		proc->printStreams();
-
-		// connect src -> newImage event to proc -> onNewImage handler
-		Base::EventHandlerInterface * h = proc->getHandler("onNewImage");
-		//src->getEvent("newImage")->addHandler(ex2.scheduleHandler(h));
-		src->getEvent("newImage")->addHandler(h);
-
-		// connect src -> out_delay data stream to proc -> in_delay data stream
-		Base::Connection * con_1 = CONNECTION_MANAGER.get("con_1");
-		con_1->addListener(proc->getStream("in_img"));
-		if (src->getStream("out_img")) {
-			src->getStream("out_img")->setConnection(con_1);
-		} else {
-			cout << "Stream find error!\n";
-		}
 
 		ex1 = em.getExecutor("Thread1");
 
@@ -124,12 +115,21 @@ int main(int argc, char* argv[])
 		km.deactivateKernelList();
 
 	}//: try
+
+	// =========================================================================
+	// === Exception handling
+	// =========================================================================
+
 	catch (exception& ex){
 		cout << "Fatal error:\n";
 		// If required print exception description.
 		if (!strcmp(ex.what(), ""))
 			LOG(FATAL) << ex.what() << "\n";
 
+		exit(EXIT_FAILURE);
+	}
+	catch (const char * ex) {
+		LOG(FATAL) << ex << "\n";
 		exit(EXIT_FAILURE);
 	}
 	catch (...) {

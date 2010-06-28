@@ -37,7 +37,7 @@ void Configurator::loadConfiguration(std::string filename_)
 
 	// Check whether config file exists.
 	if (!filesystem::exists(configuration_filename)) {
-		LOG(WARNING) << "Configuration: File '" << configuration_filename << "' doesn't exist.\n";
+		LOG(FATAL) << "Configuration: File '" << configuration_filename << "' doesn't exist.\n";
 		throw("loadConfiguration");
 	}
 	else {
@@ -71,6 +71,14 @@ void Configurator::loadConfiguration(std::string filename_)
 		}
 		catch(ptree_bad_path&) {
 			LOG(FATAL) << "No Events branch in configuration file!\n";
+		}
+
+		try {
+			tmp_node = &(configuration.get_child("Task.DataStreams"));
+			loadConnections(tmp_node);
+		}
+		catch(ptree_bad_path&) {
+			LOG(FATAL) << "No DataStreams branch in configuration file!\n";
 		}
 
 
@@ -120,14 +128,107 @@ void Configurator::loadKernels(const ptree * node) {
 
 void Configurator::loadEvents(const ptree * node) {
 	LOG(INFO) << "Connecting events\n";
-	std::string src, dst, name;
-	BOOST_FOREACH( TreeNode nd, *node) {
+	std::string src, dst, name, caller, receiver;
+	Base::Kernel * src_k, * dst_k;
+	Base::EventHandlerInterface * h;
+	Base::Event * e;
+	BOOST_FOREACH( TreeNode nd, *node ) {
 		ptree tmp = nd.second;
 		name = nd.first;
-		src = tmp.get("<xmlattr>.source", "UNKNOWN");
-		dst = tmp.get("<xmlattr>.destination", "UNKNOWN");
+
+		src = tmp.get("<xmlattr>.source", "");
+		if (src == "") {
+			LOG(ERROR) << "No event source specified...\n";
+			continue;
+		}
+
+		dst = tmp.get("<xmlattr>.destination", "");
+		if (dst == "") {
+			LOG(ERROR) << "No event destination specified...\n";
+			continue;
+		}
+
+		caller = src.substr(0, src.find_first_of("."));
+		src = src.substr(src.find_first_of(".")+1);
+
+		receiver = dst.substr(0, dst.find_first_of("."));
+		dst = dst.substr(dst.find_first_of(".")+1);
+
+		src_k = kernelManager->getKernel(caller);
+		dst_k = kernelManager->getKernel(receiver);
+
+		h = dst_k->getHandler(dst);
+		if (!h) {
+			LOG(ERROR) << "Component " << receiver << " has no event hadler named '" << dst << "'!\n";
+			continue;
+		}
+
+		e = src_k->getEvent(src);
+		if (!e) {
+			LOG(ERROR) << "Component " << caller << " has no event named '" << src << "'!\n";
+			continue;
+		}
+		e->addHandler(h);
+
+
+		// connect src -> newImage event to proc -> onNewImage handler
+		//Base::EventHandlerInterface * h = proc->getHandler("onNewImage");
+		//async
+		//src->getEvent("newImage")->addHandler(ex2.scheduleHandler(h));
+		//sync
+		//src->getEvent("newImage")->addHandler(h);
 
 		std::cout << name << ": src=" << src << ", dst=" << dst << "\n";
+	}
+}
+
+void Configurator::loadConnections(const ptree * node) {
+	LOG(INFO) << "Connecting data streams\n";
+	std::string name, ds_name;
+	Base::Kernel * kern;
+	std::string type, con_name;
+	Base::Connection * con;
+	Base::DataStreamInterface * ds;
+
+
+	BOOST_FOREACH( TreeNode nd, *node ) {
+		ptree tmp = nd.second;
+		name = nd.first;
+
+		kern = kernelManager->getKernel(name);
+		BOOST_FOREACH( TreeNode ds_nd, tmp ) {
+			ds_name = ds_nd.first;
+			ptree ds_tmp = ds_nd.second;
+			type = ds_tmp.get("<xmlattr>.type", "out");
+			con_name = ds_tmp.get("<xmlattr>.group", "DefaultGroup");
+
+			con = connectionManager->get(con_name);
+
+			ds = kern->getStream(ds_name);
+			if (!ds) {
+				LOG(ERROR) << "Component " << name << " has no data stream named '" << ds_name << "'!\n";
+			}
+
+			if (type == "out") {
+				ds->setConnection(con);
+			} else
+			if (type == "in") {
+				con->addListener(ds);
+			} else {
+				LOG(ERROR) << "Unknown data stream type: " << type << "\n";
+				continue;
+			}
+		}
+
+
+		// connect src -> out_delay data stream to proc -> in_delay data stream
+		//Base::Connection * con_1 = cm.get("con_1");
+		//con_1->addListener(proc->getStream("in_img"));
+		//if (src->getStream("out_img")) {
+		//	src->getStream("out_img")->setConnection(con_1);
+		//} else {
+		//	cout << "Stream find error!\n";
+		//}
 	}
 }
 

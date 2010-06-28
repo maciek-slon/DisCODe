@@ -147,7 +147,7 @@ public:
 	 */
 	Base::Kernel * getKernel(const std::string & name) {
 		if (kernels.count(name) < 1) {
-			LOG(ERROR) << "Module " << name << " can't be found!";
+			LOG(ERROR) << "Module " << name << " can't be found!\n";
 			throw Common::FraDIAException("getKernel");
 		}
 
