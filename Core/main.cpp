@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 	desc.add_options()
 		("help", "produce help message")
 		("config,C", po::value<std::string>(&config_name)->default_value("config.xml"), "choose config file")
+		("create-config,D", po::value<std::string>(&config_name)->default_value("config.xml"), "create default configuration file")
 	;
 
 	po::variables_map vm;

@@ -37,7 +37,7 @@ void Configurator::loadConfiguration(std::string filename_)
 
 	// Check whether config file exists.
 	if (!filesystem::exists(configuration_filename)) {
-		LOG(WARNING) << "Configuration: File \'" << configuration_filename << "\' doesn\'t exist.\n";
+		LOG(WARNING) << "Configuration: File '" << configuration_filename << "' doesn't exist.\n";
 		throw("loadConfiguration");
 	}
 	else {
@@ -45,28 +45,34 @@ void Configurator::loadConfiguration(std::string filename_)
 		try {
 			read_xml(configuration_filename, configuration);
 		}
-		catch(xml_parser_error) {
-			throw Common::FraDIAException(std::string("Configuration: Couldn\'t parse \'") + configuration_filename + "\' file.\n");
+		catch(xml_parser_error&) {
+			throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
 		}
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Executors"));
+			loadExecutors(tmp_node);
 		}
-		catch(ptree_bad_path) {
+		catch(ptree_bad_path&) {
 			LOG(FATAL) << "No Executors branch in configuration file!\n";
 		}
 
-
-		loadExecutors(tmp_node);
-
 		try {
 			tmp_node = &(configuration.get_child("Task.Components"));
+			loadKernels(tmp_node);
 		}
-		catch(ptree_bad_path) {
+		catch(ptree_bad_path&) {
 			LOG(FATAL) << "No Components branch in configuration file!\n";
 		}
 
-		loadKernels(tmp_node);
+		try {
+			tmp_node = &(configuration.get_child("Task.Events"));
+			loadEvents(tmp_node);
+		}
+		catch(ptree_bad_path&) {
+			LOG(FATAL) << "No Events branch in configuration file!\n";
+		}
+
 
 		LOG(INFO) << "Configuration: File \'" << configuration_filename << "\' loaded.\n";
 	}//: else
@@ -111,5 +117,20 @@ void Configurator::loadKernels(const ptree * node) {
 		kern->initialize();
 	}
 }
+
+void Configurator::loadEvents(const ptree * node) {
+	LOG(INFO) << "Connecting events\n";
+	std::string src, dst, name;
+	BOOST_FOREACH( TreeNode nd, *node) {
+		ptree tmp = nd.second;
+		name = nd.first;
+		src = tmp.get("<xmlattr>.source", "UNKNOWN");
+		dst = tmp.get("<xmlattr>.destination", "UNKNOWN");
+
+		std::cout << name << ": src=" << src << ", dst=" << dst << "\n";
+	}
+}
+
+
 
 }//: namespace Core

@@ -64,6 +64,7 @@ public:
 
 	void loadExecutors(const ptree * node);
 	void loadKernels(const ptree * node);
+	void loadEvents(const ptree * node);
 
 	void setExecutorManager(ExecutorManager * em) {
 		executorManager = em;
