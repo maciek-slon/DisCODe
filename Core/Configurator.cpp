@@ -122,6 +122,8 @@ void Configurator::loadKernels(const ptree * node) {
 		ex = executorManager->getExecutor(thread);
 		ex->addKernel(kern, main);
 
+		component_executor[name] = thread;
+
 		kern->initialize();
 	}
 }
@@ -167,6 +169,12 @@ void Configurator::loadEvents(const ptree * node) {
 		if (!e) {
 			LOG(ERROR) << "Component " << caller << " has no event named '" << src << "'!\n";
 			continue;
+		}
+
+		// asynchronous connection
+		if (component_executor[caller] != component_executor[receiver]) {
+			Executor * ex = executorManager->getExecutor(component_executor[receiver]);
+			h = ex->scheduleHandler(h);
 		}
 		e->addHandler(h);
 

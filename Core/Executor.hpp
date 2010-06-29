@@ -62,7 +62,7 @@ public:
 	/*!
 	 * Destructor. Deletes all allocated handler schedulers.
 	 */
-	~Executor() {
+	virtual ~Executor() {
 		// delete all handler schedulers
 		BOOST_FOREACH(Base::EventHandlerInterface * handler, handlers) {
 			delete handler;
@@ -178,6 +178,7 @@ protected:
 				}
 				break;
 			case ExecPassive:
+				Common::Thread::msleep(10);
 				break;
 			default:
 				break;

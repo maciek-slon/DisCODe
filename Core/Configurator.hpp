@@ -54,6 +54,11 @@ private:
 	KernelManager * kernelManager;
 	ConnectionManager * connectionManager;
 
+	/*!
+	 * List containing execution thread name for each component
+	 */
+	std::map<std::string, std::string> component_executor;
+
 public:
 	Configurator();
 
