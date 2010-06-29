@@ -8,6 +8,8 @@
 #include <cstring>
 #include <iostream>
 
+#include <signal.h>
+
 #include "FraDIAException.hpp"
 #include "ConnectionManager.hpp"
 #include "KernelManager.hpp"
@@ -25,6 +27,19 @@ using namespace Core;
 
 namespace po = boost::program_options;
 
+volatile bool running = true;
+bool unstopable = false;
+
+void terminate (int param) {
+	if (unstopable) {
+		std::cout << "Get lost! WMAHAHA!\n";
+		return;
+	}
+
+	std::cout << "Terminating program...\n";
+	running = false;
+}
+
 /*!
  * Main body - creates two threads - one for window and and one
  * for images acquisition/processing.
@@ -33,6 +48,12 @@ int main(int argc, char* argv[])
 {
 	// FraDIA config filename.
 	std::string config_name;
+
+
+	void (*prev_fn)(int);
+
+	prev_fn = signal (SIGINT, terminate);
+	if (prev_fn==SIG_IGN) signal (SIGINT,SIG_IGN);
 
 	// =========================================================================
 	// === Program command-line options
@@ -44,6 +65,7 @@ int main(int argc, char* argv[])
 		("help", "produce help message")
 		("config,C", po::value<std::string>(&config_name)->default_value("config.xml"), "choose config file")
 		("create-config,D", "create default configuration file")
+		("unstopable","MWAHAHAHA!")
 	;
 
 	po::variables_map vm;
@@ -64,7 +86,37 @@ int main(int argc, char* argv[])
 
 	if (vm.count("create-config")) {
 		cout << "Creating config file " << config_name << "\n";
+
+		std::ofstream cfg(config_name);
+
+		cfg << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+				"<Task>\n"
+				"\t<!-- List of components -->\n"
+				"\t<Components>\n"
+				"\t</Components>\n"
+				"\n"
+				"\t<!-- Threads of execution -->\n"
+				"\t<Executors>\n"
+				"\t\t<Thread1 type=\"passive\">\n"
+				"\t\t</Thread1>\n"
+				"\t</Executors>\n"
+				"\n"
+				"\t<!-- Event connections -->\n"
+				"\t<Events>\n"
+				"\t</Events>\n"
+				"\n"
+				"\t<!-- Data stream assignments -->\n"
+				"\t<DataStreams>\n"
+				"\t</DataStreams>\n"
+				"</Task>\n";
+
+		cfg.close();
+
 		return 0;
+	}
+
+	if (vm.count("unstopable")) {
+		unstopable = true;
 	}
 
 	config_name = vm["config"].as<std::string>();
@@ -99,7 +151,9 @@ int main(int argc, char* argv[])
 		// start both threads
 		ex1->start();
 
-		Common::Thread::msleep(5000);
+		while(running) {
+			Common::Thread::msleep(50);
+		}
 
 		// stop threads
 		ex1->finish();
