@@ -106,13 +106,11 @@ void Configurator::loadKernels(const ptree * node) {
 	std::string name;
 	std::string type;
 	std::string thread;
-	bool main;
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
 		name = nd.first;
 		type = tmp.get("<xmlattr>.type", "UNKNOWN");
 		thread = tmp.get("<xmlattr>.thread", "UNKNOWN");
-		main = tmp.get("<xmlattr>.main", false);
 
 		kern = kernelManager->createKernel(name, type);
 
@@ -120,7 +118,7 @@ void Configurator::loadKernels(const ptree * node) {
 			kern->getProperties()->load(tmp);
 
 		ex = executorManager->getExecutor(thread);
-		ex->addKernel(kern, main);
+		ex->addKernel(name, kern);
 
 		component_executor[name] = thread;
 

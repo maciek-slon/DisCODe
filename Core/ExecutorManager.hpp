@@ -20,13 +20,9 @@ namespace Core {
 
 class ExecutorManager {
 	std::map<std::string, Executor*> executors;
-	std::map<std::string, Executor::ExecOpMode> allowed_types;
 
 public:
 	ExecutorManager() {
-		allowed_types["passive"] = Executor::ExecPassive;
-		allowed_types["continous"] = Executor::ExecContinous;
-		allowed_types["periodic"] = Executor::ExecPeriodic;
 	}
 
 	Executor * createExecutor(const std::string & name, const std::string & type) {
@@ -35,15 +31,19 @@ public:
 			return executors[name];
 		}
 
-		if (allowed_types.count(type) < 1) {
+		Executor * ex;
+		if (type == "continous") {
+			ex = new ContinousExecutor;
+		} else if (type == "passive") {
+			ex = new PassiveExecutor;
+		} else if (type == "periodic") {
+			ex = new PeriodicExecutor;
+		} else {
 			LOG(ERROR) << "Executor type " << type << " not allowed!\n";
 			throw Common::FraDIAException("createExecutor");
 		}
 
-		Executor * ex = new Executor;
-		ex->setExecutionMode(allowed_types[type]);
 		executors[name] = ex;
-
 		LOG(INFO) << name << " (" << type << ") executor created.\n";
 
 		return ex;
