@@ -64,7 +64,7 @@ SET(FraDIA_LIBRARIES
 )
 
 # Specify include directories for the build
-include_directories( . Base Core Common ${Boost_INCLUDE_DIR})
+include_directories( . Base Core Common Types ${Boost_INCLUDE_DIR})
 
 # Specify directories in which the linker will look for libraries
 LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )

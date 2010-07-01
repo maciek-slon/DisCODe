@@ -175,7 +175,7 @@ int Blob::Exterior(IplImage *mask, bool xBorder /* = true */, bool yBorder /* = 
 
 double Blob::ExternPerimeter(IplImage *maskImage, bool xBorder /* = true */, bool yBorder /* = true */)
 {
-	t_PointList externContour, externalPoints;
+	BlobContour::t_PointList externContour, externalPoints;
 	CvSeqReader reader;
 	CvSeqWriter writer;
 	CvPoint actualPoint, previousPoint;
@@ -374,7 +374,7 @@ CvRect Blob::GetBoundingBox()
 		return m_boundingBox;
 	}
 
-	t_PointList externContour;
+	BlobContour::t_PointList externContour;
 	CvSeqReader reader;
 	CvPoint actualPoint;
 
@@ -483,12 +483,12 @@ CvBox2D Blob::GetEllipse()
 
 }
 
-void Blob::FillBlob(IplImage *image, CvScalar color, int offsetX /*=0*/, int offsetY /*=0*/)
+void Blob::draw(IplImage *image, CvScalar color, int offsetX /*=0*/, int offsetY /*=0*/)
 {
 	cvDrawContours(image, m_externalContour.GetContourPoints(), color, color, 0, CV_FILLED, 8);
 }
 
-t_PointList Blob::GetConvexHull()
+BlobContour::t_PointList Blob::GetConvexHull()
 {
 	CvSeq *convexHull = NULL;
 
@@ -502,7 +502,7 @@ void Blob::JoinBlob(Blob *blob)
 {
 	CvSeqWriter writer;
 	CvSeqReader reader;
-	t_chainCode chainCode;
+	BlobContour::t_chainCode chainCode;
 
 	cvStartAppendToSeq(m_externalContour.GetChainCode(), &writer);
 	cvStartReadSeq(blob->GetExternalContour()->GetChainCode(), &reader);

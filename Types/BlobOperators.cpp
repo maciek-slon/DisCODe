@@ -1,6 +1,6 @@
 #include <limits.h>
 
-#include "BlobOperators.h"
+#include "BlobOperators.hpp"
 
 /***************************************************************************
   Implementaci� de les classes per al c�lcul de caracter�stiques sobre el blob
@@ -20,7 +20,7 @@
 - CREATION DATE: 20-07-2004.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetMoment::operator()(CBlob &blob)
+double CBlobGetMoment::operator()(Types::Blob &blob)
 {
 	return blob.Moment(m_p, m_q);
 }
@@ -52,7 +52,7 @@ double CBlobGetMoment::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetHullPerimeter::operator()(CBlob &blob)
+double CBlobGetHullPerimeter::operator()(Types::Blob &blob)
 {
 	CvSeq *convexHull;
 	double perimeter;
@@ -69,7 +69,7 @@ double CBlobGetHullPerimeter::operator()(CBlob &blob)
 	return perimeter;
 }
 
-double CBlobGetHullArea::operator()(CBlob &blob)
+double CBlobGetHullArea::operator()(Types::Blob &blob)
 {
 	CvSeq *convexHull;
 	double area;
@@ -96,13 +96,13 @@ double CBlobGetHullArea::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetMinXatMinY::operator()(CBlob &blob)
+double CBlobGetMinXatMinY::operator()(Types::Blob &blob)
 {
 	double result = LONG_MAX;
 
 	CvSeqReader reader;
 	CvPoint actualPoint;
-	t_PointList externContour;
+	Types::BlobContour::t_PointList externContour;
 
 	externContour = blob.GetExternalContour()->GetContourPoints();
 	if( !externContour ) return result;
@@ -131,13 +131,13 @@ double CBlobGetMinXatMinY::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetMinYatMaxX::operator()(CBlob &blob)
+double CBlobGetMinYatMaxX::operator()(Types::Blob &blob)
 {
 	double result = LONG_MAX;
 
 	CvSeqReader reader;
 	CvPoint actualPoint;
-	t_PointList externContour;
+	Types::BlobContour::t_PointList externContour;
 
 	externContour = blob.GetExternalContour()->GetContourPoints();
 	if( !externContour ) return result;
@@ -166,13 +166,13 @@ double CBlobGetMinYatMaxX::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetMaxXatMaxY::operator()(CBlob &blob)
+double CBlobGetMaxXatMaxY::operator()(Types::Blob &blob)
 {
 	double result = LONG_MIN;
 
 	CvSeqReader reader;
 	CvPoint actualPoint;
-	t_PointList externContour;
+	Types::BlobContour::t_PointList externContour;
 
 	externContour = blob.GetExternalContour()->GetContourPoints();
 	if( !externContour ) return result;
@@ -202,13 +202,13 @@ double CBlobGetMaxXatMaxY::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetMaxYatMinX::operator()(CBlob &blob)
+double CBlobGetMaxYatMinX::operator()(Types::Blob &blob)
 {
 	double result = LONG_MIN;
 
 	CvSeqReader reader;
 	CvPoint actualPoint;
-	t_PointList externContour;
+	Types::BlobContour::t_PointList externContour;
 
 	externContour = blob.GetExternalContour()->GetContourPoints();
 	if( !externContour ) return result;
@@ -241,7 +241,7 @@ double CBlobGetMaxYatMinX::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetElongation::operator()(CBlob &blob)
+double CBlobGetElongation::operator()(Types::Blob &blob)
 {
 	double ampladaC,longitudC,amplada,longitud;
 
@@ -278,7 +278,7 @@ double CBlobGetElongation::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetCompactness::operator()(CBlob &blob)
+double CBlobGetCompactness::operator()(Types::Blob &blob)
 {
 	if( blob.Area() != 0.0 )
 		return (double) pow(blob.Perimeter(),2)/(4*CV_PI*blob.Area());
@@ -300,7 +300,7 @@ double CBlobGetCompactness::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetRoughness::operator()(CBlob &blob)
+double CBlobGetRoughness::operator()(Types::Blob &blob)
 {
 	CBlobGetHullPerimeter getHullPerimeter = CBlobGetHullPerimeter();
 
@@ -326,7 +326,7 @@ double CBlobGetRoughness::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetLength::operator()(CBlob &blob)
+double CBlobGetLength::operator()(Types::Blob &blob)
 {
 	double ampladaC,longitudC;
 	double tmp;
@@ -359,7 +359,7 @@ double CBlobGetLength::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetBreadth::operator()(CBlob &blob)
+double CBlobGetBreadth::operator()(Types::Blob &blob)
 {
 	double ampladaC,longitudC;
 	double tmp;
@@ -392,7 +392,7 @@ double CBlobGetBreadth::operator()(CBlob &blob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetDistanceFromPoint::operator()(CBlob &blob)
+double CBlobGetDistanceFromPoint::operator()(Types::Blob &blob)
 {
 	double xmitjana, ymitjana;
 	CBlobGetXCenter getXCenter;
@@ -416,7 +416,7 @@ double CBlobGetDistanceFromPoint::operator()(CBlob &blob)
 - CREATION DATE: 16-01-2006.
 - MODIFICATION: Date. Author. Description.
 */
-double CBlobGetXYInside::operator()(CBlob &blob)
+double CBlobGetXYInside::operator()(Types::Blob &blob)
 {
 	if( blob.GetExternalContour()->GetContourPoints() )
 	{

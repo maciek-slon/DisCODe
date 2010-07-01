@@ -1,6 +1,6 @@
 /************************************************************************
   			BlobResult.h
-  			
+
 FUNCIONALITAT: Definici� de la classe CBlobResult
 AUTOR: Inspecta S.L.
 MODIFICACIONS (Modificaci�, Autor, Data):
@@ -15,23 +15,18 @@ MODIFICATIONS (Modification, Author, Date):
 #if !defined(_CLASSE_BLOBRESULT_INCLUDED)
 #define _CLASSE_BLOBRESULT_INCLUDED
 
-#if _MSC_VER > 1000 
+#if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 
 #include <math.h>
 #include "cxcore.h"
 
-#ifdef MATRIXCV_ACTIU
-	#include "matrixCV.h"
-#else
-	// llibreria STL
-	#include "vector"
-	//! Vector de doubles
-	typedef std::vector<double> double_stl_vector;
-#endif
-
 #include <vector>		// vectors de la STL
+
+typedef std::vector<double> double_stl_vector;
+
+
 #include <functional>
 #include "Blob.h"
 #include "BlobOperators.h"
@@ -65,14 +60,14 @@ MODIFICATIONS (Modification, Author, Date):
 #define EXCEPTION_BLOB_OUT_OF_BOUNDS	1000
 #define EXCEPCIO_CALCUL_BLOBS			1001
 
-/** 
-	Classe que cont� un conjunt de blobs i permet extreure'n propietats 
+/**
+	Classe que cont� un conjunt de blobs i permet extreure'n propietats
 	o filtrar-los segons determinats criteris.
-	Class to calculate the blobs of an image and calculate some properties 
+	Class to calculate the blobs of an image and calculate some properties
 	on them. Also, the class provides functions to filter the blobs using
 	some criteria.
 */
-class CBlobResult  
+class CBlobResult
 {
 public:
 
@@ -94,7 +89,7 @@ public:
 	//! operador + per concatenar dos CBlobResult
 	//! Addition operator to concatenate two sets of blobs
 	CBlobResult operator+( const CBlobResult& source ) const;
-	
+
 	//! Afegeix un blob al conjunt
 	//! Adds a blob to the set of blobs
 	void AddBlob( CBlob *blob );
@@ -107,29 +102,29 @@ public:
 	//! Calcula un valor sobre tots els blobs de la classe retornant un std::vector<double>
 	//! Computes some property on all the blobs of the class
 	double_stl_vector GetSTLResult( funcio_calculBlob *evaluador ) const;
-	
+
 	//! Calcula un valor sobre un blob de la classe
 	//! Computes some property on one blob of the class
 	double GetNumber( int indexblob, funcio_calculBlob *evaluador ) const;
 
-	//! Retorna aquells blobs que compleixen les condicions del filtre en el destination 
+	//! Retorna aquells blobs que compleixen les condicions del filtre en el destination
 	//! Filters the blobs of the class using some property
 	void Filter(CBlobResult &dst,
-				int filterAction, funcio_calculBlob *evaluador, 
+				int filterAction, funcio_calculBlob *evaluador,
 				int condition, double lowLimit, double highLimit = 0 );
 	void Filter(CBlobResult &dst,
-				int filterAction, funcio_calculBlob *evaluador, 
+				int filterAction, funcio_calculBlob *evaluador,
 				int condition, double lowLimit, double highLimit = 0 ) const;
-			
+
 	//! Retorna l'en�ssim blob segons un determinat criteri
 	//! Sorts the blobs of the class acording to some criteria and returns the n-th blob
 	void GetNthBlob( funcio_calculBlob *criteri, int nBlob, CBlob &dst ) const;
-	
+
 	//! Retorna el blob en�ssim
 	//! Gets the n-th blob of the class ( without sorting )
 	CBlob GetBlob(int indexblob) const;
 	CBlob *GetBlob(int indexblob);
-	
+
 	//! Elimina tots els blobs de l'objecte
 	//! Clears all the blobs of the class
 	void ClearBlobs();
@@ -143,9 +138,9 @@ public:
 
 	//! Retorna el total de blobs
 	//! Gets the total number of blobs
-	int GetNumBlobs() const 
-	{ 
-		return(m_blobs.size()); 
+	int GetNumBlobs() const
+	{
+		return(m_blobs.size());
 	}
 
 
@@ -157,7 +152,7 @@ private:
 
 	//! Does the Filter method job
 	void DoFilter(CBlobResult &dst,
-				int filterAction, funcio_calculBlob *evaluador, 
+				int filterAction, funcio_calculBlob *evaluador,
 				int condition, double lowLimit, double highLimit = 0) const;
 
 protected:

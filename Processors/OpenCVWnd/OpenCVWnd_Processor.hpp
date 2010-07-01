@@ -95,6 +95,7 @@ protected:
 	/// Event handler.
 	Base::EventHandler<OpenCVWnd_Processor> h_onNewImage;
 
+
 	/// Input data stream
 	Base::DataStreamIn<Mat> in_img;
 

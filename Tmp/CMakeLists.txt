@@ -1,7 +1,5 @@
 include(FindPkgConfig)
 
-SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 #
 ADD_EXECUTABLE(ptree ptree.cpp)
 

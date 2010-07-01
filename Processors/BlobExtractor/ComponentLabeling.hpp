@@ -1,30 +1,34 @@
-#if !defined(_COMPONENT_LABELING_H_INCLUDED)
-#define _CLASSE_BLOBRESULT_INCLUDED
+#ifndef COMPONENTLABELING_HPP_
+#define COMPONENTLABELING_HPP_
 
-#include "vector"
-#include "BlobContour.h"
-#include "Blob.h"
+#include "Types/BlobContour.hpp"
+#include "Types/Blob.hpp"
 
-
-//! definició de que es un vector de blobs
-typedef std::vector<CBlob*>	Blob_vector;
-
-
+#include <vector>
 
 bool ComponentLabeling(	IplImage* inputImage,
 						IplImage* maskImage,
 						unsigned char backgroundColor,
-						Blob_vector &blobs );
+						Types::Blob_vector &blobs );
 
 
-void contourTracing( IplImage *image, IplImage *mask, CvPoint contourStart, t_labelType *labels, 
-					 bool *visitedPoints, t_labelType label,
-					 bool internalContour, unsigned char backgroundColor,
-					 CBlobContour *currentBlobContour );
+void contourTracing( IplImage *image,
+					 IplImage *mask,
+					 CvPoint contourStart,
+					 Types::Blob::t_labelType *labels,
+					 bool *visitedPoints,
+					 Types::Blob::t_labelType label,
+					 bool internalContour,
+					 unsigned char backgroundColor,
+					 Types::BlobContour *currentBlobContour );
 
-CvPoint tracer( IplImage *image, IplImage *mask, CvPoint P, bool *visitedPoints,
+CvPoint tracer( IplImage *image,
+				IplImage *mask,
+				CvPoint P,
+				bool *visitedPoints,
 				short initialMovement,
-				unsigned char backgroundColor, short &movement );
-				
+				unsigned char backgroundColor,
+				short &movement );
 
-#endif	//!_CLASSE_BLOBRESULT_INCLUDED
+
+#endif	/* COMPONENTLABELING_HPP_ */

@@ -7,22 +7,21 @@ MODIFICACIONS (Modificació, Autor, Data):
 
 **************************************************************************/
 
+
+#include "BlobResult.hpp"
+
 #include <limits.h>
 #include <stdio.h>
 #include <iostream>
 #include <functional>
 #include <algorithm>
-#include "BlobResult.h"
 
-//! Show errors functions: only works for windows releases
-#ifdef _SHOW_ERRORS
+namespace Types {
 
-#endif
 
 /**************************************************************************
 		Constructors / Destructors
 **************************************************************************/
-
 
 /**
 - FUNCIÓ: CBlobResult
@@ -73,7 +72,7 @@ CBlobResult::CBlobResult()
 - MODIFICACIÓ: Data. Autor. Descripció.
 */
 /**
-- FUNCTION: CBlob
+- FUNCTION: Types::Blob
 - FUNCTIONALITY: Constructor from an image. Fills an object with all the blobs in
 	the image
 - PARAMETERS:
@@ -92,20 +91,9 @@ CBlobResult::CBlobResult()
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-CBlobResult::CBlobResult(IplImage *source, IplImage *mask, uchar backgroundColor )
+CBlobResult::CBlobResult(const Blob_vector & blob_vector)
 {
-	bool success;
-
-	try
-	{
-		success = ComponentLabeling( source, mask, backgroundColor, m_blobs );
-	}
-	catch(...)
-	{
-		success = false;
-	}
-
-	if( !success ) throw EXCEPCIO_CALCUL_BLOBS;
+	m_blobs = blob_vector;
 }
 
 /**
@@ -145,9 +133,9 @@ CBlobResult::CBlobResult( const CBlobResult &source )
 	while( pBlobsSrc != source.m_blobs.end() )
 	{
 		// no podem cridar a l'operador = ja que Blob_vector és un
-		// vector de CBlob*. Per tant, creem un blob nou a partir del
+		// vector de Types::Blob*. Per tant, creem un blob nou a partir del
 		// blob original
-		*pBlobsDst = new CBlob(**pBlobsSrc);
+		*pBlobsDst = new Types::Blob(**pBlobsSrc);
 		pBlobsSrc++;
 		pBlobsDst++;
 	}
@@ -228,9 +216,9 @@ CBlobResult& CBlobResult::operator=(const CBlobResult& source)
 		while( pBlobsSrc != source.m_blobs.end() )
 		{
 			// no podem cridar a l'operador = ja que Blob_vector és un
-			// vector de CBlob*. Per tant, creem un blob nou a partir del
+			// vector de Types::Blob*. Per tant, creem un blob nou a partir del
 			// blob original
-			*pBlobsDst = new CBlob(**pBlobsSrc);
+			*pBlobsDst = new Types::Blob(**pBlobsSrc);
 			pBlobsSrc++;
 			pBlobsDst++;
 		}
@@ -280,7 +268,7 @@ CBlobResult CBlobResult::operator+( const CBlobResult& source ) const
 	while( pBlobsSrc != source.m_blobs.end() )
 	{
 		pBlobsDst--;
-		*pBlobsDst = new CBlob(**pBlobsSrc);
+		*pBlobsDst = new Types::Blob(**pBlobsSrc);
 		pBlobsSrc++;
 	}
 
@@ -303,10 +291,10 @@ CBlobResult CBlobResult::operator+( const CBlobResult& source ) const
 - DATA DE CREACIÓ: 2006/03/01
 - MODIFICACIÓ: Data. Autor. Descripció.
 */
-void CBlobResult::AddBlob( CBlob *blob )
+void CBlobResult::AddBlob( Types::Blob *blob )
 {
 	if( blob != NULL )
-		m_blobs.push_back( new CBlob( blob ) );
+		m_blobs.push_back( new Types::Blob( blob ) );
 }
 
 
@@ -611,7 +599,7 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 				if( ( resultavaluacio && filterAction == B_INCLUDE ) ||
 					( !resultavaluacio && filterAction == B_EXCLUDE ))
 				{
-					dst.m_blobs.push_back( new CBlob( GetBlob( i ) ));
+					dst.m_blobs.push_back( new Types::Blob( GetBlob( i ) ));
 				}
 			}
 			break;
@@ -622,7 +610,7 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 				if( ( resultavaluacio && filterAction == B_INCLUDE ) ||
 					( !resultavaluacio && filterAction == B_EXCLUDE ))
 				{
-					dst.m_blobs.push_back( new CBlob( GetBlob( i ) ));
+					dst.m_blobs.push_back( new Types::Blob( GetBlob( i ) ));
 				}
 			}
 			break;
@@ -633,7 +621,7 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 				if( ( resultavaluacio && filterAction == B_INCLUDE ) ||
 					( !resultavaluacio && filterAction == B_EXCLUDE ))
 				{
-					dst.m_blobs.push_back( new CBlob( GetBlob( i ) ));
+					dst.m_blobs.push_back( new Types::Blob( GetBlob( i ) ));
 				}
 			}
 			break;
@@ -644,7 +632,7 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 				if( ( resultavaluacio && filterAction == B_INCLUDE ) ||
 					( !resultavaluacio && filterAction == B_EXCLUDE ))
 				{
-					dst.m_blobs.push_back( new CBlob( GetBlob( i ) ));
+					dst.m_blobs.push_back( new Types::Blob( GetBlob( i ) ));
 				}
 			}
 			break;
@@ -655,7 +643,7 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 				if( ( resultavaluacio && filterAction == B_INCLUDE ) ||
 					( !resultavaluacio && filterAction == B_EXCLUDE ))
 				{
-					dst.m_blobs.push_back( new CBlob( GetBlob( i ) ));
+					dst.m_blobs.push_back( new Types::Blob( GetBlob( i ) ));
 				}
 			}
 			break;
@@ -666,7 +654,7 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 				if( ( resultavaluacio && filterAction == B_INCLUDE ) ||
 					( !resultavaluacio && filterAction == B_EXCLUDE ))
 				{
-					dst.m_blobs.push_back( new CBlob( GetBlob( i ) ));
+					dst.m_blobs.push_back( new Types::Blob( GetBlob( i ) ));
 				}
 			}
 			break;
@@ -677,7 +665,7 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 				if( ( resultavaluacio && filterAction == B_INCLUDE ) ||
 					( !resultavaluacio && filterAction == B_EXCLUDE ))
 				{
-					dst.m_blobs.push_back( new CBlob( GetBlob( i ) ));
+					dst.m_blobs.push_back( new Types::Blob( GetBlob( i ) ));
 				}
 			}
 			break;
@@ -688,7 +676,7 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 				if( ( resultavaluacio && filterAction == B_INCLUDE ) ||
 					( !resultavaluacio && filterAction == B_EXCLUDE ))
 				{
-					dst.m_blobs.push_back( new CBlob( GetBlob( i ) ));
+					dst.m_blobs.push_back( new Types::Blob( GetBlob( i ) ));
 				}
 			}
 			break;
@@ -716,14 +704,14 @@ void CBlobResult::DoFilter(CBlobResult &dst, int filterAction, funcio_calculBlob
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-CBlob CBlobResult::GetBlob(int indexblob) const
+Types::Blob CBlobResult::GetBlob(int indexblob) const
 {
 	if( indexblob < 0 || indexblob >= GetNumBlobs() )
 		RaiseError( EXCEPTION_BLOB_OUT_OF_BOUNDS );
 
 	return *m_blobs[indexblob];
 }
-CBlob *CBlobResult::GetBlob(int indexblob)
+Types::Blob *CBlobResult::GetBlob(int indexblob)
 {
 	if( indexblob < 0 || indexblob >= GetNumBlobs() )
 		RaiseError( EXCEPTION_BLOB_OUT_OF_BOUNDS );
@@ -761,13 +749,13 @@ CBlob *CBlobResult::GetBlob(int indexblob)
 - CREATION DATE: 25-05-2005.
 - MODIFICATION: Date. Author. Description.
 */
-void CBlobResult::GetNthBlob( funcio_calculBlob *criteri, int nBlob, CBlob &dst ) const
+void CBlobResult::GetNthBlob( funcio_calculBlob *criteri, int nBlob, Types::Blob &dst ) const
 {
 	// verifiquem que no estem accedint fora el vector de blobs
 	if( nBlob < 0 || nBlob >= GetNumBlobs() )
 	{
 		//RaiseError( EXCEPTION_BLOB_OUT_OF_BOUNDS );
-		dst = CBlob();
+		dst = Types::Blob();
 		return;
 	}
 
@@ -798,7 +786,7 @@ void CBlobResult::GetNthBlob( funcio_calculBlob *criteri, int nBlob, CBlob &dst 
 		if( *itAvaluacio == valorEnessim )
 		{
 			trobatBlob = true;
-			dst = CBlob( GetBlob(indexBlob));
+			dst = Types::Blob( GetBlob(indexBlob));
 		}
 		itAvaluacio++;
 		indexBlob++;
@@ -937,3 +925,13 @@ void CBlobResult::PrintBlobs( char *nom_fitxer ) const
 	fclose( fitxer_sortida );
 
 }
+
+
+void CBlobResult::draw(IplImage * image, CvScalar color, int offsetx, int offsety) {
+	for(int i=0; i<GetNumBlobs(); i++)
+	{
+		m_blobs[i]->draw(image, color, offsetx, offsety);
+	}
+}
+
+} //: namespace Types

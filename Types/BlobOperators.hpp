@@ -1,7 +1,7 @@
-#ifndef BLOB_OPERATORS_H_INCLUDED
-#define BLOB_OPERATORS_H_INCLUDED
+#ifndef BLOBOPERATORS_HPP_
+#define BLOBOPERATORS_HPP_
 
-#include "Blob.h"
+#include "Types/Blob.hpp"
 
 /**************************************************************************
 		Definició de les classes per a fer operacions sobre els blobs
@@ -21,7 +21,7 @@ public:
 	virtual ~COperadorBlob(){};
 
 	//! Aply operator to blob
-	virtual double operator()(CBlob &blob) = 0;
+	virtual double operator()(Types::Blob &blob) = 0;
 	//! Get operator name
 	virtual const char *GetNom() = 0;
 
@@ -59,9 +59,9 @@ typedef COperadorBlob funcio_calculBlob;
 class CBlobGetID : public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
-	{ 
-		return blob.GetID(); 
+    double operator()(Types::Blob &blob)
+	{
+		return blob.GetID();
 	}
 	const char *GetNom()
 	{
@@ -75,9 +75,9 @@ public:
 class CBlobGetArea : public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
-	{ 
-		return blob.Area(); 
+    double operator()(Types::Blob &blob)
+	{
+		return blob.Area();
 	}
 	const char *GetNom()
 	{
@@ -90,9 +90,9 @@ public:
 class CBlobGetPerimeter: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
-	{ 
-		return blob.Perimeter(); 
+    double operator()(Types::Blob &blob)
+	{
+		return blob.Perimeter();
 	}
 	const char *GetNom()
 	{
@@ -117,9 +117,9 @@ public:
 		m_xBorder = xBorder;
 		m_yBorder = yBorder;
 	}
-    double operator()(CBlob &blob)
-	{ 
-		return blob.Exterior(m_mask, m_xBorder, m_yBorder); 
+    double operator()(Types::Blob &blob)
+	{
+		return blob.Exterior(m_mask, m_xBorder, m_yBorder);
 	}
 	const char *GetNom()
 	{
@@ -144,9 +144,9 @@ public:
 		m_image = image;
 	};
 
-    double operator()(CBlob &blob)
-	{ 
-		return blob.Mean(m_image); 
+    double operator()(Types::Blob &blob)
+	{
+		return blob.Mean(m_image);
 	}
 	const char *GetNom()
 	{
@@ -170,9 +170,9 @@ public:
 	{
 		m_image = image;
 	};
-    double operator()(CBlob &blob)
-	{ 
-		return blob.StdDev(m_image); 
+    double operator()(Types::Blob &blob)
+	{
+		return blob.StdDev(m_image);
 	}
 	const char *GetNom()
 	{
@@ -189,7 +189,7 @@ private:
 class CBlobGetCompactness: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetCompactness";
@@ -201,7 +201,7 @@ public:
 class CBlobGetLength: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetLength";
@@ -213,7 +213,7 @@ public:
 class CBlobGetBreadth: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetBreadth";
@@ -224,7 +224,7 @@ public:
 class CBlobGetDiffX: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.GetBoundingBox().width;
 	}
@@ -238,7 +238,7 @@ public:
 class CBlobGetDiffY: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.GetBoundingBox().height;
 	}
@@ -266,7 +266,7 @@ public:
 		m_p = p;
 		m_q = q;
 	};
-	double operator()(CBlob &blob);
+	double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetMoment";
@@ -282,7 +282,7 @@ private:
 class CBlobGetHullPerimeter: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetHullPerimeter";
@@ -294,7 +294,7 @@ public:
 class CBlobGetHullArea: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetHullArea";
@@ -306,7 +306,7 @@ public:
 class CBlobGetMinXatMinY: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetMinXatMinY";
@@ -318,7 +318,7 @@ public:
 class CBlobGetMinYatMaxX: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetMinYatMaxX";
@@ -330,7 +330,7 @@ public:
 class CBlobGetMaxXatMaxY: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetMaxXatMaxY";
@@ -342,7 +342,7 @@ public:
 class CBlobGetMaxYatMinX: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetMaxYatMinX";
@@ -354,7 +354,7 @@ public:
 class CBlobGetMinX: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.MinX();
 	}
@@ -369,7 +369,7 @@ public:
 class CBlobGetMaxX: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.MaxX();
 	}
@@ -384,7 +384,7 @@ public:
 class CBlobGetMinY: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.MinY();
 	}
@@ -399,7 +399,7 @@ public:
 class CBlobGetMaxY: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.MaxY();
 	}
@@ -415,7 +415,7 @@ public:
 class CBlobGetElongation: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetElongation";
@@ -427,7 +427,7 @@ public:
 class CBlobGetRoughness: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetRoughness";
@@ -451,7 +451,7 @@ public:
 		m_y = y;
 	}
 
-    double operator()(CBlob &blob);
+    double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetDistanceFromPoint";
@@ -479,7 +479,7 @@ public:
 		m_xBorder = xBorder;
 		m_yBorder = yBorder;
 	}
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.ExternPerimeter(m_mask, m_xBorder, m_yBorder);
 	}
@@ -511,7 +511,7 @@ public:
 		m_xBorder = xBorder;
 		m_yBorder = yBorder;
 	}
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		if( blob.Perimeter() != 0 )
 			return blob.ExternPerimeter(m_mask, m_xBorder, m_yBorder) / blob.Perimeter();
@@ -546,7 +546,7 @@ public:
 		m_xBorder = xBorder;
 		m_yBorder = yBorder;
 	}
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		CBlobGetHullPerimeter getHullPerimeter;
 		double hullPerimeter;
@@ -571,7 +571,7 @@ private:
 class CBlobGetXCenter: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.MinX() + (( blob.MaxX() - blob.MinX() ) / 2.0);
 	}
@@ -586,7 +586,7 @@ public:
 class CBlobGetYCenter: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		return blob.MinY() + (( blob.MaxY() - blob.MinY() ) / 2.0);
 	}
@@ -601,7 +601,7 @@ public:
 class CBlobGetMajorAxisLength: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		CvBox2D elipse = blob.GetEllipse();
 
@@ -614,11 +614,11 @@ public:
 };
 
 //! Classe per calcular el ratio entre l'area de la elipse i la de la taca
-//! Class 
+//! Class
 class CBlobGetAreaElipseRatio: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		if( blob.Area()==0.0 ) return 0.0;
 
@@ -644,7 +644,7 @@ public:
 class CBlobGetMinorAxisLength: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		CvBox2D elipse = blob.GetEllipse();
 
@@ -661,7 +661,7 @@ public:
 class CBlobGetOrientation: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		CvBox2D elipse = blob.GetEllipse();
 /*
@@ -683,7 +683,7 @@ public:
 class CBlobGetOrientationCos: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		CBlobGetOrientation getOrientation;
 		return fabs( cos( getOrientation(blob)*DEGREE2RAD ));
@@ -700,7 +700,7 @@ public:
 class CBlobGetAxisRatio: public COperadorBlob
 {
 public:
-    double operator()(CBlob &blob)
+    double operator()(Types::Blob &blob)
 	{
 		double major,minor;
 		CBlobGetMajorAxisLength getMajor;
@@ -739,7 +739,7 @@ public:
 	{
 		m_p = p;
 	};
-	double operator()(CBlob &blob);
+	double operator()(Types::Blob &blob);
 	const char *GetNom()
 	{
 		return "CBlobGetXYInside";
@@ -751,4 +751,4 @@ private:
 	CvPoint2D32f m_p;
 };
 
-#endif	//!BLOB_OPERATORS_H_INCLUDED
+#endif	/* BLOBOPERATORS_HPP_ */

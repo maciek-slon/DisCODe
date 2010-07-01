@@ -11,19 +11,20 @@
 #include <cxcore.h>
 
 #include "BlobContour.hpp"
+#include "Drawable.hpp"
 
 namespace Types {
 
-//! Type of labelled images
-typedef unsigned int t_labelType;
-
-
 //! Blob class
-class Blob
-{
+class Blob : public Drawable {
 	typedef std::list<BlobContour> t_contourList;
 
 public:
+
+	//! Type of labelled images
+	typedef unsigned int t_labelType;
+
+
 	Blob();
 	Blob( t_labelType id, CvPoint startPoint, CvSize originalImageSize );
 	~Blob();
@@ -35,10 +36,10 @@ public:
 	//! Operador d'assignaci�
 	//! Assigment operator
 	Blob& operator=(const Blob &src );
-	
+
 	//! Adds a new internal contour to the blob
 	void AddInternalContour( const BlobContour &newContour );
-	
+
 	//! Retrieves contour in Freeman's chain code
 	BlobContour *GetExternalContour()
 	{
@@ -91,7 +92,7 @@ public:
 	 * \return
 	 */
 	double ExternPerimeter( IplImage *mask, bool xBorder  = true, bool yBorder = true );
-	
+
 	/*!
 	 * \brief Get blob mean gray color in input image.
 	 *
@@ -116,7 +117,7 @@ public:
 	 * \brief Calculates the convex hull polygon of the blob
 	 * \return list of convex hull points
 	 */
-	t_PointList GetConvexHull();
+	BlobContour::t_PointList GetConvexHull();
 
 	/*!
 	 * \brief Fills the blob with a specified colour
@@ -126,7 +127,7 @@ public:
 	 * \param offsetY
 	 * \post modifies input image and returns the seed point used to fill the blob ??
 	 */
-	void FillBlob( IplImage *image, CvScalar color, int offsetX = 0, int offsetY = 0 );
+	void draw( IplImage *image, CvScalar color, int offsetX = 0, int offsetY = 0 );
 
 	/*!
 	 * \brief Adds external contour to current external contour
@@ -168,7 +169,7 @@ public:
 		return GetBoundingBox().y + GetBoundingBox().height;
 	}
 private:
-	
+
 	//! Deallocates all contours
 	void ClearContours();
 	//////////////////////////////////////////////////////////////////////////
@@ -186,7 +187,7 @@ private:
 	//////////////////////////////////////////////////////////////////////////
 	// Blob features
 	//////////////////////////////////////////////////////////////////////////
-	
+
 	//! Label number
 	t_labelType m_id;
 	//! Area
@@ -206,6 +207,10 @@ private:
 	//! Sizes from image where blob is extracted
 	CvSize m_originalImageSize;
 };
+
+
+//! vector of blobs
+typedef std::vector<Blob*>	Blob_vector;
 
 } //: namespace Types
 

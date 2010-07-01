@@ -148,7 +148,7 @@ double BlobContour::GetMoment(int p, int q)
 
 }
 
-t_PointList BlobContour::GetContourPoints()
+BlobContour::t_PointList BlobContour::GetContourPoints()
 {
 	// it is calculated?
 	if (m_contourPoints != NULL)

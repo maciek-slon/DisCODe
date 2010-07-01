@@ -16,6 +16,8 @@
 #include <cv.h>
 #include <cxtypes.h>
 
+#include "Types/BlobResult.hpp"
+
 namespace Processors {
 namespace BlobExtractor {
 
@@ -58,11 +60,20 @@ protected:
 	 */
 	void onNewImage();
 
-	/// Event handler.
+	/// Event handler for new image
 	Base::EventHandler<BlobExtractor_Processor> h_onNewImage;
 
 	/// Input data stream
 	Base::DataStreamIn<IplImage*> in_img;
+
+	/// Event raised, when set of blobs is extracted
+	Base::Event * newBlobs;
+
+	/// Output data stream - list of detected blobs
+	Base::DataStreamOut<Types::CBlobResult> out_blobs;
+
+	/// Background color for blob extraction
+	uchar bkg_color;
 };
 
 }//: namespace BlobExtractor
