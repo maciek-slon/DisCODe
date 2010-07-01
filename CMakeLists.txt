@@ -105,6 +105,12 @@ add_subdirectory(Common)
 # Use created library
 SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} Common)
 
+# Create Types library
+add_subdirectory(Types)
+
+# Use created library
+SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} Types)
+
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
 add_subdirectory(Base)
