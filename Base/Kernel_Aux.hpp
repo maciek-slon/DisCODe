@@ -11,8 +11,6 @@
 
 #include <string>
 
-#include "DataProcessor.hpp"
-#include "DataSource.hpp"
 #include "Kernel.hpp"
 #include "Panel.hpp"
 
@@ -48,20 +46,6 @@ typedef Base::kernelType (*returnType)(void);
  * \author tkornuta
  */
 typedef std::string (*returnName)(void);
-
-/*!
- * \typedef returnSource
- * \brief Functor used for retrieving source object from SO.
- * \author tkornuta
- */
-typedef Base::DataSource* (*returnSource)(void);
-
-/*!
- * \typedef returnProcessor
- * \brief Functor used for retrieving data processor object from SO.
- * \author tkornuta
- */
-typedef Base::DataProcessor* (*returnProcessor)(void);
 
 /*!
  * \typedef returnKernel

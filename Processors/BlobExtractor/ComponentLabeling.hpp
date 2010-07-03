@@ -6,21 +6,23 @@
 
 #include <vector>
 
+namespace tb = Types::Blobs;
+
 bool ComponentLabeling(	IplImage* inputImage,
 						IplImage* maskImage,
 						unsigned char backgroundColor,
-						Types::Blob_vector &blobs );
+						tb::Blob_vector &blobs );
 
 
 void contourTracing( IplImage *image,
 					 IplImage *mask,
 					 CvPoint contourStart,
-					 Types::Blob::t_labelType *labels,
+					 tb::t_labelType *labels,
 					 bool *visitedPoints,
-					 Types::Blob::t_labelType label,
+					 tb::t_labelType label,
 					 bool internalContour,
 					 unsigned char backgroundColor,
-					 Types::BlobContour *currentBlobContour );
+					 tb::BlobContour *currentBlobContour );
 
 CvPoint tracer( IplImage *image,
 				IplImage *mask,

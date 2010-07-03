@@ -10,22 +10,17 @@
 #define CONFIGURATOR_HPP_
 
 #include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
 
-#include <sys/stat.h>
-#include <iostream>
 #include <string>
-
-#include "Singleton.hpp"
-#include "Kernel_Aux.hpp"
-
-#include "KernelManager.hpp"
-#include "ExecutorManager.hpp"
-#include "ConnectionManager.hpp"
+#include <map>
 
 namespace Core {
 
 using namespace boost::property_tree;
+
+class KernelManager;
+class ExecutorManager;
+class ConnectionManager;
 
 /*!
  * \class Configurator

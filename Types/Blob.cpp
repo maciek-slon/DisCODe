@@ -8,6 +8,7 @@
 #include "Blob.hpp"
 
 namespace Types {
+namespace Blobs {
 
 Blob::Blob()
 {
@@ -515,4 +516,5 @@ void Blob::JoinBlob(Blob *blob)
 
 }
 
+} //: namespace Blobs
 } //: namespace Types

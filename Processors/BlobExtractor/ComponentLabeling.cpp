@@ -63,7 +63,7 @@ inline bool GET_BELOW_VISITEDPIXEL( bool *currentPixel, int imageWidth )
 - DATA DE CREACIÓ: 2008/04/29
 - MODIFICACIÓ: Data. Autor. Descripció.
 */
-inline void ASSIGN_LABEL( CvPoint p, Types::Blob::t_labelType *labels, int imageWidth, int newLabel )
+inline void ASSIGN_LABEL( CvPoint p, tb::t_labelType *labels, int imageWidth, int newLabel )
 {
 	*(labels + p.y * imageWidth + p.x) = newLabel;
 }
@@ -94,7 +94,7 @@ inline void ASSIGN_VISITED( CvPoint p, bool *visitedPoints, int imageWidth  )
 bool ComponentLabeling(	IplImage* inputImage,
 						IplImage* maskImage,
 						unsigned char backgroundColor,
-						Types::Blob_vector &blobs )
+						tb::Blob_vector &blobs )
 {
 	int i,j;
 	// row major vector with visited points
@@ -103,9 +103,9 @@ bool ComponentLabeling(	IplImage* inputImage,
 				  *pAboveMask, *pBelowMask;
 	int imageWidth, imageHeight, currentLabel, contourLabel;
 	// row major vector with labelled image
-	Types::Blob::t_labelType *labelledImage, *pLabels;
+	tb::t_labelType *labelledImage, *pLabels;
 	//! current blob pointer
-	Types::Blob *currentBlob;
+	tb::Blob *currentBlob;
 	CvSize imageSizes;
 	CvPoint currentPoint;
 
@@ -134,11 +134,11 @@ bool ComponentLabeling(	IplImage* inputImage,
 	imageHeight = inputImage->height;
 
 	// create auxiliary buffers
-	labelledImage = (Types::Blob::t_labelType*) malloc( inputImage->width * inputImage->height * sizeof(Types::Blob::t_labelType) );
+	labelledImage = (tb::t_labelType*) malloc( inputImage->width * inputImage->height * sizeof(tb::t_labelType) );
 	visitedPoints = (bool*) malloc( inputImage->width * inputImage->height * sizeof(bool) );
 
 	// initialize it to 0
-	memset(labelledImage, 0, inputImage->width * inputImage->height * sizeof(Types::Blob::t_labelType) ) ;
+	memset(labelledImage, 0, inputImage->width * inputImage->height * sizeof(tb::t_labelType) ) ;
 	memset(visitedPoints, false, inputImage->width * inputImage->height * sizeof(bool) ) ;
 
 	// initialize pointers and label counter
@@ -203,7 +203,7 @@ bool ComponentLabeling(	IplImage* inputImage,
 				*pLabels = currentLabel;
 
 				// create new blob
-				currentBlob = new Types::Blob(currentLabel, currentPoint, imageSizes );
+				currentBlob = new tb::Blob(currentLabel, currentPoint, imageSizes );
 
 				// contour tracing with currentLabel
 				contourTracing( inputImage, maskImage, currentPoint,
@@ -235,7 +235,7 @@ bool ComponentLabeling(	IplImage* inputImage,
 					if(contourLabel>0)
 					{
 						currentBlob = blobs[contourLabel-1];
-						Types::BlobContour newContour(currentPoint, currentBlob->GetStorage());
+						tb::BlobContour newContour(currentPoint, currentBlob->GetStorage());
 
 
 						// contour tracing with contourLabel
@@ -286,8 +286,8 @@ bool ComponentLabeling(	IplImage* inputImage,
 */
 void contourTracing( IplImage *image,
 					 IplImage *maskImage,
-					 CvPoint contourStart, Types::Blob::t_labelType *labels, bool *visitedPoints, Types::Blob::t_labelType label,
-					 bool internalContour, unsigned char backgroundColor, Types::BlobContour *currentBlobcontour )
+					 CvPoint contourStart, tb::t_labelType *labels, bool *visitedPoints, tb::t_labelType label,
+					 bool internalContour, unsigned char backgroundColor, tb::BlobContour *currentBlobcontour )
 {
 	CvPoint t, tnext, tsecond;
 	short initialMovement, movement;

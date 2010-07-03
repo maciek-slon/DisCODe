@@ -36,7 +36,6 @@ public:
 	/*!
 	 * Add new Kernel to Executor.
 	 * \param kernel kernel to be added to executor
-	 * \param main if set to true then added kernel is set to be main
 	 */
 	void addKernel(const std::string & name, Base::Kernel * kernel) {
 		kernels[name] = kernel;

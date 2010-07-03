@@ -1,11 +1,11 @@
 /************************************************************************
   			BlobResult.h
 
-FUNCIONALITAT: Definici� de la classe CBlobResult
+FUNCIONALITAT: Definici� de la classe BlobResult
 AUTOR: Inspecta S.L.
 MODIFICACIONS (Modificaci�, Autor, Data):
 
-FUNCTIONALITY: Definition of the CBlobResult class
+FUNCTIONALITY: Definition of the BlobResult class
 AUTHOR: Inspecta S.L.
 MODIFICATIONS (Modification, Author, Date):
 
@@ -24,12 +24,14 @@ typedef std::vector<double> double_stl_vector;
 
 #include <functional>
 
-#include "Types/Blob.hpp"
+#include "Blob.hpp"
 #include "BlobOperators.hpp"
 
 #include "Drawable.hpp"
 
+
 namespace Types {
+namespace Blobs {
 
 
 /**************************************************************************
@@ -63,29 +65,29 @@ namespace Types {
 	on them. Also, the class provides functions to filter the blobs using
 	some criteria.
 */
-class CBlobResult : public Drawable {
+class BlobResult : public Drawable {
 public:
 
 	//! Standard constructor, it creates an empty set of blobs
-	CBlobResult();
+	BlobResult();
 
 	//! Image constructor, it creates an object with the blobs of the image
-	CBlobResult(const Types::Blob_vector & blob_vector);
+	BlobResult(const Blob_vector & blob_vector);
 
 	//! Copy constructor
-	CBlobResult( const CBlobResult &source );
+	BlobResult( const BlobResult &source );
 
 	//! Destructor
-	virtual ~CBlobResult();
+	virtual ~BlobResult();
 
 	//! Assigment operator
-	CBlobResult& operator=(const CBlobResult& source);
+	BlobResult& operator=(const BlobResult& source);
 
 	//! Addition operator to concatenate two sets of blobs
-	CBlobResult operator+( const CBlobResult& source ) const;
+	BlobResult operator+( const BlobResult& source ) const;
 
 	//! Adds a blob to the set of blobs
-	void AddBlob( Types::Blob *blob );
+	void AddBlob( Blob *blob );
 
 #ifdef MATRIXCV_ACTIU
 	//! Computes some property on all the blobs of the class
@@ -98,19 +100,19 @@ public:
 	double GetNumber( int indexblob, funcio_calculBlob *evaluador ) const;
 
 	//! Filters the blobs of the class using some property
-	void Filter(CBlobResult &dst,
+	void Filter(BlobResult &dst,
 				int filterAction, funcio_calculBlob *evaluador,
 				int condition, double lowLimit, double highLimit = 0 );
-	void Filter(CBlobResult &dst,
+	void Filter(BlobResult &dst,
 				int filterAction, funcio_calculBlob *evaluador,
 				int condition, double lowLimit, double highLimit = 0 ) const;
 
 	//! Sorts the blobs of the class acording to some criteria and returns the n-th blob
-	void GetNthBlob( funcio_calculBlob *criteri, int nBlob, Types::Blob &dst ) const;
+	void GetNthBlob( funcio_calculBlob *criteri, int nBlob, Blob &dst ) const;
 
 	//! Gets the n-th blob of the class ( without sorting )
-	Types::Blob GetBlob(int indexblob) const;
-	Types::Blob *GetBlob(int indexblob);
+	Blob GetBlob(int indexblob) const;
+	Blob *GetBlob(int indexblob);
 
 	//! Clears all the blobs of the class
 	void ClearBlobs();
@@ -138,16 +140,17 @@ private:
 	void RaiseError(const int errorCode) const;
 
 	//! Does the Filter method job
-	void DoFilter(CBlobResult &dst,
+	void DoFilter(BlobResult &dst,
 				int filterAction, funcio_calculBlob *evaluador,
 				int condition, double lowLimit, double highLimit = 0) const;
 
 protected:
 
 	//! Vector with all the blobs
-	Types::Blob_vector		m_blobs;
+	Blob_vector		m_blobs;
 };
 
+} //: namespace Blobs
 } //: namespace Types
 
 #endif /* BLOBRESULT_HPP_ */

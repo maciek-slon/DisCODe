@@ -7,6 +7,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <fstream>
 
 #include <signal.h>
 
@@ -87,7 +88,7 @@ int main(int argc, char* argv[])
 	if (vm.count("create-config")) {
 		cout << "Creating config file " << config_name << "\n";
 
-		std::ofstream cfg(config_name);
+		std::ofstream cfg(config_name.c_str());
 
 		cfg << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				"<Task>\n"

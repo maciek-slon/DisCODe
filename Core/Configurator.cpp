@@ -12,7 +12,13 @@
 
 #include "Kernel.hpp"
 
+#include "KernelManager.hpp"
+#include "ExecutorManager.hpp"
+#include "ConnectionManager.hpp"
+
 #include <boost/filesystem.hpp>
+
+#include <boost/property_tree/xml_parser.hpp>
 
 namespace Core {
 

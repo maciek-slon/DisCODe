@@ -14,6 +14,7 @@
 #include <cxtypes.h>
 
 namespace Types {
+namespace Blobs {
 
 //! Max order of calculated moments
 #define MAX_MOMENTS_ORDER		3
@@ -45,7 +46,7 @@ public:
 
 	/*!
 	 * \brief Add chain code to contour
-	 * \param chaincode chain code to be added
+	 * \param code chain code to be added
 	 */
 	void AddChainCode(t_chainCode code);
 
@@ -125,6 +126,7 @@ private:
 	CvMemStorage *m_parentStorage;
 };
 
+} //: namespace Blobs
 } //: namespace Types
 
 #endif	/* BLOBCONTOUR_H_ */

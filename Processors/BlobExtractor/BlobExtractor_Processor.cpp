@@ -65,7 +65,7 @@ void BlobExtractor_Processor::onNewImage() {
 
 	IplImage * img = in_img.read();
 
-	Types::Blob_vector res;
+	Types::Blobs::Blob_vector res;
 	bool success;
 
 	try
@@ -80,7 +80,7 @@ void BlobExtractor_Processor::onNewImage() {
 	if( !success ) {
 		std::cout << "Blob find error\n";
 	} else {
-		Types::CBlobResult result(res);
+		Types::Blobs::BlobResult result(res);
 
 		out_blobs.write(result);
 

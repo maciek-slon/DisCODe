@@ -10,6 +10,7 @@
 #include <cxcore.h>
 
 namespace Types {
+namespace Blobs {
 
 BlobContour::BlobContour()
 {
@@ -201,4 +202,5 @@ BlobContour::t_PointList BlobContour::GetContourPoints()
 	return m_contourPoints;
 }
 
+} //: namespace Blobs
 } //: namespace Types

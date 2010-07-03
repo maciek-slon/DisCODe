@@ -14,6 +14,11 @@
 #include "Drawable.hpp"
 
 namespace Types {
+namespace Blobs {
+
+
+//! Type of labelled images
+typedef unsigned int t_labelType;
 
 //! Blob class
 class Blob : public Drawable {
@@ -21,8 +26,6 @@ class Blob : public Drawable {
 
 public:
 
-	//! Type of labelled images
-	typedef unsigned int t_labelType;
 
 
 	Blob();
@@ -85,7 +88,7 @@ public:
 	 * \note If BlobContour::GetContourPoints aproximates contours with a method different that NONE,
 	 * this function will not give correct results
 	 *
-	 * \param maskImage if != NULL, counts maskImage black pixels as external pixels and contour points touching
+	 * \param mask if != NULL, counts maskImage black pixels as external pixels and contour points touching
 	 * them are counted as external contour points.
 	 * \param xBorder true to consider blobs touching horizontal borders as extern
 	 * \param yBorder true to consider blobs touching vertical borders as extern
@@ -212,6 +215,7 @@ private:
 //! vector of blobs
 typedef std::vector<Blob*>	Blob_vector;
 
+} //: namespace Blobs
 } //: namespace Types
 
 #endif /* CBLOB_H_ */

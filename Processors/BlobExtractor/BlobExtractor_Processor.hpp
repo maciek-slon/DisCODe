@@ -16,7 +16,7 @@
 #include <cv.h>
 #include <cxtypes.h>
 
-#include "Types/BlobResult.hpp"
+#include "BlobResult.hpp"
 
 namespace Processors {
 namespace BlobExtractor {
@@ -70,7 +70,7 @@ protected:
 	Base::Event * newBlobs;
 
 	/// Output data stream - list of detected blobs
-	Base::DataStreamOut<Types::CBlobResult> out_blobs;
+	Base::DataStreamOut<Types::Blobs::BlobResult> out_blobs;
 
 	/// Background color for blob extraction
 	uchar bkg_color;
