@@ -182,14 +182,6 @@ void Configurator::loadEvents(const ptree * node) {
 		}
 		e->addHandler(h);
 
-
-		// connect src -> newImage event to proc -> onNewImage handler
-		//Base::EventHandlerInterface * h = proc->getHandler("onNewImage");
-		//async
-		//src->getEvent("newImage")->addHandler(ex2.scheduleHandler(h));
-		//sync
-		//src->getEvent("newImage")->addHandler(h);
-
 		std::cout << name << ": src=" << src << ", dst=" << dst << "\n";
 	}
 }
@@ -231,16 +223,6 @@ void Configurator::loadConnections(const ptree * node) {
 				continue;
 			}
 		}
-
-
-		// connect src -> out_delay data stream to proc -> in_delay data stream
-		//Base::Connection * con_1 = cm.get("con_1");
-		//con_1->addListener(proc->getStream("in_img"));
-		//if (src->getStream("out_img")) {
-		//	src->getStream("out_img")->setConnection(con_1);
-		//} else {
-		//	cout << "Stream find error!\n";
-		//}
 	}
 }
 

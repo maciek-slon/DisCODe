@@ -85,7 +85,7 @@ public:
 		if (files.size() == 0) {
 			// I think, that throwing here is much to brutal
 			//throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no dynamic libraries in the current directory."));
-			cout << "KernelManager: There are no dynamic libraries in the current directory.\n";
+			LOG(WARNING) << "KernelManager: There are no dynamic libraries in the current directory.\n";
 			return;
 		}
 
