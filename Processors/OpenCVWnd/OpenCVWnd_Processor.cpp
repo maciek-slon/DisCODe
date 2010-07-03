@@ -16,15 +16,15 @@ namespace Processors {
 namespace OpenCVWnd {
 
 OpenCVWnd_Processor::OpenCVWnd_Processor() {
-	cout<<"Hello RGBtoHSV_Processor\n";
+	cout<<"Hello OpenCVWnd_Processor\n";
 }
 
 OpenCVWnd_Processor::~OpenCVWnd_Processor() {
-	cout<<"Good bye RGBtoHSV_Processor\n";
+	cout<<"Good bye OpenCVWnd_Processor\n";
 }
 
 bool OpenCVWnd_Processor::initialize() {
-	std::cout << "RGBtoHSV_Processor::initialize\n";
+	std::cout << "OpenCVWnd_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &OpenCVWnd_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -35,14 +35,14 @@ bool OpenCVWnd_Processor::initialize() {
 }
 
 bool OpenCVWnd_Processor::finish() {
-	std::cout << "RGBtoHSV_Processor::finish\n";
+	std::cout << "OpenCVWnd_Processor::finish\n";
 
 	return true;
 }
 
 int OpenCVWnd_Processor::step()
 {
-	cout<<"RGBtoHSV_Processor::step\n";
+	cout<<"OpenCVWnd_Processor::step\n";
 	return 0;
 }
 
@@ -52,7 +52,7 @@ void OpenCVWnd_Processor::onNewImage() {
 		waitKey( 2 );
 	}
 	catch(...) {
-		LOG(ERROR) << "OpenCVWnd\n";
+		LOG(ERROR) << "OpenCVWnd::onNewImage failed\n";
 	}
 }
 

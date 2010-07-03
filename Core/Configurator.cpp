@@ -182,7 +182,7 @@ void Configurator::loadEvents(const ptree * node) {
 		}
 		e->addHandler(h);
 
-		std::cout << name << ": src=" << src << ", dst=" << dst << "\n";
+		LOG(INFO) << name << ": src=" << src << ", dst=" << dst << "\n";
 	}
 }
 
