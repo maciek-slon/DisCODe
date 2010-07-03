@@ -49,6 +49,8 @@ int main(int argc, char* argv[])
 	// FraDIA config filename.
 	std::string config_name;
 
+	// Log level
+	int log_lvl;
 
 	void (*prev_fn)(int);
 
@@ -65,6 +67,7 @@ int main(int argc, char* argv[])
 		("help", "produce help message")
 		("config,C", po::value<std::string>(&config_name)->default_value("config.xml"), "choose config file")
 		("create-config,D", "create default configuration file")
+		("log-level,L", po::value<int>(&log_lvl)->default_value(3), "set log severity level")
 		("unstopable","MWAHAHAHA!")
 	;
 
@@ -120,6 +123,9 @@ int main(int argc, char* argv[])
 	}
 
 	config_name = vm["config"].as<std::string>();
+
+	// set logger severity level
+	LOGGER.setLevel((Utils::Logger::Severity)log_lvl);
 
 	// =========================================================================
 	// === Main program part

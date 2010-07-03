@@ -27,15 +27,19 @@ class Logger : public Base::Singleton <Logger>
 
 public:
 
+
 	/*!
 	 * Severity level of message
 	 */
 	enum Severity {
-		Info = 0, ///< Information
-		Warning,  ///< Warning, continue execution
-		Error,    ///< Something bad happened
-		Fatal,    ///< Something very bad happened, no chance to continue execution
-		Debug     ///< Debug message with file and line number
+		Trace = 0, ///< Simple information used to trace program execution, prints file name and line
+		Debug,     ///< Debug message with file and line number
+		Info,      ///< Information
+		Notice,    ///< Something more important that simple information
+		Warning,   ///< Warning, continue execution
+		Error,     ///< Something bad happened
+		Critical,  ///< Critical error, there is small chance that execution can be continued
+		Fatal      ///< Something very bad happened, no chance to continue execution
 	};
 
 	virtual ~Logger() {};
@@ -51,40 +55,71 @@ public:
 	 */
 	template<class T>
 	Logger & operator<<(const T & data) {
-		std::cout << data;
+		if (curr_lvl >= level)
+			std::cout << data;
 		return *this;
 	}
+
+	/*!
+	 * Set logging severity level.
+	 *
+	 * All messages that has severity below set level are ignored. At default level
+	 * is set to NOTICE.
+	 */
+	void setLevel(Severity lvl) {
+		level = lvl;
+	}
+
+	/*!
+	 * Binary dump
+	 */
+	void dump(Severity sev, const std::string & msg, void * data, int length);
 
 	/*!
 	 * Print out summary (number of warnings, errors etc).
 	 */
 	void summary() {
 		std::cout <<
+				sum[Trace] << " traces\n" <<
+				sum[Debug] << " debugs\n" <<
 				sum[Info] << " informations\n" <<
+				sum[Notice] << " notices\n" <<
 				sum[Warning] << " warnings\n" <<
 				sum[Error] << " errors\n" <<
+				sum[Critical] << " critical errors\n" <<
 				sum[Fatal] << " fatal errors\n";
 	}
 
 protected:
 	Logger() {
-		sum[0] = sum[1] = sum[2] = sum[3] = 0;
+		sum[0] = sum[1] = sum[2] = sum[3] = sum[4] = sum[5] = sum[6] = sum[7] = sum[8] = sum[9] = 0;
+
+		level = Severity::Notice;
 	}
 
 	Logger(const Logger &) {}
 
 	/// sum of messages of each type
 	int sum[10];
+
+	/// current logging level
+	int level;
+
+	/// level of actually printed message
+	int curr_lvl;
 };
 
 
 #define LOGGER Utils::Logger::instance()
 
+#define TRACE    Utils::Logger::Trace
+#define DEBUG    Utils::Logger::Debug
 #define INFO     Utils::Logger::Info
+#define NOTICE   Utils::Logger::Notice
 #define WARNING  Utils::Logger::Warning
 #define ERROR    Utils::Logger::Error
+#define CRITICAL Utils::Logger::Critical
 #define FATAL    Utils::Logger::Fatal
-#define DEBUG    Utils::Logger::Debug
 
 /// Start message printing
 #define LOG(level) (Utils::Logger::instance().log(__FILE__, __LINE__, level))

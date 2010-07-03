@@ -15,6 +15,7 @@
 
 #include <string>
 
+#include "Logger.hpp"
 #include "Kernel_Aux.hpp"
 #include "SharedLibrary.hpp"
 
@@ -117,7 +118,7 @@ public:
 	 */
 	void activate()
 	{
-		cout << "KernelFactory: Lazy activate!\n";
+		LOG(TRACE) << "KernelFactory: Lazy activate!\n";
 		if (!panel) {
 			// Get task panel.
 			panel = ret_panel();
@@ -205,11 +206,11 @@ public:
 				throw Common::FraDIAException(std::string("Can't load ret_panel from library: ") + lib.error());
 
 			// Kernel initialized properly.
-			cout << "KernelFactory: Dynamic library " << filename_ << " containing " << name
-					<< " kernel was properly loaded." << endl;
+			LOG(INFO) << "KernelFactory: Dynamic library " << filename_ << " containing " << name
+					<< " kernel was properly loaded.\n";
 			return true;
 		} catch (Common::FraDIAException& ex) {
-			cout << "KernelFactory: " << ex.what() << endl;
+			LOG(INFO) << "KernelFactory: " << ex.what() << "\n";
 		}
 		return false;
 	}

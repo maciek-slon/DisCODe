@@ -58,7 +58,7 @@ public:
 	 */
 	KernelManager()
 	{
-		cout << "KernelManager: Hello private \n";
+		LOG(TRACE) << "KernelManager: Hello private \n";
 	}
 
 	/*!
@@ -66,7 +66,7 @@ public:
 	 */
 	~KernelManager()
 	{
-		cout << "KernelManager: Goodbye public\n";
+		LOG(TRACE) << "KernelManager: Goodbye public\n";
 	}
 
 	/*!
@@ -85,7 +85,7 @@ public:
 		if (files.size() == 0) {
 			// I think, that throwing here is much to brutal
 			//throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no dynamic libraries in the current directory."));
-			cout << "KernelManager: There are no dynamic libraries in the current directory.\n";
+			LOG(WARNING) << "KernelManager: There are no dynamic libraries in the current directory.\n";
 			return;
 		}
 
@@ -108,7 +108,7 @@ public:
 		// Check number of successfully loaded kernels.
 		//if (!kernel_factories.size())
 		//	throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no compatible dynamic libraries in current directory."));
-		LOG(INFO) << "Found " << kernel_factories.size() << " components\n";
+		LOG(NOTICE) << "Found " << kernel_factories.size() << " components\n";
 	}
 
 	/*!
@@ -166,7 +166,7 @@ protected:
 		std::string regexp = "\\w*.";
 		regexp += LIB_EXT;
 
-		cout << "LIB_EXT = " LIB_EXT << endl;
+		LOG(TRACE) << "LIB_EXT = " LIB_EXT << "\n";
 
 		files = Utils::searchFiles(dir_, regexp);
 	}
