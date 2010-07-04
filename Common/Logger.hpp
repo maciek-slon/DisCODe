@@ -16,7 +16,9 @@ namespace Utils {
 
 /*!
  * \class Logger
- * \brief
+ * \brief Class for loggind messages.
+ *
+ * Example usage of this class is available in \ref using_logger.
  */
 class Logger : public Base::Singleton <Logger>
 {
@@ -56,8 +58,19 @@ public:
 	template<class T>
 	Logger & operator<<(const T & data) {
 		if (curr_lvl >= level)
-			std::cout << data;
+			print(data);
 		return *this;
+	}
+
+	/*!
+	 * Template method used to print any kind of data.
+	 *
+	 * To print custom types you can either overload operator<< in that class
+	 * or specialize this method.
+	 */
+	template <class T>
+	void print(const T & data) {
+		std::cout << data;
 	}
 
 	/*!

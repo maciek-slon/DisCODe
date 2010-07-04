@@ -9,6 +9,23 @@
 
 #include <iostream>
 
+struct test {
+	int id;
+	std::string msg;
+
+	friend std::ostream & operator<<(std::ostream & out, const test & t) {
+		out << t.id << " with " << t.msg;
+		return out;
+	}
+};
+
+namespace Utils {
+template<>
+void Logger::print(const test & data) {
+	std::cout << data.id << " (" << data.msg << ")";
+}
+}
+
 void printMessages() {
 	LOG(TRACE) << "Trace\n";
 	LOG(DEBUG) << "Debug information\n";
@@ -27,8 +44,13 @@ int main(int argc, char* argv[]) {
 
 	char str[] = "To jest test dumpowawania różnokształtnych zmiennych\377\177";
 
+	test t;
+	t.id = 1;
+	t.msg = "message info";
+
 	std::cout << "Default debug level (INFO)\n";
 	printMessages();
+
 
 	std::cout << "Setting debug level to TRACE\n";
 	LOGGER.setLevel(TRACE);
@@ -42,7 +64,12 @@ int main(int argc, char* argv[]) {
 	LOGGER.setLevel(FATAL);
 	printMessages();
 
+
+	std::cout << "Setting debug level to INFO\n";
+	LOGGER.setLevel(INFO);
 	LOGGER.dump(FATAL, "Dump test", &str, sizeof(str));
+
+	LOG(INFO) << t << "\n";
 
 
 	return 0;
