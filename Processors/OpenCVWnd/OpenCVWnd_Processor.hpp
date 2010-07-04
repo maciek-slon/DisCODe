@@ -62,7 +62,7 @@ public:
 	/*!
 	 * Destructor
 	 */
-	~OpenCVWnd_Processor();
+	virtual ~OpenCVWnd_Processor();
 
 	/*!
 	 * Processor initialization

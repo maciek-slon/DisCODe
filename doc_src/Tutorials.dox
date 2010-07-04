@@ -5,11 +5,11 @@ There are some tutorials available concerning subjects such as configuration of 
 or creating new sources or processors.
 
 \section system System and IDE configuration:
-- \subpage git_intro
-- \subpage eclipseconfig "Configurating Eclipse": required plugins, importing repository, using cmake
+- \subpage git_intro : 
+- \subpage eclipseconfig : required plugins, importing repository, using cmake
 
 \section dev_components Developing new components:
-- \subpage newsource "Creating new Source"
+- \subpage newsource
 
 \section using_utils Utility library usage
 - \subpage using_logger
@@ -119,6 +119,10 @@ z poziomu Eclipse.
 \page newsource Creating new Source
 
 
+
+
+
+
 \page using_logger Using Logger class
 
 \section logger_intro Introduction
@@ -144,6 +148,10 @@ looking color text for console output.
 \section logger_examples Examples
 
 \subsection logger_examples_1 Simple logging
+
+
+
+
 
 \page git_intro Getting started with Git and GitHub
 

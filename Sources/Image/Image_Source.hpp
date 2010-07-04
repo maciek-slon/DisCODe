@@ -34,7 +34,7 @@ public:
 	/*!
 	 * Destructor.
 	 */
-	~Image_Source();
+	virtual ~Image_Source();
 
 	/*!
 	 * Connects source to given device.

@@ -38,7 +38,7 @@ public:
 	/*!
 	 * Destructor.
 	 */
-	~CameraV4L_Source();
+	virtual ~CameraV4L_Source();
 
 	/*!
 	 * Connects source to given device.
