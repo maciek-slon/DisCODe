@@ -30,7 +30,7 @@ public:
 
 	Blob();
 	Blob( t_labelType id, CvPoint startPoint, CvSize originalImageSize );
-	~Blob();
+	virtual ~Blob();
 
 	//! Copy constructor
 	Blob( const Blob &src );

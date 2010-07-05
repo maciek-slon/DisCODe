@@ -61,7 +61,7 @@ public:
 	/*!
 	 * Destructor.
 	 */
-	~Movie_Source();
+	virtual ~Movie_Source();
 
 	/*!
 	 * Connects source to given device.

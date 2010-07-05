@@ -37,7 +37,7 @@ public:
 	/*!
 	 * Destructor.
 	 */
-	~CameraOpenCV_Source();
+	virtual ~CameraOpenCV_Source();
 
 	/*!
 	 * Connects source to given device.

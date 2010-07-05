@@ -32,7 +32,7 @@ public:
 	/*!
 	 * Destructor
 	 */
-	~Example_Processor();
+	virtual ~Example_Processor();
 
 	/*!
 	 * Processor initialization
