@@ -165,7 +165,17 @@ span.legend {
         text-align: center;
 }
 
-div.qindex, div.navtab{
+div.qindex {
+	background-color: white;
+	border: 0;
+	border-bottom: 1px solid #cccccc;
+	border-top: 1px solid #cccccc;
+	text-align: center;
+	margin: 2px;
+	padding: 2px;
+}
+
+div.navtab {
 	background-color: #e8eef2;
 	border: 1px solid #84b0c7;
 	text-align: center;
@@ -279,8 +289,6 @@ div.ah {
 	background-color: black;
 	font-weight: bold;
 	color: #ffffff;
-	margin-bottom: 3px;
-	margin-top: 3px
 }
 
 div.groupHeader {

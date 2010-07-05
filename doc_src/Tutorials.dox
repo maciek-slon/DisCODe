@@ -5,7 +5,7 @@ There are some tutorials available concerning subjects such as configuration of 
 or creating new sources or processors.
 
 \section system System and IDE configuration:
-- \subpage git_intro : 
+- \subpage git_intro :
 - \subpage eclipseconfig : required plugins, importing repository, using cmake
 
 \section dev_components Developing new components:
@@ -149,7 +149,7 @@ looking color text for console output.
 
 \subsection logger_examples_1 Simple logging
 
-
+\includelineno logger_example_1.cpp
 
 
 
