@@ -64,7 +64,13 @@ protected:
 	Base::EventHandler<BlobExtractor_Processor> h_onNewImage;
 
 	/// Input data stream
-	Base::DataStreamIn<IplImage*> in_img;
+	Base::DataStreamIn<cv::Mat> in_img;
+
+	/// Event raised, when new image with blobs is ready
+	Base::Event * newImage;
+
+	/// Output data stream - image with drawn blobs
+	Base::DataStreamOut<cv::Mat> out_img;
 
 	/// Event raised, when set of blobs is extracted
 	Base::Event * newBlobs;

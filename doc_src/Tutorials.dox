@@ -33,7 +33,7 @@ or creating new sources or processors.
 
 * W kolejnym oknie w polu URI podajemy adres repozytorium:
 \cons
-ssh://username@fradia.git.sourceforge.net/gitroot/fradia/fradia
+ssh://username\@fradia.git.sourceforge.net/gitroot/fradia/fradia
 \endcons
 Wszystkie pozostałe potrzebne pola powinny zostać uzupełnione automatycznie.
 
@@ -77,7 +77,7 @@ W konsoli przechodzimy do katalogu z projektem i wykonujemy następującą sekwe
 \cons
 mkdir build
 cd build
-cmake .. -G <generator_name>
+cmake .. -G \<generator_name\>
 \endcons
 
 Przy czym podajemy odpowiedni dla używanego systemu generator:
@@ -162,7 +162,7 @@ The first step to set up FraDIA source code for work with Git is to download a G
 - For Windows there are some GUI based Gits out there, but this tutorial will only explain
   howto work with command line tools. Probably the right one is the
   <a href="http://code.google.com/p/msysgit/">msysGit</a> (you have to download
-  a @Git-x.x.x.x-*.exe@ file)
+  a \tt{Git-x.x.x.x-*.exe} file)
 - If you are brave enough to use Git under your Eclipse editor, please check this
   <a href="http://github.com/guides/using-the-egit-eclipse-plugin-with-github">tutorial</a>.
 

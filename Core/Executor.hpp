@@ -35,6 +35,7 @@ class Executor : public Common::Thread, public Base::Props {
 public:
 	/*!
 	 * Add new Kernel to Executor.
+	 * \param name name of kernel
 	 * \param kernel kernel to be added to executor
 	 */
 	void addKernel(const std::string & name, Base::Kernel * kernel) {

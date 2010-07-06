@@ -14,6 +14,10 @@
 #include "BlobExtractor_Processor.hpp"
 #include "ComponentLabeling.hpp"
 
+#include "Logger.hpp"
+#include "Timer.hpp"
+#include "BlobOperators.hpp"
+
 #include <boost/thread.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -37,10 +41,13 @@ bool BlobExtractor_Processor::initialize() {
 
 	newBlobs = registerEvent("newBlobs");
 
+	newImage = registerEvent("newImage");
+
 	h_onNewImage.setup(this, &BlobExtractor_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
 
 	registerStream("in_img", &in_img);
+	registerStream("out_img", &out_img);
 	registerStream("out_blobs", &out_blobs);
 
 	bkg_color = 0;
@@ -49,21 +56,27 @@ bool BlobExtractor_Processor::initialize() {
 }
 
 bool BlobExtractor_Processor::finish() {
-	std::cout << "BlobExtractor_Processor::finish\n";
+	LOG(TRACE) << "BlobExtractor_Processor::finish\n";
 
 	return true;
 }
 
 int BlobExtractor_Processor::step()
 {
-	cout<<"BlobExtractor_Processor::step\n";
+	LOG(TRACE) << "BlobExtractor_Processor::step\n";
 	return 0;
 }
 
 void BlobExtractor_Processor::onNewImage() {
-	cout << "BlobExtractor_Processor::onNewImage() called!\n";
+	LOG(TRACE) << "BlobExtractor_Processor::onNewImage() called!\n";
 
-	IplImage * img = in_img.read();
+	Common::Timer timer;
+	timer.restart();
+
+	cv::Mat in = in_img.read();
+
+	IplImage * img = &IplImage(in);
+	cv::Mat out = cv::Mat::zeros(in.size(), CV_8UC3);
 
 	Types::Blobs::Blob_vector res;
 	bool success;
@@ -75,17 +88,26 @@ void BlobExtractor_Processor::onNewImage() {
 	catch(...)
 	{
 		success = false;
+		LOG(WARNING) << "blob find error\n";
 	}
 
 	if( !success ) {
-		std::cout << "Blob find error\n";
+		LOG(ERROR) << "Blob find error\n";
 	} else {
 		Types::Blobs::BlobResult result(res);
 
-		out_blobs.write(result);
+		result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, 100 );
 
-		newBlobs->raise();
+		//out_blobs.write(result);
+
+		//newBlobs->raise();
+
+		result.draw(&IplImage(out), CV_RGB(255, 0, 0), 0, 0);
+		out_img.write(out);
+		newImage->raise();
 	}
+
+	LOG(INFO) << "Blobing took " << timer.elapsed() << " seconds\n";
 }
 
 }//: namespace BlobExtractor
