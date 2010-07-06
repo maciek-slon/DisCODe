@@ -1,5 +1,5 @@
 /*!
- * \file Synchronization
+ * \file Synchronization.hpp
  * \brief Synchronization policies
  *
  * \author mstefanc
