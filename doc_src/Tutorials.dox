@@ -134,18 +134,18 @@ different colorspaces.
 
 \section newprocessor_template Component template
 
-All components (sources, data processors etc) have to derive from Base::Kernel
+All components (sources, data processors etc) have to derive from Base::Component
 class. It takes care of events and data streams management (what these are will
 be explained later on) as well as defines common interface for all components.
 
 So, let's do it. Code first, then explanation.
 \code
-#include "Kernel_Aux.hpp"                     // 1
+#include "Component_Aux.hpp"                     // 1
 
 namespace Processors {                        // 2
 namespace ColorConv {
 
-class ColorConv : public Base::Kernel {       // 3
+class ColorConv : public Base::Component {       // 3
 public:
 	bool initialize() {                       // 4
 		return true;
@@ -166,7 +166,7 @@ public:
 
 And here's explanation:
 
--# First of all we need some includes. Kernel_Aux.hpp is main include file for
+-# First of all we need some includes. Component_Aux.hpp is main include file for
    every component. It includes all necessary headers and contains some useful
    macros, which we'll be using.
 -# In order to avoid namespace pollution with our classes and functions (we can

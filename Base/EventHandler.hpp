@@ -1,6 +1,6 @@
 /*!
  * \file EventHandler.hpp
- * \brief Kernel event handler.
+ * \brief Component event handler.
  *
  * \author mstefanc
  * \date 2010-04-29

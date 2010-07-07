@@ -9,8 +9,8 @@
 #ifndef MOVIE_SOURCE_HPP_
 #define MOVIE_SOURCE_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
@@ -50,7 +50,7 @@ struct MovieProps : public Base::Props {
  * \class Movie_Source
  * \brief Class responsible for retrieving images from movies.
  */
-class Movie_Source : public Base::Kernel {
+class Movie_Source : public Base::Component {
 
 public:
 	/*!
@@ -106,8 +106,8 @@ protected:
 }//: namespace Sources
 
 /*
- * Register source kernel.
+ * Register source component.
  */
-REGISTER_SOURCE_KERNEL("Movie", Sources::Movie::Movie_Source, Common::Panel_Empty)
+REGISTER_SOURCE_COMPONENT("Movie", Sources::Movie::Movie_Source, Common::Panel_Empty)
 
 #endif /* MOVIE_SOURCE_HPP_ */

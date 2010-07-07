@@ -1,13 +1,13 @@
 /*!
- * \file KernelFactory.hpp
- * \brief File containing the KernelFactory template class.
+ * \file ComponentFactory.hpp
+ * \brief File containing the ComponentFactory template class.
  *
  * \author tkornuta
  * \date Mar 11, 2010
  */
 
-#ifndef KERNELFACTORY_HPP_
-#define KERNELFACTORY_HPP_
+#ifndef COMPONENTFACTORY_HPP_
+#define COMPONENTFACTORY_HPP_
 
 #include <boost/function.hpp>
 #include <boost/utility.hpp>
@@ -16,21 +16,22 @@
 #include <string>
 
 #include "Logger.hpp"
-#include "Kernel_Aux.hpp"
+#include "Component_Aux.hpp"
 #include "SharedLibrary.hpp"
+#include "Props.hpp"
 
 namespace Core {
 
 /*!
- * \class KernelFactory
- * \brief Template factory producing different kernel types.
+ * \class ComponentFactory
+ * \brief Template factory producing different component types.
  * \author tkornuta
  */
-class KernelFactory: boost::noncopyable
+class ComponentFactory: boost::noncopyable
 {
 private:
 	/*!
-	 * Kernel name.
+	 * Component name.
 	 */
 	std::string name;
 
@@ -42,12 +43,12 @@ private:
 	/*!
 	 * Variable used for storing address of the functor returning created object.
 	 */
-	Base::returnKernel ret_object;
+	Base::returnComponent ret_object;
 
 	/*!
 	 * Pointer to object.
 	 */
-	Base::Kernel* object;
+	Base::Component* object;
 
 	/*!
 	 * Variable used for storing address of the functor returning created panel.
@@ -60,7 +61,7 @@ private:
 	Base::Panel* panel;
 
 	/*!
-	 * Pointer to node containing kernel configuration
+	 * Pointer to node containing component configuration
 	 */
 	ptree * config_node;
 
@@ -68,7 +69,7 @@ public:
 	/*!
 	 * Constructor. Resets pointers to objects.
 	 */
-	KernelFactory()
+	ComponentFactory()
 	{
 		// NULL pointers.
 		panel = 0;
@@ -79,7 +80,7 @@ public:
 	/*!
 	 * Destructor - closes dl if it was previously opened, deletes objects.
 	 */
-	virtual ~KernelFactory()
+	virtual ~ComponentFactory()
 	{
 		deactivate();
 
@@ -95,7 +96,7 @@ public:
 	}
 
 	/*!
-	 * Returns kernel name.
+	 * Returns component name.
 	 */
 	std::string& getName()
 	{
@@ -105,20 +106,20 @@ public:
 	/*!
 	 * Return pointer to created object
 	 */
-	Base::Kernel * create() {
+	Base::Component * create() {
 		return ret_object();
 	}
 
-	Base::Kernel * operator()() {
+	Base::Component * operator()() {
 		return ret_object();
 	}
 
 	/*!
-	 * Methods activates kernel - initializes its elements, etc.
+	 * Methods activates component - initializes its elements, etc.
 	 */
 	void activate()
 	{
-		LOG(TRACE) << "KernelFactory: Lazy activate!\n";
+		LOG(TRACE) << "ComponentFactory: Lazy activate!\n";
 		if (!panel) {
 			// Get task panel.
 			panel = ret_panel();
@@ -137,11 +138,11 @@ public:
 	}
 
 	/*!
-	 * Methods deactivates kernel - deletes its unused objects, etc.
+	 * Methods deactivates component - deletes its unused objects, etc.
 	 */
 	void deactivate()
 	{
-#ifdef DESTROY_DEACTIVED_KERNEL
+#ifdef DESTROY_DEACTIVED_COMPONENT
 		// Hide panel.
 		//	panel->hide();
 		// Destroy objects.
@@ -164,7 +165,7 @@ public:
 	}
 
 	/*!
-	 * Method tries to load kernel information from given dynamic library.
+	 * Method tries to load component information from given dynamic library.
 	 * \param filename_ shared library filename.
 	 */
 	bool lazyInitialize(string filename_)
@@ -178,25 +179,25 @@ public:
 
 			// Try to retrieve method returning type.
 			Base::returnType ret_type;
-			ret_type = lib.get<Base::kernelType>("returnType");
+			ret_type = lib.get<Base::componentType>("returnType");
 			if (!ret_type)
 				throw Common::FraDIAException(std::string("Can't find returnType() in library: ") + lib.error());
 			// Check type.
-			/*if (ret_type() != KERNEL_TYPE)
-				throw Common::FraDIAException(filename_ + string(" doesn't contain a kernel of given type."));*/
+			/*if (ret_type() != COMPONENT_TYPE)
+				throw Common::FraDIAException(filename_ + string(" doesn't contain a component of given type."));*/
 
-			// Try to retrieve method returning kernel name.
+			// Try to retrieve method returning component name.
 			Base::returnName ret_name;
 			ret_name = lib.get<std::string>("returnName");
 			if (!ret_name)
 				throw Common::FraDIAException(std::string("Can't find returnName() in library: ") + lib.error());
-			// Retrieve kernel name.
+			// Retrieve component name.
 			name = ret_name();
 
 			// The rest is "lazy" - retrieve only functors, leave pointers to processor and panel unset.
 
 			// Try to retrieve method returning processor.
-			ret_object = lib.get<Base::Kernel*>("returnKernel");
+			ret_object = lib.get<Base::Component*>("returnComponent");
 			if (!ret_object)
 				throw Common::FraDIAException(std::string("Can't load ret_object from library: ") + lib.error());
 
@@ -205,18 +206,18 @@ public:
 			if (!ret_panel)
 				throw Common::FraDIAException(std::string("Can't load ret_panel from library: ") + lib.error());
 
-			// Kernel initialized properly.
-			LOG(INFO) << "KernelFactory: Dynamic library " << filename_ << " containing " << name
-					<< " kernel was properly loaded.\n";
+			// Component initialized properly.
+			LOG(INFO) << "ComponentFactory: Dynamic library " << filename_ << " containing " << name
+					<< " component was properly loaded.\n";
 			return true;
 		} catch (Common::FraDIAException& ex) {
-			LOG(INFO) << "KernelFactory: " << ex.what() << "\n";
+			LOG(INFO) << "ComponentFactory: " << ex.what() << "\n";
 		}
 		return false;
 	}
 
 	/*!
-	 * Set config node associated to this kernel
+	 * Set config node associated to this component
 	 */
 	void setConfigNode(ptree * node) {
 		config_node = node;
@@ -226,4 +227,4 @@ public:
 
 }//: namespace Core
 
-#endif /* KERNELFACTORY_HPP_ */
+#endif /* COMPONENTFACTORY_HPP_ */

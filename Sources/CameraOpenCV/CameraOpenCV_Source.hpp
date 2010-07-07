@@ -9,8 +9,8 @@
 #ifndef CAMERAOPENCV_SOURCE_HPP_
 #define CAMERAOPENCV_SOURCE_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 
@@ -26,7 +26,7 @@ using namespace cv;
  * \class CameraOpenCV_Source
  * \brief Class responsible for retrieving images from movies.
  */
-class CameraOpenCV_Source : public Base::Kernel {
+class CameraOpenCV_Source : public Base::Component {
 
 public:
 	/*!
@@ -72,8 +72,8 @@ protected:
 }//: namespace Sources
 
 /*
- * Register source kernel.
+ * Register source component.
  */
-REGISTER_SOURCE_KERNEL("CameraOpenCV", Sources::CameraOpenCV::CameraOpenCV_Source, Common::Panel_Empty)
+REGISTER_SOURCE_COMPONENT("CameraOpenCV", Sources::CameraOpenCV::CameraOpenCV_Source, Common::Panel_Empty)
 
 #endif /* CAMERAOPENCV_SOURCE_HPP_ */

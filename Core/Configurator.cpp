@@ -10,9 +10,9 @@
 #include "FraDIAException.hpp"
 #include "Logger.hpp"
 
-#include "Kernel.hpp"
+#include "Component.hpp"
 
-#include "KernelManager.hpp"
+#include "ComponentManager.hpp"
 #include "ExecutorManager.hpp"
 #include "ConnectionManager.hpp"
 
@@ -65,7 +65,7 @@ void Configurator::loadConfiguration(std::string filename_)
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Components"));
-			loadKernels(tmp_node);
+			loadComponents(tmp_node);
 		}
 		catch(ptree_bad_path&) {
 			LOG(FATAL) << "No Components branch in configuration file!\n";
@@ -104,10 +104,10 @@ void Configurator::loadExecutors(const ptree * node) {
 	}
 }
 
-void Configurator::loadKernels(const ptree * node) {
+void Configurator::loadComponents(const ptree * node) {
 	LOG(INFO) << "Loading required components\n";
 
-	Base::Kernel * kern;
+	Base::Component * kern;
 	Executor * ex;
 	std::string name;
 	std::string type;
@@ -118,13 +118,13 @@ void Configurator::loadKernels(const ptree * node) {
 		type = tmp.get("<xmlattr>.type", "UNKNOWN");
 		thread = tmp.get("<xmlattr>.thread", "UNKNOWN");
 
-		kern = kernelManager->createKernel(name, type);
+		kern = componentManager->createComponent(name, type);
 
 		if (kern->getProperties())
 			kern->getProperties()->load(tmp);
 
 		ex = executorManager->getExecutor(thread);
-		ex->addKernel(name, kern);
+		ex->addComponent(name, kern);
 
 		component_executor[name] = thread;
 
@@ -135,7 +135,7 @@ void Configurator::loadKernels(const ptree * node) {
 void Configurator::loadEvents(const ptree * node) {
 	LOG(INFO) << "Connecting events\n";
 	std::string src, dst, name, caller, receiver;
-	Base::Kernel * src_k, * dst_k;
+	Base::Component * src_k, * dst_k;
 	Base::EventHandlerInterface * h;
 	Base::Event * e;
 	BOOST_FOREACH( TreeNode nd, *node ) {
@@ -160,8 +160,8 @@ void Configurator::loadEvents(const ptree * node) {
 		receiver = dst.substr(0, dst.find_first_of("."));
 		dst = dst.substr(dst.find_first_of(".")+1);
 
-		src_k = kernelManager->getKernel(caller);
-		dst_k = kernelManager->getKernel(receiver);
+		src_k = componentManager->getComponent(caller);
+		dst_k = componentManager->getComponent(receiver);
 
 		h = dst_k->getHandler(dst);
 		if (!h) {
@@ -189,7 +189,7 @@ void Configurator::loadEvents(const ptree * node) {
 void Configurator::loadConnections(const ptree * node) {
 	LOG(INFO) << "Connecting data streams\n";
 	std::string name, ds_name;
-	Base::Kernel * kern;
+	Base::Component * kern;
 	std::string type, con_name;
 	Base::Connection * con;
 	Base::DataStreamInterface * ds;
@@ -199,7 +199,7 @@ void Configurator::loadConnections(const ptree * node) {
 		ptree tmp = nd.second;
 		name = nd.first;
 
-		kern = kernelManager->getKernel(name);
+		kern = componentManager->getComponent(name);
 		BOOST_FOREACH( TreeNode ds_nd, tmp ) {
 			ds_name = ds_nd.first;
 			ptree ds_tmp = ds_nd.second;

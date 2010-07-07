@@ -18,7 +18,7 @@ namespace Core {
 
 using namespace boost::property_tree;
 
-class KernelManager;
+class ComponentManager;
 class ExecutorManager;
 class ConnectionManager;
 
@@ -46,7 +46,7 @@ private:
 	std::string configuration_filename;
 
 	ExecutorManager * executorManager;
-	KernelManager * kernelManager;
+	ComponentManager * componentManager;
 	ConnectionManager * connectionManager;
 
 	/*!
@@ -65,7 +65,7 @@ public:
 	void loadConfiguration(std::string filename);
 
 	void loadExecutors(const ptree * node);
-	void loadKernels(const ptree * node);
+	void loadComponents(const ptree * node);
 	void loadEvents(const ptree * node);
 	void loadConnections(const ptree * node);
 
@@ -73,8 +73,8 @@ public:
 		executorManager = em;
 	}
 
-	void setKernelManager(KernelManager * km) {
-		kernelManager = km;
+	void setComponentManager(ComponentManager * km) {
+		componentManager = km;
 	}
 
 	void setConnectionManager(ConnectionManager * cm) {

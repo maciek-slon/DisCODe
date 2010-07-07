@@ -14,7 +14,7 @@
 
 #include "DataProcessor.hpp"
 #include "DataSource.hpp"
-#include "Kernel_Aux.hpp"
+#include "Component_Aux.hpp"
 #include "Panel.hpp"
 #include "Singleton.hpp"
 #include "State.hpp"

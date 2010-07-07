@@ -13,9 +13,9 @@
 
 #include "FraDIAException.hpp"
 #include "ConnectionManager.hpp"
-#include "KernelManager.hpp"
+#include "ComponentManager.hpp"
 #include "ExecutorManager.hpp"
-#include "KernelFactory.hpp"
+#include "ComponentFactory.hpp"
 #include "Configurator.hpp"
 #include "Executor.hpp"
 #include "Logger.hpp"
@@ -133,16 +133,16 @@ int main(int argc, char* argv[])
 	// =========================================================================
 
 	Configurator configurator;
-	KernelManager km;
+	ComponentManager km;
 	ExecutorManager em;
 	ConnectionManager cm;
 
 	configurator.setExecutorManager(&em);
-	configurator.setKernelManager(&km);
+	configurator.setComponentManager(&km);
 	configurator.setConnectionManager(&cm);
 
 	try {
-		km.initializeKernelsList();
+		km.initializeComponentsList();
 
 		configurator.loadConfiguration(config_name);
 
@@ -150,8 +150,8 @@ int main(int argc, char* argv[])
 
 		Core::Executor * ex1;
 
-		Base::Kernel * src = km.getKernel("Camera");
-		Base::Kernel * proc = km.getKernel("Window");
+		Base::Component * src = km.getComponent("Camera");
+		Base::Component * proc = km.getComponent("Window");
 
 		ex1 = em.getExecutor("Thread1");
 
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
 		src->finish();
 		proc->finish();
 
-		km.deactivateKernelList();
+		km.deactivateComponentList();
 
 	}//: try
 

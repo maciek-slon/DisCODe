@@ -1,13 +1,13 @@
 /*!
- * \file Kernel.hpp
- * \brief Abstract interface for all kernels.
+ * \file Component.hpp
+ * \brief Abstract interface for all components.
  *
  * \author mstefanc
  * \date 2010-04-29
  */
 
-#ifndef KERNEL_HPP_
-#define KERNEL_HPP_
+#ifndef COMPONENT_HPP_
+#define COMPONENT_HPP_
 
 #include <map>
 #include <string>
@@ -24,7 +24,7 @@ namespace Base {
 class Props;
 
 /*!
- * \class Kernel
+ * \class Component
  * \brief Abstract interface class for all modules - data sources, processors etc.
  *
  * Every component should derive from this class, and override at least three methods:
@@ -35,7 +35,7 @@ class Props;
  * \author mstefanc
  * \date 2010-04-29
  */
-class Kernel
+class Component
 {
 	typedef std::pair<std::string, Event *> EventPair;
 	typedef std::pair<std::string, EventHandlerInterface *> HandlerPair;
@@ -45,7 +45,7 @@ public:
 	/*!
 	 * Base constructor
 	 */
-	Kernel()
+	Component()
 	{
 
 	}
@@ -53,7 +53,7 @@ public:
 	/*!
 	 * Virtual destructor
 	 */
-	virtual ~Kernel()
+	virtual ~Component()
 	{
 		// delete all events and handlers
 		BOOST_FOREACH(EventPair event, events) {
@@ -62,19 +62,19 @@ public:
 	}
 
 	/*!
-	 * Initialize kernel. For example for sources it would be opening streams or devices.
+	 * Initialize component. For example for sources it would be opening streams or devices.
 	 */
 	virtual bool initialize() = 0;
 
 	/*!
-	 * Finish kernel work. Here all resources should be released.
+	 * Finish component work. Here all resources should be released.
 	 */
 	virtual bool finish() = 0;
 
 	/*!
 	 * Single work step. For example sources would retrieve single frame,
 	 * processors would process one bunch of data.
-	 * Method called by kernels owner.
+	 * Method called by components owner.
 	 * \return execution time
 	 */
 	virtual int step() = 0;
@@ -154,7 +154,7 @@ public:
 	 * Should be overridden in derived classes containing specific properties.
 	 */
 	virtual Props * getProperties() {
-		// by default return NULL indicating, that given kernel has no properties
+		// by default return NULL indicating, that given component has no properties
 		return NULL;
 	}
 
@@ -210,4 +210,4 @@ private:
 }//: namespace Base
 
 
-#endif /* KERNEL_HPP_ */
+#endif /* COMPONENT_HPP_ */

@@ -8,8 +8,8 @@
 #ifndef OPENCVWND_PROCESSOR_HPP_
 #define OPENCVWND_PROCESSOR_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
@@ -51,7 +51,7 @@ struct WndProps : public Base::Props {
  * \class RGBtoHSV_Processor
  * \brief Example processor class.
  */
-class OpenCVWnd_Processor: public Base::Kernel
+class OpenCVWnd_Processor: public Base::Component
 {
 public:
 	/*!
@@ -108,9 +108,9 @@ protected:
 
 
 /*
- * Register processor kernel.
+ * Register processor component.
  */
-REGISTER_PROCESSOR_KERNEL("OpenCVWnd", Processors::OpenCVWnd::OpenCVWnd_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("OpenCVWnd", Processors::OpenCVWnd::OpenCVWnd_Processor, Common::Panel_Empty)
 
 #endif /* OPENCVWND_PROCESSOR_HPP_ */
 

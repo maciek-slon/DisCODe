@@ -8,8 +8,8 @@
 #ifndef BLOBEXTRACTOR_PROCESSOR_HPP_
 #define BLOBEXTRACTOR_PROCESSOR_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 
@@ -26,7 +26,7 @@ namespace BlobExtractor {
  * \brief Example processor class.
  * \author tkornuta
  */
-class BlobExtractor_Processor: public Base::Kernel
+class BlobExtractor_Processor: public Base::Component
 {
 public:
 	/*!
@@ -87,9 +87,9 @@ protected:
 
 
 /*
- * Register processor kernel.
+ * Register processor component.
  */
-REGISTER_PROCESSOR_KERNEL("BlobExtractor", Processors::BlobExtractor::BlobExtractor_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("BlobExtractor", Processors::BlobExtractor::BlobExtractor_Processor, Common::Panel_Empty)
 
 #endif /* BLOBEXTRACTOR_PROCESSOR_HPP_ */
 

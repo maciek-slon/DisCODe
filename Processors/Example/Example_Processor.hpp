@@ -8,8 +8,8 @@
 #ifndef EXAMPLE_PROCESSOR_HPP_
 #define EXAMPLE_PROCESSOR_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 
@@ -21,7 +21,7 @@ namespace Example {
  * \brief Example processor class.
  * \author tkornuta
  */
-class Example_Processor: public Base::Kernel
+class Example_Processor: public Base::Component
 {
 public:
 	/*!
@@ -67,9 +67,9 @@ protected:
 
 
 /*
- * Register processor kernel.
+ * Register processor component.
  */
-REGISTER_PROCESSOR_KERNEL("Example", Processors::Example::Example_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("Example", Processors::Example::Example_Processor, Common::Panel_Empty)
 
 #endif
 

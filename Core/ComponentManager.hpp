@@ -1,13 +1,13 @@
 /*!
- * \file KernelManager.hpp
- * \brief File containing the KernelManager class
+ * \file ComponentManager.hpp
+ * \brief File containing the ComponentManager class
  *
  * \author tkornuta
  * \date Feb 10, 2010
  */
 
-#ifndef KERNELMANAGER_HPP_
-#define KERNELMANAGER_HPP_
+#ifndef COMPONENTMANAGER_HPP_
+#define COMPONENTMANAGER_HPP_
 
 #include <string>
 #include <iostream>
@@ -20,12 +20,12 @@
 #include "boost/filesystem.hpp"
 using namespace boost::filesystem;
 
-#include "Kernel_Aux.hpp"
+#include "Component_Aux.hpp"
 #include "FraDIAException.hpp"
 #include "SharedLibraryCommon.hpp"
 #include "Utils.hpp"
 #include "Logger.hpp"
-#include "KernelFactory.hpp"
+#include "ComponentFactory.hpp"
 
 
 using namespace boost::property_tree;
@@ -35,47 +35,47 @@ using namespace std;
 namespace Core {
 
 /*!
- * \class KernelManager
+ * \class ComponentManager
  * \brief
  * \author tkornuta
  */
-class KernelManager
+class ComponentManager
 {
 protected:
 	/*!
-	 * List of kernel factories properly loaded by the manager.
+	 * List of component factories properly loaded by the manager.
 	 */
-	boost::ptr_map <string, Core::KernelFactory> kernel_factories;
+	boost::ptr_map <string, Core::ComponentFactory> component_factories;
 
 	/*!
-	 * List of created kernels
+	 * List of created components
 	 */
-	std::map <string, Base::Kernel*> kernels;
+	std::map <string, Base::Component*> components;
 
 public:
 	/*!
 	 * Constructor
 	 */
-	KernelManager()
+	ComponentManager()
 	{
-		LOG(TRACE) << "KernelManager: Hello private \n";
+		LOG(TRACE) << "ComponentManager: Hello private \n";
 	}
 
 	/*!
 	 * Public destructor.
 	 */
-	~KernelManager()
+	~ComponentManager()
 	{
-		LOG(TRACE) << "KernelManager: Goodbye public\n";
+		LOG(TRACE) << "ComponentManager: Goodbye public\n";
 	}
 
 	/*!
-	 * Method tries to create kernels from all shared libraries loaded from the . directory.
+	 * Method tries to create components from all shared libraries loaded from the . directory.
 	 */
-	void initializeKernelsList()
+	void initializeComponentsList()
 	{
 		// Retrieve node with default settings from configurator.
-		//ptree * tmp_node = CONFIGURATOR.returnManagerNode(KERNEL_TYPE);
+		//ptree * tmp_node = CONFIGURATOR.returnManagerNode(COMPONENT_TYPE);
 
 		// Get filenames.
 		vector <string> files = vector <string> ();
@@ -85,37 +85,37 @@ public:
 		if (files.size() == 0) {
 			// I think, that throwing here is much to brutal
 			//throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no dynamic libraries in the current directory."));
-			LOG(WARNING) << "KernelManager: There are no dynamic libraries in the current directory.\n";
+			LOG(WARNING) << "ComponentManager: There are no dynamic libraries in the current directory.\n";
 			return;
 		}
 
-		// Iterate through so names and add retrieved kernels to list.
+		// Iterate through so names and add retrieved components to list.
 		BOOST_FOREACH(string file, files)
 		{
-			// Create kernel empty "shell".
-			KernelFactory* k = new KernelFactory();
-			// Try to initialize kernel.
+			// Create component empty "shell".
+			ComponentFactory* k = new ComponentFactory();
+			// Try to initialize component.
 			if (k->lazyInitialize(file))
 			{
-				// Add kernel to list.
-				kernel_factories.insert(k->getName(), k);
+				// Add component to list.
+				component_factories.insert(k->getName(), k);
 			}
 			else
-				// Delete incorrect kernel.
+				// Delete incorrect component.
 				delete (k);
 		}//: FOREACH
 
-		// Check number of successfully loaded kernels.
-		//if (!kernel_factories.size())
+		// Check number of successfully loaded components.
+		//if (!component_factories.size())
 		//	throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no compatible dynamic libraries in current directory."));
-		LOG(NOTICE) << "Found " << kernel_factories.size() << " components\n";
+		LOG(NOTICE) << "Found " << component_factories.size() << " components\n";
 	}
 
 	/*!
 	 *
 	 */
-	void deactivateKernelList() {
-		kernel_factories.release();
+	void deactivateComponentList() {
+		component_factories.release();
 	}
 
 	/*!
@@ -124,20 +124,20 @@ public:
 	 * @param type
 	 * @return
 	 */
-	Base::Kernel* createKernel(const std::string & name, const std::string & type) {
-		if (kernels.count(name) > 0) {
+	Base::Component* createComponent(const std::string & name, const std::string & type) {
+		if (components.count(name) > 0) {
 			LOG(WARNING) << "Module " << name << " already created. Returning previous one.\n";
-			return kernels[name];
+			return components[name];
 		}
 
-		if (kernel_factories.count(type) < 1) {
+		if (component_factories.count(type) < 1) {
 			LOG(ERROR) << "Module type " << type << " not found!\n";
-			throw Common::FraDIAException("createKernel");
+			throw Common::FraDIAException("createComponent");
 		}
 
-		kernels[name] = kernel_factories[type].create();
+		components[name] = component_factories[type].create();
 		LOG(INFO) << name << " (" << type << ") component created\n";
-		return kernels[name];
+		return components[name];
 	}
 
 	/*!
@@ -145,13 +145,13 @@ public:
 	 * @param name
 	 * @return
 	 */
-	Base::Kernel * getKernel(const std::string & name) {
-		if (kernels.count(name) < 1) {
+	Base::Component * getComponent(const std::string & name) {
+		if (components.count(name) < 1) {
 			LOG(ERROR) << "Module " << name << " can't be found!\n";
-			throw Common::FraDIAException("getKernel");
+			throw Common::FraDIAException("getComponent");
 		}
 
-		return kernels[name];
+		return components[name];
 	}
 
 protected:
@@ -175,4 +175,4 @@ protected:
 
 }//: namespace Core
 
-#endif /* KERNELMANAGER_HPP_ */
+#endif /* COMPONENTMANAGER_HPP_ */

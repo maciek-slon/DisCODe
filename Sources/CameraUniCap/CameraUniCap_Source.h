@@ -8,8 +8,8 @@
 #ifndef CAMERAUNICAP_H_
 #define CAMERAUNICAP_H_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 
@@ -80,7 +80,7 @@ struct CameraUniCapProps : public Base::Props {
 	}
 };
 
-class CameraUniCap_Source: public Base::Kernel {
+class CameraUniCap_Source: public Base::Component {
 public:
 	/*!
 	 * Constructor. Sets ID and startup variables.
@@ -138,7 +138,7 @@ private:
 }
 
 /*
- * Register source kernel.
+ * Register source component.
  */
-REGISTER_SOURCE_KERNEL("CameraUniCap", Sources::CameraUniCap::CameraUniCap_Source, Common::Panel_Empty)
+REGISTER_SOURCE_COMPONENT("CameraUniCap", Sources::CameraUniCap::CameraUniCap_Source, Common::Panel_Empty)
 #endif /* CAMERAUNICAP_H_ */
