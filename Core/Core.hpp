@@ -1,7 +1,6 @@
 /*!
  * \file Core.hpp
  * \brief Documentation and include file for Core namespace.
- * Also contains documentation mainpage.
  * \author mstefanc
  * \date 26.04.2010
  */

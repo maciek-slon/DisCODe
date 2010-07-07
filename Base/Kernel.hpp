@@ -9,7 +9,6 @@
 #ifndef KERNEL_HPP_
 #define KERNEL_HPP_
 
-#include <iostream>
 #include <map>
 #include <string>
 
@@ -18,13 +17,21 @@
 #include "Event.hpp"
 #include "EventHandler.hpp"
 #include "DataStreamInterface.hpp"
-#include "Props.hpp"
+#include "Logger.hpp"
 
 namespace Base {
+
+class Props;
 
 /*!
  * \class Kernel
  * \brief Abstract interface class for all modules - data sources, processors etc.
+ *
+ * Every component should derive from this class, and override at least three methods:
+ * initialize, finish and step.
+ *
+ * For more information about creating components, see \ref dev_components "developing components"
+ * in \ref tutorials section.
  * \author mstefanc
  * \date 2010-04-29
  */
@@ -33,17 +40,18 @@ class Kernel
 	typedef std::pair<std::string, Event *> EventPair;
 	typedef std::pair<std::string, EventHandlerInterface *> HandlerPair;
 	typedef std::pair<std::string, DataStreamInterface *> StreamPair;
+
 public:
 	/*!
 	 * Base constructor
 	 */
 	Kernel()
 	{
-		std::cout << "Abstract Kernel: Hello\n";
+
 	}
 
 	/*!
-	 * Virtual destructor - empty.
+	 * Virtual destructor
 	 */
 	virtual ~Kernel()
 	{
@@ -51,8 +59,6 @@ public:
 		BOOST_FOREACH(EventPair event, events) {
 			delete event.second;
 		}
-
-		std::cout << "Abstract Kernel: Bye \n";
 	}
 
 	/*!
@@ -77,9 +83,9 @@ public:
 	 * Print list of all registered events.
 	 */
 	void printEvents() {
-		std::cout << "Registered events:\n";
+		LOG(INFO) << "Registered events:\n";
 		BOOST_FOREACH(EventPair event, events) {
-			std::cout << "\t" << event.first << "\n";
+			LOG(INFO) << "\t" << event.first << "\n";
 		}
 	}
 
@@ -100,9 +106,9 @@ public:
 	 * Print list of all registered event handlers.
 	 */
 	void printHandlers() {
-		std::cout << "Registered handlers:\n";
+		LOG(INFO) << "Registered handlers:\n";
 		BOOST_FOREACH(HandlerPair handler, handlers) {
-			std::cout << "\t" << handler.first << "\n";
+			LOG(INFO) << "\t" << handler.first << "\n";
 		}
 	}
 
@@ -123,9 +129,9 @@ public:
 	 * Print list of all registered data streams.
 	 */
 	void printStreams() {
-		std::cout << "Registered data streams:\n";
+		LOG(INFO) << "Registered data streams:\n";
 		BOOST_FOREACH(StreamPair stream, streams) {
-			std::cout << "\t" << stream.first << "\n";
+			LOG(INFO) << "\t" << stream.first << "\n";
 		}
 	}
 
@@ -143,7 +149,9 @@ public:
 	}
 
 	/*!
-	 * Return pointer to properties of this object
+	 * Return pointer to properties of this object.
+	 *
+	 * Should be overridden in derived classes containing specific properties.
 	 */
 	virtual Props * getProperties() {
 		// by default return NULL indicating, that given kernel has no properties

@@ -1,3 +1,4 @@
+// Tutorials page
 /*!
 \page tutorials Tutorials
 
@@ -9,13 +10,16 @@ or creating new sources or processors.
 - \subpage eclipseconfig : required plugins, importing repository, using cmake
 
 \section dev_components Developing new components:
-- \subpage newsource
+- \subpage newprocessor
 
 \section using_utils Utility library usage
 - \subpage using_logger
+*/
 
-
-
+// Eclipse configuration
+/// \todo translate to english
+/// \todo insert images
+/*!
 \page eclipseconfig Configurating Eclipse
 
 \section eclipse_needed Potrzebne aplikacje
@@ -23,7 +27,8 @@ or creating new sources or processors.
 - Eclipse CDT: http://www.eclipse.org/downloads/packages/eclipse-ide-cc-developers/galileosr2
 - CMake: http://www.cmake.org/
 - Plugin EGit do obsługi repozytoriów z poziomu Eclipse: http://download.eclipse.org/egit/updates
-- Ewentualnie dodatek do edycji plików CMake wewnątrz Eclipse (podświetlanie składni, podpowiedzi): http://cmakeed.sourceforge.net/eclipse/
+- Ewentualnie dodatek do edycji plików CMake wewnątrz Eclipse (podświetlanie składni,
+  podpowiedzi): http://cmakeed.sourceforge.net/eclipse/
 
 \section eclipse_import Import repozytorium do katalogu roboczego
 
@@ -44,7 +49,7 @@ Wszystkie pozostałe potrzebne pola powinny zostać uzupełnione automatycznie.
 : [[File:03.jpg]]
 
 
-* Uzupełniamy dane nowego projektu (folder, gdzie ma zostać utworzony) i \b{odznaczamy} opcję importu projektów
+* Uzupełniamy dane nowego projektu (folder, gdzie ma zostać utworzony) i \b odznaczamy opcję importu projektów
 : [[File:04.jpg]]
 
 Po tych operacjach dane z repozytorium zostaną sklonowane do naszego katalogu roboczego,
@@ -53,7 +58,7 @@ nie pojawi się jednak w eksploratorze projektów Eclipse'a. Trzeba go (znowu) z
 \section eclipse_import_proj Import projektu ze sklonowanego repozytorium do Eclipse
 
 * Wybieramy opcję tworzenia nowego projektu C++, zaznaczamy pusty projekt Makefile,
-oraz wybieramy "Other toolchain". \b{Ważne} - jako katalog do stworzenia projektu
+oraz wybieramy "Other toolchain". \b Ważne - jako katalog do stworzenia projektu
 podajemy katalog, do którego zaimportowaliśmy repozytorium (w poprzednim punkcie)
 : [[File:05.jpg]]
 
@@ -62,7 +67,7 @@ podajemy katalog, do którego zaimportowaliśmy repozytorium (w poprzednim punkc
 : [[File:06.jpg]]
 
 
-* W gałęzi dotyczącej budowania projektu C++ \b{odznaczamy} "Use default build command"
+* W gałęzi dotyczącej budowania projektu C++ \b odznaczamy \"Use default build command\"
 i wpisujemy własną komendę:
 \cons
 make -C ${ProjDirPath}/build
@@ -114,15 +119,63 @@ wybieramy polecenie Team->Share Project...
 
 W tym momencie wszystkie operacje związane z repozytorium mogą być wykonywane
 z poziomu Eclipse.
+*/
 
+// Creating image processor
+/*!
+\page newprocessor Creating image processor
 
-\page newsource Creating new Source
+\section Goals
 
+Goal of this tutorial is to show how simple it is to create components in
+FraDIA and to introduce key concepts related with component itself. To make
+example more practical we'll implement processor converting image between
+different colorspaces.
 
+\section newprocessor_template Component template
 
+All components (sources, data processors etc) have to derive from Base::Kernel
+class. It takes care of events and data streams management (what these are will
+be explained later on) as well as defines common interface for all components.
 
+So, let's do it. Code first, then explanation.
+\code
+#include "Kernel_Aux.hpp"                     // 1
 
+namespace Processors {                        // 2
+namespace ColorConv {
 
+class ColorConv : public Base::Kernel {       // 3
+public:
+	bool initialize() {                       // 4
+		return true;
+	}
+
+	bool finish() {                           // 5
+		return true;
+	}
+
+	int step() {                              // 6
+		return 0;
+	}
+};
+
+} //: namespace ColorConv
+} //: namespace Processors
+\endcode
+
+And here's explanation:
+
+-# First of all we need some includes. Kernel_Aux.hpp is main include file for
+   every component. It includes all necessary headers and contains some useful
+   macros, which we'll be using.
+-# In order to avoid namespace pollution with our classes and functions (we can
+   have many helper objects) it's required to put whole stuff into it's own namespace.
+
+*/
+
+// Using logger
+/*!
 \page using_logger Using Logger class
 
 \section logger_intro Introduction
@@ -150,9 +203,10 @@ looking color text for console output.
 \subsection logger_examples_1 Simple logging
 
 \includelineno logger_example_1.cpp
+*/
 
-
-
+// Git intro
+/*!
 \page git_intro Getting started with Git and GitHub
 
 \section git_install Git install

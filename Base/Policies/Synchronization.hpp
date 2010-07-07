@@ -16,16 +16,15 @@ namespace Base {
 /*!
  * Synchronization policies
  *
- * Every buffering policy should have form:
+ * Every synchronization policy should have form:
  * \code
- * template <class T>
  * class PolicyName {
- * protected:
- *   // store data in some internal container
- *   void store(const T & t);
+ * public:
+ *   // enter critical section (lock resource)
+ *   void lock();
  *
- *   // retrieve data from internal container
- *   T retrieve();
+ *   // exit critical section (release resource)
+ *   void unlock();
  * };
  * \endcode
  */

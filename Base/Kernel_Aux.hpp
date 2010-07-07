@@ -16,7 +16,6 @@
 
 namespace Base {
 
-
 /*!
  * \def DESTROY_DEACTIVED_KERNEL
  * Destroys objects during kernel deactivation.
@@ -31,7 +30,6 @@ enum kernelType
 {
 	KERNEL_SOURCE, KERNEL_PROCESSOR
 };
-
 
 /*!
  * \typedef returnType
@@ -60,7 +58,6 @@ typedef Base::Kernel* (*returnKernel)(void);
  * \author tkornuta
  */
 typedef Base::Panel* (*returnPanel)(void);
-
 
 }//: namespace Base
 
@@ -97,7 +94,6 @@ extern "C" { \
     return new PANEL_CLASS_NAME(); \
   } \
 } /* extern "C" */
-
 
 /*!
  * Use this macro to register a task kernel. The must be exactly only one macro call for every kernel (shared library).
