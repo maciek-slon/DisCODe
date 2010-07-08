@@ -96,7 +96,8 @@ public:
 		if (!owner)
 			throw Common::FraDIAException("Unassigned event handler called.");
 
-		(owner->*method)();
+		if (owner->running())
+			(owner->*method)();
 	}
 
 protected:

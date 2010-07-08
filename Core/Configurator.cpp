@@ -129,6 +129,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 		LOG(TRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
 
 		kern = componentManager->createComponent(name, type);
+		kern->initialize();
 
 		if (kern->getProperties())
 			kern->getProperties()->load(tmp);

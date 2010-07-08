@@ -183,11 +183,14 @@ int main(int argc, char* argv[])
 	configurator.setComponentManager(&km);
 	configurator.setConnectionManager(&cm);
 
-//	try {
+	try {
+		Task task;
+
 		km.initializeComponentsList();
 
-		configurator.loadConfiguration(task_name);
-
+		task = configurator.loadConfiguration(task_name);
+		task["S1"].start();
+		task["S2"].start();
 		// Test code.
 
 		Core::Executor * ex1;
@@ -208,7 +211,11 @@ int main(int argc, char* argv[])
 		ex1->finish();
 
 		// wait for both threads to finish execution
-		ex1->wait(1000);
+		ex1->wait(10000);
+
+
+		task["S1"].stop();
+		task["S2"].stop();
 
 		// End of test code.
 
@@ -217,18 +224,14 @@ int main(int argc, char* argv[])
 
 		km.deactivateComponentList();
 
-	//}//: try
+	}//: try
 
 	// =========================================================================
 	// === Exception handling
 	// =========================================================================
 
-	/*catch (exception& ex){
-		cout << "Fatal error:\n";
-		// If required print exception description.
-		//if (!strcmp(ex.what(), ""))
-			LOG(FATAL) << ex.what() << "\n";
-
+	catch (exception& ex) {
+		LOG(FATAL) << ex.what() << "\n";
 		exit(EXIT_FAILURE);
 	}
 	catch (const char * ex) {
@@ -238,5 +241,5 @@ int main(int argc, char* argv[])
 	catch (...) {
 		LOG(FATAL) << "Unhandled exception.\n";
 		exit(EXIT_FAILURE);
-	}//: catch*/
+	}//: catch
 }
