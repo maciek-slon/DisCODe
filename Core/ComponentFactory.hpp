@@ -106,12 +106,14 @@ public:
 	/*!
 	 * Return pointer to created object
 	 */
-	Base::Component * create() {
-		return ret_object();
+	Base::Component * create(const std::string & name) {
+		Base::Component * ret = ret_object();
+		ret->setName(name);
+		return ret;
 	}
 
-	Base::Component * operator()() {
-		return ret_object();
+	Base::Component * operator()(const std::string & name) {
+		return create(name);
 	}
 
 	/*!

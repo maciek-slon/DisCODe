@@ -34,7 +34,7 @@ Configurator::~Configurator()
 
 }
 
-void Configurator::loadConfiguration(std::string filename_)
+Task Configurator::loadConfiguration(std::string filename_)
 {
 	// Set filename pointer to given one.
 	configuration_filename = filename_;
@@ -47,11 +47,14 @@ void Configurator::loadConfiguration(std::string filename_)
 		throw("loadConfiguration");
 	}
 	else {
+		Task task;
+
 		// Load and parse configuration from file.
 		try {
 			read_xml(configuration_filename, configuration);
 		}
 		catch(xml_parser_error&) {
+			LOG(FATAL) << "Configuration: Couldn't parse '" << configuration_filename << "' file.\n";
 			throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
 		}
 
@@ -65,7 +68,7 @@ void Configurator::loadConfiguration(std::string filename_)
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Components"));
-			loadComponents(tmp_node);
+			loadComponents(tmp_node, task);
 		}
 		catch(ptree_bad_path&) {
 			LOG(FATAL) << "No Components branch in configuration file!\n";
@@ -89,6 +92,7 @@ void Configurator::loadConfiguration(std::string filename_)
 
 
 		LOG(INFO) << "Configuration: File \'" << configuration_filename << "\' loaded.\n";
+		return task;
 	}//: else
 }
 
@@ -104,7 +108,7 @@ void Configurator::loadExecutors(const ptree * node) {
 	}
 }
 
-void Configurator::loadComponents(const ptree * node) {
+void Configurator::loadComponents(const ptree * node, Task & task) {
 	LOG(INFO) << "Loading required components\n";
 
 	Base::Component * kern;
@@ -112,11 +116,17 @@ void Configurator::loadComponents(const ptree * node) {
 	std::string name;
 	std::string type;
 	std::string thread;
+	std::string group;
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
 		name = nd.first;
+		if (name == "<xmlcomment>") continue;
+
 		type = tmp.get("<xmlattr>.type", "UNKNOWN");
 		thread = tmp.get("<xmlattr>.thread", "UNKNOWN");
+		group = tmp.get("<xmlattr>.group", "DEFAULT");
+
+		LOG(TRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
 
 		kern = componentManager->createComponent(name, type);
 
@@ -126,9 +136,11 @@ void Configurator::loadComponents(const ptree * node) {
 		ex = executorManager->getExecutor(thread);
 		ex->addComponent(name, kern);
 
-		component_executor[name] = thread;
+		LOG(TRACE) << "Adding component " << name << " to subtask " << group << "\n";
 
-		kern->initialize();
+		task[group]+=kern;
+
+		component_executor[name] = thread;
 	}
 }
 
@@ -141,6 +153,7 @@ void Configurator::loadEvents(const ptree * node) {
 	BOOST_FOREACH( TreeNode nd, *node ) {
 		ptree tmp = nd.second;
 		name = nd.first;
+		if (name == "<xmlcomment>") continue;
 
 		src = tmp.get("<xmlattr>.source", "");
 		if (src == "") {
@@ -165,7 +178,7 @@ void Configurator::loadEvents(const ptree * node) {
 
 		h = dst_k->getHandler(dst);
 		if (!h) {
-			LOG(ERROR) << "Component " << receiver << " has no event hadler named '" << dst << "'!\n";
+			LOG(ERROR) << "Component " << receiver << " has no event handler named '" << dst << "'!\n";
 			continue;
 		}
 
@@ -198,6 +211,7 @@ void Configurator::loadConnections(const ptree * node) {
 	BOOST_FOREACH( TreeNode nd, *node ) {
 		ptree tmp = nd.second;
 		name = nd.first;
+		if (name == "<xmlcomment>") continue;
 
 		kern = componentManager->getComponent(name);
 		BOOST_FOREACH( TreeNode ds_nd, tmp ) {

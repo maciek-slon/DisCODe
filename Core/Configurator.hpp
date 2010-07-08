@@ -9,6 +9,8 @@
 #ifndef CONFIGURATOR_HPP_
 #define CONFIGURATOR_HPP_
 
+#include "Task.hpp"
+
 #include <boost/property_tree/ptree.hpp>
 
 #include <string>
@@ -62,10 +64,10 @@ public:
 	/*!
 	 * Loads configuration from xml file.
 	 */
-	void loadConfiguration(std::string filename);
+	Task loadConfiguration(std::string filename);
 
 	void loadExecutors(const ptree * node);
-	void loadComponents(const ptree * node);
+	void loadComponents(const ptree * node, Task & task);
 	void loadEvents(const ptree * node);
 	void loadConnections(const ptree * node);
 

@@ -99,27 +99,12 @@ public:
 	/*!
 	 * Constructor.
 	 */
-	CvThreshold_Processor();
+	CvThreshold_Processor(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
 	virtual ~CvThreshold_Processor();
-
-	/*!
-	 * Processor initialization
-	 */
-	bool initialize();
-
-	/*!
-	 * Release all resources
-	 */
-	bool finish();
-
-	/*!
-	 * Processes given frame.
-	 */
-	int step();
 
 	/*!
 	 * Return window properties
@@ -130,6 +115,33 @@ public:
 	}
 
 protected:
+
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
+
 	/*!
 	 * Event handler function.
 	 */

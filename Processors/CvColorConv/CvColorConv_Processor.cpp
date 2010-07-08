@@ -14,7 +14,7 @@
 namespace Processors {
 namespace CvColorConv {
 
-CvColorConv_Processor::CvColorConv_Processor()
+CvColorConv_Processor::CvColorConv_Processor(const std::string & name) : Base::Component(name)
 {
 	LOG(TRACE) << "Hello CvThreshold_Processor\n";
 }
@@ -24,7 +24,7 @@ CvColorConv_Processor::~CvColorConv_Processor()
 	LOG(TRACE) << "Good bye CvThreshold_Processor\n";
 }
 
-bool CvColorConv_Processor::initialize()
+bool CvColorConv_Processor::onInit()
 {
 	LOG(TRACE) << "CvThreshold_Processor::initialize\n";
 
@@ -40,17 +40,27 @@ bool CvColorConv_Processor::initialize()
 	return true;
 }
 
-bool CvColorConv_Processor::finish()
+bool CvColorConv_Processor::onFinish()
 {
 	LOG(TRACE) << "CvThreshold_Processor::finish\n";
 
 	return true;
 }
 
-int CvColorConv_Processor::step()
+bool CvColorConv_Processor::onStep()
 {
 	LOG(TRACE) << "CvThreshold_Processor::step\n";
-	return 0;
+	return true;
+}
+
+bool CvColorConv_Processor::onStop()
+{
+	return true;
+}
+
+bool CvColorConv_Processor::onStart()
+{
+	return true;
 }
 
 void CvColorConv_Processor::onNewImage()

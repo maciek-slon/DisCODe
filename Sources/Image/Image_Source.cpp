@@ -12,16 +12,16 @@
 namespace Sources {
 namespace Image {
 
-Image_Source::Image_Source() {
-	cout << "Hello Image_Source from dl\n";
+Image_Source::Image_Source(const std::string & name) : Base::Component(name) {
+	LOG(TRACE) << "Hello Image_Source from dl\n";
 }
 
 Image_Source::~Image_Source() {
-	cout << "Goodbye Image_Source from dl\n";
+	LOG(TRACE) << "Goodbye Image_Source from dl\n";
 }
 
-bool Image_Source::initialize() {
-	cout << "Image_Source::initialize\n";
+bool Image_Source::onInit() {
+	LOG(TRACE) << "Image_Source::initialize\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_delay", &out_delay);
@@ -29,20 +29,26 @@ bool Image_Source::initialize() {
 	return true;
 }
 
-
-bool Image_Source::finish() {
-	cout << "Image_Source::finish\n";
+bool Image_Source::onFinish() {
+	LOG(TRACE) << "Image_Source::finish\n";
 
 	return true;
 }
 
-
-int Image_Source::step() {
+bool Image_Source::onStep() {
 	int del = rand()%20 * 100;
-	cout << "Image_Source::step -> del = " << del << endl;
+	LOG(TRACE) << "Image_Source::step -> del = " << del << "\n";
 	out_delay.write(del);
 	newImage->raise();
-	return 0;
+	return true;
+}
+
+bool Image_Source::onStart() {
+	return true;
+}
+
+bool Image_Source::onStop() {
+	return true;
 }
 
 

@@ -14,7 +14,7 @@
 namespace Processors {
 namespace CvThreshold {
 
-CvThreshold_Processor::CvThreshold_Processor()
+CvThreshold_Processor::CvThreshold_Processor(const std::string & name) : Base::Component(name)
 {
 	LOG(TRACE) << "Hello CvThreshold_Processor\n";
 }
@@ -24,7 +24,7 @@ CvThreshold_Processor::~CvThreshold_Processor()
 	LOG(TRACE) << "Good bye CvThreshold_Processor\n";
 }
 
-bool CvThreshold_Processor::initialize()
+bool CvThreshold_Processor::onInit()
 {
 	LOG(TRACE) << "CvThreshold_Processor::initialize\n";
 
@@ -40,17 +40,27 @@ bool CvThreshold_Processor::initialize()
 	return true;
 }
 
-bool CvThreshold_Processor::finish()
+bool CvThreshold_Processor::onFinish()
 {
 	LOG(TRACE) << "CvThreshold_Processor::finish\n";
 
 	return true;
 }
 
-int CvThreshold_Processor::step()
+bool CvThreshold_Processor::onStep()
 {
 	LOG(TRACE) << "CvThreshold_Processor::step\n";
-	return 0;
+	return true;
+}
+
+bool CvThreshold_Processor::onStop()
+{
+	return true;
+}
+
+bool CvThreshold_Processor::onStart()
+{
+	return true;
 }
 
 void CvThreshold_Processor::onNewImage()

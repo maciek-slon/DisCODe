@@ -24,20 +24,16 @@
 namespace Processors {
 namespace BlobExtractor {
 
-BlobExtractor_Processor::BlobExtractor_Processor() {
-	cout<<"Hello BlobExtractor_Processor\n";
-
-	initialize();
+BlobExtractor_Processor::BlobExtractor_Processor(const std::string & name) : Base::Component(name) {
+	LOG(TRACE)<<"Hello BlobExtractor_Processor\n";
 }
 
 BlobExtractor_Processor::~BlobExtractor_Processor() {
-	finish();
-
-	cout<<"Good bye BlobExtractor_Processor\n";
+	LOG(TRACE)<<"Good bye BlobExtractor_Processor\n";
 }
 
-bool BlobExtractor_Processor::initialize() {
-	std::cout << "BlobExtractor_Processor::initialize\n";
+bool BlobExtractor_Processor::onInit() {
+	LOG(TRACE) << "BlobExtractor_Processor::initialize\n";
 
 	newBlobs = registerEvent("newBlobs");
 
@@ -55,16 +51,26 @@ bool BlobExtractor_Processor::initialize() {
 	return true;
 }
 
-bool BlobExtractor_Processor::finish() {
+bool BlobExtractor_Processor::onFinish() {
 	LOG(TRACE) << "BlobExtractor_Processor::finish\n";
 
 	return true;
 }
 
-int BlobExtractor_Processor::step()
+bool BlobExtractor_Processor::onStep()
 {
 	LOG(TRACE) << "BlobExtractor_Processor::step\n";
-	return 0;
+	return true;
+}
+
+bool BlobExtractor_Processor::onStop()
+{
+	return true;
+}
+
+bool BlobExtractor_Processor::onStart()
+{
+	return true;
 }
 
 void BlobExtractor_Processor::onNewImage() {

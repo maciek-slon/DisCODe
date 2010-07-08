@@ -33,27 +33,12 @@ public:
 	/*!
 	 * Constructor. Sets ID and startup variables.
 	 */
-	CameraV4L_Source();
+	CameraV4L_Source(const std::string & name = "");
 
 	/*!
 	 * Destructor.
 	 */
 	virtual ~CameraV4L_Source();
-
-	/*!
-	 * Connects source to given device.
-	 */
-	bool initialize();
-
-	/*!
-	 * Disconnect source from device, closes streams, etc.
-	 */
-	bool finish();
-
-	/*!
-	 * Retrieves data from device.
-	 */
-	int step();
 
 	/*!
 	 * Return movie properties
@@ -63,6 +48,30 @@ public:
 	}
 
 protected:
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
 
 private:
 	/// pointer to specific camera object (V4L or V4L2, depending on hardware support)

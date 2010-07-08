@@ -18,7 +18,7 @@ namespace CameraUniCap {
 #define MAX_FORMATS 64
 #define MAX_PROPERTIES 64
 
-CameraUniCap_Source::CameraUniCap_Source() {
+CameraUniCap_Source::CameraUniCap_Source(const std::string & name) : Base::Component(name) {
 
 }
 
@@ -26,7 +26,7 @@ CameraUniCap_Source::~CameraUniCap_Source() {
 
 }
 
-bool CameraUniCap_Source::initialize() {
+bool CameraUniCap_Source::onInit() {
 
 	unicap_device_t devices[MAX_DEVICES];
 	unicap_format_t formats[MAX_FORMATS];
@@ -227,7 +227,7 @@ bool CameraUniCap_Source::initialize() {
 	return true;
 }
 
-bool CameraUniCap_Source::finish() {
+bool CameraUniCap_Source::onFinish() {
 	LOG(INFO) << "CameraOpenCV_Source::finish()\n";
 	/*
 	 Stop the device
@@ -251,9 +251,16 @@ bool CameraUniCap_Source::finish() {
 
 }
 
-int CameraUniCap_Source::step() {
+bool CameraUniCap_Source::onStep() {
+	return true;
+}
 
-	return 0;
+bool CameraUniCap_Source::onStart() {
+	return true;
+}
+
+bool CameraUniCap_Source::onStop() {
+	return true;
 }
 
 void CameraUniCap_Source::new_frame_cb(unicap_event_t event,

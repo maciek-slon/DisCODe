@@ -85,33 +85,45 @@ public:
 	/*!
 	 * Constructor. Sets ID and startup variables.
 	 */
-	CameraUniCap_Source();
+	CameraUniCap_Source(const std::string & name = "");
 
 	/*!
 	 * Destructor.
 	 */
 	virtual ~CameraUniCap_Source();
 
-	/*!
-	 * Connects source to given device.
-	 */
-	bool initialize();
-
-	/*!
-	 * Disconnect source from device, closes streams, etc.
-	 */
-	bool finish();
-
-	/*!
-	 * Retrieves data from device.
-	 */
-	int step();
-
 	Base::Props * getProperties() {
 		return &props;
 	}
 
 protected:
+
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
+
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 

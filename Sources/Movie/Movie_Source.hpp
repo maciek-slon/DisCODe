@@ -56,27 +56,12 @@ public:
 	/*!
 	 * Constructor. Sets ID and startup variables.
 	 */
-	Movie_Source();
+	Movie_Source(const std::string & name = "");
 
 	/*!
 	 * Destructor.
 	 */
 	virtual ~Movie_Source();
-
-	/*!
-	 * Connects source to given device.
-	 */
-	bool initialize();
-
-	/*!
-	 * Disconnect source from device, closes streams, etc.
-	 */
-	bool finish();
-
-	/*!
-	 * Retrieves data from device.
-	 */
-	int step();
 
 	/*!
 	 * Return movie properties
@@ -86,6 +71,31 @@ public:
 	}
 
 protected:
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 

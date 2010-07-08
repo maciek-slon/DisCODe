@@ -255,27 +255,12 @@ public:
 	/*!
 	 * Constructor.
 	 */
-	CvColorConv_Processor();
+	CvColorConv_Processor(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
 	virtual ~CvColorConv_Processor();
-
-	/*!
-	 * Processor initialization
-	 */
-	bool initialize();
-
-	/*!
-	 * Release all resources
-	 */
-	bool finish();
-
-	/*!
-	 * Processes given frame.
-	 */
-	int step();
 
 	/*!
 	 * Return window properties
@@ -286,6 +271,32 @@ public:
 	}
 
 protected:
+
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
 	/*!
 	 * Event handler function.
 	 */

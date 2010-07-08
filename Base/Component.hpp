@@ -18,6 +18,7 @@
 #include "EventHandler.hpp"
 #include "DataStreamInterface.hpp"
 #include "Logger.hpp"
+#include "Timer.hpp"
 
 namespace Base {
 
@@ -43,11 +44,25 @@ class Component
 
 public:
 	/*!
+	 * Components state
+	 */
+	enum State {
+		Running,         ///< Component is running
+		Ready,           ///< Component is stopped, ready to run
+		Unready          ///< Component hasn't been initialized or has been finished
+	};
+
+	/*!
 	 * Base constructor
 	 */
-	Component()
+	//                    TUTAJ MIAŁEM name(name), i godzinę szukałem błędu :/
+	Component(const std::string & n) : name(n), state(Unready)
 	{
 
+	}
+
+	void setName(const std::string & n) {
+		name = n;
 	}
 
 	/*!
@@ -64,12 +79,98 @@ public:
 	/*!
 	 * Initialize component. For example for sources it would be opening streams or devices.
 	 */
-	virtual bool initialize() = 0;
+	bool initialize() {
+		if (state == Unready) {
+			if (onInit()) {
+				state = Ready;
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		if (state == Ready) {
+			LOG(WARNING) << name << " already initialized.\n";
+			return true;
+		}
+
+		if (state == Running) {
+			LOG(WARNING) << name << " already initialized and running.\n";
+			return true;
+		}
+	}
+
+	/*!
+	 * Start component
+	 */
+	bool start() {
+		if (state == Ready) {
+			if (onStart()) {
+				state = Running;
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		if (state == Running) {
+			LOG(WARNING) << name << " already running.\n";
+			return true;
+		}
+
+		if (state == Unready) {
+			LOG(WARNING) << name << " is not ready to run.\n";
+			return false;
+		}
+	}
+
+	/*!
+	 * Stop component
+	 */
+	bool stop() {
+		if (state == Running) {
+			if (onFinish()) {
+				state = Ready;
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		if (state == Ready) {
+			LOG(WARNING) << name << " already stopped.\n";
+			return true;
+		}
+
+		if (state == Unready) {
+			LOG(WARNING) << name << " is not initialized.\n";
+			return false;
+		}
+	}
 
 	/*!
 	 * Finish component work. Here all resources should be released.
 	 */
-	virtual bool finish() = 0;
+	bool finish() {
+		if (state == Ready) {
+			if (onFinish()) {
+				state = Unready;
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		if (state == Unready) {
+			LOG(WARNING) << name << " is already finished.\n";
+			return true;
+		}
+
+		if (state == Running) {
+			LOG(WARNING) << name << " must be stopped first.\n";
+			return false;
+		}
+	}
 
 	/*!
 	 * Single work step. For example sources would retrieve single frame,
@@ -77,7 +178,17 @@ public:
 	 * Method called by components owner.
 	 * \return execution time
 	 */
-	virtual int step() = 0;
+	double step() {
+		Common::Timer timer;
+		if (state == Running) {
+			timer.restart();
+			onStep();
+			return timer.elapsed();
+		} else {
+			LOG(WARNING) << name << " is not running. Step can't be done.\n";
+			return 0;
+		}
+	}
 
 	/*!
 	 * Print list of all registered events.
@@ -158,7 +269,52 @@ public:
 		return NULL;
 	}
 
+	/*!
+	 * Check, if component is running
+	 */
+	bool running() {
+		return state == State::Running;
+	}
+
+	/*!
+	 * Check, if component is initialized
+	 */
+	bool initialized() {
+		return state == State::Ready;
+	}
+
 protected:
+	/*!
+	 * Method called when component is started
+	 * \return true on success
+	 */
+	virtual bool onStart() = 0;
+
+	/*!
+	 * Method called when component is stopped
+	 * \return true on success
+	 */
+	virtual bool onStop() = 0;
+
+	/*!
+	 * Method called when component is initialized
+	 * \return true on success
+	 */
+	virtual bool onInit() = 0;
+
+	/*!
+	 * Method called when component is finished
+	 * \return true on success
+	 */
+	virtual bool onFinish() = 0;
+
+	/*!
+	 * Method called when step is called
+	 * \return true on success
+	 */
+	virtual bool onStep() = 0;
+
+
 	/*!
 	 * Register new event under specified name.
 	 * \param name event name
@@ -196,6 +352,12 @@ protected:
 	}
 
 private:
+	/// name of particular object
+	std::string name;
+
+	/// state of component
+	State state;
+
 	/// all registered events
 	std::map<std::string, Event *> events;
 

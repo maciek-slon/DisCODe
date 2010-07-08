@@ -135,7 +135,7 @@ public:
 			throw Common::FraDIAException("createComponent");
 		}
 
-		components[name] = component_factories[type].create();
+		components[name] = component_factories[type].create(name);
 		LOG(INFO) << name << " (" << type << ") component created\n";
 		return components[name];
 	}
