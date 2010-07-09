@@ -11,6 +11,7 @@
 #include <map>
 
 #include "Subtask.hpp"
+#include "Executor.hpp"
 
 namespace Core {
 
@@ -20,6 +21,24 @@ namespace Core {
  */
 class Task {
 public:
+	/*!
+	 * Start all threads of execution.
+	 */
+	bool start();
+
+	/*!
+	 * Stop all threads of execution
+	 */
+	bool stop();
+
+	/*!
+	 * Prepare task to unload.
+	 *
+	 * All components are stopped and finished, threads are terminated.
+	 * Task can't be started again after calling finish.
+	 */
+	bool finish();
+
 	/*!
 	 * Get subtask by name
 	 * \param name name of subtask
@@ -31,7 +50,15 @@ public:
 	}
 
 private:
+	/// All subtasks
 	std::map<std::string, Subtask> subtasks;
+
+	/// All executors in task
+	std::map<std::string, Executor*> executors;
+
+	typedef std::pair<std::string, Executor*> ExecutorPair;
+
+	typedef std::pair<std::string, Subtask> SubtaskPair;
 };
 
 } //: namespace Core

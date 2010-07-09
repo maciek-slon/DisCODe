@@ -26,13 +26,17 @@ namespace Core {
  * \class Executor
  * \brief Executor object holds \ref Base::Component "components" and implements message queue.
  *
- * Executor is only interfave for concrete implementations. These implenetations
+ * Executor is only interface for concrete implementations. These implementations
  * can differ in the way components are managed etc.
  *
  * \author mstefanc
  */
 class Executor : public Common::Thread, public Base::Props {
 public:
+
+	Executor() : running(false), paused(true) {
+	}
+
 	/*!
 	 * Add new Component to Executor.
 	 * \param name name of component
@@ -62,6 +66,18 @@ public:
 		return handler;
 	}
 
+	void restart() {
+		paused = false;
+		if (!running)
+			start();
+
+	}
+
+	void pause() {
+		paused = true;
+	}
+
+
 	/*!
 	 * Finish main Executor loop thus ending associated thread.
 	 */
@@ -81,6 +97,9 @@ protected:
 
 	/// Flag indicating that executor is running
 	volatile bool running;
+
+	/// Flag indicating that executor is paused
+	volatile bool paused;
 
 	/// FIFO queue for incoming events
 	std::queue<Base::EventHandlerInterface *> queue;
@@ -109,9 +128,10 @@ protected:
 	 */
 	void run() {
 		running = true;
+		paused = false;
 
 		if (components.count(mk_name) < 1) {
-			LOG(ERROR) << "Component " << mk_name << " is not executed in this thread.\n";
+			LOG(ERROR) << "Component " << mk_name << " is not being executed in this thread.\n";
 			main_component = NULL;
 			return;
 		} else {
@@ -119,22 +139,29 @@ protected:
 		}
 
 		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+			}
 
 			while (!queue.empty()) {
 				queue.front()->execute();
 				queue.pop();
 			}
 
-			// check number of iterations
-			if (max_iter >= 0) {
-				--max_iter;
-				if (max_iter < 0)
-					break;
-			}
-
 			// check if there is any component to execute
-			if (main_component)
+			if (main_component && main_component->running()) {
+				// check number of iterations
+				if (max_iter >= 0) {
+					--max_iter;
+					if (max_iter < 0)
+						break;
+				}
+
 				main_component->step();
+			} else {
+				Common::Thread::msleep(50);
+			}
 
 			yield();
 		}
@@ -174,6 +201,10 @@ protected:
 		running = true;
 
 		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+			}
 
 			// here should be mutex, and will be ;-)
 			while (queue.empty()) {
@@ -227,6 +258,10 @@ protected:
 		}
 
 		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+			}
 
 			while (!queue.empty()) {
 				queue.front()->execute();
@@ -236,16 +271,19 @@ protected:
 			if (timer.elapsed() > interval) {
 				timer.restart();
 
-				// check number of iterations
-				if (max_iter >= 0) {
-					--max_iter;
-					if (max_iter < 0)
-						break;
-				}
-
 				// check if there is any component to execute
-				if (main_component)
+				if (main_component && main_component->running()) {
+					// check number of iterations
+					if (max_iter >= 0) {
+						--max_iter;
+						if (max_iter < 0)
+							break;
+					}
+
 					main_component->step();
+				} else {
+					Common::Thread::msleep(50);
+				}
 			} else {
 				Common::Thread::msleep(100*interval);
 			}
