@@ -98,6 +98,8 @@ public:
 			LOG(WARNING) << name << " already initialized and running.\n";
 			return true;
 		}
+
+		return false;
 	}
 
 	/*!
@@ -122,6 +124,8 @@ public:
 			LOG(WARNING) << name << " is not ready to run.\n";
 			return false;
 		}
+
+		return false;
 	}
 
 	/*!
@@ -146,6 +150,8 @@ public:
 			LOG(WARNING) << name << " is not initialized.\n";
 			return false;
 		}
+
+		return false;
 	}
 
 	/*!
@@ -170,6 +176,8 @@ public:
 			LOG(WARNING) << name << " must be stopped first.\n";
 			return false;
 		}
+
+		return false;
 	}
 
 	/*!

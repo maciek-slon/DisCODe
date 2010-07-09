@@ -51,7 +51,7 @@ typedef std::string (*returnName)(void);
  * \brief Functor used for retrieving component object (source, processor, ...) from SO.
  * \author mstefanc
  */
-typedef Base::Component* (*returnComponent)(void);
+typedef Base::Component* (*returnComponent)(const std::string & name);
 
 /*!
  * \typedef returnPanel
@@ -86,9 +86,9 @@ extern "C" { \
   { \
     return COMPONENT_NAME; \
   } \
-  Base::Component* returnComponent() \
+  Base::Component* returnComponent(const std::string & name) \
   { \
-    return new SOURCE_CLASS_NAME(); \
+    return new SOURCE_CLASS_NAME(name); \
   } \
   Base::Panel* returnPanel() \
   { \
@@ -119,9 +119,9 @@ extern "C" { \
   { \
     return COMPONENT_NAME; \
   } \
-  Base::Component* returnComponent() \
+  Base::Component* returnComponent(const std::string & name) \
   { \
-    return new PROCESSOR_CLASS_NAME(); \
+    return new PROCESSOR_CLASS_NAME(name); \
   } \
   Base::Panel* returnPanel() \
   { \

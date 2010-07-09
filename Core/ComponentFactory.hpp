@@ -107,8 +107,8 @@ public:
 	 * Return pointer to created object
 	 */
 	Base::Component * create(const std::string & name) {
-		Base::Component * ret = ret_object();
-		ret->setName(name);
+		Base::Component * ret = ret_object(name);
+		//ret->setName(name);
 		return ret;
 	}
 
@@ -132,7 +132,7 @@ public:
 		//panel->show();
 
 		if (!object) {
-			object = ret_object();
+			object = ret_object("");
 			if (object->getProperties())
 				object->getProperties()->load(*config_node);
 			object->initialize();
@@ -199,7 +199,7 @@ public:
 			// The rest is "lazy" - retrieve only functors, leave pointers to processor and panel unset.
 
 			// Try to retrieve method returning processor.
-			ret_object = lib.get<Base::Component*>("returnComponent");
+			ret_object = lib.get<Base::Component*, const std::string &>("returnComponent");
 			if (!ret_object)
 				throw Common::FraDIAException(std::string("Can't load ret_object from library: ") + lib.error());
 
