@@ -7,7 +7,7 @@
 #ifndef SCOPELOGGER_HPP_
 #define SCOPELOGGER_HPP_
 
-#include "Logger.hpp"
+#include "LoggerImpl.hpp"
 
 namespace Utils {
 namespace Logger {

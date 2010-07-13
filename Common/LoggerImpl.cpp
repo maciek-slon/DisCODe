@@ -6,46 +6,25 @@
  */
 
 #include "LoggerImpl.hpp"
-#include "Console.hpp"
 
 #include <cstdio>
 
 namespace Utils {
 namespace Logger {
 
-Logger & Logger::log(const std::string & file, int line, Severity sev, const std::string & msg) {
-	curr_lvl = sev;
-	if (sev < level)
-		return *this;
-
-	switch (sev) {
-	case Trace:
-		std::cout << green << "TRACE" << reset << " in " << file << " [" << green << line << reset << "]: ";
-		break;
-	case Debug:
-		std::cout << green << intense << "DEBUG" << reset << " in " << file << " [" << green << line << reset << "]: ";
-		break;
-	case Info:
-		std::cout << cyan << "INFO: " << reset;
-		break;
-	case Notice:
-		std::cout << cyan << intense << "NOTICE: " << reset;
-		break;
-	case Warning:
-		std::cout << yellow << "WARNING: " << reset;
-		break;
-	case Error:
-		std::cout << red << "ERROR: " << reset;
-		break;
-	case Critical:
-		std::cout << red << "CRITICAL: " << reset;
-		break;
-	case Fatal:
-		std::cout << red << intense << "FATAL: " << reset;
-		break;
+Logger::~Logger() {
+	for (size_t i = 0; i < outputs.size(); ++i) {
+		delete outputs[i];
 	}
+}
 
-	std::cout << msg << std::endl;
+Logger & Logger::log(const std::string & file, int line, Severity sev, const std::string & msg) {
+	for (size_t i = 0; i < outputs.size(); ++i) {
+		if (sev < outputs[i]->getLvl())
+			continue;
+
+		outputs[i]->print(msg, sev, file, line);
+	}
 
 	sum[sev]++;
 

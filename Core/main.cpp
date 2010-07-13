@@ -98,6 +98,7 @@ int main(int argc, char* argv[])
 
 	// set logger severity level
 	LOGGER.setLevel((Utils::Logger::Severity)log_lvl);
+	LOGGER.addOutput(new Utils::Logger::ConsoleOutput, (Utils::Logger::Severity)log_lvl);
 
 	if (vm.count("create-task")) {
 		cout << "Creating task file " << task_name << "\n";

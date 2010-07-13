@@ -7,7 +7,7 @@
 #ifndef LOGGERAUX_HPP_
 #define LOGGERAUX_HPP_
 
-
+#include <string>
 
 namespace Utils {
 namespace Logger {
@@ -27,6 +27,11 @@ enum Severity
 	Fatal
 ///< Something very bad happened, no chance to continue execution
 };
+
+/*!
+ * Text representation of severity level
+ */
+std::string sev2str(Severity sev);
 
 }
 }

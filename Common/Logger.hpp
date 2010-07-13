@@ -25,4 +25,5 @@
 /// Start message printing
 #define LOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level).get())
 
+
 #endif /* LOGGER_HPP_ */

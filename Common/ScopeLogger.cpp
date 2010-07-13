@@ -5,5 +5,4 @@
  */
 
 #include "ScopeLogger.hpp"
-#include "Logger.hpp"
 

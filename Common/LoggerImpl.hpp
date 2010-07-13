@@ -10,9 +10,11 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "Singleton.hpp"
 #include "LoggerAux.hpp"
+#include "LoggerOutput.hpp"
 
 namespace Utils {
 namespace Logger {
@@ -32,9 +34,7 @@ class Logger: public Base::Singleton <Logger>
 
 public:
 
-	virtual ~Logger()
-	{
-	}
+	virtual ~Logger();
 
 	/*!
 	 * Start message. Prints severity info and - if required - file name and line number
@@ -91,6 +91,14 @@ public:
 				<< sum[Critical] << " critical errors\n" << sum[Fatal] << " fatal errors\n";
 	}
 
+	/*!
+	 * Add new logger output.
+	 */
+	void addOutput(LoggerOutput * out, Severity lvl) {
+		out->setLvl(lvl);
+		outputs.push_back(out);
+	}
+
 protected:
 	Logger()
 	{
@@ -111,21 +119,9 @@ protected:
 
 	/// level of actually printed message
 	int curr_lvl;
+
+	std::vector<LoggerOutput *> outputs;
 };
-
-#define LOGGER Utils::Logger::Logger::instance()
-
-#define TRACE    Utils::Logger::Trace
-#define DEBUG    Utils::Logger::Debug
-#define INFO     Utils::Logger::Info
-#define NOTICE   Utils::Logger::Notice
-#define WARNING  Utils::Logger::Warning
-#define ERROR    Utils::Logger::Error
-#define CRITICAL Utils::Logger::Critical
-#define FATAL    Utils::Logger::Fatal
-
-/// Start message printing
-#define LOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level).get())
 
 }
 }
