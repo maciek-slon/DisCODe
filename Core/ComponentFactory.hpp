@@ -82,8 +82,6 @@ public:
 	 */
 	virtual ~ComponentFactory()
 	{
-		deactivate();
-
 		// Close dl if required.
 		if (lib.loaded())
 			lib.unload();
@@ -114,56 +112,6 @@ public:
 
 	Base::Component * operator()(const std::string & name) {
 		return create(name);
-	}
-
-	/*!
-	 * Methods activates component - initializes its elements, etc.
-	 */
-	void activate()
-	{
-		LOG(TRACE) << "ComponentFactory: Lazy activate!\n";
-		if (!panel) {
-			// Get task panel.
-			panel = ret_panel();
-			// Initialize panel.
-			panel->createContent();
-		}//: if !panel
-		// Show panel.
-		//panel->show();
-
-		if (!object) {
-			object = ret_object("");
-			if (object->getProperties())
-				object->getProperties()->load(*config_node);
-			object->initialize();
-		}//: if !object
-	}
-
-	/*!
-	 * Methods deactivates component - deletes its unused objects, etc.
-	 */
-	void deactivate()
-	{
-#ifdef DESTROY_DEACTIVED_COMPONENT
-		// Hide panel.
-		//	panel->hide();
-		// Destroy objects.
-		if (object) {
-			if (object->getProperties())
-				object->getProperties()->save(*config_node);
-			object->finish();
-			delete (object);
-		}
-		if (panel) {
-			delete (panel);
-		}
-		// Set pointers to NULL.
-		panel=0;
-		object=0;
-#else
-		// Hide panel.
-		//	panel->hide();
-#endif
 	}
 
 	/*!

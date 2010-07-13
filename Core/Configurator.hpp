@@ -66,7 +66,7 @@ public:
 	 */
 	Task loadConfiguration(std::string filename);
 
-	void loadExecutors(const ptree * node);
+	void loadExecutors(const ptree * node, Task & task);
 	void loadComponents(const ptree * node, Task & task);
 	void loadEvents(const ptree * node);
 	void loadConnections(const ptree * node);

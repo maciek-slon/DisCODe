@@ -34,7 +34,7 @@ namespace Core {
 class Executor : public Common::Thread, public Base::Props {
 public:
 
-	Executor() : running(false), paused(true) {
+	Executor(const std::string & n) : running(false), paused(true), name_(n) {
 	}
 
 	/*!
@@ -91,6 +91,13 @@ public:
 	void save(ptree & pt) {
 	}
 
+	/*!
+	 * Return name
+	 */
+	const std::string & name() const {
+		return name_;
+	}
+
 protected:
 	/// List of components managed by this Executor
 	std::map<std::string, Base::Component *> components;
@@ -103,6 +110,9 @@ protected:
 
 	/// FIFO queue for incoming events
 	std::queue<Base::EventHandlerInterface *> queue;
+
+	/// Name of execution thread
+	std::string name_;
 };
 
 
@@ -114,6 +124,9 @@ protected:
  */
 class ContinousExecutor : public Executor {
 public:
+
+	ContinousExecutor(const std::string & n) : Executor(n) {};
+
 	/*!
 	 * Load executor settings from given configuration node
 	 */
@@ -187,6 +200,8 @@ private:
  */
 class PassiveExecutor : public Executor {
 public:
+	PassiveExecutor(const std::string & n) : Executor(n) {};
+
 	/*!
 	 * Load executor settings from given configuration node
 	 */
@@ -233,6 +248,8 @@ private:
  */
 class PeriodicExecutor : public Executor {
 public:
+	PeriodicExecutor(const std::string & n) : Executor(n) {};
+
 	/*!
 	 * Load executor settings from given configuration node
 	 */
@@ -280,6 +297,7 @@ protected:
 							break;
 					}
 
+					std::cout << "Periodic step\n";
 					main_component->step();
 				} else {
 					Common::Thread::msleep(50);

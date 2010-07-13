@@ -38,7 +38,7 @@ bool CameraUniCap_Source::onInit() {
 
 	unicap_status_t status = STATUS_SUCCESS;
 
-	LOG(INFO) << "CameraOpenCV_Source::initialize()\n";
+	LOG(INFO) << "CameraUniCap_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_img", &out_img);
@@ -215,27 +215,12 @@ bool CameraUniCap_Source::onInit() {
 
 	unicap_register_callback(handle, UNICAP_EVENT_NEW_FRAME,
 			(unicap_callback_t) new_frame_cb, this);
-	/*
-	 Start the capture process on the device
-	 */
-	if (!SUCCESS(unicap_start_capture(handle))) {
-		LOG(ERROR) << "Failed to start capture on device: "
-				<< device.identifier << '\n';
-
-	}
 
 	return true;
 }
 
 bool CameraUniCap_Source::onFinish() {
-	LOG(INFO) << "CameraOpenCV_Source::finish()\n";
-	/*
-	 Stop the device
-	 */
-	if (!SUCCESS(unicap_stop_capture(handle))) {
-		fprintf(stderr, "Failed to stop capture on device: %s\n",
-				device.identifier);
-	}
+	LOG(INFO) << "CameraUniCap_Source::finish()\n";
 
 	/*
 	 Close the device
@@ -256,10 +241,27 @@ bool CameraUniCap_Source::onStep() {
 }
 
 bool CameraUniCap_Source::onStart() {
+	LOG(INFO) << "CameraUniCap_Source::start()\n";
+	/*
+	 Start the capture process on the device
+	 */
+	if (!SUCCESS(unicap_start_capture(handle))) {
+		LOG(ERROR) << "Failed to start capture on device: "	<< device.identifier << '\n';
+		return false;
+	}
 	return true;
 }
 
 bool CameraUniCap_Source::onStop() {
+	LOG(INFO) << "CameraUniCap_Source::stop()\n";
+	/*
+	 Stop the device
+	 */
+	if (!SUCCESS(unicap_stop_capture(handle))) {
+		LOG(ERROR) << "Failed to stop capture on device: " << device.identifier << "\n";
+		return false;
+	}
+
 	return true;
 }
 
@@ -275,8 +277,11 @@ void CameraUniCap_Source::new_frame_cb(unicap_event_t event,
 									== (char*) &((CameraUniCap_Source*) (usr_data))->format.fourcc) ? CV_8UC1
 									: CV_8UC3, (void *) buffer->data).clone();
 
+	LOG(TRACE) << "Got new frame\n";
+
 	((CameraUniCap_Source*) (usr_data))->out_img.write(frame);
 	((CameraUniCap_Source*) (usr_data))->newImage->raise();
+
 
 }
 

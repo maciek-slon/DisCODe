@@ -16,15 +16,15 @@ namespace Processors {
 namespace OpenCVWnd {
 
 OpenCVWnd_Processor::OpenCVWnd_Processor(const std::string & name) : Base::Component(name) {
-	cout<<"Hello OpenCVWnd_Processor\n";
+	LOG(INFO)<<"Hello OpenCVWnd_Processor\n";
 }
 
 OpenCVWnd_Processor::~OpenCVWnd_Processor() {
-	cout<<"Good bye OpenCVWnd_Processor\n";
+	LOG(INFO)<<"Good bye OpenCVWnd_Processor\n";
 }
 
 bool OpenCVWnd_Processor::onInit() {
-	std::cout << "OpenCVWnd_Processor::initialize\n";
+	LOG(INFO) << "OpenCVWnd_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &OpenCVWnd_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -35,14 +35,14 @@ bool OpenCVWnd_Processor::onInit() {
 }
 
 bool OpenCVWnd_Processor::onFinish() {
-	std::cout << "OpenCVWnd_Processor::finish\n";
+	LOG(INFO) << "OpenCVWnd_Processor::finish\n";
 
 	return true;
 }
 
 bool OpenCVWnd_Processor::onStep()
 {
-	cout<<"OpenCVWnd_Processor::step\n";
+	LOG(INFO)<<"OpenCVWnd_Processor::step\n";
 	return true;
 }
 

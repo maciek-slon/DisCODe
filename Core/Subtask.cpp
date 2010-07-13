@@ -8,10 +8,6 @@
 
 namespace Core {
 
-Subtask::Subtask()
-{
-
-}
 
 Subtask::~Subtask()
 {
@@ -38,6 +34,15 @@ bool Subtask::start()
 	bool ret = true;
 	for (comp_it it = components.begin(); it != components.end(); ++it) {
 		if (! (*it)->start()) ret = false;
+	}
+	return ret;
+}
+
+bool Subtask::finish()
+{
+	bool ret = true;
+	for (comp_it it = components.begin(); it != components.end(); ++it) {
+		if (! (*it)->finish()) ret = false;
 	}
 	return ret;
 }

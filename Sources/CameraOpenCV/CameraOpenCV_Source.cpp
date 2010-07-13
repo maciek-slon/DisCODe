@@ -14,27 +14,32 @@ namespace Sources {
 namespace CameraOpenCV {
 
 CameraOpenCV_Source::CameraOpenCV_Source(const std::string & name) : Base::Component(name) {
-	cout << "CameraOpenCV_Source::CameraOpenCV_Source()\n";
+	LOG(TRACE) << "CameraOpenCV_Source::CameraOpenCV_Source()\n";
 }
 
 CameraOpenCV_Source::~CameraOpenCV_Source() {
-	cout << "CameraOpenCV_Source::~CameraOpenCV_Source()\n";
+	LOG(TRACE) << "CameraOpenCV_Source::~CameraOpenCV_Source()\n";
 }
 
 bool CameraOpenCV_Source::onInit() {
-	cout << "CameraOpenCV_Source::initialize()\n";
+	LOG(TRACE) << "CameraOpenCV_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_img", &out_img);
 
 	cap.open(0);
 
+	if (cap.isOpened())
+		LOG(TRACE) << "CameraOpenCV: device opened\n";
+	else
+		LOG(WARNING) << "CameraOpenCV: device NOT opened!\n";
+
 	return cap.isOpened();
 }
 
 
 bool CameraOpenCV_Source::onFinish() {
-	cout << "CameraOpenCV_Source::finish()\n";
+	LOG(TRACE) << "CameraOpenCV_Source::finish()\n";
 	cap.release();
 
 	return !cap.isOpened();
@@ -48,6 +53,8 @@ bool CameraOpenCV_Source::onStep() {
 	if (frame.empty()) {
 		return false;
 	}
+
+	LOG(TRACE) << "CameraOpenCV: got frame!\n";
 
 	out_img.write(frame);
 

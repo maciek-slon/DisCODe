@@ -133,7 +133,7 @@ public:
 	 */
 	bool stop() {
 		if (state == Running) {
-			if (onFinish()) {
+			if (onStop()) {
 				state = Ready;
 				return true;
 			} else {
@@ -173,7 +173,14 @@ public:
 		}
 
 		if (state == Running) {
-			LOG(WARNING) << name << " must be stopped first.\n";
+			LOG(WARNING) << name << " still running. Trying to stop...\n";
+			if (stop())
+				LOG(WARNING) << name << " stopped. Finishing...\n";
+			else
+				LOG(WARNING) << name << " didn't stop. Finishing anyway...\n";
+
+			onFinish();
+
 			return false;
 		}
 

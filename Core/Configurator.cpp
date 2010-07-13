@@ -60,7 +60,7 @@ Task Configurator::loadConfiguration(std::string filename_)
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Executors"));
-			loadExecutors(tmp_node);
+			loadExecutors(tmp_node, task);
 		}
 		catch(ptree_bad_path&) {
 			LOG(FATAL) << "No Executors branch in configuration file!\n";
@@ -96,7 +96,7 @@ Task Configurator::loadConfiguration(std::string filename_)
 	}//: else
 }
 
-void Configurator::loadExecutors(const ptree * node) {
+void Configurator::loadExecutors(const ptree * node, Task & task) {
 	LOG(INFO) << "Creating execution threads\n";
 
 	Executor * ex;
@@ -105,6 +105,8 @@ void Configurator::loadExecutors(const ptree * node) {
 		ptree tmp = nd.second;
 		ex = executorManager->createExecutor(nd.first, tmp.get("<xmlattr>.type", "UNKNOWN"));
 		ex->load(tmp);
+
+		task+=ex;
 	}
 }
 
@@ -120,6 +122,8 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
 		name = nd.first;
+
+		// ignore coments in tast file
 		if (name == "<xmlcomment>") continue;
 
 		type = tmp.get("<xmlattr>.type", "UNKNOWN");
@@ -129,17 +133,18 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 		LOG(TRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
 
 		kern = componentManager->createComponent(name, type);
-		kern->initialize();
 
 		if (kern->getProperties())
 			kern->getProperties()->load(tmp);
+
+		kern->initialize();
 
 		ex = executorManager->getExecutor(thread);
 		ex->addComponent(name, kern);
 
 		LOG(TRACE) << "Adding component " << name << " to subtask " << group << "\n";
 
-		task[group]+=kern;
+		task[group] += kern;
 
 		component_executor[name] = thread;
 	}

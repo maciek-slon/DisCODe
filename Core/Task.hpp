@@ -46,7 +46,30 @@ public:
 	 * \note If no subtask with given name is present, then new one is created
 	 */
 	Subtask & operator[](const std::string & name) {
+		if (subtasks.count(name) < 1) {
+			LOG(WARNING) << "Subtask " << name << " absent. Creating new one...\n";
+			subtasks[name] = Subtask(name);
+		}
+
 		return subtasks[name];
+	}
+
+	/*!
+	 * Add subtask to task
+	 * \param st subtask to be added
+	 */
+	Task & operator += (Subtask & st) {
+		subtasks[st.name()] = st;
+		return *this;
+	}
+
+	/*!
+	 * Add executor to task
+	 * \param ex pointer to executor to be added
+	 */
+	Task & operator += (Executor * ex) {
+		executors[ex->name()] = ex;
+		return *this;
 	}
 
 private:

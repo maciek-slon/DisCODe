@@ -34,6 +34,16 @@ public:
 	*/
 	const std::string description;
 
+	/*!
+	 *
+	 */
+	#if defined(WIN32)
+
+	#else
+		int nSize;
+		char ** symbols;
+	#endif
+
 public:
 
 	/*!
@@ -41,19 +51,23 @@ public:
 	*/
 	FraDIAException(const std::string & description_) : std::exception(), description(description_) {
 	#if defined(WIN32)
+	#else
+		void * array[25];
+		nSize = backtrace(array, 25);
+		symbols = backtrace_symbols(array, nSize);
+	#endif
+	}
+
+	void printStackTrace() {
+	#if defined(WIN32)
 		std::cout << "Backtrace (Win32):\n";
+		std::cout << "NOT IMPLEMENTED\n";
 	#else
 		std::cout << "Backtrace (*nix):\n";
-		void * array[25];
-		int nSize = backtrace(array, 25);
-		char ** symbols = backtrace_symbols(array, nSize);
-
 		for (int i = 0; i < nSize; i++)
 		{
 			std::cout << symbols[i] << std::endl;
 		}
-
-		free(symbols);
 	#endif
 	}
 
@@ -65,7 +79,13 @@ public:
 	/*!
 	* Destructor.
 	*/
-	virtual ~FraDIAException () throw () {}
+	virtual ~FraDIAException () throw () {
+	#if defined(WIN32)
+
+	#else
+		free(symbols);
+	#endif
+	}
 
 };
 

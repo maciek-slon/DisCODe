@@ -36,11 +36,11 @@ bool unstopable = false;
 
 void terminate (int param) {
 	if (unstopable) {
-		std::cout << "Get lost! WMAHAHA!\n";
+		std::cout << "\rGet lost! WMAHAHA!\n";
 		return;
 	}
 
-	std::cout << "Terminating program...\n";
+	std::cout << "\rTerminating program...\n";
 	running = false;
 }
 
@@ -189,38 +189,28 @@ int main(int argc, char* argv[])
 		km.initializeComponentsList();
 
 		task = configurator.loadConfiguration(task_name);
-		task["S1"].start();
-		task["S2"].start();
-		// Test code.
+		if (!task["s1"].start())
+			LOG(WARNING) << "Subtask S1 start() returned false\n";
+		if (!task["s2"].start())
+			LOG(WARNING) << "Subtask S2 start() returned false\n";
 
-		Core::Executor * ex1;
-
-		Base::Component * src = km.getComponent("Camera");
-		Base::Component * proc = km.getComponent("Window");
-
-		ex1 = em.getExecutor("Thread1");
-
-		// start both threads
-		ex1->start();
+		task.start();
 
 		while(running) {
 			Common::Thread::msleep(50);
 		}
 
-		// stop threads
-		ex1->finish();
+		task.stop();
 
-		// wait for both threads to finish execution
-		ex1->wait(10000);
+		task["s1"].stop();
+		task["s2"].stop();
 
+		task.finish();
 
-		task["S1"].stop();
-		task["S2"].stop();
+		// wait for threads to finish execution
+		//Common::Thread::msleep(3000);
 
 		// End of test code.
-
-		src->finish();
-		proc->finish();
 
 		km.deactivateComponentList();
 
@@ -230,6 +220,11 @@ int main(int argc, char* argv[])
 	// === Exception handling
 	// =========================================================================
 
+	catch (Common::FraDIAException& ex) {
+		LOG(FATAL) << ex.what() << "\n";
+		ex.printStackTrace();
+		exit(EXIT_FAILURE);
+	}
 	catch (exception& ex) {
 		LOG(FATAL) << ex.what() << "\n";
 		exit(EXIT_FAILURE);
@@ -239,7 +234,7 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 	catch (...) {
-		LOG(FATAL) << "Unhandled exception.\n";
+		LOG(FATAL) << "Unknown exception.\n";
 		exit(EXIT_FAILURE);
 	}//: catch
 }

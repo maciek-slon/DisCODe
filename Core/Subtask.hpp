@@ -10,6 +10,7 @@
 #include "Component.hpp"
 
 #include <vector>
+#include <string>
 
 namespace Core {
 
@@ -23,7 +24,7 @@ public:
 	/*!
 	 *
 	 */
-	Subtask();
+	Subtask(const std::string & n = "") : name_(n) {};
 
 	/*!
 	 *
@@ -56,9 +57,18 @@ public:
 	 */
 	bool stop();
 
+	bool finish();
+
+	const std::string & name() {
+		return name_;
+	}
+
 private:
 	typedef std::vector<Base::Component*>::iterator comp_it;
+
 	std::vector<Base::Component*> components;
+
+	std::string name_;
 };
 
 } //: namespace Core

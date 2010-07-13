@@ -33,11 +33,11 @@ public:
 
 		Executor * ex;
 		if (type == "continous") {
-			ex = new ContinousExecutor;
+			ex = new ContinousExecutor(name);
 		} else if (type == "passive") {
-			ex = new PassiveExecutor;
+			ex = new PassiveExecutor(name);
 		} else if (type == "periodic") {
-			ex = new PeriodicExecutor;
+			ex = new PeriodicExecutor(name);
 		} else {
 			LOG(ERROR) << "Executor type " << type << " not allowed!\n";
 			throw Common::FraDIAException("createExecutor");
