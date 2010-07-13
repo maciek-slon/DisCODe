@@ -10,6 +10,13 @@
 #include <string>
 #include <exception>
 
+#if defined(WIN32)
+#else
+#	include <execinfo.h>
+#	include <signal.h>
+#endif
+
+#include <iostream>
 
 namespace Common
 {
@@ -22,31 +29,63 @@ namespace Common
 class FraDIAException : public std::exception
 {
 public:
-  /*!
-   * Exception description.
-   */
-  const std::string description;
+	/*!
+	* Exception description.
+	*/
+	const std::string description;
+
+	/*!
+	 *
+	 */
+	#if defined(WIN32)
+
+	#else
+		int nSize;
+		char ** symbols;
+	#endif
 
 public:
-  /*!
-   * Constructor - creates description on the base of char*.
-   */
-  FraDIAException(const char* description_) : std::exception(), description(std::string(description_)) { }
 
-  /*!
-   * Constructor - creates description on the base of string.
-   */
-  FraDIAException(std::string description_) : std::exception(), description(description_) { }
+	/*!
+	* Constructor - creates description on the base of string.
+	*/
+	FraDIAException(const std::string & description_) : std::exception(), description(description_) {
+	#if defined(WIN32)
+	#else
+		void * array[25];
+		nSize = backtrace(array, 25);
+		symbols = backtrace_symbols(array, nSize);
+	#endif
+	}
 
-  /*!
-   * Property - returns exception description.
-   */
-  virtual const char* what() const throw() { return description.c_str(); }
+	void printStackTrace() {
+	#if defined(WIN32)
+		std::cout << "Backtrace (Win32):\n";
+		std::cout << "NOT IMPLEMENTED\n";
+	#else
+		std::cout << "Backtrace (*nix):\n";
+		for (int i = 0; i < nSize; i++)
+		{
+			std::cout << symbols[i] << std::endl;
+		}
+	#endif
+	}
 
-  /*!
-   * Destructor.
-   */
-  virtual ~FraDIAException () throw () {}
+	/*!
+	* Property - returns exception description.
+	*/
+	virtual const char* what() const throw() { return description.c_str(); }
+
+	/*!
+	* Destructor.
+	*/
+	virtual ~FraDIAException () throw () {
+	#if defined(WIN32)
+
+	#else
+		free(symbols);
+	#endif
+	}
 
 };
 

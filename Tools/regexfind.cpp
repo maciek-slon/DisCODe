@@ -1,3 +1,14 @@
+/*!
+ * \file regexfind.cpp
+ * \brief Small program searching in given directory for files matching
+ * given regular expression.
+ *
+ * Uses boost::regex to handle regular expressions and boost::filesystem to
+ * handle traversing through directories.
+ *
+ * \author mstefanc
+ */
+
 #include <iostream>
 #include <string>
 #include <vector>

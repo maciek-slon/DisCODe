@@ -8,8 +8,8 @@
 #ifndef CAMERAV4L_SOURCE_HPP_
 #define CAMERAV4L_SOURCE_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "CameraProps.hpp"
@@ -27,33 +27,18 @@ using namespace cv;
  * \class CameraV4L_Source
  * \brief
  */
-class CameraV4L_Source : public Base::Kernel {
+class CameraV4L_Source : public Base::Component {
 
 public:
 	/*!
 	 * Constructor. Sets ID and startup variables.
 	 */
-	CameraV4L_Source();
+	CameraV4L_Source(const std::string & name = "");
 
 	/*!
 	 * Destructor.
 	 */
 	virtual ~CameraV4L_Source();
-
-	/*!
-	 * Connects source to given device.
-	 */
-	bool initialize();
-
-	/*!
-	 * Disconnect source from device, closes streams, etc.
-	 */
-	bool finish();
-
-	/*!
-	 * Retrieves data from device.
-	 */
-	int step();
 
 	/*!
 	 * Return movie properties
@@ -63,6 +48,30 @@ public:
 	}
 
 protected:
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
 
 private:
 	/// pointer to specific camera object (V4L or V4L2, depending on hardware support)
@@ -85,8 +94,8 @@ private:
 }//: namespace Sources
 
 /*
- * Register source kernel.
+ * Register source component.
  */
-REGISTER_SOURCE_KERNEL("CameraV4L", Sources::CameraV4L::CameraV4L_Source, Common::Panel_Empty)
+REGISTER_SOURCE_COMPONENT("CameraV4L", Sources::CameraV4L::CameraV4L_Source, Common::Panel_Empty)
 
 #endif /* CAMERAV4L_SOURCE_HPP_ */

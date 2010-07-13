@@ -9,8 +9,8 @@
 #ifndef MOVIE_SOURCE_HPP_
 #define MOVIE_SOURCE_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
@@ -50,33 +50,18 @@ struct MovieProps : public Base::Props {
  * \class Movie_Source
  * \brief Class responsible for retrieving images from movies.
  */
-class Movie_Source : public Base::Kernel {
+class Movie_Source : public Base::Component {
 
 public:
 	/*!
 	 * Constructor. Sets ID and startup variables.
 	 */
-	Movie_Source();
+	Movie_Source(const std::string & name = "");
 
 	/*!
 	 * Destructor.
 	 */
 	virtual ~Movie_Source();
-
-	/*!
-	 * Connects source to given device.
-	 */
-	bool initialize();
-
-	/*!
-	 * Disconnect source from device, closes streams, etc.
-	 */
-	bool finish();
-
-	/*!
-	 * Retrieves data from device.
-	 */
-	int step();
 
 	/*!
 	 * Return movie properties
@@ -86,6 +71,31 @@ public:
 	}
 
 protected:
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 
@@ -106,8 +116,8 @@ protected:
 }//: namespace Sources
 
 /*
- * Register source kernel.
+ * Register source component.
  */
-REGISTER_SOURCE_KERNEL("Movie", Sources::Movie::Movie_Source, Common::Panel_Empty)
+REGISTER_SOURCE_COMPONENT("Movie", Sources::Movie::Movie_Source, Common::Panel_Empty)
 
 #endif /* MOVIE_SOURCE_HPP_ */

@@ -117,6 +117,14 @@ add_subdirectory(Base)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
 
+# Small utility programs
+set(WITH_TOOLS ON CACHE BOOL "Build tools")
+
+IF (WITH_TOOLS)
+    MESSAGE(STATUS "Building tools")
+    add_subdirectory(Tools)
+ENDIF(WITH_TOOLS)
+
 # Small test programs
 set(WITH_TMP_PROGRAMS OFF CACHE BOOL "Build temporary programs")
 

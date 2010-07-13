@@ -13,31 +13,34 @@
 
 #include "FraDIAException.hpp"
 #include "ConnectionManager.hpp"
-#include "KernelManager.hpp"
+#include "ComponentManager.hpp"
 #include "ExecutorManager.hpp"
-#include "KernelFactory.hpp"
+#include "ComponentFactory.hpp"
 #include "Configurator.hpp"
 #include "Executor.hpp"
 #include "Logger.hpp"
 
 #include <boost/program_options.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 using namespace std;
 using namespace Common;
 using namespace Core;
 
 namespace po = boost::program_options;
+namespace pt = boost::property_tree;
 
 volatile bool running = true;
 bool unstopable = false;
 
 void terminate (int param) {
 	if (unstopable) {
-		std::cout << "Get lost! WMAHAHA!\n";
+		std::cout << "\rGet lost! WMAHAHA!\n";
 		return;
 	}
 
-	std::cout << "Terminating program...\n";
+	std::cout << "\rTerminating program...\n";
 	running = false;
 }
 
@@ -49,6 +52,9 @@ int main(int argc, char* argv[])
 {
 	// FraDIA config filename.
 	std::string config_name;
+
+	// Task config filename.
+	std::string task_name;
 
 	// Log level
 	int log_lvl;
@@ -68,6 +74,8 @@ int main(int argc, char* argv[])
 		("help", "produce help message")
 		("config,C", po::value<std::string>(&config_name)->default_value("config.xml"), "choose config file")
 		("create-config,D", "create default configuration file")
+		("task,T", po::value<std::string>(&task_name), "choose task file")
+		("create-task", "create default task file")
 		("log-level,L", po::value<int>(&log_lvl)->default_value(3), "set log severity level")
 		("unstopable","MWAHAHAHA!")
 	;
@@ -88,10 +96,14 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	if (vm.count("create-config")) {
-		cout << "Creating config file " << config_name << "\n";
+	// set logger severity level
+	LOGGER.setLevel((Utils::Logger::Severity)log_lvl);
+	LOGGER.addOutput(new Utils::Logger::ConsoleOutput, (Utils::Logger::Severity)log_lvl);
 
-		std::ofstream cfg(config_name.c_str());
+	if (vm.count("create-task")) {
+		cout << "Creating task file " << task_name << "\n";
+
+		std::ofstream cfg(task_name.c_str());
 
 		cfg << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 				"<Task>\n"
@@ -119,61 +131,89 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+	if (vm.count("create-config")) {
+		cout << "Creating configuration file " << config_name << "\n";
+
+		std::ofstream cfg(config_name.c_str());
+
+		cfg << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+				"<FraDIA>\n"
+				"\t<task>blob.xml</task>"
+				"</FraDIA>\n";
+
+		cfg.close();
+
+		return 0;
+	}
+
 	if (vm.count("unstopable")) {
 		unstopable = true;
 	}
 
+	// =========================================================================
+	// === FraDIA configuration
+	// =========================================================================
+
 	config_name = vm["config"].as<std::string>();
 
-	// set logger severity level
-	LOGGER.setLevel((Utils::Logger::Severity)log_lvl);
+	pt::ptree conf;
+	try {
+		read_xml(config_name, conf);
+	}
+	catch(xml_parser_error&) {
+		throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + config_name + "' file.\n");
+	}
+
+	if (!vm.count("task")) {
+		task_name = conf.get("FraDIA.task","task.xml");
+		LOG(INFO) << "Task: " << task_name << " from configuration file\n";
+	} else {
+		LOG(INFO) << "Task: " << task_name << " from command line\n";
+	}
 
 	// =========================================================================
 	// === Main program part
 	// =========================================================================
 
 	Configurator configurator;
-	KernelManager km;
+	ComponentManager km;
 	ExecutorManager em;
 	ConnectionManager cm;
 
 	configurator.setExecutorManager(&em);
-	configurator.setKernelManager(&km);
+	configurator.setComponentManager(&km);
 	configurator.setConnectionManager(&cm);
 
 	try {
-		km.initializeKernelsList();
+		Task task;
 
-		configurator.loadConfiguration(config_name);
+		km.initializeComponentsList();
 
-		// Test code.
+		task = configurator.loadConfiguration(task_name);
+		if (!task["s1"].start())
+			LOG(WARNING) << "Subtask S1 start() returned false\n";
+		if (!task["s2"].start())
+			LOG(WARNING) << "Subtask S2 start() returned false\n";
 
-		Core::Executor * ex1;
-
-		Base::Kernel * src = km.getKernel("Camera");
-		Base::Kernel * proc = km.getKernel("Window");
-
-		ex1 = em.getExecutor("Thread1");
-
-		// start both threads
-		ex1->start();
+		task.start();
 
 		while(running) {
 			Common::Thread::msleep(50);
 		}
 
-		// stop threads
-		ex1->finish();
+		task.stop();
 
-		// wait for both threads to finish execution
-		ex1->wait(1000);
+		task["s1"].stop();
+		task["s2"].stop();
+
+		task.finish();
+
+		// wait for threads to finish execution
+		//Common::Thread::msleep(3000);
 
 		// End of test code.
 
-		src->finish();
-		proc->finish();
-
-		km.deactivateKernelList();
+		km.deactivateComponentList();
 
 	}//: try
 
@@ -181,12 +221,13 @@ int main(int argc, char* argv[])
 	// === Exception handling
 	// =========================================================================
 
-	catch (exception& ex){
-		cout << "Fatal error:\n";
-		// If required print exception description.
-		if (!strcmp(ex.what(), ""))
-			LOG(FATAL) << ex.what() << "\n";
-
+	catch (Common::FraDIAException& ex) {
+		LOG(FATAL) << ex.what() << "\n";
+		ex.printStackTrace();
+		exit(EXIT_FAILURE);
+	}
+	catch (exception& ex) {
+		LOG(FATAL) << ex.what() << "\n";
 		exit(EXIT_FAILURE);
 	}
 	catch (const char * ex) {
@@ -194,7 +235,7 @@ int main(int argc, char* argv[])
 		exit(EXIT_FAILURE);
 	}
 	catch (...) {
-		LOG(FATAL) << "Unhandled exception.\n";
+		LOG(FATAL) << "Unknown exception.\n";
 		exit(EXIT_FAILURE);
 	}//: catch
 }

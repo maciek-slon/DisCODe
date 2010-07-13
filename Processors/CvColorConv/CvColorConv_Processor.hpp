@@ -8,8 +8,8 @@
 #ifndef CVCOLORCONV_PROCESSOR_HPP_
 #define CVCOLORCONV_PROCESSOR_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
@@ -249,33 +249,18 @@ protected:
  * \class CvColorConv_Processor
  * \brief Example processor class.
  */
-class CvColorConv_Processor: public Base::Kernel
+class CvColorConv_Processor: public Base::Component
 {
 public:
 	/*!
 	 * Constructor.
 	 */
-	CvColorConv_Processor();
+	CvColorConv_Processor(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
 	virtual ~CvColorConv_Processor();
-
-	/*!
-	 * Processor initialization
-	 */
-	bool initialize();
-
-	/*!
-	 * Release all resources
-	 */
-	bool finish();
-
-	/*!
-	 * Processes given frame.
-	 */
-	int step();
 
 	/*!
 	 * Return window properties
@@ -286,6 +271,32 @@ public:
 	}
 
 protected:
+
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
 	/*!
 	 * Event handler function.
 	 */
@@ -312,9 +323,9 @@ protected:
 
 
 /*
- * Register processor kernel.
+ * Register processor component.
  */
-REGISTER_PROCESSOR_KERNEL("CvColorConv", Processors::CvColorConv::CvColorConv_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("CvColorConv", Processors::CvColorConv::CvColorConv_Processor, Common::Panel_Empty)
 
 #endif /* CVCOLORCONV_PROCESSOR_HPP_ */
 

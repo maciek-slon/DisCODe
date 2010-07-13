@@ -12,40 +12,58 @@
 #include "DataStreamInterface.hpp"
 #include "Connection.hpp"
 
+#include "Policies/DataStreamBuffer.hpp"
+#include "Policies/Synchronization.hpp"
+
 namespace Base {
 
-/*!
- * \class DataStreamIn
- * \brief Input data stream
- */
-template <class T>
-class DataStreamIn : public DataStreamInterface {
-public:
-	DataStreamIn(std::string n = "name") : DataStreamInterface(n) {};
 
+/*!
+ * \brief Input data stream.
+ *
+ * \tparam T type of data to be handled by DataStream
+ * \tparam BufferingPolicy buffering policy (way to store data)
+ * \tparam ReadSync synchronization of read access
+ * \tparam WriteSync synchronization of write access
+ */
+template
+<
+    typename T,
+    template <class T> class BufferingPolicy = DataStreamBuffer::Queue,
+    class ReadSync = Synchronization::Mutex,
+    class WriteSync = Synchronization::Mutex
+>
+class DataStreamIn : public DataStreamInterface, public BufferingPolicy<T>
+{
+	using BufferingPolicy<T>::retrieve;
+
+	/// Object used for synchronization of data reading
+	ReadSync read_sync;
+
+	/// Object used for synchronization of data writing
+	WriteSync write_sync;
+
+public:
 	virtual dsType type() {
 		return dsIn;
 	}
 
 	T read() {
-		if (buffer.size()>0) {
-			T t = buffer.front();
-			buffer.pop_front();
-			return t;
-		} else {
-			throw "Buffer empty!";
-		}
+		read_sync.lock();
+		T t = retrieve();
+		read_sync.unlock();
+		return t;
 	}
 
 protected:
 	virtual void internalSet(void * ptr) {
+		write_sync.lock();
 		T t = *((T*)ptr);
-		buffer.push_back(t);
+		store(t);
+		write_sync.unlock();
 	}
-
-private:
-	std::list<T> buffer;
 };
+
 
 /*!
  * \class DataStreamOut

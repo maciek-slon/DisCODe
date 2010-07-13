@@ -15,7 +15,7 @@
 #include <map>
 
 #include "Thread.hpp"
-#include "Kernel.hpp"
+#include "Component.hpp"
 #include "EventHandler.hpp"
 #include "Timer.hpp"
 #include "Props.hpp"
@@ -24,22 +24,26 @@ namespace Core {
 
 /*!
  * \class Executor
- * \brief Executor object holds \ref Base::Kernel "kernels" and implements message queue.
+ * \brief Executor object holds \ref Base::Component "components" and implements message queue.
  *
- * Executor is only interfave for concrete implementations. These implenetations
- * can differ in the way kernels are managed etc.
+ * Executor is only interface for concrete implementations. These implementations
+ * can differ in the way components are managed etc.
  *
  * \author mstefanc
  */
 class Executor : public Common::Thread, public Base::Props {
 public:
+
+	Executor(const std::string & n) : running(false), paused(true), name_(n) {
+	}
+
 	/*!
-	 * Add new Kernel to Executor.
-	 * \param name name of kernel
-	 * \param kernel kernel to be added to executor
+	 * Add new Component to Executor.
+	 * \param name name of component
+	 * \param component component to be added to executor
 	 */
-	void addKernel(const std::string & name, Base::Kernel * kernel) {
-		kernels[name] = kernel;
+	void addComponent(const std::string & name, Base::Component * component) {
+		components[name] = component;
 	}
 
 	/*!
@@ -62,6 +66,18 @@ public:
 		return handler;
 	}
 
+	void restart() {
+		paused = false;
+		if (!running)
+			start();
+
+	}
+
+	void pause() {
+		paused = true;
+	}
+
+
 	/*!
 	 * Finish main Executor loop thus ending associated thread.
 	 */
@@ -75,15 +91,28 @@ public:
 	void save(ptree & pt) {
 	}
 
+	/*!
+	 * Return name
+	 */
+	const std::string & name() const {
+		return name_;
+	}
+
 protected:
-	/// List of kernels managed by this Executor
-	std::map<std::string, Base::Kernel *> kernels;
+	/// List of components managed by this Executor
+	std::map<std::string, Base::Component *> components;
 
 	/// Flag indicating that executor is running
 	volatile bool running;
 
+	/// Flag indicating that executor is paused
+	volatile bool paused;
+
 	/// FIFO queue for incoming events
 	std::queue<Base::EventHandlerInterface *> queue;
+
+	/// Name of execution thread
+	std::string name_;
 };
 
 
@@ -91,16 +120,19 @@ protected:
 
 /*!
  * \class ContinousExecutor
- * \brief This object calls step method from it's main kernel continously.
+ * \brief This object calls step method from it's main component continously.
  */
 class ContinousExecutor : public Executor {
 public:
+
+	ContinousExecutor(const std::string & n) : Executor(n) {};
+
 	/*!
 	 * Load executor settings from given configuration node
 	 */
 	void load(const ptree & pt) {
 		max_iter = pt.get("iterations", -1);
-		mk_name = pt.get("main_kernel", "");
+		mk_name = pt.get("main_component", "");
 	}
 
 protected:
@@ -109,32 +141,40 @@ protected:
 	 */
 	void run() {
 		running = true;
+		paused = false;
 
-		if (kernels.count(mk_name) < 1) {
-			LOG(ERROR) << "Kernel " << mk_name << " is not executed in this thread.\n";
-			main_kernel = NULL;
+		if (components.count(mk_name) < 1) {
+			LOG(ERROR) << "Component " << mk_name << " is not being executed in this thread.\n";
+			main_component = NULL;
 			return;
 		} else {
-			main_kernel = kernels[mk_name];
+			main_component = components[mk_name];
 		}
 
 		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+			}
 
 			while (!queue.empty()) {
 				queue.front()->execute();
 				queue.pop();
 			}
 
-			// check number of iterations
-			if (max_iter >= 0) {
-				--max_iter;
-				if (max_iter < 0)
-					break;
-			}
+			// check if there is any component to execute
+			if (main_component && main_component->running()) {
+				// check number of iterations
+				if (max_iter >= 0) {
+					--max_iter;
+					if (max_iter < 0)
+						break;
+				}
 
-			// check if there is any kernel to execute
-			if (main_kernel)
-				main_kernel->step();
+				main_component->step();
+			} else {
+				Common::Thread::msleep(50);
+			}
 
 			yield();
 		}
@@ -144,10 +184,10 @@ private:
 	/// Maximum number of iterations
 	int max_iter;
 
-	/// Main kernel - it's step method will be called in each loop
-	Base::Kernel * main_kernel;
+	/// Main component - it's step method will be called in each loop
+	Base::Component * main_component;
 
-	/// Main kernel name
+	/// Main component name
 	std::string mk_name;
 };
 
@@ -155,11 +195,13 @@ private:
 
 /*!
  * \class PassiveExecutor
- * \brief This object doesn't call any methods from it's kernels explicitely,
+ * \brief This object doesn't call any methods from it's components explicitely,
  * but only process events and calls connected handlers.
  */
 class PassiveExecutor : public Executor {
 public:
+	PassiveExecutor(const std::string & n) : Executor(n) {};
+
 	/*!
 	 * Load executor settings from given configuration node
 	 */
@@ -174,6 +216,10 @@ protected:
 		running = true;
 
 		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+			}
 
 			// here should be mutex, and will be ;-)
 			while (queue.empty()) {
@@ -197,17 +243,19 @@ private:
 
 /*!
  * \class PeriodicExecutor
- * \brief This object calls step method from it's main kernel periodically
+ * \brief This object calls step method from it's main component periodically
  * with given interval.
  */
 class PeriodicExecutor : public Executor {
 public:
+	PeriodicExecutor(const std::string & n) : Executor(n) {};
+
 	/*!
 	 * Load executor settings from given configuration node
 	 */
 	void load(const ptree & pt) {
 		max_iter = pt.get("iterations", -1);
-		mk_name = pt.get("main_kernel", "");
+		mk_name = pt.get("main_component", "");
 		interval = pt.get("interval", 1.0);
 	}
 
@@ -218,15 +266,19 @@ protected:
 	void run() {
 		running = true;
 
-		if (kernels.count(mk_name) < 1) {
-			LOG(ERROR) << "Kernel " << mk_name << " is not executed in this thread.\n";
-			main_kernel = NULL;
+		if (components.count(mk_name) < 1) {
+			LOG(ERROR) << "Component " << mk_name << " is not executed in this thread.\n";
+			main_component = NULL;
 			return;
 		} else {
-			main_kernel = kernels[mk_name];
+			main_component = components[mk_name];
 		}
 
 		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+			}
 
 			while (!queue.empty()) {
 				queue.front()->execute();
@@ -236,16 +288,19 @@ protected:
 			if (timer.elapsed() > interval) {
 				timer.restart();
 
-				// check number of iterations
-				if (max_iter >= 0) {
-					--max_iter;
-					if (max_iter < 0)
-						break;
-				}
+				// check if there is any component to execute
+				if (main_component && main_component->running()) {
+					// check number of iterations
+					if (max_iter >= 0) {
+						--max_iter;
+						if (max_iter < 0)
+							break;
+					}
 
-				// check if there is any kernel to execute
-				if (main_kernel)
-					main_kernel->step();
+					main_component->step();
+				} else {
+					Common::Thread::msleep(50);
+				}
 			} else {
 				Common::Thread::msleep(100*interval);
 			}
@@ -258,10 +313,10 @@ private:
 	/// Maximum number of iterations
 	int max_iter;
 
-	/// Main kernel - it's step method will be called in each loop
-	Base::Kernel * main_kernel;
+	/// Main component - it's step method will be called in each loop
+	Base::Component * main_component;
 
-	/// Main kernel name
+	/// Main component name
 	std::string mk_name;
 
 	/// Timer used in periodic mode

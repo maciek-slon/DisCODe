@@ -8,8 +8,8 @@
 #ifndef CVTHRESHOLD_PROCESSOR_HPP_
 #define CVTHRESHOLD_PROCESSOR_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
@@ -93,33 +93,18 @@ protected:
  * \class CvThreshold_Processor
  * \brief Example processor class.
  */
-class CvThreshold_Processor: public Base::Kernel
+class CvThreshold_Processor: public Base::Component
 {
 public:
 	/*!
 	 * Constructor.
 	 */
-	CvThreshold_Processor();
+	CvThreshold_Processor(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
 	virtual ~CvThreshold_Processor();
-
-	/*!
-	 * Processor initialization
-	 */
-	bool initialize();
-
-	/*!
-	 * Release all resources
-	 */
-	bool finish();
-
-	/*!
-	 * Processes given frame.
-	 */
-	int step();
 
 	/*!
 	 * Return window properties
@@ -130,6 +115,33 @@ public:
 	}
 
 protected:
+
+	/*!
+	 * Connects source to given device.
+	 */
+	bool onInit();
+
+	/*!
+	 * Disconnect source from device, closes streams, etc.
+	 */
+	bool onFinish();
+
+	/*!
+	 * Retrieves data from device.
+	 */
+	bool onStep();
+
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
+
 	/*!
 	 * Event handler function.
 	 */
@@ -156,9 +168,9 @@ protected:
 
 
 /*
- * Register processor kernel.
+ * Register processor component.
  */
-REGISTER_PROCESSOR_KERNEL("CvThreshold", Processors::CvThreshold::CvThreshold_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("CvThreshold", Processors::CvThreshold::CvThreshold_Processor, Common::Panel_Empty)
 
 #endif /* CVTHRESHOLD_PROCESSOR_HPP_ */
 

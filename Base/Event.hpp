@@ -1,6 +1,6 @@
 /*!
  * \file Event.hpp
- * \brief Kernel event.
+ * \brief Component event.
  *
  * \author mstefanc
  * \date 2010-04-29
@@ -18,7 +18,7 @@ namespace Base {
 
 /*!
  * \class Event
- * \brief Event raised by Kernel. Keeps list of it's handlers and calls them when raised.
+ * \brief Event raised by Component. Keeps list of it's handlers and calls them when raised.
  * \author mstefanc
  * \date 2010-04-29
  */
