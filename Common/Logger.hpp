@@ -8,11 +8,14 @@
 #define LOGGER_HPP_
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "Singleton.hpp"
+#include "LoggerAux.hpp"
 
 namespace Utils {
+namespace Logger {
 
 /*!
  * \class Logger
@@ -20,7 +23,7 @@ namespace Utils {
  *
  * Example usage of this class is available in \ref using_logger.
  */
-class Logger : public Base::Singleton <Logger>
+class Logger: public Base::Singleton <Logger>
 {
 	/*!
 	 * Singleton class must be a friend, because only it can call protected constructor.
@@ -29,34 +32,22 @@ class Logger : public Base::Singleton <Logger>
 
 public:
 
-
-	/*!
-	 * Severity level of message
-	 */
-	enum Severity {
-		Trace = 0, ///< Simple information used to trace program execution, prints file name and line
-		Debug,     ///< Debug message with file and line number
-		Info,      ///< Information
-		Notice,    ///< Something more important that simple information
-		Warning,   ///< Warning, continue execution
-		Error,     ///< Something bad happened
-		Critical,  ///< Critical error, there is small chance that execution can be continued
-		Fatal      ///< Something very bad happened, no chance to continue execution
-	};
-
-	virtual ~Logger() {};
+	virtual ~Logger()
+	{
+	}
 
 	/*!
 	 * Start message. Prints severity info and - if required - file name and line number
 	 * from where printing is called.
 	 */
-	Logger & log(const char * file, int line, Severity sev);
+	Logger & log(const char * file, int line, Severity sev, const std::string & msg);
 
 	/*!
 	 * Template stream operator used for printing any type of data.
 	 */
-	template<class T>
-	Logger & operator<<(const T & data) {
+	template <class T>
+	Logger & operator<<(const T & data)
+	{
 		if (curr_lvl >= level)
 			print(data);
 		return *this;
@@ -69,7 +60,8 @@ public:
 	 * or specialize this method.
 	 */
 	template <class T>
-	void print(const T & data) {
+	void print(const T & data)
+	{
 		std::cout << data;
 	}
 
@@ -79,7 +71,8 @@ public:
 	 * All messages that has severity below set level are ignored. At default level
 	 * is set to NOTICE.
 	 */
-	void setLevel(Severity lvl) {
+	void setLevel(Severity lvl)
+	{
 		level = lvl;
 	}
 
@@ -91,26 +84,24 @@ public:
 	/*!
 	 * Print out summary (number of warnings, errors etc).
 	 */
-	void summary() {
-		std::cout <<
-				sum[Trace] << " traces\n" <<
-				sum[Debug] << " debugs\n" <<
-				sum[Info] << " informations\n" <<
-				sum[Notice] << " notices\n" <<
-				sum[Warning] << " warnings\n" <<
-				sum[Error] << " errors\n" <<
-				sum[Critical] << " critical errors\n" <<
-				sum[Fatal] << " fatal errors\n";
+	void summary()
+	{
+		std::cout << sum[Trace] << " traces\n" << sum[Debug] << " debugs\n" << sum[Info] << " informations\n"
+				<< sum[Notice] << " notices\n" << sum[Warning] << " warnings\n" << sum[Error] << " errors\n"
+				<< sum[Critical] << " critical errors\n" << sum[Fatal] << " fatal errors\n";
 	}
 
 protected:
-	Logger() {
+	Logger()
+	{
 		sum[0] = sum[1] = sum[2] = sum[3] = sum[4] = sum[5] = sum[6] = sum[7] = sum[8] = sum[9] = 0;
 
 		level = Severity::Notice;
 	}
 
-	Logger(const Logger &) {}
+	Logger(const Logger &)
+	{
+	}
 
 	/// sum of messages of each type
 	int sum[10];
@@ -123,7 +114,8 @@ protected:
 };
 
 
-#define LOGGER Utils::Logger::instance()
+
+#define LOGGER Utils::Logger::Logger::instance()
 
 #define TRACE    Utils::Logger::Trace
 #define DEBUG    Utils::Logger::Debug
@@ -135,8 +127,9 @@ protected:
 #define FATAL    Utils::Logger::Fatal
 
 /// Start message printing
-#define LOG(level) (Utils::Logger::instance().log(__FILE__, __LINE__, level))
+#define LOG(level) (Utils::Logger::Logger::instance().log(__FILE__, __LINE__, level, ""))
 
+}
 }
 
 #endif /* LOGGER_HPP_ */

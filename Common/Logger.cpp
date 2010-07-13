@@ -11,8 +11,9 @@
 #include <cstdio>
 
 namespace Utils {
+namespace Logger {
 
-Logger & Logger::log(const char * file, int line, Severity sev) {
+Logger & Logger::log(const char * file, int line, Severity sev, const std::string & msg) {
 	curr_lvl = sev;
 	if (sev < level)
 		return *this;
@@ -58,7 +59,7 @@ static char char2dump(char ch) {
 }
 
 void Logger::dump(Severity sev, const std::string & msg, void * data, int length) {
-	log("", 0, sev) << msg << "\n";
+	log("", 0, sev, "") << msg << "\n";
 	int step;
 	int offset;
 	char * itr;
@@ -86,4 +87,5 @@ void Logger::dump(Severity sev, const std::string & msg, void * data, int length
 	}
 }
 
+} //: namespace Logger
 } //: namespace Utils
