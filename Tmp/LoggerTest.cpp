@@ -20,9 +20,13 @@ struct test {
 };
 
 namespace Utils {
+namespace Logger {
+
 template<>
 void Logger::print(const test & data) {
 	std::cout << data.id << " (" << data.msg << ")";
+}
+
 }
 }
 

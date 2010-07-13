@@ -19,19 +19,16 @@ namespace Logger {
 class ScopeLogger
 {
 public:
-	ScopeLogger(Logger & p) : parent(p) {
+	ScopeLogger(Logger & p, const char * f, int l, Severity s) : parent(p), file(f), line(l), sev(s) {
 
 	}
 
 	~ScopeLogger() {
-		parent.log(file, line, lvl, msg);
+		parent.log(file, line, sev, os.str());
 	}
 
-	std::ostringstream& get(const char * f, int l, Severity s)
+	std::ostringstream& get()
 	{
-		file = f;
-		line = l;
-		sev = s;
 		return os;
 	}
 
@@ -39,7 +36,7 @@ protected:
 	std::ostringstream os;
 
 private:
-	ScopeLogger(const ScopeLogger&) {}
+	ScopeLogger(const ScopeLogger & rhs) : parent(rhs.parent) {}
 
 	ScopeLogger& operator =(const ScopeLogger&) {
 		return *this;
@@ -47,16 +44,17 @@ private:
 
 private:
 	///
-	Severity sev;
+	Logger & parent;
 
 	///
-	std::string & file;
+	std::string file;
 
 	///
 	int line;
 
 	///
-	Logger & parent;
+	Severity sev;
+
 };
 
 }

@@ -1,11 +1,11 @@
 /*!
- * \file Logger.cpp
+ * \file LoggerImpl.cpp
  * \brief Simple logging object
  * \author mstefanc
  * \date 2010-06-10
  */
 
-#include "Logger.hpp"
+#include "LoggerImpl.hpp"
 #include "Console.hpp"
 
 #include <cstdio>
@@ -13,11 +13,10 @@
 namespace Utils {
 namespace Logger {
 
-Logger & Logger::log(const char * file, int line, Severity sev, const std::string & msg) {
+Logger & Logger::log(const std::string & file, int line, Severity sev, const std::string & msg) {
 	curr_lvl = sev;
 	if (sev < level)
 		return *this;
-
 
 	switch (sev) {
 	case Trace:
@@ -45,6 +44,8 @@ Logger & Logger::log(const char * file, int line, Severity sev, const std::strin
 		std::cout << red << intense << "FATAL: " << reset;
 		break;
 	}
+
+	std::cout << msg << std::endl;
 
 	sum[sev]++;
 

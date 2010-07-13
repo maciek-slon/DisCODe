@@ -297,7 +297,6 @@ protected:
 							break;
 					}
 
-					std::cout << "Periodic step\n";
 					main_component->step();
 				} else {
 					Common::Thread::msleep(50);
