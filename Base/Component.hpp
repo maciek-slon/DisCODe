@@ -19,6 +19,7 @@
 #include "DataStreamInterface.hpp"
 #include "Logger.hpp"
 #include "Timer.hpp"
+#include "Property.hpp"
 
 namespace Base {
 
@@ -381,6 +382,9 @@ private:
 
 	/// all registered data streams
 	std::map<std::string, DataStreamInterface *> streams;
+
+	/// all registered properties
+	std::map<std::string, PropertyInterface *> properties;
 
 };
 
