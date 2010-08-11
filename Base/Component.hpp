@@ -26,13 +26,23 @@ class Props;
 
 /*!
  * \class Component
+
+ * \~english
  * \brief Abstract interface class for all modules - data sources, processors etc.
  *
  * Every component should derive from this class, and override at least three methods:
- * initialize, finish and step.
+ * onInit, onFinish, onStart, onStop and onStep.
  *
  * For more information about creating components, see \ref dev_components "developing components"
  * in \ref tutorials section.
+ *
+ * \~polish
+ * \brief Klasa interfejsowa dla wszystkich komponentów - źródeł danych, procesorów itp.
+ *
+ * Każdy komponent powinien dziedziczyć po tej klasie i implementować kilka wymaganych metod
+ * (onInit, onFinish, onStart, onStop oraz onStep).
+ *
+ * \~
  * \author mstefanc
  * \date 2010-04-29
  */
@@ -44,18 +54,23 @@ class Component
 
 public:
 	/*!
+	 * \~english
 	 * Components state
+	 * \~polish
+	 * Stan komponentu
 	 */
 	enum State {
-		Running,         ///< Component is running
-		Ready,           ///< Component is stopped, ready to run
-		Unready          ///< Component hasn't been initialized or has been finished
+		Running,         ///< \~english Component is running                         \~polish Komponent jest uruchomiony
+		Ready,           ///< \~english Component is stopped, ready to run           \~polish Komponent zatrzymany, gotowy do uruchomienia
+		Unready          ///< \~english Component hasn't been initialized or has been finished \~polish Komponent nie został jeszcze zainicjowany albo został już zakończony
 	};
 
 	/*!
+	 * \~english
 	 * Base constructor
+	 * \~polish
+	 * Bazowy konstruktor
 	 */
-	//                    TUTAJ MIAŁEM name(name), i godzinę szukałem błędu :/
 	Component(const std::string & n) : name(n), state(Unready)
 	{
 
@@ -77,7 +92,10 @@ public:
 	}
 
 	/*!
+	 * \~english
 	 * Initialize component. For example for sources it would be opening streams or devices.
+	 * \~polish
+	 * Zainicjuj komponent.
 	 */
 	bool initialize() {
 		if (state == Unready) {
