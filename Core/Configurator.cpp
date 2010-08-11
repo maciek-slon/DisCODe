@@ -119,6 +119,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 	std::string type;
 	std::string thread;
 	std::string group;
+	std::string include;
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
 		name = nd.first;
@@ -129,10 +130,21 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 		type = tmp.get("<xmlattr>.type", "UNKNOWN");
 		thread = tmp.get("<xmlattr>.thread", "UNKNOWN");
 		group = tmp.get("<xmlattr>.group", "DEFAULT");
+		include = tmp.get("<xmlattr>.include", "");
 
 		LOG(TRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
 
 		kern = componentManager->createComponent(name, type);
+
+		if (include != "") {
+			try {
+				read_xml(include, tmp);
+			}
+			catch(xml_parser_error&) {
+				LOG(FATAL) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
+				throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + include + "' file.\n");
+			}
+		}
 
 		if (kern->getProperties())
 			kern->getProperties()->load(tmp);

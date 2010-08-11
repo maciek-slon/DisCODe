@@ -36,6 +36,8 @@ bool CameraUniCap_Source::onInit() {
 	int format_count;
 	int property_count;
 
+	bool device_found = false;
+
 	unicap_status_t status = STATUS_SUCCESS;
 
 	LOG(INFO) << "CameraUniCap_Source::initialize()\n";
@@ -59,8 +61,14 @@ bool CameraUniCap_Source::onInit() {
 		if (props.device == devices[i].device) {
 			device = devices[i];
 			LOG(INFO) << "device found\n";
+			device_found = true;
 			break;
 		}
+	}
+
+	if (!device_found) {
+		LOG(ERROR) << "Device not found: " << props.device << '\n';
+		throw(Common::FraDIAException("Failed to open device"));
 	}
 
 	/*
