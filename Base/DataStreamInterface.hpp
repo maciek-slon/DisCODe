@@ -31,7 +31,7 @@ public:
 		dsOut
 	};
 
-    DataStreamInterface(std::string n="name") : name(n) {};
+    DataStreamInterface(std::string n="name") : conn(NULL), name(n) {};
 
     virtual ~DataStreamInterface() {
 

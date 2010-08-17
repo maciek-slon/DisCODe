@@ -130,7 +130,7 @@ public:
 
 	ContinousExecutor(const std::string & n) : Executor(n) {};
 	
-	~ContinousExecutor() {
+	virtual ~ContinousExecutor() {
 		std::cout << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << elapsed/loops << "spl)";
 	}
 
@@ -183,7 +183,9 @@ protected:
 
 				elapsed += main_component->step();
 				loops++;
-				//LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << elapsed/loops << "spl)";
+				double spl = elapsed/loops;
+				double lps = 1.0 / spl;
+				LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 				
 			} else {
 				Common::Thread::msleep(50);

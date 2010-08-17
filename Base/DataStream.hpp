@@ -79,7 +79,8 @@ public:
 	}
 
 	void write (const T & t) {
-		conn->send(t);
+		if (conn)
+			conn->send(t);
 	}
 
 protected:

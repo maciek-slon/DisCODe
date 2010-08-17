@@ -71,13 +71,17 @@ public:
 	 * \~polish
 	 * Bazowy konstruktor
 	 */
-	Component(const std::string & n) : name(n), state(Unready)
+	Component(const std::string & n) : name_(n), state(Unready)
 	{
 
 	}
 
 	void setName(const std::string & n) {
-		name = n;
+		name_ = n;
+	}
+
+	std::string name() {
+		return name_;
 	}
 
 	/*!
@@ -108,12 +112,12 @@ public:
 		}
 
 		if (state == Ready) {
-			LOG(WARNING) << name << " already initialized.\n";
+			LOG(WARNING) << name_ << " already initialized.\n";
 			return true;
 		}
 
 		if (state == Running) {
-			LOG(WARNING) << name << " already initialized and running.\n";
+			LOG(WARNING) << name_ << " already initialized and running.\n";
 			return true;
 		}
 
@@ -134,12 +138,12 @@ public:
 		}
 
 		if (state == Running) {
-			LOG(WARNING) << name << " already running.\n";
+			LOG(WARNING) << name_ << " already running.\n";
 			return true;
 		}
 
 		if (state == Unready) {
-			LOG(WARNING) << name << " is not ready to run.\n";
+			LOG(WARNING) << name_ << " is not ready to run.\n";
 			return false;
 		}
 
@@ -160,12 +164,12 @@ public:
 		}
 
 		if (state == Ready) {
-			LOG(WARNING) << name << " already stopped.\n";
+			LOG(WARNING) << name_ << " already stopped.\n";
 			return true;
 		}
 
 		if (state == Unready) {
-			LOG(WARNING) << name << " is not initialized.\n";
+			LOG(WARNING) << name_ << " is not initialized.\n";
 			return false;
 		}
 
@@ -186,16 +190,16 @@ public:
 		}
 
 		if (state == Unready) {
-			LOG(WARNING) << name << " is already finished.\n";
+			LOG(WARNING) << name_ << " is already finished.\n";
 			return true;
 		}
 
 		if (state == Running) {
-			LOG(WARNING) << name << " still running. Trying to stop...\n";
+			LOG(WARNING) << name_ << " still running. Trying to stop...\n";
 			if (stop())
-				LOG(WARNING) << name << " stopped. Finishing...\n";
+				LOG(WARNING) << name_ << " stopped. Finishing...\n";
 			else
-				LOG(WARNING) << name << " didn't stop. Finishing anyway...\n";
+				LOG(WARNING) << name_ << " didn't stop. Finishing anyway...\n";
 
 			onFinish();
 
@@ -218,7 +222,7 @@ public:
 			onStep();
 			return timer.elapsed();
 		} else {
-			LOG(WARNING) << name << " is not running. Step can't be done.\n";
+			LOG(WARNING) << name_ << " is not running. Step can't be done.\n";
 			return 0;
 		}
 	}
@@ -386,7 +390,7 @@ protected:
 
 private:
 	/// name of particular object
-	std::string name;
+	std::string name_;
 
 	/// state of component
 	State state;

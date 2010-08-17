@@ -216,8 +216,8 @@ int main(int argc, char* argv[])
 		km.deactivateComponentList();
 				
 		km.release();
-		cm.release();
-		em.release();
+//		cm.release();
+//		em.release();
 
 	}//: try
 

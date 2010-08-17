@@ -245,6 +245,8 @@ void Configurator::loadConnections(const ptree * node) {
 				LOG(ERROR) << "Component " << name << " has no data stream named '" << ds_name << "'!\n";
 			}
 
+			LOG(INFO) << name << ": str=" << ds_name << " [" << type << "] in " << con_name;
+
 			if (type == "out") {
 				ds->setConnection(con);
 			} else

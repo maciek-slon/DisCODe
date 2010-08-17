@@ -1,5 +1,5 @@
 # Include the directory itself as a path to include directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Find OpenCV library files
 FIND_PACKAGE( OpenCV REQUIRED )
@@ -8,7 +8,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
-add_library(procOpenCVWnd SHARED ${files})
-target_link_libraries(procOpenCVWnd ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
+ADD_LIBRARY(procCvSplit SHARED ${files})
+TARGET_LINK_LIBRARIES(procCvSplit ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
 
-INSTALL_PROCESSOR(procOpenCVWnd)
+INSTALL_PROCESSOR(procCvSplit)

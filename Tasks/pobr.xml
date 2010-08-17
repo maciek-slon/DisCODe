@@ -5,17 +5,20 @@
 		<Movie type="Movie" thread="Thread1" group="s1">
 			<filename>zakaz_1.avi</filename>
 		</Movie>
-<!--
+
 		<Blur type="CvGaussianBlur" thread="Thread1" group="s1">
 			<kernelx>7</kernelx>
-			<sigmax>1</sigmax>
 		</Blur>
 
 		<ColorConv type="CvColorConv" thread="Thread1" group="s1">
 			<type>BGR2HSV</type>
-		</ColorConv2>
--->
-		<Window type="OpenCVWnd" thread="Thread1" group="s1">
+		</ColorConv>
+		
+		<Split type="CvSplit" thread="Thread1" group="s1">
+			<channels>3</channels>	
+		</Split>
+
+		<Window type="CvWindow" thread="Thread1" group="s1">
 			<title>Preview</title>
 		</Window>
 	</Components>
@@ -24,15 +27,16 @@
 	<Executors>
 		<Thread1 type="continous">
 			<main_component>Movie</main_component>
+			<iterations>200</iterations>
 		</Thread1>
 	</Executors>
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Movie.newImage"     destination="Window.onNewImage"/>
-<!--		<Event source="Blur.newImage"      destination="ColorConv.onNewImage"/>
-		<Event source="ColorConv.newImage" destination="Window.onNewImage"/>
--->
+		<Event source="Movie.newImage"     destination="Blur.onNewImage"/>
+		<Event source="Blur.newImage"      destination="ColorConv.onNewImage"/>
+		<Event source="ColorConv.newImage" destination="Split.onNewImage"/>
+		<Event source="Split.newImage"     destination="Window.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -40,7 +44,7 @@
 		<Movie>
 			<out_img type="out" group="Con1"/>
 		</Movie>
-		<!--
+		
 		<Blur>
 			<in_img type="in" group="Con1"/>
 			<out_img type="out" group="Con2"/>
@@ -49,9 +53,14 @@
 			<in_img type="in" group="Con2"/>
 			<out_img type="out" group="Con3"/>
 		</ColorConv>
-		-->
+		
+		<Split>
+			<in_img type="in" group="Con3"/>
+			<out_img_0 type="out" group="Con4"/>	
+		</Split>
+		
 		<Window>
-			<in_img type="in" group="Con1"/>
+			<in_img type="in" group="Con4"/>
 		</Window>
 	</DataStreams>
 
