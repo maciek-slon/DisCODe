@@ -116,6 +116,7 @@ add_subdirectory(Core)
 add_subdirectory(Base)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
+add_subdirectory(Sinks)
 
 # Small utility programs
 set(WITH_TOOLS ON CACHE BOOL "Build tools")

@@ -1,12 +1,12 @@
 /*!
- * \file CvWindow_Processor.hpp
- * \brief Declaration of an example class, responsible for image processing.
+ * \file CvWindow_Sink.hpp
+ * \brief
  * \author tkornuta
  * \date 11.03.2008
  */
 
-#ifndef CVWINDOW_PROCESSOR_HPP_
-#define CVWINDOW_PROCESSOR_HPP_
+#ifndef CVWINDOW_SINK_HPP_
+#define CVWINDOW_SINK_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -20,7 +20,7 @@
 
 /**
  * \defgroup CvWindow CvWindow
- * \ingroup Processors
+ * \ingroup Sinks
  *
  * Creates a window and displays the image
  *
@@ -51,7 +51,7 @@
  * @}
  */
 
-namespace Processors {
+namespace Sinks {
 namespace CvWindow {
 
 using namespace cv;
@@ -84,18 +84,18 @@ struct WndProps : public Base::Props {
  * \class RGBtoHSV_Processor
  * \brief Example processor class.
  */
-class CvWindow_Processor: public Base::Component
+class CvWindow_Sink: public Base::Component
 {
 public:
 	/*!
 	 * Constructor.
 	 */
-	CvWindow_Processor(const std::string & name = "");
+	CvWindow_Sink(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~CvWindow_Processor();
+	virtual ~CvWindow_Sink();
 
 	/*!
 	 * Return window properties
@@ -139,7 +139,7 @@ protected:
 	void onNewImage();
 
 	/// Event handler.
-	Base::EventHandler<CvWindow_Processor> h_onNewImage;
+	Base::EventHandler<CvWindow_Sink> h_onNewImage;
 
 
 	/// Input data stream
@@ -150,13 +150,13 @@ protected:
 };
 
 }//: namespace CvWindow
-}//: namespace Processors
+}//: namespace Sinks
 
 
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("CvWindow", Processors::CvWindow::CvWindow_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("CvWindow", Sinks::CvWindow::CvWindow_Sink, Common::Panel_Empty)
 
-#endif /* CVWINDOW_PROCESSOR_HPP_ */
+#endif /* CVWINDOW_SINK_HPP_ */
 

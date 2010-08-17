@@ -4,7 +4,6 @@ MESSAGE(STATUS "Building processors:")
 
 ADD_PROCESSOR(Example)
 ADD_PROCESSOR(BlobExtractor)
-ADD_PROCESSOR(CvWindow)
 ADD_PROCESSOR(CvThreshold)
 ADD_PROCESSOR(CvColorConv)
 ADD_PROCESSOR(CvGaussianBlur)
