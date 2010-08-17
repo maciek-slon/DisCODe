@@ -214,6 +214,10 @@ int main(int argc, char* argv[])
 		// End of test code.
 
 		km.deactivateComponentList();
+				
+		km.release();
+		cm.release();
+		em.release();
 
 	}//: try
 

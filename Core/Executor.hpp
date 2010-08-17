@@ -37,6 +37,9 @@ public:
 	Executor(const std::string & n) : running(false), paused(true), name_(n) {
 	}
 
+	virtual ~Executor() {
+	}
+
 	/*!
 	 * Add new Component to Executor.
 	 * \param name name of component
@@ -126,6 +129,10 @@ class ContinousExecutor : public Executor {
 public:
 
 	ContinousExecutor(const std::string & n) : Executor(n) {};
+	
+	~ContinousExecutor() {
+		std::cout << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << elapsed/loops << "spl)";
+	}
 
 	/*!
 	 * Load executor settings from given configuration node
@@ -140,6 +147,9 @@ protected:
 	 * Implementation of run method from Thread.
 	 */
 	void run() {
+		elapsed = 0;
+		loops = 0;
+
 		running = true;
 		paused = false;
 
@@ -171,7 +181,10 @@ protected:
 						break;
 				}
 
-				main_component->step();
+				elapsed += main_component->step();
+				loops++;
+				//LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << elapsed/loops << "spl)";
+				
 			} else {
 				Common::Thread::msleep(50);
 			}
@@ -189,6 +202,10 @@ private:
 
 	/// Main component name
 	std::string mk_name;
+
+
+	double elapsed;
+	int loops;
 };
 
 

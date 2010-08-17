@@ -34,9 +34,11 @@ public:
 	 * Destructor, called only once, when related singleton is destroyed.
 	 */
 	~ConnectionManager() {
-		/// \todo uncomment!
-		/*BOOST_FOREACH(std::pair<std::string, Connection *> con, connections)
-			delete con.second;*/
+	}
+	
+	void release() {
+		BOOST_FOREACH(con_pair con, connections)
+			delete con.second;
 	}
 
 	/*!
@@ -64,6 +66,8 @@ protected:
 	 * List of already created connections, name of connection is key value.
 	 */
 	std::map<std::string, Base::Connection *> connections;
+	
+	typedef std::pair<std::string, Base::Connection *> con_pair;
 };
 
 } //: namespace Core

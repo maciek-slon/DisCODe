@@ -11,3 +11,8 @@
  * for data processing (from simple filters to complex recognition-modules).
  * \author mstefanc
  */
+
+/**
+ * \defgroup Processors
+ * All implemented processors goes here
+ */

@@ -5,6 +5,11 @@
 	position: absolute;
 }
 
+div.summary {
+	visibility: hidden;
+	position: absolute;
+}
+
 body, table, div, p, dl {
 	font-family: Lucida Grande, Verdana, Geneva, Arial, sans-serif;
 	font-size: 12px;
@@ -718,7 +723,7 @@ DIV.tabs SPAN
    white-space      : nowrap;
 }
 
-DIV.tabs #MSearchBox
+#MSearchBox
 {
    float            : right;
    display          : inline;

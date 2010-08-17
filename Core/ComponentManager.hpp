@@ -51,6 +51,8 @@ protected:
 	 * List of created components
 	 */
 	std::map <string, Base::Component*> components;
+	
+	typedef std::pair<std::string, Base::Component *> comp_pair;
 
 public:
 	/*!
@@ -67,6 +69,11 @@ public:
 	~ComponentManager()
 	{
 		LOG(TRACE) << "ComponentManager: Goodbye public\n";
+	}
+	
+	void release() {
+		BOOST_FOREACH(comp_pair comp, components)
+			delete comp.second;
 	}
 
 	/*!

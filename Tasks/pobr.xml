@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Movie type="Movie" thread="Thread1" group="s1">
+			<filename>zakaz_1.avi</filename>
+		</Movie>
+<!--
+		<Blur type="CvGaussianBlur" thread="Thread1" group="s1">
+			<kernelx>7</kernelx>
+			<sigmax>1</sigmax>
+		</Blur>
+
+		<ColorConv type="CvColorConv" thread="Thread1" group="s1">
+			<type>BGR2HSV</type>
+		</ColorConv2>
+-->
+		<Window type="OpenCVWnd" thread="Thread1" group="s1">
+			<title>Preview</title>
+		</Window>
+	</Components>
+
+	<!-- Threads of execution -->
+	<Executors>
+		<Thread1 type="continous">
+			<main_component>Movie</main_component>
+		</Thread1>
+	</Executors>
+
+	<!-- Event connections -->
+	<Events>
+		<Event source="Movie.newImage"     destination="Window.onNewImage"/>
+<!--		<Event source="Blur.newImage"      destination="ColorConv.onNewImage"/>
+		<Event source="ColorConv.newImage" destination="Window.onNewImage"/>
+-->
+	</Events>
+
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<Movie>
+			<out_img type="out" group="Con1"/>
+		</Movie>
+		<!--
+		<Blur>
+			<in_img type="in" group="Con1"/>
+			<out_img type="out" group="Con2"/>
+		</Blur>
+		<ColorConv>
+			<in_img type="in" group="Con2"/>
+			<out_img type="out" group="Con3"/>
+		</ColorConv>
+		-->
+		<Window>
+			<in_img type="in" group="Con1"/>
+		</Window>
+	</DataStreams>
+
+</Task>

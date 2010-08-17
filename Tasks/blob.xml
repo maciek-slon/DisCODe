@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Camera type="CameraOpenCV" thread="Thread1" group="s1">
+		</Camera>
+
+		<Proc type="CvColorConv" thread="Thread1" group="s1">
+			<type>BGR2GRAY</type>
+		</Proc>
+
+		<Proc2 type="CvThreshold" thread="Thread1" group="s1">
+			<type>binary</type>
+			<thresh>128</thresh>
+			<maxval>128</maxval>
+		</Proc2>
+
+		<Window type="OpenCVWnd" thread="Thread1" group="s1">
+			<title>Threshold preview</title>
+		</Window>
+
+		<Window2 type="OpenCVWnd" thread="Thread1" group="s2">
+			<title>Camera preview</title>
+		</Window2>
+	</Components>
+
+	<!-- Threads of execution -->
+	<Executors>
+		<Thread1 type="periodic">
+			<interval>0.04</interval>
+			<main_component>Camera</main_component>
+		</Thread1>
+	</Executors>
+
+	<!-- Event connections -->
+	<Events>
+		<Event source="Camera.newImage" destination="Proc.onNewImage"/>
+		<Event source="Camera.newImage" destination="Window2.onNewImage"/>
+		<Event source="Proc.newImage" destination="Proc2.onNewImage"/>
+		<Event source="Proc2.newImage" destination="Window.onNewImage"/>
+	</Events>
+
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<Camera>
+			<out_img type="out" group="Con1"/>
+		</Camera>
+		<Proc>
+			<in_img type="in" group="Con1"/>
+			<out_img type="out" group="Con2"/>
+		</Proc>
+		<Proc2>
+			<in_img type="in" group="Con2"/>
+			<out_img type="out" group="Con3"/>
+		</Proc2>
+		<Window>
+			<in_img type="in" group="Con3"/>
+		</Window>
+		<Window2>
+			<in_img type="in" group="Con1"/>
+		</Window2>
+	</DataStreams>
+
+</Task>
