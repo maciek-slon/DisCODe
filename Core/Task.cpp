@@ -27,16 +27,16 @@ bool Task::stop() {
 }
 
 bool Task::finish() {
-	BOOST_FOREACH(SubtaskPair sp, subtasks) {
-		sp.second.finish();
-	}
-
-
-	stop();
-
 	BOOST_FOREACH(ExecutorPair executor, executors) {
 		executor.second->finish();
 		executor.second->wait(1000);
+	}
+
+	Common::Thread::msleep(500);
+
+	BOOST_FOREACH(SubtaskPair sp, subtasks) {
+		sp.second.stop();
+		sp.second.finish();
 	}
 
 	return true;

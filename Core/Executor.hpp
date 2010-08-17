@@ -129,7 +129,7 @@ class ContinousExecutor : public Executor {
 public:
 
 	ContinousExecutor(const std::string & n) : Executor(n) {};
-	
+
 	virtual ~ContinousExecutor() {
 		std::cout << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << elapsed/loops << "spl)";
 	}
@@ -165,6 +165,8 @@ protected:
 			if (paused) {
 				/// \todo sync with mutex
 				Common::Thread::msleep(50);
+				yield();
+				continue;
 			}
 
 			while (!queue.empty()) {
@@ -186,7 +188,7 @@ protected:
 				double spl = elapsed/loops;
 				double lps = 1.0 / spl;
 				LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
-				
+
 			} else {
 				Common::Thread::msleep(50);
 			}
@@ -238,6 +240,7 @@ protected:
 			if (paused) {
 				/// \todo sync with mutex
 				Common::Thread::msleep(50);
+				continue;
 			}
 
 			// here should be mutex, and will be ;-)
@@ -297,6 +300,7 @@ protected:
 			if (paused) {
 				/// \todo sync with mutex
 				Common::Thread::msleep(50);
+				continue;
 			}
 
 			while (!queue.empty()) {

@@ -192,8 +192,6 @@ int main(int argc, char* argv[])
 		task = configurator.loadConfiguration(task_name);
 		if (!task["s1"].start())
 			LOG(WARNING) << "Subtask S1 start() returned false\n";
-		if (!task["s2"].start())
-			LOG(WARNING) << "Subtask S2 start() returned false\n";
 
 		task.start();
 
@@ -201,10 +199,9 @@ int main(int argc, char* argv[])
 			Common::Thread::msleep(50);
 		}
 
-		task.stop();
+		//Common::Thread::msleep(5000);
 
-		task["s1"].stop();
-		task["s2"].stop();
+		Common::Thread::msleep(500);
 
 		task.finish();
 
@@ -213,11 +210,13 @@ int main(int argc, char* argv[])
 
 		// End of test code.
 
-		km.deactivateComponentList();
-				
+
+
 		km.release();
 //		cm.release();
 //		em.release();
+
+		km.deactivateComponentList();
 
 	}//: try
 
