@@ -17,9 +17,25 @@ public:
 
 	PropertyInterface(const std::string & n) : name(n) {}
 
+	template <typename T>
+	T get() {
+		return &((T*)internalGet());
+	}
+
+	template <typename T>
+	T set(const T & t) {
+		internalSet(&t);
+		return t;
+	}
+
+protected:
+	virtual void internalSet(void * data) = 0;
+
+	virtual void* internalGet() = 0;
+
 private:
 	/// property name
-	std::string & name;
+	std::string name;
 };
 
 /*!
@@ -31,10 +47,10 @@ private:
  * automatically generated get/set functions.
  */
 template <class T>
-class Property
+class Property : public PropertyInterface
 {
 public:
-	Property(const std::string& n) : data(), name(n)
+	Property(const std::string& name) : PropertyInterface(name), data()
 	{
 	}
 
@@ -47,17 +63,6 @@ public:
 	}
 
 	T operator()(T const & value)
-	{
-		data = value;
-		return data;
-	}
-
-	T get() const
-	{
-		return data;
-	}
-
-	T set(T const & value)
 	{
 		data = value;
 		return data;
@@ -77,6 +82,14 @@ public:
 	/// Might be useful for template deductions
 	typedef T value_type;
 
+protected:
+	void internalSet(void * t) {
+		data = *((T*)t);
+	}
+
+	void* internalGet() {
+		return &data;
+	}
 
 private:
 	/// actual data
