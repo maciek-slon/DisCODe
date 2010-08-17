@@ -11,3 +11,8 @@
  * for image retrieval from different sources (images, movies, cameras, etc).
  * \author tkornuta
  */
+
+/*!
+ * \defgroup Sources
+ * All implemented sources goes here
+ */

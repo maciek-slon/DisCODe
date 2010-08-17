@@ -17,6 +17,54 @@
 #include <cv.h>
 #include <highgui.h>
 
+/**
+ * \defgroup CvThreshold CvThreshold
+ * \ingroup Processors
+ *
+ * Applies a fixed-level threshold to each array element
+ *
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamin{in_img,cv::Mat}
+ * Input image
+ * \streamout{out_img_N,cv::Mat}
+ * Output images, where N is channel number, counting from 0
+ *
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * Image split
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onNewImage}
+ * New image arrived
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{type,string,"binary"}
+ * Thresholding type:
+ * - THRESH_BINARY
+ * - THRESH_BINARY_INV
+ * - THRESH_TRUNC
+ * - THRESH_TOZERO
+ * - THRESH_TOZERO_INV
+ * \prop{maxval,double,1.0}
+ * Maximum value to use with THRESH_BINARY and THRESH_BINARY_INV thresholding types
+ * \prop{thresh,double,0.5}
+ * Threshold value
+ *
+ * \see http://opencv.willowgarage.com/documentation/cpp/miscellaneous_image_transformations.html#threshold
+ * @{
+ *
+ * @}
+ */
+
 namespace Processors {
 namespace CvThreshold {
 

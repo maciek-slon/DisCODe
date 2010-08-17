@@ -46,6 +46,28 @@
  *
  * \see http://opencv.willowgarage.com/documentation/cpp/user_interface.html#namedWindow
  * \see http://opencv.willowgarage.com/documentation/cpp/user_interface.html#cv-imshow
+ *
+ *
+ * \par Task configuration template:
+ *
+ * \code
+ * <Components>
+ *   <Window type="CvWindow" thread="thread_name" group="group_name">
+ *     <title>video</title>
+ *   </Window>
+ * </Components>
+ *
+ * <Events>
+ *   <Event source="Component.Event" destination="Window.onNewImage"/>
+ * </Events>
+ *
+ * <DataStreams>
+ *   <Window>
+ *     <in_img type="in" group="connection_name"/>
+ *   </Window>
+ * </DataStreams>
+ * \endcode
+ *
  * @{
  *
  * @}

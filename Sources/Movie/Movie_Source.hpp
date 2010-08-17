@@ -18,6 +18,38 @@
 #include <cv.h>
 #include <highgui.h>
 
+/**
+ * \defgroup Movie Movie
+ * \ingroup Sources
+ *
+ * Movie reader, based on OpenCV.
+ *
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamout{out_img,cv::Mat}
+ * Output image
+ *
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * New image is ready
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{filename,string,""}
+ * Name of movie file
+ *
+ *
+ * \see http://opencv.willowgarage.com/documentation/cpp/reading_and_writing_images_and_video.html#videocapture
+ * @{
+ *
+ * @}
+ */
+
 namespace Sources {
 namespace Movie {
 

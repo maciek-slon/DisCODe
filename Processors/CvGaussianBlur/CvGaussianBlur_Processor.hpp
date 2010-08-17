@@ -48,13 +48,13 @@
  * \par Properties:
  *
  * \prop{kernelx,double,3}
- * Kernel width, have to be odd.
  * \prop{kernely,double,kernelx}
- * Kernel height
+ * The Gaussian kernel size; kernelx and kernely can differ, but they both must be positive and odd.
+ * Or, they can be zero’s, then they are computed from sigma*
  * \prop{sigmax,double,0}
- * Sigma width
  * \prop{sigmay,double,0}
- * Sigma height
+ * The Gaussian kernel standard deviations in X and Y direction. If sigmay is zero, it is set to be equal to sigmax.
+ * If they are both zeros, they are computed from kernelx and kernely, respectively.
  *
  *
  * \see http://opencv.willowgarage.com/documentation/cpp/image_filtering.html?highlight=gaus#GaussianBlur

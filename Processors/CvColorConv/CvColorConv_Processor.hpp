@@ -17,6 +17,58 @@
 #include <cv.h>
 #include <highgui.h>
 
+/**
+ * \defgroup CvColorConv Color conversion
+ * \ingroup Processors
+ *
+ * Converts image from one color space to another
+ *
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamin{in_img,cv::Mat}
+ * Input image
+ * \streamout{out_img,cv::Mat}
+ * Output image
+ *
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * New image is ready
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onNewImage}
+ * New image arrived
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{type,string,"BGR2GRAY"}
+ * The color space conversion code, some available values are:
+ * - BGR2BGRA, RGB2RGBA, BGRA2BGR, RGBA2RGB, BGR2RGBA, RGB2BGRA, RGBA2BGR, BGRA2RGB, BGR2RGB, RGB2BGR, BGRA2RGBA, RGBA2BGRA
+ * - BGR2GRAY, RGB2GRAY, GRAY2BGR, GRAY2RGB, GRAY2BGRA, GRAY2RGBA, BGRA2GRAY, RGBA2GRAY
+ * - BGR2BGR565, RGB2BGR565, BGR5652BGR, BGR5652RGB, BGRA2BGR565, RGBA2BGR565, BGR5652BGRA, BGR5652RGBA, GRAY2BGR565, BGR5652GRAY
+ * - BGR2BGR555, RGB2BGR555, BGR5552BGR, BGR5552RGB, BGRA2BGR555,RGBA2BGR555, BGR5552BGRA, BGR5552RGBA, GRAY2BGR555, BGR5552RGBA
+ * - BGR2XYZ, RGB2XYZ, XYZ2BGR, XYZ2RGB
+ * - BGR2YCrCb, RGB2YCrCb, YCrCb2BGR, YCrCb2RGB
+ * - BGR2HSV, RGB2HSV, HSV2BGR, HSV2RGB
+ * - BGR2Lab, RGB2Lab, Lab2BGR, Lab2RGB
+ * - BayerBG2BGR, BayerGB2BGR, BayerRG2BGR, BayerGR2BGR
+ * - BayerBG2RGB, BayerGB2RGB, BayerRG2RGB, BayerGR2RGB
+ * - BGR2Luv, RGB2Luv, Luv2BGR, Luv2RGB
+ * - BGR2HLS, RGB2HLS, HLS2BGR, HLS2RGB
+ *
+ *
+ * \see http://opencv.willowgarage.com/documentation/cpp/miscellaneous_image_transformations.html#cvtColor
+ * @{
+ *
+ * @}
+ */
+
 namespace Processors {
 namespace CvColorConv {
 
