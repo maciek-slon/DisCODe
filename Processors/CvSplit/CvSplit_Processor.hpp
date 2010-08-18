@@ -72,7 +72,7 @@ struct Props: public Base::Props
 	int channels;
 
 	/*!
-	 * \copydoc Common::Props::load
+	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
@@ -80,7 +80,7 @@ struct Props: public Base::Props
 	}
 
 	/*!
-	 * \copydoc Common::Props::save
+	 * \copydoc Base::Props::save
 	 */
 	void save(ptree & pt)
 	{

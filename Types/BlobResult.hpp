@@ -1,16 +1,7 @@
-/************************************************************************
-  			BlobResult.h
-
-FUNCIONALITAT: Definici� de la classe BlobResult
-AUTOR: Inspecta S.L.
-MODIFICACIONS (Modificaci�, Autor, Data):
-
-FUNCTIONALITY: Definition of the BlobResult class
-AUTHOR: Inspecta S.L.
-MODIFICATIONS (Modification, Author, Date):
-
-**************************************************************************/
-
+/*!
+ * \file BlobResult.hpp
+ * \brief Definition of the BlobResult class
+ */
 
 #ifndef BLOBRESULT_HPP_
 #define BLOBRESULT_HPP_
@@ -19,7 +10,7 @@ MODIFICATIONS (Modification, Author, Date):
 #include <cxcore.h>
 #include <vector>		// vectors de la STL
 
-//! Vector de doubles
+//! Vector of doubles
 typedef std::vector<double> double_stl_vector;
 
 #include <functional>
@@ -34,9 +25,9 @@ namespace Types {
 namespace Blobs {
 
 
-/**************************************************************************
-	Filtres / Filters
-**************************************************************************/
+/*
+ * Filters
+ */
 
 //! Actions performed by a filter (include or exclude blobs)
 #define B_INCLUDE				1L
@@ -53,18 +44,18 @@ namespace Blobs {
 #define B_OUTSIDE			    10L
 
 
-/**************************************************************************
-	Excepcions / Exceptions
-**************************************************************************/
+/*
+ * Exceptions
+ */
 
 #define EXCEPTION_BLOB_OUT_OF_BOUNDS	1000
 #define EXCEPCIO_CALCUL_BLOBS			1001
 
-/**
-	Class to calculate the blobs of an image and calculate some properties
-	on them. Also, the class provides functions to filter the blobs using
-	some criteria.
-*/
+/*!
+ * \brief Class to calculate the blobs of an image and calculate some properties
+ * on them. Also, the class provides functions to filter the blobs using
+ * some criteria.
+ */
 class BlobResult : public Drawable {
 public:
 

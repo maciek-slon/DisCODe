@@ -46,7 +46,7 @@ struct CameraUniCapProps : public Base::Props {
 
 
 	/*!
-	 * \copydoc Common::Props::load
+	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt) {
 		device = pt.get("dev.device", "/dev/video0");
@@ -63,7 +63,7 @@ struct CameraUniCapProps : public Base::Props {
 	}
 
 	/*!
-	 * \copydoc Common::Props::save
+	 * \copydoc Base::Props::save
 	 */
 	void save(ptree & pt) {
 		pt.put("dev.device", device);

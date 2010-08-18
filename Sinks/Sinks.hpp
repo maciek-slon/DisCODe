@@ -6,7 +6,7 @@
  */
 
 /*!
- * \namespace sinks
+ * \namespace Sinks
  * \brief The Sinks namespace contains classes and structures responsible
  * for data storage (displaying, storing, creating movies etc).
  * \author mstefanc

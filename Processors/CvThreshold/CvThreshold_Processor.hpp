@@ -81,7 +81,7 @@ struct ThresholdProps: public Base::Props
 	double thresh;
 
 	/*!
-	 * \copydoc Common::Props::load
+	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
@@ -91,7 +91,7 @@ struct ThresholdProps: public Base::Props
 	}
 
 	/*!
-	 * \copydoc Common::Props::save
+	 * \copydoc Base::Props::save
 	 */
 	void save(ptree & pt)
 	{

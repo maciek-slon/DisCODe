@@ -1,12 +1,7 @@
-/************************************************************************
-  			BlobResult.cpp
-
-FUNCIONALITAT: Implementaci� de la classe BlobResult
-AUTOR: Inspecta S.L.
-MODIFICACIONS (Modificaci�, Autor, Data):
-
-**************************************************************************/
-
+/*!
+ * \file BlobResult.cpp
+ * \brief Implementation of the BlobResult class
+ */
 
 #include "BlobResult.hpp"
 
@@ -25,74 +20,27 @@ namespace Blobs {
 		Constructors / Destructors
 **************************************************************************/
 
-/**
-- FUNCI�: BlobResult
-- FUNCIONALITAT: Constructor estandard.
-- PAR�METRES:
-- RESULTAT:
-- Crea un BlobResult sense cap blob
-- RESTRICCIONS:
-- AUTOR: Ricard Borr�s
-- DATA DE CREACI�: 20-07-2004.
-- MODIFICACI�: Data. Autor. Descripci�.
-*/
-/**
-- FUNCTION: BlobResult
-- FUNCTIONALITY: Standard constructor
-- PARAMETERS:
-- RESULT:
-	- creates an empty set of blobs
-- RESTRICTIONS:
-- AUTHOR: Ricard Borr�s
-- CREATION DATE: 25-05-2005.
-- MODIFICATION: Date. Author. Description.
-*/
+/*!
+ * Standard constructor. Creates an empty set of blobs.
+ */
 BlobResult::BlobResult()
 {
 	m_blobs = Blob_vector();
 }
 
 /**
-- FUNCI�: BlobResult
-- FUNCIONALITAT: Constructor a partir d'una imatge. Inicialitza la seq��ncia de blobs
-			   amb els blobs resultants de l'an�lisi de blobs de la imatge.
-- PAR�METRES:
-	- source: imatge d'on s'extreuran els blobs
-	- mask: m�scara a aplicar. Nom�s es calcularan els blobs on la m�scara sigui
-			diferent de 0. Els blobs que toquin a un pixel 0 de la m�scara seran
-			considerats exteriors.
-	- threshold: llindar que s'aplicar� a la imatge source abans de calcular els blobs
-	- findmoments: indica si s'han de calcular els moments de cada blob
-	- blackBlobs: true per buscar blobs negres a la binaritzazi� (it will join all extern white blobs).
-				  false per buscar blobs negres a la binaritzazi� (it will join all extern black blobs).
-
-- RESULTAT:
-	- objecte BlobResult amb els blobs de la imatge source
-- RESTRICCIONS:
-- AUTOR: Ricard Borr�s
-- DATA DE CREACI�: 25-05-2005.
-- MODIFICACI�: Data. Autor. Descripci�.
-*/
-/**
-- FUNCTION: Blob
-- FUNCTIONALITY: Constructor from an image. Fills an object with all the blobs in
-	the image
-- PARAMETERS:
-	- source: image to extract the blobs from
-	- mask: optional mask to apply. The blobs will be extracted where the mask is
-			not 0. All the neighbouring blobs where the mask is 0 will be extern blobs
-	- threshold: threshold level to apply to the image before computing blobs
-	- findmoments: true to calculate the blob moments (slower) (needed to calculate elipses!)
- 	- blackBlobs: true to search for black blobs in the binarization (it will join all extern white blobs).
-				  false to search for white blobs in the binarization (it will join all extern black blobs).
-- RESULT:
-	- object with all the blobs in the image. It throws an EXCEPCIO_CALCUL_BLOBS
-	  if some error appears in the BlobAnalysis function
-- RESTRICTIONS:
-- AUTHOR: Ricard Borr�s
-- CREATION DATE: 25-05-2005.
-- MODIFICATION: Date. Author. Description.
-*/
+ * Constructor from an image. Fills an object with all the blobs in	the image.
+ * Result is object with all the blobs in the image. It throws an EXCEPCIO_CALCUL_BLOBS
+ * if some error appears in the BlobAnalysis function
+ *
+ * \param source      image to extract the blobs from
+ * \param mask        optional mask to apply. The blobs will be extracted where the mask is
+ *                    not 0. All the neighbouring blobs where the mask is 0 will be extern blobs
+ * \param threshold   threshold level to apply to the image before computing blobs
+ * \param findmoments true to calculate the blob moments (slower) (needed to calculate elipses!)
+ * \param blackBlobs  true to search for black blobs in the binarization (it will join all extern white blobs).
+ *                    false to search for white blobs in the binarization (it will join all extern black blobs).
+ */
 BlobResult::BlobResult(const Blob_vector & blob_vector)
 {
 	m_blobs = blob_vector;

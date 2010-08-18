@@ -1,5 +1,5 @@
 /*!
- * \file Source_Image.cpp
+ * \file Image_Source.cpp
  * \brief Class responsible for retrieving images from files - methods definition.
  * \author tkornuta
  * \date 2009-11-05

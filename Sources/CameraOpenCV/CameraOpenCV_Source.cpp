@@ -1,5 +1,5 @@
 /*!
- * \file CameraOpenCV.cpp
+ * \file CameraOpenCV_Source.cpp
  * \brief Class responsible for retrieving images from camera.
  * \author mstefanc
  * \date 2010-06-10

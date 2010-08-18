@@ -88,14 +88,14 @@ struct WndProps : public Base::Props {
 	std::string title;
 
 	/*!
-	 * \copydoc Common::Props::load
+	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt) {
 		title = pt.get("title", "video");
 	}
 
 	/*!
-	 * \copydoc Common::Props::save
+	 * \copydoc Base::Props::save
 	 */
 	void save(ptree & pt) {
 		pt.put("title", title);

@@ -64,14 +64,14 @@ struct MovieProps : public Base::Props {
 	std::string filename;
 
 	/*!
-	 * \copydoc Common::Props::load
+	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt) {
 		filename = pt.get("filename", "");
 	}
 
 	/*!
-	 * \copydoc Common::Props::save
+	 * \copydoc Base::Props::save
 	 */
 	void save(ptree & pt) {
 		pt.put("filename", filename);

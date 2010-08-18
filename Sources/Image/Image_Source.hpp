@@ -1,5 +1,5 @@
 /*!
- * \file Source_Image.hpp
+ * \file Image_Source.hpp
  * \brief Class responsible for retrieving images from files - class declaration.
  * \author tkornuta
  * \date 2009-11-05

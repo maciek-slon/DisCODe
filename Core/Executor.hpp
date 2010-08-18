@@ -131,7 +131,9 @@ public:
 	ContinousExecutor(const std::string & n) : Executor(n) {};
 
 	virtual ~ContinousExecutor() {
-		std::cout << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << elapsed/loops << "spl)";
+		double spl = elapsed/loops;
+		double lps = 1.0 / spl;
+		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 	}
 
 	/*!

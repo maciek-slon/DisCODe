@@ -213,8 +213,8 @@ int main(int argc, char* argv[])
 
 
 		km.release();
-//		cm.release();
-//		em.release();
+		cm.release();
+		em.release();
 
 		km.deactivateComponentList();
 

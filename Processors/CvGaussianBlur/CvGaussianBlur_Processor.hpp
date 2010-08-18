@@ -80,7 +80,7 @@ struct BlurProps: public Base::Props
 	double sigmay;
 
 	/*!
-	 * \copydoc Common::Props::load
+	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
@@ -92,7 +92,7 @@ struct BlurProps: public Base::Props
 	}
 
 	/*!
-	 * \copydoc Common::Props::save
+	 * \copydoc Base::Props::save
 	 */
 	void save(ptree & pt)
 	{
