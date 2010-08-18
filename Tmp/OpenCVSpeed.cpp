@@ -66,9 +66,9 @@ int main(int argc, char * argv[]) {
 		cvtColor(out, hsv, CV_BGR2HSV);
 		split(hsv, planes);
 
-		//imshow("preview", planes[0]);
+		imshow("preview", planes[0]);
 
-		//waitKey(2);
+		waitKey(2);
 	}
 
 	// calculate total running time
