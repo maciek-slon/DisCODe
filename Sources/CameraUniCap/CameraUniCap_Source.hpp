@@ -1,12 +1,12 @@
-/*
- * CameraUniCap.h
- *
- *  Created on: 2010-06-11
- *      Author: Konrad Banachowicz
+/**
+ * \file CameraUniCap_Source.hpp
+ * \brief Unicap-based camera source definition
+ * \date 2010-06-11
+ * \author Konrad Banachowicz
  */
 
-#ifndef CAMERAUNICAP_H_
-#define CAMERAUNICAP_H_
+#ifndef CAMERAUNICAP_HPP_
+#define CAMERAUNICAP_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -17,7 +17,6 @@
 #include <opencv/cv.h>
 
 namespace Sources {
-
 namespace CameraUniCap {
 
 using namespace cv;
@@ -80,6 +79,9 @@ struct CameraUniCapProps : public Base::Props {
 	}
 };
 
+/*!
+ * \brief Unicap-based camera source.
+ */
 class CameraUniCap_Source: public Base::Component {
 public:
 	/*!
@@ -153,4 +155,5 @@ private:
  * Register source component.
  */
 REGISTER_SOURCE_COMPONENT("CameraUniCap", Sources::CameraUniCap::CameraUniCap_Source, Common::Panel_Empty)
-#endif /* CAMERAUNICAP_H_ */
+
+#endif /* CAMERAUNICAP_HPP_ */

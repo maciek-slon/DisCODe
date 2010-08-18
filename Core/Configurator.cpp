@@ -234,6 +234,8 @@ void Configurator::loadConnections(const ptree * node) {
 		kern = componentManager->getComponent(name);
 		BOOST_FOREACH( TreeNode ds_nd, tmp ) {
 			ds_name = ds_nd.first;
+			if (ds_name == "<xmlcomment>") continue;
+
 			ptree ds_tmp = ds_nd.second;
 			type = ds_tmp.get("<xmlattr>.type", "out");
 			con_name = ds_tmp.get("<xmlattr>.group", "DefaultGroup");

@@ -123,7 +123,8 @@ protected:
 
 /*!
  * \class ContinousExecutor
- * \brief This object calls step method from it's main component continously.
+ * \brief Call step continously.
+ * This object calls step method from it's main component continously.
  */
 class ContinousExecutor : public Executor {
 public:
@@ -218,7 +219,8 @@ private:
 
 /*!
  * \class PassiveExecutor
- * \brief This object doesn't call any methods from it's components explicitely,
+ * \brief Don't call any step, only react.
+ * This object doesn't call any methods from it's components explicitely,
  * but only process events and calls connected handlers.
  */
 class PassiveExecutor : public Executor {
@@ -267,8 +269,8 @@ private:
 
 /*!
  * \class PeriodicExecutor
- * \brief This object calls step method from it's main component periodically
- * with given interval.
+ * \brief Execute component periodically.
+ * This object calls step method from it's main component periodically with given interval.
  */
 class PeriodicExecutor : public Executor {
 public:

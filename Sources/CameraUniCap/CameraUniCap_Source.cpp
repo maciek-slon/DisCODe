@@ -1,17 +1,17 @@
-/*
- * CameraUniCap.cpp
- *
- *  Created on: 2010-06-11
- *      Author: Konrad Banachowicz
+/**
+ * \file CameraUniCap_Source.hpp
+ * \brief Unicap-based camera source implementation
+ * \date 2010-06-11
+ * \author Konrad Banachowicz
  */
+
+#include "CameraUniCap_Source.hpp"
 
 #include "Logger.hpp"
 
-#include "CameraUniCap_Source.h"
 #include <opencv/highgui.h>
 
 namespace Sources {
-
 namespace CameraUniCap {
 
 #define MAX_DEVICES 64
