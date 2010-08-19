@@ -49,14 +49,13 @@
  *
  * \par Properties:
  *
- * \prop{kernelx,double,3}
- * \prop{kernely,double,kernelx}
- * The Gaussian kernel size; kernelx and kernely can differ, but they both must be positive and odd.
+ * \prop{kernel,cv::Size2i,7 7}
+ * The Gaussian kernel size; kernel width and height can differ, but they both must be positive and odd.
  * Or, they can be zero’s, then they are computed from sigma*
- * \prop{sigmax,double,0}
- * \prop{sigmay,double,0}
+ * \prop{sigmax,double,0.0}
+ * \prop{sigmay,double,0.0}
  * The Gaussian kernel standard deviations in X and Y direction. If sigmay is zero, it is set to be equal to sigmax.
- * If they are both zeros, they are computed from kernelx and kernely, respectively.
+ * If they are both zeros, they are computed from kernel width and height, respectively.
  *
  *
  * \see http://opencv.willowgarage.com/documentation/cpp/image_filtering.html?highlight=gaus#GaussianBlur
@@ -75,22 +74,16 @@ using namespace cv;
  */
 struct BlurProps: public Base::Props
 {
-	int kernelx;
-	int kernely;
+	cv::Size2i kernel;
 
 	double sigmax;
 	double sigmay;
-
-	cv::Size2i kernel;
 
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
-		kernelx = pt.get("kernelx", 3);
-		kernely = pt.get("kernelx", kernelx);
-
 		kernel = pt.get("kernel", cv::Size2i(71,71));
 
 		sigmax = pt.get("sigmax", 0.0);
@@ -102,9 +95,6 @@ struct BlurProps: public Base::Props
 	 */
 	void save(ptree & pt)
 	{
-		pt.put("kernelx", kernelx);
-		pt.put("kernely", kernely);
-
 		pt.put("kernel", kernel);
 
 		pt.put("sigmax", sigmax);
