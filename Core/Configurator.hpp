@@ -64,7 +64,7 @@ public:
 	/*!
 	 * Loads configuration from xml file.
 	 */
-	Task loadConfiguration(std::string filename);
+	Task loadConfiguration(std::string filename, const std::vector<std::pair<std::string, std::string> > & overrides);
 
 	void loadExecutors(const ptree * node, Task & task);
 	void loadComponents(const ptree * node, Task & task);

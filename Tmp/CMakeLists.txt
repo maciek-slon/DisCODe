@@ -11,11 +11,11 @@ MESSAGE(STATUS "OpenCV_LIBRARIES=${OpenCV_LIBRARIES}")
 TARGET_LINK_LIBRARIES(TestOpenCV ${OpenCV_LIBRARIES} rt)
 
 #
-pkg_search_module(Unicap REQUIRED libunicapgtk)
-MESSAGE(STATUS "Unicap: ${Unicap_INCLUDE_DIRS}")
-include_directories(${Unicap_INCLUDE_DIRS})
-ADD_EXECUTABLE(TestUnicap TestUnicap.cpp)
-TARGET_LINK_LIBRARIES(TestUnicap ${Unicap_LIBRARIES})
+#pkg_search_module(Unicap REQUIRED libunicapgtk)
+#MESSAGE(STATUS "Unicap: ${Unicap_INCLUDE_DIRS}")
+#include_directories(${Unicap_INCLUDE_DIRS})
+#ADD_EXECUTABLE(TestUnicap TestUnicap.cpp)
+#TARGET_LINK_LIBRARIES(TestUnicap ${Unicap_LIBRARIES})
 
 #
 ADD_EXECUTABLE(TestV4L TestV4L.cpp)

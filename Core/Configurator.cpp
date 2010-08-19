@@ -17,7 +17,6 @@
 #include "ConnectionManager.hpp"
 
 #include <boost/filesystem.hpp>
-
 #include <boost/property_tree/xml_parser.hpp>
 
 namespace Core {
@@ -34,7 +33,7 @@ Configurator::~Configurator()
 
 }
 
-Task Configurator::loadConfiguration(std::string filename_)
+Task Configurator::loadConfiguration(std::string filename_, const std::vector<std::pair<std::string, std::string> > & overrides)
 {
 	// Set filename pointer to given one.
 	configuration_filename = filename_;
@@ -56,6 +55,13 @@ Task Configurator::loadConfiguration(std::string filename_)
 		catch(xml_parser_error&) {
 			LOG(FATAL) << "Configuration: Couldn't parse '" << configuration_filename << "' file.\n";
 			throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
+		}
+
+		// Take overrides into account
+		std::string key, value;
+		for (int i = 0; i < overrides.size(); ++i) {
+			std::cout << overrides[i].first << " set to " << overrides[i].second << std::endl;
+			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
 
 		try {
@@ -210,8 +216,10 @@ void Configurator::loadEvents(const ptree * node) {
 		if (component_executor[caller] != component_executor[receiver]) {
 			Executor * ex = executorManager->getExecutor(component_executor[receiver]);
 			h = ex->scheduleHandler(h);
+			e->addAsyncHandler(h);
+		} else {
+			e->addHandler(h);
 		}
-		e->addHandler(h);
 
 		LOG(INFO) << name << ": src=" << src << ", dst=" << dst << "\n";
 	}
