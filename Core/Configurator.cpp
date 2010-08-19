@@ -210,8 +210,10 @@ void Configurator::loadEvents(const ptree * node) {
 		if (component_executor[caller] != component_executor[receiver]) {
 			Executor * ex = executorManager->getExecutor(component_executor[receiver]);
 			h = ex->scheduleHandler(h);
+			e->addAsyncHandler(h);
+		} else {
+			e->addHandler(h);
 		}
-		e->addHandler(h);
 
 		LOG(INFO) << name << ": src=" << src << ", dst=" << dst << "\n";
 	}
