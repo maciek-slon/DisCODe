@@ -43,6 +43,9 @@ bool Movie_Source::onFinish() {
 bool Movie_Source::onStep() {
 
 	cap >> frame;
+	if (frame.empty()) {
+		return false;
+	}
 
 	out_img.write(frame);
 
