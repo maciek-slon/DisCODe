@@ -30,6 +30,7 @@ bool CvWindow_Sink::onInit() {
 	registerHandler("onNewImage", &h_onNewImage);
 
 	registerStream("in_img", &in_img);
+	registerStream("in_draw", &in_draw);
 
 	return true;
 }

@@ -78,9 +78,6 @@ void MS_Sign_LUT::onNewImage()
 		hue_img.create(size, CV_8UC1);
 		segments.create(size, CV_8UC1);
 
-		int from_to[] = { 0,0 };
-		mixChannels( &hsv_img, 1, &hue_img, 1, from_to, 1 );
-
 		// Check the arrays for continuity and, if this is the case,
 		// treat the arrays as 1D vectors
 		if (hsv_img.isContinuous() && segments.isContinuous() && hue_img.isContinuous()) {
@@ -106,6 +103,8 @@ void MS_Sign_LUT::onNewImage()
 				// make red part in hue continous
 				if (col < H(60))
 					hue_p[k] = col + H(360);
+				else
+					hue_p[k] = col;
 
 				// label colors
 				if (col < H(20))

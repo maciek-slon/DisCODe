@@ -73,6 +73,10 @@
  * @}
  */
 
+namespace Types {
+	class Drawable;
+}
+
 namespace Sinks {
 namespace CvWindow {
 
@@ -164,8 +168,11 @@ protected:
 	Base::EventHandler<CvWindow_Sink> h_onNewImage;
 
 
-	/// Input data stream
+	/// Image to be drawn
 	Base::DataStreamIn<Mat> in_img;
+
+	/// Additional data to draw
+	Base::DataStreamIn<Types::Drawable*> in_draw;
 
 	/// Window properties
 	WndProps props;

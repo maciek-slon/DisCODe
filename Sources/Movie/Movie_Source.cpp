@@ -47,7 +47,8 @@ bool Movie_Source::onStep() {
 		return false;
 	}
 
-	out_img.write(frame);
+	cv::Mat img = frame.clone();
+	out_img.write(img);
 
 	newImage->raise();
 

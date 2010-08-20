@@ -108,7 +108,7 @@ void BlobExtractor_Processor::onNewImage() {
 
 		//newBlobs->raise();
 
-		result.draw(&IplImage(out), CV_RGB(255, 0, 0), 0, 0);
+		result.draw(out, CV_RGB(255, 0, 0), 0, 0);
 		out_img.write(out);
 		newImage->raise();
 	}

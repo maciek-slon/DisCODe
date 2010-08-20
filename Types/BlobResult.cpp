@@ -877,7 +877,7 @@ void BlobResult::PrintBlobs( char *nom_fitxer ) const
 }
 
 
-void BlobResult::draw(IplImage * image, CvScalar color, int offsetx, int offsety) {
+void BlobResult::draw(cv::Mat & image, CvScalar color, int offsetx, int offsety) {
 	for(int i=0; i<GetNumBlobs(); i++)
 	{
 		m_blobs[i]->draw(image, color, offsetx, offsety);

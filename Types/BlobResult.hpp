@@ -112,7 +112,7 @@ public:
 	//! Prints some features of all the blobs in a file
 	void PrintBlobs( char *nom_fitxer ) const;
 
-	void draw(IplImage * image, CvScalar color, int offsetx = 0, int offsety = 0);
+	void draw(cv::Mat & image, CvScalar color, int offsetx = 0, int offsety = 0);
 
 
 //Metodes GET/SET

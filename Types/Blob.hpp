@@ -130,7 +130,7 @@ public:
 	 * \param offsetY
 	 * \post modifies input image and returns the seed point used to fill the blob ??
 	 */
-	void draw( IplImage *image, CvScalar color, int offsetX = 0, int offsetY = 0 );
+	void draw( cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0 );
 
 	/*!
 	 * \brief Adds external contour to current external contour
