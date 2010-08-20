@@ -9,3 +9,6 @@ ADD_PROCESSOR(CvColorConv)
 ADD_PROCESSOR(CvGaussianBlur)
 ADD_PROCESSOR(CvSplit)
 ADD_PROCESSOR(CvMorphology)
+
+# Task specific processors
+ADD_PROCESSOR(MS_Sign_LUT)
