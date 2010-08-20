@@ -40,6 +40,11 @@ namespace DataStreamBuffer {
  */
 template <class T>
 class Queue {
+public:
+	bool empty() {
+		return buffer.empty();
+	}
+
 protected:
 	/*!
 	 * Push data on the end of queue

@@ -17,14 +17,14 @@ namespace Types {
 
 class Ellipse : public Drawable {
 public:
-	Ellipse(const Point2f& _center, const Size2f& _size, float _angle = 0.0f) : rect(_center, _size, _angle)
+	Ellipse(const cv::Point2f& _center, const cv::Size2f& _size, float _angle = 0.0f) : rect_(_center, _size, _angle)
 	{}
 
     Ellipse(const CvBox2D& box) : rect_(box) {};
 
     Ellipse(const cv::RotatedRect & rhs) : rect_(rhs) {};
 
-    Ellipse(const Ellipse & rhs) : recv_(rhs.rect_) {};
+    Ellipse(const Ellipse & rhs) : rect_(rhs.rect_) {};
 
 	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
 		cv::ellipse(image, rect_, color);

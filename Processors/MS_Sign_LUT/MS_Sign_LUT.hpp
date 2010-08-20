@@ -17,6 +17,8 @@
 #include <cv.h>
 #include <highgui.h>
 
+#include "Types/Drawable_types.hpp"
+
 namespace Processors {
 namespace MS_Sign {
 
@@ -114,6 +116,8 @@ protected:
 
 	/// Output data stream - segments
 	Base::DataStreamOut <Mat> out_segments;
+
+	Base::DataStreamOut <Types::Ellipse> out_el;
 
 	/// Properties
 	Props props;

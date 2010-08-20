@@ -91,6 +91,53 @@ protected:
 private:
 };
 
+/*!
+ * \brief Input data stream.
+ *
+ * \tparam T type of data to be handled by DataStream
+ * \tparam BufferingPolicy buffering policy (way to store data)
+ * \tparam ReadSync synchronization of read access
+ * \tparam WriteSync synchronization of write access
+ */
+template
+<
+    typename T,
+    template <class T> class BufferingPolicy = DataStreamBuffer::Queue,
+    class ReadSync = Synchronization::Mutex,
+    class WriteSync = Synchronization::Mutex
+>
+class DataStreamInPtr : public DataStreamInterface, public BufferingPolicy<T*>
+{
+	using BufferingPolicy<T*>::retrieve;
+
+	/// Object used for synchronization of data reading
+	ReadSync read_sync;
+
+	/// Object used for synchronization of data writing
+	WriteSync write_sync;
+
+public:
+	virtual dsType type() {
+		return dsIn;
+	}
+
+	T* read() {
+		read_sync.lock();
+		T* t = retrieve();
+		read_sync.unlock();
+		return t;
+	}
+
+protected:
+	virtual void internalSet(void * ptr) {
+		write_sync.lock();
+		T* t = (T*)ptr;
+		store(t);
+		write_sync.unlock();
+	}
+};
+
+
 }//: namespace Base
 
 #endif /* DATASTREAM_HPP_ */

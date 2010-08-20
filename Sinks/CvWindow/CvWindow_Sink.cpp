@@ -11,6 +11,7 @@
 
 #include "CvWindow_Sink.hpp"
 #include "Logger.hpp"
+#include "Types/Drawable.hpp"
 
 namespace Sinks {
 namespace CvWindow {
@@ -59,7 +60,15 @@ bool CvWindow_Sink::onStart()
 
 void CvWindow_Sink::onNewImage() {
 	try {
-		imshow( props.title, in_img.read() );
+		cv::Mat img = in_img.read().clone();
+
+		Types::Drawable * to_draw;
+		if (!in_draw.empty()) {
+			to_draw = in_draw.read();
+			to_draw->draw(img, CV_RGB(255,255,255));
+		}
+
+		imshow( props.title, img );
 		waitKey( 2 );
 	}
 	catch(...) {

@@ -172,7 +172,7 @@ protected:
 	Base::DataStreamIn<Mat> in_img;
 
 	/// Additional data to draw
-	Base::DataStreamIn<Types::Drawable*> in_draw;
+	Base::DataStreamInPtr<Types::Drawable> in_draw;
 
 	/// Window properties
 	WndProps props;

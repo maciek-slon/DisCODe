@@ -15,7 +15,7 @@
 		</ColorConv>
 
 		<LUT type="MS_Sign_LUT" thread="Thread1" group="s1">
-				
+
 		</LUT>
 
 		<Window type="CvWindow" thread="Thread1" group="s1">
@@ -58,9 +58,11 @@
 		<LUT>
 			<in_img type="in" group="Con3"/>
 			<out_segments type="out" group="Con4"/>
+			<out_el type="out" group="Con7"/>
 		</LUT>
 
 		<Window>
+			<in_draw type="in" group="Con7"/>
 			<in_img type="in" group="Con4"/>
 		</Window>
 	</DataStreams>
