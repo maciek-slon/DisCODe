@@ -17,6 +17,8 @@
 #include <cv.h>
 #include <highgui.h>
 
+#include "Types/stream_OpenCV.hpp"
+
 /**
  * \defgroup CvGaussianBlur CvGaussianBlur
  * \ingroup Processors
@@ -79,6 +81,8 @@ struct BlurProps: public Base::Props
 	double sigmax;
 	double sigmay;
 
+	cv::Size2i kernel;
+
 	/*!
 	 * \copydoc Base::Props::load
 	 */
@@ -86,6 +90,8 @@ struct BlurProps: public Base::Props
 	{
 		kernelx = pt.get("kernelx", 3);
 		kernely = pt.get("kernelx", kernelx);
+
+		kernel = pt.get("kernel", cv::Size2i(71,71));
 
 		sigmax = pt.get("sigmax", 0.0);
 		sigmay = pt.get("sigmay", 0.0);
@@ -98,6 +104,9 @@ struct BlurProps: public Base::Props
 	{
 		pt.put("kernelx", kernelx);
 		pt.put("kernely", kernely);
+
+		pt.put("kernel", kernel);
+
 		pt.put("sigmax", sigmax);
 		pt.put("sigmay", sigmay);
 	}

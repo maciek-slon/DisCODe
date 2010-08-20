@@ -69,7 +69,7 @@ void CvGaussianBlur_Processor::onNewImage()
 	try {
 		cv::Mat img = in_img.read();
 		cv::Mat out = img.clone();
-		cv::GaussianBlur(img, out, cv::Size(props.kernelx, props.kernely), props.sigmax, props.sigmay);
+		cv::GaussianBlur(img, out, props.kernel, props.sigmax, props.sigmay);
 		out_img.write(out);
 		newImage->raise();
 	} catch (...) {

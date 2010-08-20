@@ -27,3 +27,6 @@ ADD_EXECUTABLE(PolicyTest PolicyTest.cpp)
 #
 ADD_EXECUTABLE(OpenCVSpeed OpenCVSpeed.cpp)
 TARGET_LINK_LIBRARIES(OpenCVSpeed ${OpenCV_LIBRARIES})
+
+ADD_EXECUTABLE(ptree ptree.cpp)
+TARGET_LINK_LIBRARIES(ptree ${OpenCV_LIBRARIES})
