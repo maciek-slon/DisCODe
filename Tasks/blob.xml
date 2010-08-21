@@ -15,6 +15,10 @@
 			<maxval>128</maxval>
 		</Proc2>
 
+		<Blob type="BlobExtractor" thread="Thread1" group="s1">
+
+		</Blob>
+
 		<Window type="OpenCVWnd" thread="Thread1" group="s1">
 			<title>Threshold preview</title>
 		</Window>
@@ -37,7 +41,8 @@
 		<Event source="Camera.newImage" destination="Proc.onNewImage"/>
 		<Event source="Camera.newImage" destination="Window2.onNewImage"/>
 		<Event source="Proc.newImage" destination="Proc2.onNewImage"/>
-		<Event source="Proc2.newImage" destination="Window.onNewImage"/>
+		<Event source="Proc2.newImage" destination="Blob.onNewImage"/>
+		<Event source="Blob.newImage" destination="Window.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -53,8 +58,12 @@
 			<in_img type="in" group="Con2"/>
 			<out_img type="out" group="Con3"/>
 		</Proc2>
-		<Window>
+		<Blob>
 			<in_img type="in" group="Con3"/>
+			<out_img type="out" group="Con4"/>
+		</Blob>
+		<Window>
+			<in_img type="in" group="Con4"/>
 		</Window>
 		<Window2>
 			<in_img type="in" group="Con1"/>

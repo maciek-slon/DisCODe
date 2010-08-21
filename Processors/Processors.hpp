@@ -13,6 +13,6 @@
  */
 
 /**
- * \defgroup Processors
+ * \defgroup Processors Processors
  * All implemented processors goes here
  */

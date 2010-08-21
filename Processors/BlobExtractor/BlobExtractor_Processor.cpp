@@ -104,9 +104,9 @@ void BlobExtractor_Processor::onNewImage() {
 
 		result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, 100 );
 
-		//out_blobs.write(result);
+		out_blobs.write(result);
 
-		//newBlobs->raise();
+		newBlobs->raise();
 
 		result.draw(out, CV_RGB(255, 0, 0), 0, 0);
 		out_img.write(out);

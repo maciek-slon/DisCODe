@@ -13,6 +13,6 @@
  */
 
 /**
- * \defgroup Sinks
+ * \defgroup Sinks Sinks
  * All implemented sinks goes here
  */

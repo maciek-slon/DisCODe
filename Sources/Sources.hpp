@@ -13,6 +13,6 @@
  */
 
 /*!
- * \defgroup Sources
+ * \defgroup Sources Sources
  * All implemented sources goes here
  */

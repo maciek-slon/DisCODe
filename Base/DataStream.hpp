@@ -92,7 +92,10 @@ private:
 };
 
 /*!
- * \brief Input data stream.
+ * \brief Input data stream, retrieve pointer to stored data.
+ *
+ * It's usefull when one have to receive pointer to base class, when objects of
+ * derived class are sent.
  *
  * \tparam T type of data to be handled by DataStream
  * \tparam BufferingPolicy buffering policy (way to store data)

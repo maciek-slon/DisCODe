@@ -68,9 +68,9 @@ void CvColorConv_Processor::onNewImage()
 	LOG(TRACE) << "CvThreshold_Processor::onNewImage\n";
 	try {
 		cv::Mat img = in_img.read();
-		//cv::Mat out = img.clone();
-		cvtColor(img, img, props.type);
-		out_img.write(img);
+		cv::Mat out;
+		cvtColor(img, out, props.type);
+		out_img.write(out);
 		newImage->raise();
 	} catch (...) {
 		LOG(ERROR) << "CvThreshold::onNewImage failed\n";

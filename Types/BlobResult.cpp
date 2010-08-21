@@ -28,7 +28,8 @@ BlobResult::BlobResult()
 	m_blobs = Blob_vector();
 }
 
-/**
+
+/* This comment is related to method that doesn't exist. Hmmm...
  * Constructor from an image. Fills an object with all the blobs in	the image.
  * Result is object with all the blobs in the image. It throws an EXCEPCIO_CALCUL_BLOBS
  * if some error appears in the BlobAnalysis function
@@ -41,35 +42,19 @@ BlobResult::BlobResult()
  * \param blackBlobs  true to search for black blobs in the binarization (it will join all extern white blobs).
  *                    false to search for white blobs in the binarization (it will join all extern black blobs).
  */
+
+/*!
+ *
+ * @param blob_vector
+ */
 BlobResult::BlobResult(const Blob_vector & blob_vector)
 {
 	m_blobs = blob_vector;
 }
-
-/**
-- FUNCI�: BlobResult
-- FUNCIONALITAT: Constructor de c�pia. Inicialitza la seq��ncia de blobs
-			   amb els blobs del par�metre.
-- PAR�METRES:
-	- source: objecte que es copiar�
-- RESULTAT:
-	- objecte BlobResult amb els blobs de l'objecte source
-- RESTRICCIONS:
-- AUTOR: Ricard Borr�s
-- DATA DE CREACI�: 25-05-2005.
-- MODIFICACI�: Data. Autor. Descripci�.
-*/
-/**
-- FUNCTION: BlobResult
-- FUNCTIONALITY: Copy constructor
-- PARAMETERS:
-	- source: object to copy
-- RESULT:
-- RESTRICTIONS:
-- AUTHOR: Ricard Borr�s
-- CREATION DATE: 25-05-2005.
-- MODIFICATION: Date. Author. Description.
-*/
+/*!
+ * Copy constructor
+ * @param source object to copy
+ */
 BlobResult::BlobResult( const BlobResult &source )
 {
 	m_blobs = Blob_vector( source.GetNumBlobs() );
@@ -92,63 +77,24 @@ BlobResult::BlobResult( const BlobResult &source )
 }
 
 
-
-/**
-- FUNCI�: ~BlobResult
-- FUNCIONALITAT: Destructor estandard.
-- PAR�METRES:
-- RESULTAT:
-	- Allibera la mem�ria reservada de cadascun dels blobs de la classe
-- RESTRICCIONS:
-- AUTOR: Ricard Borr�s
-- DATA DE CREACI�: 25-05-2005.
-- MODIFICACI�: Data. Autor. Descripci�.
-*/
-/**
-- FUNCTION: ~BlobResult
-- FUNCTIONALITY: Destructor
-- PARAMETERS:
-- RESULT:
-- RESTRICTIONS:
-- AUTHOR: Ricard Borr�s
-- CREATION DATE: 25-05-2005.
-- MODIFICATION: Date. Author. Description.
-*/
+/*!
+ * Destructor
+ */
 BlobResult::~BlobResult()
 {
 	ClearBlobs();
 }
 
-/**************************************************************************
-		Operadors / Operators
-**************************************************************************/
+/* *************************************************************************
+ * Operators
+ * *************************************************************************/
 
-
-/**
-- FUNCI�: operador =
-- FUNCIONALITAT: Assigna un objecte source a l'actual
-- PAR�METRES:
-	- source: objecte a assignar
-- RESULTAT:
-	- Substitueix els blobs actuals per els de l'objecte source
-- RESTRICCIONS:
-- AUTOR: Ricard Borr�s
-- DATA DE CREACI�: 25-05-2005.
-- MODIFICACI�: Data. Autor. Descripci�.
-*/
-/**
-- FUNCTION: Assigment operator
-- FUNCTIONALITY:
-- PARAMETERS:
-- RESULT:
-- RESTRICTIONS:
-- AUTHOR: Ricard Borr�s
-- CREATION DATE: 25-05-2005.
-- MODIFICATION: Date. Author. Description.
-*/
+/*!
+ * Assigment operator
+ */
 BlobResult& BlobResult::operator=(const BlobResult& source)
 {
-	// si ja s�n el mateix, no cal fer res
+	// check for X=X
 	if (this != &source)
 	{
 		// alliberem el conjunt de blobs antic
@@ -776,32 +722,13 @@ void BlobResult::ClearBlobs()
 	m_blobs.clear();
 }
 
-/**
-- FUNCI�: RaiseError
-- FUNCIONALITAT: Funci� per a notificar errors al l'usuari (en debug) i llen�a
-			   les excepcions
-- PAR�METRES:
-	- errorCode: codi d'error
-- RESULTAT:
-	- Ensenya un missatge a l'usuari (en debug) i llen�a una excepci�
-- RESTRICCIONS:
-- AUTOR: Ricard Borr�s Navarra
-- DATA DE CREACI�: 25-05-2005.
-- MODIFICACI�: Data. Autor. Descripci�.
-*/
-/*
-- FUNCTION: RaiseError
-- FUNCTIONALITY: Error handling function
-- PARAMETERS:
-	- errorCode: reason of the error
-- RESULT:
-	- in _SHOW_ERRORS version, shows a message box with the error. In release is silent.
-	  In both cases throws an exception with the error.
-- RESTRICTIONS:
-- AUTHOR: Ricard Borr�s
-- CREATION DATE: 25-05-2005.
-- MODIFICATION: Date. Author. Description.
-*/
+/*!
+ * Error handling function.
+ * In _SHOW_ERRORS version, prints error. In release is silent.
+ * In both cases throws an exception with the error.
+ *
+ * @param errorCode reason of the error
+ */
 void BlobResult::RaiseError(const int errorCode) const
 {
 //! Do we need to show errors?
@@ -822,34 +749,14 @@ void BlobResult::RaiseError(const int errorCode) const
 
 
 
-/**************************************************************************
-		Auxiliars / Auxiliary functions
-**************************************************************************/
+/* *************************************************************************
+ * Auxiliary functions
+ * *************************************************************************/
 
-
-/**
-- FUNCI�: PrintBlobs
-- FUNCIONALITAT: Escriu els par�metres (�rea, per�metre, exterior, mitjana)
-			   de tots els blobs a un fitxer.
-- PAR�METRES:
-	- nom_fitxer: path complet del fitxer amb el resultat
-- RESULTAT:
-- RESTRICCIONS:
-- AUTOR: Ricard Borr�s
-- DATA DE CREACI�: 25-05-2005.
-- MODIFICACI�: Data. Autor. Descripci�.
-*/
-/*
-- FUNCTION: PrintBlobs
-- FUNCTIONALITY: Prints some blob features in an ASCII file
-- PARAMETERS:
-	- nom_fitxer: full path + filename to generate
-- RESULT:
-- RESTRICTIONS:
-- AUTHOR: Ricard Borr�s
-- CREATION DATE: 25-05-2005.
-- MODIFICATION: Date. Author. Description.
-*/
+/*!
+ * Prints some blob features in an ASCII file
+ * @param nom_fitxer full path + filename to generate
+ */
 void BlobResult::PrintBlobs( char *nom_fitxer ) const
 {
 	double_stl_vector area, /*perimetre,*/ exterior, compacitat, longitud,
@@ -876,7 +783,9 @@ void BlobResult::PrintBlobs( char *nom_fitxer ) const
 
 }
 
-
+/*!
+ * Draw all blobs onto given image.
+ */
 void BlobResult::draw(cv::Mat & image, CvScalar color, int offsetx, int offsety) {
 	for(int i=0; i<GetNumBlobs(); i++)
 	{
