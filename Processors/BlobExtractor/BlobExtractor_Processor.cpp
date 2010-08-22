@@ -16,7 +16,7 @@
 
 #include "Logger.hpp"
 #include "Timer.hpp"
-#include "BlobOperators.hpp"
+#include "Types/Blobs/BlobOperators.hpp"
 
 #include <boost/thread.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>

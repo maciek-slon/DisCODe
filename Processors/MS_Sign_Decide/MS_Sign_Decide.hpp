@@ -19,7 +19,7 @@
 
 #include <vector>
 
-#include "Types/BlobResult.hpp"
+#include "Types/Blobs/BlobResult.hpp"
 #include "Types/Drawable_types.hpp"
 
 namespace Processors {

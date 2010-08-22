@@ -16,7 +16,7 @@
 #include <cv.h>
 #include <cxtypes.h>
 
-#include "BlobResult.hpp"
+#include "Types/Blobs/BlobResult.hpp"
 
 namespace Processors {
 namespace BlobExtractor {
