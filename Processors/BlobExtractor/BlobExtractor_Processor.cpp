@@ -95,23 +95,30 @@ void BlobExtractor_Processor::onNewImage() {
 		LOG(WARNING) << "blob find error\n";
 	}
 
-	if( !success ) {
-		LOG(ERROR) << "Blob find error\n";
-	} else {
-		Types::Blobs::BlobResult result(res);
+		try {
+		if( !success ) {
+			LOG(ERROR) << "Blob find error\n";
+		} else {
+			LOG(TRACE) << "blobs found";
+			Types::Blobs::BlobResult result(res);
 
-		result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, props.min_size );
+			result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, props.min_size );
 
-		out_blobs.write(result);
+			out_blobs.write(result);
+			LOG(TRACE) << "blobs written";
+			newBlobs->raise();
+			LOG(TRACE) << "blobs sent";
+			//result.draw(out, CV_RGB(255, 0, 0), 0, 0);
+			//out_img.write(in);
+			//newImage->raise();
+		}
 
-		//newBlobs->raise();
-
-		//result.draw(out, CV_RGB(255, 0, 0), 0, 0);
-		out_img.write(in);
-		newImage->raise();
+		LOG(INFO) << "Blobing took " << timer.elapsed() << " seconds\n";
 	}
-
-	LOG(INFO) << "Blobing took " << timer.elapsed() << " seconds\n";
+	catch(...)
+	{
+		LOG(ERROR) << "BlobExtractor onNewImage failure";
+	}
 }
 
 }//: namespace BlobExtractor

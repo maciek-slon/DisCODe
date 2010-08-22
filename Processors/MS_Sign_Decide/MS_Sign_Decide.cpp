@@ -22,6 +22,7 @@ namespace MS_Sign {
 MS_Sign_Decide::MS_Sign_Decide(const std::string & name) : Base::Component(name)
 {
 	LOG(TRACE) << "Hello MS_Sign_Decide\n";
+	blobs_ready = hue_ready = false;
 }
 
 MS_Sign_Decide::~MS_Sign_Decide()
@@ -35,6 +36,9 @@ bool MS_Sign_Decide::onInit()
 
 	h_onNewImage.setup(this, &MS_Sign_Decide::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
+
+	h_onNewBlobs.setup(this, &MS_Sign_Decide::onNewBlobs);
+	registerHandler("onNewBlobs", &h_onNewBlobs);
 
 	registerStream("in_blobs", &in_blobs);
 	registerStream("in_hue", &in_hue);
@@ -56,32 +60,14 @@ bool MS_Sign_Decide::onFinish()
 bool MS_Sign_Decide::onStep()
 {
 	LOG(TRACE) << "MS_Sign_Decide::step\n";
-	return true;
-}
 
-bool MS_Sign_Decide::onStop()
-{
-	return true;
-}
+	blobs_ready = hue_ready = false;
 
-bool MS_Sign_Decide::onStart()
-{
-	return true;
-}
-
-void MS_Sign_Decide::onNewImage()
-{
-	LOG(TRACE) << "MS_Sign_Decide::onNewImage\n";
 	try {
-		IplImage h = IplImage(in_hue.read());
-
 		int id = 0;
 		int i;
-
-		Types::Blobs::BlobResult blobs = in_blobs.read();
+		IplImage h = IplImage(hue_img);
 		Types::Blobs::Blob *currentBlob;
-
-
 		Types::DrawableContainer signs;
 
 		// iterate through all found blobs
@@ -137,16 +123,51 @@ void MS_Sign_Decide::onNewImage()
 
 			++id;
 
-			signs.add(new Types::Ellipse(r2));
+			signs.add(new Types::Ellipse(Point(r2.center.x, r2.center.y), Size(r2.size.width, r2.size.height), r2.angle));
 
 			out_signs.write(signs);
+
+			newImage->raise();
 		}
 
-
+		return true;
 	} catch (...) {
 		LOG(ERROR) << "MS_Sign_Decide::onNewImage failed\n";
+		return false;
 	}
 }
+
+bool MS_Sign_Decide::onStop()
+{
+	return true;
+}
+
+bool MS_Sign_Decide::onStart()
+{
+	return true;
+}
+
+void MS_Sign_Decide::onNewImage()
+{
+	LOG(TRACE) << "MS_Sign_Decide::onNewImage\n";
+
+	hue_ready = true;
+	hue_img = in_hue.read();
+	hue_img = hue_img.clone();
+	if (blobs_ready && hue_ready)
+		onStep();
+}
+
+void MS_Sign_Decide::onNewBlobs()
+{
+	LOG(TRACE) << "MS_Sign_Decide::onNewBlobs\n";
+
+	blobs_ready = true;
+	blobs = in_blobs.read();
+	if (blobs_ready && hue_ready)
+		onStep();
+}
+
 
 }//: namespace MS_Sign
 }//: namespace Processors

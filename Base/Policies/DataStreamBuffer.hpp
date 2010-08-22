@@ -91,6 +91,10 @@ public:
 		fresh = false;
 	}
 
+	bool empty() {
+		return !fresh;
+	}
+
 protected:
 	/*!
 	 * Remember new data.

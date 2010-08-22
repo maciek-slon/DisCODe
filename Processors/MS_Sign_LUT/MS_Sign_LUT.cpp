@@ -146,7 +146,16 @@ void MS_Sign_LUT::onNewImage()
 		out_segments.write(segments);
 
 		newImage->raise();
-	} catch (...) {
+	}
+	catch (Common::FraDIAException& ex) {
+		LOG(ERROR) << ex.what() << "\n";
+		ex.printStackTrace();
+		exit(EXIT_FAILURE);
+	}
+	catch (const char * ex) {
+		LOG(ERROR) << ex;
+	}
+	catch (...) {
 		LOG(ERROR) << "MS_Sign_LUT::onNewImage failed\n";
 	}
 }

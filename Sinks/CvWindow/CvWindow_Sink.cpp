@@ -59,6 +59,8 @@ bool CvWindow_Sink::onStart()
 }
 
 void CvWindow_Sink::onNewImage() {
+	LOG(TRACE)<<"CvWindow_Sink::onNewImage\n";
+
 	try {
 		cv::Mat img = in_img.read().clone();
 

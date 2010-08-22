@@ -6,9 +6,9 @@
 			<filename>zakaz_1.1280.avi</filename>
 		</Movie>
 
-		<Blur type="CvGaussianBlur" thread="Thread1" group="s1">
+		<!--<Blur type="CvGaussianBlur" thread="Thread1" group="s1">
 			<kernel>7 7</kernel>
-		</Blur>
+		</Blur>-->
 
 		<ColorConv type="CvColorConv" thread="Thread1" group="s1">
 			<type>BGR2HSV</type>
@@ -51,13 +51,15 @@
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Movie.newImage"      destination="Blur.onNewImage"/>
-		<Event source="Blur.newImage"       destination="ColorConv.onNewImage"/>
+		<Event source="Movie.newImage"      destination="ColorConv.onNewImage"/>
+		<!--<Event source="Blur.newImage"       destination="ColorConv.onNewImage"/>-->
 		<Event source="ColorConv.newImage"  destination="LUT.onNewImage"/>
 		<Event source="LUT.newImage"        destination="MorphClose.onNewImage"/>
+		<Event source="LUT.newImage"        destination="Decide.onNewImage"/>
 		<Event source="MorphClose.newImage" destination="MorphOpen.onNewImage"/>
 		<Event source="MorphOpen.newImage"  destination="Blob.onNewImage"/>
-		<Event source="Blob.newImage"       destination="Decide.onNewImage"/>
+		<Event source="Blob.newBlobs"       destination="Decide.onNewBlobs"/>
+		<Event source="Movie.newImage"     destination="Window.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -66,38 +68,46 @@
 			<out_img type="out" group="Con1"/>
 		</Movie>
 
-		<Blur>
-			<in_img type="in" group="Con1"/>
+		<!--<Blur>
+			<in_img  type="in"  group="Con1"/>
 			<out_img type="out" group="Con2"/>
-		</Blur>
+		</Blur>-->
 
 		<ColorConv>
-			<in_img type="in" group="Con2"/>
+			<in_img  type="in"  group="Con1"/>
 			<out_img type="out" group="Con3"/>
 		</ColorConv>
 
 		<LUT>
-			<in_img type="in" group="Con3"/>
+			<in_img       type="in"  group="Con3"/>
 			<out_segments type="out" group="Con4"/>
-			<out_hue type="out" group="Con_hue"/>
+			<out_hue      type="out" group="con_hue"/>
 		</LUT>
 
 		<MorphClose>
-			<in_img type="in" group="Con4"/>
+			<in_img  type="in"  group="Con4"/>
 			<out_img type="out" group="Con5"/>
 		</MorphClose>
 
 		<MorphOpen>
-			<in_img type="in" group="Con5"/>
+			<in_img  type="in"  group="Con5"/>
 			<out_img type="out" group="Con6"/>
 		</MorphOpen>
 
+		<Blob>
+			<in_img    type="in"  group="Con6"/>
+			<out_blobs type="out" group="con_blobs"/>
+		</Blob>
+
 		<Decide>
-			<in_hue type="in" group="con_hue"/>
+			<in_hue    type="in"  group="con_hue"/>
+			<in_blobs  type="in"  group="con_blobs"/>
+			<out_signs type="out" group="con_signs"/>
 		</Decide>
 
 		<Window>
-			<in_img type="in" group="Con6"/>
+			<in_img  type="in" group="Con1"/>
+			<in_draw type="in" group="con_signs"/>
 		</Window>
 	</DataStreams>
 

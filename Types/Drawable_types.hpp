@@ -28,7 +28,12 @@ public:
     Ellipse(const Ellipse & rhs) : rect_(rhs.rect_) {};
 
 	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
-		cv::ellipse(image, rect_, color);
+		//cv::ellipse(image, rect_, color);
+		cvEllipse(&(IplImage(image)), cv::Point(rect_.center.x, rect_.center.y), cv::Size(rect_.size.width, rect_.size.height), rect_.angle, 0, 360, color, 2);
+	}
+
+	virtual Drawable * clone() {
+		return new Ellipse(*this);
 	}
 
 private:
@@ -44,6 +49,14 @@ public:
 
 	void add(Drawable * it) {
 		items.push_back(it);
+	}
+
+	virtual Drawable * clone() {
+		DrawableContainer * ret = new DrawableContainer;
+		for (int i = 0; i < items.size(); ++i)
+			ret->add(items[i]->clone());
+
+		return ret;
 	}
 
 private:

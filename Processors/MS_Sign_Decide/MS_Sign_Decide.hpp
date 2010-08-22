@@ -105,8 +105,18 @@ protected:
 	 */
 	void onNewImage();
 
-	/// Event handler.
+	/// New image is waiting
 	Base::EventHandler <MS_Sign_Decide> h_onNewImage;
+
+
+	/*!
+	 * Event handler function.
+	 */
+	void onNewBlobs();
+
+	/// New set of blobs is waiting
+	Base::EventHandler <MS_Sign_Decide> h_onNewBlobs;
+
 
 	/// Input blobs
 	Base::DataStreamIn <Types::Blobs::BlobResult> in_blobs;
@@ -126,6 +136,11 @@ protected:
 private:
 	cv::Mat hue_img;
 	cv::Mat segments;
+
+	bool blobs_ready;
+	bool hue_ready;
+
+	Types::Blobs::BlobResult blobs;
 };
 
 }//: namespace MS_Sign

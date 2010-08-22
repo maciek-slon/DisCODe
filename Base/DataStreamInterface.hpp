@@ -31,7 +31,7 @@ public:
 		dsOut
 	};
 
-    DataStreamInterface(std::string n="name") : conn(NULL), name(n) {};
+    DataStreamInterface(std::string n="name") : conn(NULL), name_(n) {};
 
     virtual ~DataStreamInterface() {
 
@@ -52,13 +52,17 @@ public:
 		conn = con;
 	}
 
+	const std::string & name() const {
+		return name_;
+	}
+
 protected:
     virtual void internalSet(void * ptr) = 0;
 
     Connection * conn;
 
 private:
-    std::string name;
+    std::string name_;
 
 };
 

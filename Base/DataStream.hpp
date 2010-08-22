@@ -30,8 +30,8 @@ template
 <
     typename T,
     template <class T> class BufferingPolicy = DataStreamBuffer::Queue,
-    class ReadSync = Synchronization::Mutex,
-    class WriteSync = Synchronization::Mutex
+    class ReadSync = Synchronization::NoSync,
+    class WriteSync = Synchronization::NoSync
 >
 class DataStreamIn : public DataStreamInterface, public BufferingPolicy<T>
 {
@@ -106,8 +106,8 @@ template
 <
     typename T,
     template <class T> class BufferingPolicy = DataStreamBuffer::Queue,
-    class ReadSync = Synchronization::Mutex,
-    class WriteSync = Synchronization::Mutex
+    class ReadSync = Synchronization::NoSync,
+    class WriteSync = Synchronization::NoSync
 >
 class DataStreamInPtr : public DataStreamInterface, public BufferingPolicy<T*>
 {
@@ -135,6 +135,7 @@ protected:
 	virtual void internalSet(void * ptr) {
 		write_sync.lock();
 		T* t = (T*)ptr;
+		t = t->clone();
 		store(t);
 		write_sync.unlock();
 	}
