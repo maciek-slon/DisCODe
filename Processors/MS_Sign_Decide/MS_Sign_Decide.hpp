@@ -1,12 +1,12 @@
 /*!
- * \file MS_Sign_LUT.hpp
+ * \file MS_Sign_Decide.hpp
  * \brief
  * \author mstefanc
  * \date 2010-07-05
  */
 
-#ifndef MS_SIGN_LUT_HPP_
-#define MS_SIGN_LUT_HPP_
+#ifndef MS_SIGN_DECIDE_HPP_
+#define MS_SIGN_DECIDE_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -17,6 +17,9 @@
 #include <cv.h>
 #include <highgui.h>
 
+#include <vector>
+
+#include "Types/BlobResult.hpp"
 #include "Types/Drawable_types.hpp"
 
 namespace Processors {
@@ -25,7 +28,7 @@ namespace MS_Sign {
 using namespace cv;
 
 /*!
- * \brief MS_Sign_LUT properties
+ * \brief MS_Sign_Decide properties
  */
 struct Props: public Base::Props
 {
@@ -45,21 +48,21 @@ struct Props: public Base::Props
 };
 
 /*!
- * \class MS_Sign_LUT
+ * \class MS_Sign_Decide
  * \brief Example processor class.
  */
-class MS_Sign_LUT: public Base::Component
+class MS_Sign_Decide: public Base::Component
 {
 public:
 	/*!
 	 * Constructor.
 	 */
-	MS_Sign_LUT(const std::string & name = "");
+	MS_Sign_Decide(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~MS_Sign_LUT();
+	virtual ~MS_Sign_Decide();
 
 	/*!
 	 * Return window properties
@@ -103,19 +106,19 @@ protected:
 	void onNewImage();
 
 	/// Event handler.
-	Base::EventHandler <MS_Sign_LUT> h_onNewImage;
+	Base::EventHandler <MS_Sign_Decide> h_onNewImage;
 
-	/// Input image
-	Base::DataStreamIn <Mat> in_img;
+	/// Input blobs
+	Base::DataStreamIn <Types::Blobs::BlobResult> in_blobs;
 
-	/// Event raised, when image is processed
+	/// Input hue image
+	Base::DataStreamIn <cv::Mat> in_hue;
+
+	/// Event raised, when data is processed
 	Base::Event * newImage;
 
-	/// Output data stream - hue part with continous red
-	Base::DataStreamOut <Mat> out_hue;
-
-	/// Output data stream - segments
-	Base::DataStreamOut <Mat> out_segments;
+	/// Output data stream - list of ellipses around found signs
+	Base::DataStreamOut < Types::DrawableContainer > out_signs;
 
 	/// Properties
 	Props props;
@@ -132,7 +135,7 @@ private:
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("MS_Sign_LUT", Processors::MS_Sign::MS_Sign_LUT, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("MS_Sign_Decide", Processors::MS_Sign::MS_Sign_Decide, Common::Panel_Empty)
 
-#endif /* MS_SIGN_LUT_HPP_ */
+#endif /* MS_SIGN_DECIDE_HPP_ */
 

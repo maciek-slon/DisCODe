@@ -46,8 +46,6 @@ bool BlobExtractor_Processor::onInit() {
 	registerStream("out_img", &out_img);
 	registerStream("out_blobs", &out_blobs);
 
-	bkg_color = 0;
-
 	return true;
 }
 
@@ -82,14 +80,14 @@ void BlobExtractor_Processor::onNewImage() {
 	cv::Mat in = in_img.read();
 
 	IplImage * img = &IplImage(in);
-	cv::Mat out = cv::Mat::zeros(in.size(), CV_8UC3);
+	//cv::Mat out = cv::Mat::zeros(in.size(), CV_8UC3);
 
 	Types::Blobs::Blob_vector res;
 	bool success;
 
 	try
 	{
-		success = ComponentLabeling( img, NULL, bkg_color, res );
+		success = ComponentLabeling( img, NULL, props.bkg_color, res );
 	}
 	catch(...)
 	{
@@ -102,14 +100,14 @@ void BlobExtractor_Processor::onNewImage() {
 	} else {
 		Types::Blobs::BlobResult result(res);
 
-		result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, 100 );
+		result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, props.min_size );
 
 		out_blobs.write(result);
 
-		newBlobs->raise();
+		//newBlobs->raise();
 
-		result.draw(out, CV_RGB(255, 0, 0), 0, 0);
-		out_img.write(out);
+		//result.draw(out, CV_RGB(255, 0, 0), 0, 0);
+		out_img.write(in);
 		newImage->raise();
 	}
 

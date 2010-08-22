@@ -12,6 +12,7 @@
 #include "Drawable.hpp"
 
 #include <cv.h>
+#include <vector>
 
 namespace Types {
 
@@ -32,6 +33,21 @@ public:
 
 private:
 	cv::RotatedRect rect_;
+};
+
+class DrawableContainer : public Drawable {
+public:
+	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
+		for (int i = 0; i < items.size(); ++i)
+			items[i]->draw(image, color, offsetX, offsetY);
+	}
+
+	void add(Drawable * it) {
+		items.push_back(it);
+	}
+
+private:
+	std::vector<Drawable*> items;
 };
 
 } //: namespace Types

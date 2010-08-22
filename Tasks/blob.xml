@@ -19,11 +19,11 @@
 
 		</Blob>
 
-		<Window type="OpenCVWnd" thread="Thread1" group="s1">
+		<Window type="CvWindow" thread="Thread1" group="s1">
 			<title>Threshold preview</title>
 		</Window>
 
-		<Window2 type="OpenCVWnd" thread="Thread1" group="s2">
+		<Window2 type="CvWindow" thread="Thread1" group="s2">
 			<title>Camera preview</title>
 		</Window2>
 	</Components>
@@ -61,9 +61,11 @@
 		<Blob>
 			<in_img type="in" group="Con3"/>
 			<out_img type="out" group="Con4"/>
+			<out_blobs type="out" group="Con5"/>
 		</Blob>
 		<Window>
-			<in_img type="in" group="Con4"/>
+			<in_img type="in" group="Con1"/>
+			<in_draw type="in" group="Con5"/>
 		</Window>
 		<Window2>
 			<in_img type="in" group="Con1"/>

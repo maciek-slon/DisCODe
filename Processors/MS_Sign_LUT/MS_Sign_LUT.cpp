@@ -40,7 +40,6 @@ bool MS_Sign_LUT::onInit()
 
 	registerStream("out_hue", &out_hue);
 	registerStream("out_segments", &out_segments);
-	registerStream("out_el", &out_el);
 
 	return true;
 }
@@ -143,11 +142,8 @@ void MS_Sign_LUT::onNewImage()
 			}
 		}
 
-		Types::Ellipse el(cv::Point2f(100,100), cv::Size2f(80, 30), 1.0);
-
 		out_hue.write(hue_img);
 		out_segments.write(segments);
-		out_el.write(el);
 
 		newImage->raise();
 	} catch (...) {

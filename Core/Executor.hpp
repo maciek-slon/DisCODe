@@ -276,6 +276,12 @@ class PeriodicExecutor : public Executor {
 public:
 	PeriodicExecutor(const std::string & n) : Executor(n) {};
 
+	~PeriodicExecutor() {
+		double spl = elapsed/loops;
+		double lps = 1.0 / spl;
+		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+	}
+
 	/*!
 	 * Load executor settings from given configuration node
 	 */
@@ -290,6 +296,9 @@ protected:
 	 * Implementation of run method from Thread.
 	 */
 	void run() {
+		elapsed = 0;
+		loops = 0;
+
 		running = true;
 
 		if (components.count(mk_name) < 1) {
@@ -324,7 +333,11 @@ protected:
 							break;
 					}
 
-					main_component->step();
+					elapsed += main_component->step();
+					loops++;
+					double spl = elapsed/loops;
+					double lps = 1.0 / spl;
+					LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 				} else {
 					Common::Thread::msleep(50);
 				}
@@ -351,6 +364,9 @@ private:
 
 	/// Periodic mode interval in seconds
 	float interval;
+
+	double elapsed;
+	int loops;
 };
 
 }//: namespace Core

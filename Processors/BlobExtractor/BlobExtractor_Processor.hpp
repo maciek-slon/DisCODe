@@ -21,6 +21,21 @@
 namespace Processors {
 namespace BlobExtractor {
 
+struct Props : public Base::Props {
+
+	int min_size;
+	int bkg_color;
+
+	void load(const ptree & pt) {
+		min_size = pt.get("min_size", 100);
+		bkg_color = pt.get("bkg_color", 0);
+	}
+
+	void save(ptree & pt) {
+
+	}
+};
+
 /*!
  * \class BlobExtractor_Processor
  * \brief Example processor class.
@@ -38,6 +53,14 @@ public:
 	 * Destructor
 	 */
 	virtual ~BlobExtractor_Processor();
+
+	/*!
+	 * Return properties
+	 */
+	Base::Props * getProperties()
+	{
+		return &props;
+	}
 
 protected:
 
@@ -89,8 +112,8 @@ protected:
 	/// Output data stream - list of detected blobs
 	Base::DataStreamOut<Types::Blobs::BlobResult> out_blobs;
 
-	/// Background color for blob extraction
-	uchar bkg_color;
+	Props props;
+
 };
 
 }//: namespace BlobExtractor

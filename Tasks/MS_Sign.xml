@@ -18,6 +18,24 @@
 
 		</LUT>
 
+		<Decide type="MS_Sign_Decide" thread="Thread1" group="s1">
+
+		</Decide>
+
+		<MorphClose type="CvMorphology" thread="Thread1" group="s1">
+			<type>MORPH_CLOSE</type>
+			<iterations>3</iterations>
+		</MorphClose>
+
+		<MorphOpen type="CvMorphology" thread="Thread1" group="s1">
+			<type>MORPH_OPEN</type>
+			<iterations>3</iterations>
+		</MorphClose>
+
+		<Blob type="BlobExtractor" thread="Thread1" group="s1">
+			<min_size>100</min_size>;
+		</Blob>
+
 		<Window type="CvWindow" thread="Thread1" group="s1">
 			<title>Preview</title>
 		</Window>
@@ -33,10 +51,13 @@
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Movie.newImage"     destination="Blur.onNewImage"/>
-		<Event source="Blur.newImage"      destination="ColorConv.onNewImage"/>
-		<Event source="ColorConv.newImage" destination="LUT.onNewImage"/>
-		<Event source="LUT.newImage"       destination="Window.onNewImage"/>
+		<Event source="Movie.newImage"      destination="Blur.onNewImage"/>
+		<Event source="Blur.newImage"       destination="ColorConv.onNewImage"/>
+		<Event source="ColorConv.newImage"  destination="LUT.onNewImage"/>
+		<Event source="LUT.newImage"        destination="MorphClose.onNewImage"/>
+		<Event source="MorphClose.newImage" destination="MorphOpen.onNewImage"/>
+		<Event source="MorphOpen.newImage"  destination="Blob.onNewImage"/>
+		<Event source="Blob.newImage"       destination="Decide.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -58,12 +79,25 @@
 		<LUT>
 			<in_img type="in" group="Con3"/>
 			<out_segments type="out" group="Con4"/>
-			<out_el type="out" group="Con7"/>
+			<out_hue type="out" group="Con_hue"/>
 		</LUT>
 
-		<Window>
-			<in_draw type="in" group="Con7"/>
+		<MorphClose>
 			<in_img type="in" group="Con4"/>
+			<out_img type="out" group="Con5"/>
+		</MorphClose>
+
+		<MorphOpen>
+			<in_img type="in" group="Con5"/>
+			<out_img type="out" group="Con6"/>
+		</MorphOpen>
+
+		<Decide>
+			<in_hue type="in" group="con_hue"/>
+		</Decide>
+
+		<Window>
+			<in_img type="in" group="Con6"/>
 		</Window>
 	</DataStreams>
 

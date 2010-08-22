@@ -12,3 +12,4 @@ ADD_PROCESSOR(CvMorphology)
 
 # Task specific processors
 ADD_PROCESSOR(MS_Sign_LUT)
+ADD_PROCESSOR(MS_Sign_Decide)

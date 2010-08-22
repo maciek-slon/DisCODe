@@ -68,9 +68,9 @@ void CvMorphology_Processor::onNewImage()
 	LOG(TRACE) << "CvMorphology_Processor::onNewImage\n";
 	try {
 		cv::Mat img = in_img.read();
-		cv::Mat out = img.clone();
-		cv::morphologyEx(img, out, props.type, cv::Mat(), Point(-1, -1), props.iterations);
-		out_img.write(out);
+		//cv::Mat out = img.clone();
+		cv::morphologyEx(img, img, props.type, cv::Mat(), Point(-1, -1), props.iterations);
+		out_img.write(img);
 		newImage->raise();
 	} catch (...) {
 		LOG(ERROR) << "CvMorphology_Processor::onNewImage failed\n";

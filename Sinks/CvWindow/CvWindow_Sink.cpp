@@ -65,7 +65,7 @@ void CvWindow_Sink::onNewImage() {
 		Types::Drawable * to_draw;
 		if (!in_draw.empty()) {
 			to_draw = in_draw.read();
-			to_draw->draw(img, CV_RGB(255,255,255));
+			to_draw->draw(img, CV_RGB(255,0,255));
 		}
 
 		imshow( props.title, img );
