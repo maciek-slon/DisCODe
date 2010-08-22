@@ -1,18 +1,17 @@
 /*!
- * \file Drawable_types.hpp
- * \brief File containing all types that can be drawn (implementing Types::Drawable)
+ * \file Ellipse.hpp
+ * \brief File containing Ellipse type
  *
  * \author mstefanc
  * \date 20.08.2010
  */
 
-#ifndef DRAWABLE_TYPES_HPP_
-#define DRAWABLE_TYPES_HPP_
+#ifndef ELLIPSE_HPP_
+#define ELLIPSE_HPP_
 
 #include "Drawable.hpp"
 
 #include <cv.h>
-#include <vector>
 
 #include <iostream>
 
@@ -44,31 +43,6 @@ private:
 	cv::RotatedRect rect_;
 };
 
-class DrawableContainer : public Drawable {
-public:
-	~DrawableContainer() {}
-
-	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
-		for (int i = 0; i < items.size(); ++i)
-			items[i]->draw(image, color, offsetX, offsetY);
-	}
-
-	void add(Drawable * it) {
-		items.push_back(it);
-	}
-
-	virtual Drawable * clone() {
-		DrawableContainer * ret = new DrawableContainer;
-		for (int i = 0; i < items.size(); ++i)
-			ret->add(items[i]->clone());
-
-		return ret;
-	}
-
-private:
-	std::vector<Drawable*> items;
-};
-
 } //: namespace Types
 
-#endif /* DRAWABLE_TYPES_HPP_ */
+#endif /* ELLIPSE_HPP_ */

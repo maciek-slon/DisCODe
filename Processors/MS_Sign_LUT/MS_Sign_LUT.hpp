@@ -17,8 +17,6 @@
 #include <cv.h>
 #include <highgui.h>
 
-#include "Types/Drawable_types.hpp"
-
 namespace Processors {
 namespace MS_Sign {
 
