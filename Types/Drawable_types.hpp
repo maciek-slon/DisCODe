@@ -29,7 +29,7 @@ public:
 
 	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
 		//cv::ellipse(image, rect_, color);
-		cvEllipse(&(IplImage(image)), cv::Point(rect_.center.x, rect_.center.y), cv::Size(rect_.size.width, rect_.size.height), rect_.angle, 0, 360, color, 2);
+		cv::ellipse(image, cv::Point(rect_.center.x, rect_.center.y), cv::Size(rect_.size.width, rect_.size.height), rect_.angle, 0, 360, color, 2);
 	}
 
 	virtual Drawable * clone() {
