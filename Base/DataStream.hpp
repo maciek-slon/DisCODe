@@ -15,6 +15,9 @@
 #include "Policies/DataStreamBuffer.hpp"
 #include "Policies/Synchronization.hpp"
 
+
+#include <boost/shared_ptr.hpp>
+
 namespace Base {
 
 
@@ -109,9 +112,9 @@ template
     class ReadSync = Synchronization::NoSync,
     class WriteSync = Synchronization::NoSync
 >
-class DataStreamInPtr : public DataStreamInterface, public BufferingPolicy<T*>
+class DataStreamInPtr : public DataStreamInterface, public BufferingPolicy< boost::shared_ptr<T> >
 {
-	using BufferingPolicy<T*>::retrieve;
+	using BufferingPolicy< boost::shared_ptr<T> >::retrieve;
 
 	/// Object used for synchronization of data reading
 	ReadSync read_sync;
@@ -124,9 +127,9 @@ public:
 		return dsIn;
 	}
 
-	T* read() {
+	boost::shared_ptr<T> read() {
 		read_sync.lock();
-		T* t = retrieve();
+		boost::shared_ptr<T> t = retrieve();
 		read_sync.unlock();
 		return t;
 	}
@@ -135,8 +138,9 @@ protected:
 	virtual void internalSet(void * ptr) {
 		write_sync.lock();
 		T* t = (T*)ptr;
-		t = t->clone();
-		store(t);
+
+		boost::shared_ptr<T> p(t->clone());
+		store(p);
 		write_sync.unlock();
 	}
 };

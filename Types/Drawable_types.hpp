@@ -14,6 +14,8 @@
 #include <cv.h>
 #include <vector>
 
+#include <iostream>
+
 namespace Types {
 
 class Ellipse : public Drawable {
@@ -26,6 +28,8 @@ public:
     Ellipse(const cv::RotatedRect & rhs) : rect_(rhs) {};
 
     Ellipse(const Ellipse & rhs) : rect_(rhs.rect_) {};
+
+	virtual ~Ellipse() {}
 
 	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
 		//cv::ellipse(image, rect_, color);
@@ -42,6 +46,8 @@ private:
 
 class DrawableContainer : public Drawable {
 public:
+	~DrawableContainer() {}
+
 	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
 		for (int i = 0; i < items.size(); ++i)
 			items[i]->draw(image, color, offsetX, offsetY);

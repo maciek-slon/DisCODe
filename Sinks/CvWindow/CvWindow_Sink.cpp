@@ -64,9 +64,9 @@ void CvWindow_Sink::onNewImage() {
 	try {
 		cv::Mat img = in_img.read().clone();
 
-		Types::Drawable * to_draw;
+
 		if (!in_draw.empty()) {
-			to_draw = in_draw.read();
+			boost::shared_ptr<Types::Drawable> to_draw(in_draw.read());
 			to_draw->draw(img, CV_RGB(255,0,255));
 		}
 

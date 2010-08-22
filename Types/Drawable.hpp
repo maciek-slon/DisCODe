@@ -16,6 +16,8 @@ namespace Types {
  */
 class Drawable {
 public:
+	virtual ~Drawable() {}
+
 	virtual void draw(cv::Mat& image, CvScalar color, int offsetX = 0, int offsetY = 0) = 0;
 
 	virtual Drawable * clone() {
