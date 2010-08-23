@@ -6,10 +6,6 @@
 			<filename>zakaz_1.1280.avi</filename>
 		</Movie>
 
-		<!--<Blur type="CvGaussianBlur" thread="Thread1" group="s1">
-			<kernel>7 7</kernel>
-		</Blur>-->
-
 		<ColorConv type="CvColorConv" thread="Thread1" group="s1">
 			<type>BGR2HSV</type>
 		</ColorConv>
@@ -30,7 +26,7 @@
 		<MorphOpen type="CvMorphology" thread="Thread1" group="s1">
 			<type>MORPH_OPEN</type>
 			<iterations>3</iterations>
-		</MorphClose>
+		</MorphOpen>
 
 		<Blob type="BlobExtractor" thread="Thread1" group="s1">
 			<min_size>100</min_size>;
@@ -52,14 +48,13 @@
 	<!-- Event connections -->
 	<Events>
 		<Event source="Movie.newImage"      destination="ColorConv.onNewImage"/>
-		<!--<Event source="Blur.newImage"       destination="ColorConv.onNewImage"/>-->
 		<Event source="ColorConv.newImage"  destination="LUT.onNewImage"/>
 		<Event source="LUT.newImage"        destination="MorphClose.onNewImage"/>
 		<Event source="LUT.newImage"        destination="Decide.onNewImage"/>
 		<Event source="MorphClose.newImage" destination="MorphOpen.onNewImage"/>
 		<Event source="MorphOpen.newImage"  destination="Blob.onNewImage"/>
 		<Event source="Blob.newBlobs"       destination="Decide.onNewBlobs"/>
-		<Event source="Movie.newImage"     destination="Window.onNewImage"/>
+		<Event source="Movie.newImage"      destination="Window.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -67,11 +62,6 @@
 		<Movie>
 			<out_img type="out" group="Con1"/>
 		</Movie>
-
-		<!--<Blur>
-			<in_img  type="in"  group="Con1"/>
-			<out_img type="out" group="Con2"/>
-		</Blur>-->
 
 		<ColorConv>
 			<in_img  type="in"  group="Con1"/>

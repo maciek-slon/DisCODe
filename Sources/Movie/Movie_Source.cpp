@@ -41,7 +41,7 @@ bool Movie_Source::onFinish() {
 }
 
 bool Movie_Source::onStep() {
-
+	LOG(TRACE) << "Movie_Source::step() start\n";
 	cap >> frame;
 	if (frame.empty()) {
 		return false;
@@ -52,6 +52,7 @@ bool Movie_Source::onStep() {
 
 	newImage->raise();
 
+	LOG(TRACE) << "Movie_Source::step() end\n";
 	return true;
 }
 
