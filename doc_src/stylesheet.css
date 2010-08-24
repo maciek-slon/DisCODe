@@ -66,6 +66,8 @@ h1 {
 	text-align: center;
 	font-size: 150%;
 	font-weight: bold;
+	margin-top: 0;
+	padding-top: 10px;
 }
 
 h1.title {
@@ -104,7 +106,9 @@ h2.subtitle {
 }
 
 code {
-
+	font-family: DejaVu Sans Mono, Courier New;
+/*	font-size: 120%; */
+/*	font-style: italic; */
 }
 
 h3 {
@@ -298,7 +302,7 @@ div.ah {
 
 div.groupHeader {
 	margin-left: 16px;
-	margin-top: 12px;
+	margin-top: 0px;
 	margin-bottom: 6px;
 	font-weight: bold;
 }
@@ -723,13 +727,6 @@ DIV.tabs SPAN
    white-space      : nowrap;
 }
 
-#MSearchBox
-{
-   float            : right;
-   display          : inline;
-   font-size        : 1em;
-}
-
 DIV.tabs TD
 {
    font-size        : 80%;
@@ -808,3 +805,15 @@ DIV.tabs LI.current SPAN
 	background: #eef;
 	border-bottom: 1px solid #a00;
 }
+
+#menu a.close {
+	text-decoration: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: relative;
+	top: 2px;
+	display: none;
+}
+
+

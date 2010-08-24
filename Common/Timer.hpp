@@ -23,6 +23,7 @@ namespace Common {
 /*!
  * \brief Simple high-resolution timer
  *
+ * \par Goal
  * It's crucial in many situations to measure small periods, for example when measuring algorithm performance.
  * Unfortunately - standard library method (using clock() function from ctime) on some systems gives very bad precision
  * (for example in WindowsNT family, up to Windows XP it's about 15ms). This timer uses system-provided methods of
@@ -30,7 +31,6 @@ namespace Common {
  * mode (by defining UNIFIED_TIMER macro).
  *
  * \par Usage
- *
  * \code
  * #include <Common/Timer.hpp>
  *
@@ -41,6 +41,8 @@ namespace Common {
  * std::cout << timer.elapsed(); // print elapsed time
  * \endcode
  *
+ * \note
+ * When using this class on Linux \c rt library must be linked (for \c g++ it's \c -lrt switch)
  */
 class Timer {
 public:
