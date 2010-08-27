@@ -67,6 +67,32 @@ std::basic_istream<Ch, Traits> & operator>>(std::basic_istream<Ch, Traits> & s, 
 }
 
 
+template <typename Ch, typename Traits, typename T>
+std::basic_ostream<Ch, Traits> & operator<<(std::basic_ostream<Ch, Traits>& s, const std::vector<T>& e) {
+	s << e.size() << " ";
+	for (int i = 0; i < e.size(); ++i) {
+		s << e[i] << " ";
+	}
+	return s;
+}
+
+template <typename Ch, typename Traits, typename T>
+std::basic_istream<Ch, Traits> & operator>>(std::basic_istream<Ch, Traits>& s, std::vector<T>& e) {
+	int size;
+	T data;
+	s >> size;
+
+	//e.resize(size);
+	e.clear();
+
+	for (int i = 0; i < size; ++i) {
+		s >> data;
+		e.push_back(data);
+	}
+
+	return s;
+}
+
 /*
  * Operators for Boost::PropertyTree
  */
@@ -107,6 +133,41 @@ struct customize_stream<Ch, Traits, cv::Rect_<T>, void>
 		e.y = y;
 		e.width = w;
 		e.height = h;
+	}
+};
+
+
+template <typename Ch, typename Traits, typename T>
+struct customize_stream<Ch, Traits, cv::Mat_<T>, void>
+{
+
+	static void insert(std::basic_ostream<Ch, Traits>& s, const cv::Mat_<T>& e) {
+		int w = e.size().width();
+		int h = e.size().height();
+		s << w << " " << h << "\n";
+		for (int i = 0; i < w; ++i) {
+			for (int j = 0; j < h; ++j) {
+				s << e(j,i) << " ";
+			}
+			s << "\n";
+		}
+	}
+
+	static void extract(std::basic_istream<Ch, Traits>& s, cv::Mat_<T>& e) {
+		int w, h;
+		T elem;
+		s >> w >> h;
+
+		std::cout << w << " " << h << "\n";
+		e = cv::Mat_<T>(h, w);
+
+		for (int i = 0; i < w; ++i) {
+			for (int j = 0; j < h; ++j) {
+				s >> elem;
+				e(j,i) = elem;
+				std::cout << elem << " ";
+			}
+		}
 	}
 };
 

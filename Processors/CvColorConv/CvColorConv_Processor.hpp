@@ -18,7 +18,7 @@
 #include <highgui.h>
 
 /**
- * \defgroup CvColorConv Color conversion
+ * \defgroup CvColorConv CvColorConv
  * \ingroup Processors
  *
  * Converts image from one color space to another

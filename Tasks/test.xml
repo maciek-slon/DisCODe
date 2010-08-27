@@ -2,12 +2,17 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Movie type="Movie" thread="Thread1" group="s1">
-			<filename>zakaz_1.mpg</filename>
+		<Movie type="CameraUniCap" thread="Thread1" group="s1">
 		</Movie>
 
-		<Blur type="CvGaussianBlur" thread="Thread1" group="s1">
-			<kernel>7 7</kernel>
+		<Blur type="CvFilter2D" thread="Thread1" group="s1">
+			<size>3 3</size>
+			<kernel>
+				1 2 1
+				0 0 0
+				-1 -2 -1		
+			</kernel>
+			<norm>1</norm>
 		</Blur>
 
 		<ColorConv type="CvColorConv" thread="Thread1" group="s1">
@@ -33,10 +38,10 @@
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Movie.newImage"     destination="Blur.onNewImage"/>
-		<Event source="Blur.newImage"      destination="ColorConv.onNewImage"/>
+		<Event source="Movie.newImage"     destination="ColorConv.onNewImage"/>
 		<Event source="ColorConv.newImage" destination="Split.onNewImage"/>
-		<Event source="Split.newImage"     destination="Window.onNewImage"/>
+		<Event source="Split.newImage"     destination="Blur.onNewImage"/>
+		<Event source="Blur.newImage"      destination="Window.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -45,20 +50,20 @@
 			<out_img type="out" group="Con1"/>
 		</Movie>
 
-		<Blur>
+		<ColorConv>
 			<in_img type="in" group="Con1"/>
 			<out_img type="out" group="Con2"/>
-		</Blur>
-
-		<ColorConv>
-			<in_img type="in" group="Con2"/>
-			<out_img type="out" group="Con3"/>
 		</ColorConv>
 
 		<Split>
-			<in_img type="in" group="Con3"/>
-			<out_img_0 type="out" group="Con4"/>
+			<in_img type="in" group="Con2"/>
+			<out_img_2 type="out" group="Con3"/>
 		</Split>
+		
+		<Blur>
+			<in_img type="in" group="Con3"/>
+			<out_img type="out" group="Con4"/>
+		</Blur>
 
 		<Window>
 			<in_img type="in" group="Con4"/>
