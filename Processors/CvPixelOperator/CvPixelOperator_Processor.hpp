@@ -76,13 +76,15 @@ using namespace cv;
  */
 struct Props: public Base::Props
 {
-	PixelOperator<double> * operator;
+	PixelOperator<double> * op;
 	ptree tmp;
 
 	void load(const ptree & pt)
 	{
-		operator = str2operator(pt.get("operator", "unit"));
-		iterations = pt.get("iterations", 1);
+		op = str2operator<double>(pt.get("operator", "unit"));
+
+		tmp = pt.get_child("attr");
+
 	}
 
 	/*!
@@ -90,9 +92,25 @@ struct Props: public Base::Props
 	 */
 	void save(ptree & pt)
 	{
-		pt.put("type", type2str(type));
-		pt.put("iterations", iterations);
 	}
+
+	Props() {
+		op = NULL;
+	}
+
+	~Props() {
+		delete op;
+	}
+
+private:
+	template<typename T>
+	PixelOperator<T> * str2operator(const std::string & name) {
+		if (name == "tanh")
+			return new TanhOperator<double>;
+
+		return NULL;
+	}
+
 };
 
 /*!
@@ -168,8 +186,6 @@ protected:
 	/// Threshold properties
 	Props props;
 
-private:
-	cv::Mat tmp;
 };
 
 }//: namespace CvPixelOperator

@@ -10,7 +10,7 @@
 #include "Props.hpp"
 
 template <typename T>
-class PixelOperator : public Props{
+class PixelOperator : public Base::Props{
 public:
 	virtual T operator()(const T& val) = 0;
 
@@ -20,7 +20,7 @@ public:
 };
 
 template <typename T>
-class Unit {
+class Unit : public PixelOperator<T> {
 public:
 	virtual T operator()(const T& val) {
 		return val;
@@ -32,7 +32,7 @@ public:
 };
 
 template <typename T>
-class TanhOperator {
+class TanhOperator : public PixelOperator<T> {
 public:
 	virtual T operator()(const T& val) {
 		return fabs( tanh( sigma * (val - mean) ) );

@@ -21,7 +21,7 @@ public:
 	~DrawableContainer() {}
 
 	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
-		for (int i = 0; i < items.size(); ++i)
+		for (size_t i = 0; i < items.size(); ++i)
 			items[i]->draw(image, color, offsetX, offsetY);
 	}
 
@@ -31,7 +31,7 @@ public:
 
 	virtual Drawable * clone() {
 		DrawableContainer * ret = new DrawableContainer;
-		for (int i = 0; i < items.size(); ++i)
+		for (size_t i = 0; i < items.size(); ++i)
 			ret->add(items[i]->clone());
 
 		return ret;

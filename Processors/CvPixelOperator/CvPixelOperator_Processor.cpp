@@ -69,10 +69,7 @@ void CvPixelOperator_Processor::onNewImage()
 	try {
 		cv::Mat img = in_img.read();
 
-		//img.convertTo(tmp, CV_32F, 1./255);
-		cv::filter2D(img, tmp, -1, props.kernel, cv::Size(-1, -1), props.delta, cv::BORDER_REPLICATE);
-
-		out_img.write(tmp);
+		out_img.write(img);
 
 		newImage->raise();
 	} catch (...) {

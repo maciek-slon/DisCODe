@@ -58,7 +58,7 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 		}
 
 		// Take overrides into account
-		for (int i = 0; i < overrides.size(); ++i) {
+		for (size_t i = 0; i < overrides.size(); ++i) {
 			std::cout << overrides[i].first << " set to " << overrides[i].second << std::endl;
 			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
