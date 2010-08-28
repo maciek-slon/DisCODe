@@ -1,12 +1,12 @@
 /*!
- * \file CvFilter2D_Processor.hpp
+ * \file CvPixelOperator_Processor.hpp
  * \brief
  * \author mstefanc
  * \date 2010-07-05
  */
 
-#ifndef CVFILTER2D_PROCESSOR_HPP_
-#define CVFILTER2D_PROCESSOR_HPP_
+#ifndef CVPIXELOPERATOR_PROCESSOR_HPP_
+#define CVPIXELOPERATOR_PROCESSOR_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -19,10 +19,12 @@
 #include <cv.h>
 #include <highgui.h>
 
+#include "PixelOperators.hpp"
+
 #include <sstream>
 
 /**
- * \defgroup CvFilter2D CvFilter2D
+ * \defgroup CvPixelOperator CvPixelOperator
  * \ingroup Processors
  *
  * Convolves an image with the kernel
@@ -65,7 +67,7 @@
  */
 
 namespace Processors {
-namespace CvFilter2D {
+namespace CvPixelOperator {
 
 using namespace cv;
 
@@ -74,23 +76,13 @@ using namespace cv;
  */
 struct Props: public Base::Props
 {
-	cv::Size size;
-	cv::Mat kernel;
-	double delta;
-	double norm;
+	PixelOperator<double> * operator;
+	ptree tmp;
 
-	/*!
-	 * \copydoc Base::Props::load
-	 */
 	void load(const ptree & pt)
 	{
-		size = pt.get("size", cv::Size(3,3));
-
-		norm = pt.get("norm", 1.0);
-
-		kernel = str2mat(size, pt.get("kernel", ""), norm);
-
-		delta = pt.get("delta", 0.0);
+		operator = str2operator(pt.get("operator", "unit"));
+		iterations = pt.get("iterations", 1);
 	}
 
 	/*!
@@ -98,52 +90,27 @@ struct Props: public Base::Props
 	 */
 	void save(ptree & pt)
 	{
-		pt.put("size", size);
-
-		// \todo write kernel (cv::Mat)
-
-		pt.put("delta", delta);
-
-		pt.put("norm", norm);
+		pt.put("type", type2str(type));
+		pt.put("iterations", iterations);
 	}
-
-protected:
-	cv::Mat str2mat(cv::Size size, std::string s, double norm) {
-		std::stringstream ss;
-		cv::Mat mat = cv::Mat::eye(size, CV_32F);
-		double val;
-
-		ss << s;
-
-		for (int i = 0; i < size.height; ++i) {
-			for (int j = 0; j < size.width; ++j) {
-				ss >> val;
-				val /= norm;
-				mat.at<float>(i,j) = val;
-			}
-		}
-
-		return mat;
-	}
-
 };
 
 /*!
- * \class CvFilter2D_Processor
+ * \class CvPixelOperator_Processor
  * \brief Convolves an image with the kernel
  */
-class CvFilter2D_Processor: public Base::Component
+class CvPixelOperator_Processor: public Base::Component
 {
 public:
 	/*!
 	 * Constructor.
 	 */
-	CvFilter2D_Processor(const std::string & name = "");
+	CvPixelOperator_Processor(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~CvFilter2D_Processor();
+	virtual ~CvPixelOperator_Processor();
 
 	/*!
 	 * Return window properties
@@ -187,7 +154,7 @@ protected:
 	void onNewImage();
 
 	/// Event handler.
-	Base::EventHandler <CvFilter2D_Processor> h_onNewImage;
+	Base::EventHandler <CvPixelOperator_Processor> h_onNewImage;
 
 	/// Input data stream
 	Base::DataStreamIn <Mat> in_img;
@@ -205,14 +172,14 @@ private:
 	cv::Mat tmp;
 };
 
-}//: namespace CvFilter2D
+}//: namespace CvPixelOperator
 }//: namespace Processors
 
 
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("CvFilter2D", Processors::CvFilter2D::CvFilter2D_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("CvPixelOperator", Processors::CvPixelOperator::CvPixelOperator_Processor, Common::Panel_Empty)
 
-#endif /* CVFILTER2D_PROCESSOR_HPP_ */
+#endif /* CVPIXELOPERATOR_PROCESSOR_HPP_ */
 
