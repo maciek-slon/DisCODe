@@ -11,6 +11,11 @@
 namespace Core {
 
 bool Task::start() {
+	BOOST_FOREACH(SubtaskPair sp, subtasks) {
+		if (!sp.second.start())
+			return false;
+	}
+
 	BOOST_FOREACH(ExecutorPair executor, executors) {
 		executor.second->restart();
 	}

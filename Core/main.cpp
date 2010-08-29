@@ -207,10 +207,11 @@ int main(int argc, char* argv[])
 		km.initializeComponentsList();
 
 		task = configurator.loadConfiguration(task_name, overrides);
-		if (!task["s1"].start())
-			LOG(WARNING) << "Subtask S1 start() returned false\n";
+		if (!task.start()) {
+			LOG(FATAL) << "Task::start() returned false\n";
+			running = false;
+		}
 
-		task.start();
 
 		while(running) {
 			Common::Thread::msleep(50);
