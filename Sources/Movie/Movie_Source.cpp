@@ -12,22 +12,18 @@
 namespace Sources {
 namespace Movie {
 
-Movie_Source::Movie_Source() {
-	cout << "Movie_Source::Movie_Source()\n";
+Movie_Source::Movie_Source(const std::string & name) : Base::Component(name) {
+	LOG(TRACE) << "Movie_Source::Movie_Source()\n";
 
 	cap = NULL;
-
-	initialize();
 }
 
 Movie_Source::~Movie_Source() {
-	finish();
-
-	cout << "Movie_Source::~Movie_Source()\n";
+	LOG(TRACE) << "Movie_Source::~Movie_Source()\n";
 }
 
-bool Movie_Source::initialize() {
-	cout << "Movie_Source::initialize()\n";
+bool Movie_Source::onInit() {
+	LOG(TRACE) << "Movie_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_img", &out_img);
@@ -37,24 +33,37 @@ bool Movie_Source::initialize() {
 	return true;
 }
 
-
-bool Movie_Source::finish() {
-	cout << "Movie_Source::finish()\n";
+bool Movie_Source::onFinish() {
+	LOG(TRACE) << "Movie_Source::finish()\n";
 	cap.release();
 
 	return true;
 }
 
-
-int Movie_Source::step() {
-
+bool Movie_Source::onStep() {
+	LOG(TRACE) << "Movie_Source::step() start\n";
 	cap >> frame;
+	if (frame.empty()) {
+		return false;
+	}
 
-	out_img.write(frame);
+	cv::Mat img = frame.clone();
+	out_img.write(img);
 
 	newImage->raise();
-	return 0;
+
+	LOG(TRACE) << "Movie_Source::step() end\n";
+	return true;
 }
+
+bool Movie_Source::onStart() {
+	return true;
+}
+
+bool Movie_Source::onStop() {
+	return true;
+}
+
 
 
 }//: namespace Movie

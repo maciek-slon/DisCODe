@@ -12,77 +12,41 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <map>
 
 #include "Thread.hpp"
-#include "Kernel.hpp"
+#include "Component.hpp"
 #include "EventHandler.hpp"
 #include "Timer.hpp"
+#include "Props.hpp"
 
 namespace Core {
 
 /*!
  * \class Executor
- * \brief Executor object holds \ref Base::Kernel "kernels" and implements message queue.
+ * \brief Executor object holds \ref Base::Component "components" and implements message queue.
  *
- * Executor can manage more than one kernel, however only one can be set as main.
- * Main kernel is used in some modes of operation.
- *
- * Executor has three modes of operation:
- *  - continous: main kernel's step method is called infinitely
- *  - periodic: main kernel's step method is called periodically
- *  - passive: all kernels only react on events
+ * Executor is only interface for concrete implementations. These implementations
+ * can differ in the way components are managed etc.
  *
  * \author mstefanc
  */
-class Executor : public Common::Thread {
-	typedef std::pair<std::string, Base::EventHandlerInterface *> HandlerPair;
+class Executor : public Common::Thread, public Base::Props {
 public:
-	/*!
-	 * Executor's operation mode
-	 */
-	enum ExecOpMode {
-		ExecContinous,
-		ExecPeriodic,
-		ExecPassive
-	};
 
-	/*!
-	 * Constructor.
-	 * Default operation mode is set to ExecContinous.
-	 */
-	Executor() {
-		op_mode = ExecContinous;
-		main_kernel = NULL;
-		running = false;
-		max_iter = -1;
-		interval = 1.0;
+	Executor(const std::string & n) : running(false), paused(true), name_(n) {
+	}
+
+	virtual ~Executor() {
 	}
 
 	/*!
-	 * Destructor. Deletes all allocated handler schedulers.
+	 * Add new Component to Executor.
+	 * \param name name of component
+	 * \param component component to be added to executor
 	 */
-	~Executor() {
-		// delete all handler schedulers
-		BOOST_FOREACH(Base::EventHandlerInterface * handler, handlers) {
-			delete handler;
-		}
-	}
-
-	/*!
-	 * Add new Kernel to Executor.
-	 * \param kernel kernel to be added to executor
-	 * \param main if set to true then added kernel is set to be main
-	 */
-	void addKernel(Base::Kernel * kernel, bool main = false) {
-		kernels.push_back(kernel);
-		if (main) main_kernel = kernel;
-	}
-
-	/*!
-	 * Finish main Executor loop thus ending associated thread.
-	 */
-	void finish() {
-		running = false;
+	void addComponent(const std::string & name, Base::Component * component) {
+		components[name] = component;
 	}
 
 	/*!
@@ -91,30 +55,6 @@ public:
 	void queueEvent(Base::EventHandlerInterface * h) {
 		/// \todo Add synchronization
 		queue.push(h);
-	}
-
-	/*!
-	 * Set maximum number of iterations
-	 */
-	void setIterationsCount(int i) {
-		max_iter = i;
-	}
-
-	/*!
-	 * Set interval in periodic mode.
-	 *
-	 * \param sec time interval in seconds
-	 */
-	void setInterval(float sec) {
-		interval = sec;
-	}
-
-	/*!
-	 * Set execution mode
-	 * \param mode new executioon mode
-	 */
-	void setExecutionMode(ExecOpMode mode) {
-		op_mode = mode;
 	}
 
 	/*!
@@ -129,82 +69,304 @@ public:
 		return handler;
 	}
 
+	void restart() {
+		paused = false;
+		if (!running)
+			start();
+
+	}
+
+	void pause() {
+		paused = true;
+	}
+
+
+	/*!
+	 * Finish main Executor loop thus ending associated thread.
+	 */
+	void finish() {
+		running = false;
+	}
+
+	/*!
+	 * Save configuration
+	 */
+	void save(ptree & pt) {
+	}
+
+	/*!
+	 * Return name
+	 */
+	const std::string & name() const {
+		return name_;
+	}
+
+protected:
+	/// List of components managed by this Executor
+	std::map<std::string, Base::Component *> components;
+
+	/// Flag indicating that executor is running
+	volatile bool running;
+
+	/// Flag indicating that executor is paused
+	volatile bool paused;
+
+	/// FIFO queue for incoming events
+	std::queue<Base::EventHandlerInterface *> queue;
+
+	/// Name of execution thread
+	std::string name_;
+};
+
+
+
+
+/*!
+ * \class ContinousExecutor
+ * \brief Call step continously.
+ * This object calls step method from it's main component continously.
+ */
+class ContinousExecutor : public Executor {
+public:
+
+	ContinousExecutor(const std::string & n) : Executor(n) {};
+
+	virtual ~ContinousExecutor() {
+		double spl = elapsed/loops;
+		double lps = 1.0 / spl;
+		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+	}
+
+	/*!
+	 * Load executor settings from given configuration node
+	 */
+	void load(const ptree & pt) {
+		max_iter = pt.get("iterations", -1);
+		mk_name = pt.get("main_component", "");
+	}
+
 protected:
 	/*!
 	 * Implementation of run method from Thread.
 	 */
 	void run() {
+		elapsed = 0;
+		loops = 0;
+
 		running = true;
-		timer.restart();
+		paused = false;
+
+		if (components.count(mk_name) < 1) {
+			LOG(ERROR) << "Component " << mk_name << " is not being executed in this thread.\n";
+			main_component = NULL;
+			return;
+		} else {
+			main_component = components[mk_name];
+		}
+
 		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+				yield();
+				continue;
+			}
 
 			while (!queue.empty()) {
 				queue.front()->execute();
 				queue.pop();
 			}
 
-			if (max_iter >= 0) {
-				--max_iter;
-				if (max_iter < 0)
-					break;
-			}
-
-
-			switch(op_mode) {
-			case ExecContinous:
-				if (main_kernel)
-					main_kernel->step();
-				break;
-			case ExecPeriodic:
-				if (timer.elapsed() > interval) {
-					timer.restart();
-
-					step_time.restart();
-
-					if (main_kernel)
-						main_kernel->step();
-
-					std::cout << "Step time: " << step_time.elapsed() << "s\n";
+			// check if there is any component to execute
+			if (main_component && main_component->running()) {
+				// check number of iterations
+				if (max_iter >= 0) {
+					--max_iter;
+					if (max_iter < 0)
+						break;
 				}
-				break;
-			case ExecPassive:
-				break;
-			default:
-				break;
-			}
 
+				elapsed += main_component->step();
+				loops++;
+				double spl = elapsed/loops;
+				double lps = 1.0 / spl;
+				LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+
+			} else {
+				Common::Thread::msleep(50);
+			}
 
 			yield();
 		}
 	}
 
 private:
-	/// List of kernels managed by this Executor
-	std::vector<Base::Kernel *> kernels;
-
-	/// Main kernel
-	Base::Kernel * main_kernel;
-
-	/// Current mode of operation
-	ExecOpMode op_mode;
-
-	/// Flag indicating that executor is running
-	volatile bool running;
-
-	/// List of all handler schedulers associated for managed kernels
-	std::vector<Base::EventHandlerInterface *> handlers;
-
-	/// FIFO queue for incoming events
-	std::queue<Base::EventHandlerInterface *> queue;
-
 	/// Maximum number of iterations
 	int max_iter;
 
+	/// Main component - it's step method will be called in each loop
+	Base::Component * main_component;
+
+	/// Main component name
+	std::string mk_name;
+
+
+	double elapsed;
+	int loops;
+};
+
+
+
+/*!
+ * \class PassiveExecutor
+ * \brief Don't call any step, only react.
+ * This object doesn't call any methods from it's components explicitely,
+ * but only process events and calls connected handlers.
+ */
+class PassiveExecutor : public Executor {
+public:
+	PassiveExecutor(const std::string & n) : Executor(n) {};
+
+	/*!
+	 * Load executor settings from given configuration node
+	 */
+	void load(const ptree & pt) {
+	}
+
+protected:
+	/*!
+	 * Implementation of run method from Thread.
+	 */
+	void run() {
+		running = true;
+
+		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+				continue;
+			}
+
+			// here should be mutex, and will be ;-)
+			while (queue.empty()) {
+				Common::Thread::msleep(10);
+			}
+
+			// process all waiting events
+			while (!queue.empty()) {
+				queue.front()->execute();
+				queue.pop();
+			}
+
+			yield();
+		}
+	}
+
+private:
+};
+
+
+
+/*!
+ * \class PeriodicExecutor
+ * \brief Execute component periodically.
+ * This object calls step method from it's main component periodically with given interval.
+ */
+class PeriodicExecutor : public Executor {
+public:
+	PeriodicExecutor(const std::string & n) : Executor(n) {};
+
+	~PeriodicExecutor() {
+		double spl = elapsed/loops;
+		double lps = 1.0 / spl;
+		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+	}
+
+	/*!
+	 * Load executor settings from given configuration node
+	 */
+	void load(const ptree & pt) {
+		max_iter = pt.get("iterations", -1);
+		mk_name = pt.get("main_component", "");
+		interval = pt.get("interval", 1.0);
+	}
+
+protected:
+	/*!
+	 * Implementation of run method from Thread.
+	 */
+	void run() {
+		elapsed = 0;
+		loops = 0;
+
+		running = true;
+
+		if (components.count(mk_name) < 1) {
+			LOG(ERROR) << "Component " << mk_name << " is not executed in this thread.\n";
+			main_component = NULL;
+			return;
+		} else {
+			main_component = components[mk_name];
+		}
+
+		while(running) {
+			if (paused) {
+				/// \todo sync with mutex
+				Common::Thread::msleep(50);
+				continue;
+			}
+
+			while (!queue.empty()) {
+				queue.front()->execute();
+				queue.pop();
+			}
+
+			if (timer.elapsed() > interval) {
+				timer.restart();
+
+				// check if there is any component to execute
+				if (main_component && main_component->running()) {
+					// check number of iterations
+					if (max_iter >= 0) {
+						--max_iter;
+						if (max_iter < 0)
+							break;
+					}
+
+					elapsed += main_component->step();
+					loops++;
+					double spl = elapsed/loops;
+					double lps = 1.0 / spl;
+					LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+				} else {
+					Common::Thread::msleep(50);
+				}
+			} else {
+				Common::Thread::msleep(100*interval);
+			}
+
+			yield();
+		}
+	}
+
+private:
+	/// Maximum number of iterations
+	int max_iter;
+
+	/// Main component - it's step method will be called in each loop
+	Base::Component * main_component;
+
+	/// Main component name
+	std::string mk_name;
+
 	/// Timer used in periodic mode
-	Common::Timer timer, step_time;
+	Common::Timer timer;
 
 	/// Periodic mode interval in seconds
 	float interval;
+
+	double elapsed;
+	int loops;
 };
 
 }//: namespace Core

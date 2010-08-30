@@ -10,7 +10,14 @@
 #include "FraDIAException.hpp"
 #include "Logger.hpp"
 
+#include "Component.hpp"
+
+#include "ComponentManager.hpp"
+#include "ExecutorManager.hpp"
+#include "ConnectionManager.hpp"
+
 #include <boost/filesystem.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 namespace Core {
 
@@ -18,126 +25,250 @@ using namespace boost;
 
 Configurator::Configurator()
 {
-	node_sources = NULL;
-	node_processors = NULL;
+
 }
 
 Configurator::~Configurator()
 {
-	std::cout << "Elo koniec\n";
+
 }
 
-void Configurator::loadConfiguration(std::string filename_)
+Task Configurator::loadConfiguration(std::string filename_, const std::vector<std::pair<std::string, std::string> > & overrides)
 {
 	// Set filename pointer to given one.
 	configuration_filename = filename_;
 
+	ptree * tmp_node;
+
 	// Check whether config file exists.
 	if (!filesystem::exists(configuration_filename)) {
-		LOG(WARNING) << "Configuration: File \'" << configuration_filename << "\' doesn\'t exist.\n";
-		// Create default configuration.
-		createDefaultConfiguration();
-		// Save it to file.
-		saveConfiguration();
-	}//: if stat
+		LOG(FATAL) << "Configuration: File '" << configuration_filename << "' doesn't exist.\n";
+		throw("loadConfiguration");
+	}
 	else {
+		Task task;
+
 		// Load and parse configuration from file.
 		try {
 			read_xml(configuration_filename, configuration);
 		}
-		catch(xml_parser_error) {
-			throw Common::FraDIAException(std::string("Configuration: Couldn\'t parse \'") + configuration_filename + "\' file.\n");
+		catch(xml_parser_error&) {
+			LOG(FATAL) << "Configuration: Couldn't parse '" << configuration_filename << "' file.\n";
+			throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
+		}
+
+		// Take overrides into account
+		for (size_t i = 0; i < overrides.size(); ++i) {
+			std::cout << overrides[i].first << " set to " << overrides[i].second << std::endl;
+			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
 
 		try {
-			node_sources = & (configuration.get_child("Settings.Sources"));
+			tmp_node = &(configuration.get_child("Task.Executors"));
+			loadExecutors(tmp_node, task);
 		}
-		catch(ptree_bad_path) {
-			LOG(FATAL) << "No Sources branch in configuration file!\n";
+		catch(ptree_bad_path&) {
+			LOG(FATAL) << "No Executors branch in configuration file!\n";
 		}
 
 		try {
-			node_processors = & (configuration.get_child("Settings.Processors"));
+			tmp_node = &(configuration.get_child("Task.Components"));
+			loadComponents(tmp_node, task);
 		}
-		catch(ptree_bad_path) {
-			LOG(FATAL) << "No Processors branch in configuration file!\n";
+		catch(ptree_bad_path&) {
+			LOG(FATAL) << "No Components branch in configuration file!\n";
 		}
 
-		// Check whether nodes were found.
-		assert(node_sources);
-		assert(node_processors);
+		try {
+			tmp_node = &(configuration.get_child("Task.Events"));
+			loadEvents(tmp_node);
+		}
+		catch(ptree_bad_path&) {
+			LOG(FATAL) << "No Events branch in configuration file!\n";
+		}
+
+		try {
+			tmp_node = &(configuration.get_child("Task.DataStreams"));
+			loadConnections(tmp_node);
+		}
+		catch(ptree_bad_path&) {
+			LOG(FATAL) << "No DataStreams branch in configuration file!\n";
+		}
+
 
 		LOG(INFO) << "Configuration: File \'" << configuration_filename << "\' loaded.\n";
+		return task;
 	}//: else
 }
 
-void Configurator::createDefaultConfiguration()
-{
-	configuration.clear();
+void Configurator::loadExecutors(const ptree * node, Task & task) {
+	LOG(INFO) << "Creating execution threads\n";
 
-	configuration.put("Settings.<xmlattr>.port", 4000);
-	configuration.put("Settings.<xmlattr>.gui", "show");
-	configuration.put("Settings.<xmlattr>.images", "show");
+	Executor * ex;
 
-	configuration.put("Settings.Sources.<xmlattr>.default", "");
-	configuration.put("Settings.Processors.<xmlattr>.default", "");
+	BOOST_FOREACH( TreeNode nd, *node) {
+		ptree tmp = nd.second;
+		ex = executorManager->createExecutor(nd.first, tmp.get("<xmlattr>.type", "UNKNOWN"));
+		ex->load(tmp);
 
-	LOG(INFO) << "Configuration: Default configuration created.\n";
-}
-
-void Configurator::saveConfiguration() {
-	// Save current configuration to remembered filename.
-	xml_writer_settings<ptree::key_type::value_type> settings('\t', 1, "utf-8");
-	write_xml(configuration_filename, configuration, std::locale(), settings);
-
-	LOG(INFO) << "Configuration: Saved to file " << configuration_filename << ".\n";
-}
-
-
-ptree * Configurator::returnManagerNode(Base::kernelType kernel_type_){
-	switch(kernel_type_)
-	{
-		case Base::KERNEL_SOURCE :
-			return node_sources;
-		case Base::KERNEL_PROCESSOR :
-			return node_processors;
-	}//: switch
-
-	throw Common::FraDIAException("Configurator::returnManagerNode(): unknown argument");
-}
-
-
-ptree * Configurator::returnKernelNode(Base::kernelType kernel_type_, const char* node_name_) {
-	cout<<node_name_<<": ";
-	// Get "root" node for given type of kernels.
-	ptree * tmp_root = NULL;
-	switch(kernel_type_)
-	{
-		case Base::KERNEL_SOURCE :
-			tmp_root = node_sources;
-			cout<<"source: ";
-			break;
-		case Base::KERNEL_PROCESSOR :
-			tmp_root = node_processors;
-			cout<<"processor: ";
-			break;
-		default:
-			break;
-	}//: switch
-	assert(tmp_root);
-
-	// Try to find node related to given kernel.
-	try {
-		ptree * ret = &(tmp_root->get_child(node_name_));
-		LOG(INFO) << "Mam " << node_name_ << "\n";
-		return ret;
-	}
-	catch(ptree_bad_path) {
-		// Otherwise - create new child node.
-		LOG(INFO) << "Nie mam, tworzę " << node_name_ << "\n";
-		return &(tmp_root->put_child(node_name_, ptree()));
+		task+=ex;
 	}
 }
+
+void Configurator::loadComponents(const ptree * node, Task & task) {
+	LOG(INFO) << "Loading required components\n";
+
+	Base::Component * kern;
+	Executor * ex;
+	std::string name;
+	std::string type;
+	std::string thread;
+	std::string group;
+	std::string include;
+	BOOST_FOREACH( TreeNode nd, *node) {
+		ptree tmp = nd.second;
+		name = nd.first;
+
+		// ignore coments in tast file
+		if (name == "<xmlcomment>") continue;
+
+		type = tmp.get("<xmlattr>.type", "UNKNOWN");
+		thread = tmp.get("<xmlattr>.thread", "UNKNOWN");
+		group = tmp.get("<xmlattr>.group", "DEFAULT");
+		include = tmp.get("<xmlattr>.include", "");
+
+		LOG(TRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
+
+		kern = componentManager->createComponent(name, type);
+
+		if (include != "") {
+			try {
+				read_xml(include, tmp);
+			}
+			catch(xml_parser_error&) {
+				LOG(FATAL) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
+				throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + include + "' file.\n");
+			}
+		}
+
+		if (kern->getProperties())
+			kern->getProperties()->load(tmp);
+
+		kern->initialize();
+
+		ex = executorManager->getExecutor(thread);
+		ex->addComponent(name, kern);
+
+		LOG(TRACE) << "Adding component " << name << " to subtask " << group << "\n";
+
+		task[group] += kern;
+
+		component_executor[name] = thread;
+	}
+}
+
+void Configurator::loadEvents(const ptree * node) {
+	LOG(INFO) << "Connecting events\n";
+	std::string src, dst, name, caller, receiver;
+	Base::Component * src_k, * dst_k;
+	Base::EventHandlerInterface * h;
+	Base::Event * e;
+	BOOST_FOREACH( TreeNode nd, *node ) {
+		ptree tmp = nd.second;
+		name = nd.first;
+		if (name == "<xmlcomment>") continue;
+
+		src = tmp.get("<xmlattr>.source", "");
+		if (src == "") {
+			LOG(ERROR) << "No event source specified...\n";
+			continue;
+		}
+
+		dst = tmp.get("<xmlattr>.destination", "");
+		if (dst == "") {
+			LOG(ERROR) << "No event destination specified...\n";
+			continue;
+		}
+
+		caller = src.substr(0, src.find_first_of("."));
+		src = src.substr(src.find_first_of(".")+1);
+
+		receiver = dst.substr(0, dst.find_first_of("."));
+		dst = dst.substr(dst.find_first_of(".")+1);
+
+		src_k = componentManager->getComponent(caller);
+		dst_k = componentManager->getComponent(receiver);
+
+		h = dst_k->getHandler(dst);
+		if (!h) {
+			LOG(ERROR) << "Component " << receiver << " has no event handler named '" << dst << "'!\n";
+			continue;
+		}
+
+		e = src_k->getEvent(src);
+		if (!e) {
+			LOG(ERROR) << "Component " << caller << " has no event named '" << src << "'!\n";
+			continue;
+		}
+
+		// asynchronous connection
+		if (component_executor[caller] != component_executor[receiver]) {
+			Executor * ex = executorManager->getExecutor(component_executor[receiver]);
+			h = ex->scheduleHandler(h);
+			e->addAsyncHandler(h);
+		} else {
+			e->addHandler(h);
+		}
+
+		LOG(INFO) << name << ": src=" << src << ", dst=" << dst << "\n";
+	}
+}
+
+void Configurator::loadConnections(const ptree * node) {
+	LOG(INFO) << "Connecting data streams\n";
+	std::string name, ds_name;
+	Base::Component * kern;
+	std::string type, con_name;
+	Base::Connection * con;
+	Base::DataStreamInterface * ds;
+
+
+	BOOST_FOREACH( TreeNode nd, *node ) {
+		ptree tmp = nd.second;
+		name = nd.first;
+		if (name == "<xmlcomment>") continue;
+
+		kern = componentManager->getComponent(name);
+		BOOST_FOREACH( TreeNode ds_nd, tmp ) {
+			ds_name = ds_nd.first;
+			if (ds_name == "<xmlcomment>") continue;
+
+			ptree ds_tmp = ds_nd.second;
+			type = ds_tmp.get("<xmlattr>.type", "out");
+			con_name = ds_tmp.get("<xmlattr>.group", "DefaultGroup");
+
+			con = connectionManager->get(con_name);
+
+			ds = kern->getStream(ds_name);
+			if (!ds) {
+				LOG(ERROR) << "Component " << name << " has no data stream named '" << ds_name << "'!\n";
+			}
+
+			LOG(INFO) << name << ": str=" << ds_name << " [" << type << "] in " << con_name;
+
+			if (type == "out") {
+				ds->setConnection(con);
+			} else
+			if (type == "in") {
+				con->addListener(ds);
+			} else {
+				LOG(ERROR) << "Unknown data stream type: " << type << "\n";
+				continue;
+			}
+		}
+	}
+}
+
 
 
 }//: namespace Core

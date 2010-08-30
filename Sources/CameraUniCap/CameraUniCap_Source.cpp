@@ -1,24 +1,24 @@
-/*
- * CameraUniCap.cpp
- *
- *  Created on: 2010-06-11
- *      Author: Konrad Banachowicz
+/**
+ * \file CameraUniCap_Source.hpp
+ * \brief Unicap-based camera source implementation
+ * \date 2010-06-11
+ * \author Konrad Banachowicz
  */
+
+#include "CameraUniCap_Source.hpp"
 
 #include "Logger.hpp"
 
-#include "CameraUniCap_Source.h"
 #include <opencv/highgui.h>
 
 namespace Sources {
-
 namespace CameraUniCap {
 
 #define MAX_DEVICES 64
 #define MAX_FORMATS 64
 #define MAX_PROPERTIES 64
 
-CameraUniCap_Source::CameraUniCap_Source() {
+CameraUniCap_Source::CameraUniCap_Source(const std::string & name) : Base::Component(name) {
 
 }
 
@@ -26,7 +26,7 @@ CameraUniCap_Source::~CameraUniCap_Source() {
 
 }
 
-bool CameraUniCap_Source::initialize() {
+bool CameraUniCap_Source::onInit() {
 
 	unicap_device_t devices[MAX_DEVICES];
 	unicap_format_t formats[MAX_FORMATS];
@@ -36,9 +36,11 @@ bool CameraUniCap_Source::initialize() {
 	int format_count;
 	int property_count;
 
+	bool device_found = false;
+
 	unicap_status_t status = STATUS_SUCCESS;
 
-	LOG(INFO) << "CameraOpenCV_Source::initialize()\n";
+	LOG(INFO) << "CameraUniCap_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_img", &out_img);
@@ -59,8 +61,14 @@ bool CameraUniCap_Source::initialize() {
 		if (props.device == devices[i].device) {
 			device = devices[i];
 			LOG(INFO) << "device found\n";
+			device_found = true;
 			break;
 		}
+	}
+
+	if (!device_found) {
+		LOG(ERROR) << "Device not found: " << props.device << '\n';
+		throw(Common::FraDIAException("Failed to open device"));
 	}
 
 	/*
@@ -215,27 +223,12 @@ bool CameraUniCap_Source::initialize() {
 
 	unicap_register_callback(handle, UNICAP_EVENT_NEW_FRAME,
 			(unicap_callback_t) new_frame_cb, this);
-	/*
-	 Start the capture process on the device
-	 */
-	if (!SUCCESS(unicap_start_capture(handle))) {
-		LOG(ERROR) << "Failed to start capture on device: "
-				<< device.identifier << '\n';
-
-	}
 
 	return true;
 }
 
-bool CameraUniCap_Source::finish() {
-	LOG(INFO) << "CameraOpenCV_Source::finish()\n";
-	/*
-	 Stop the device
-	 */
-	if (!SUCCESS(unicap_stop_capture(handle))) {
-		fprintf(stderr, "Failed to stop capture on device: %s\n",
-				device.identifier);
-	}
+bool CameraUniCap_Source::onFinish() {
+	LOG(INFO) << "CameraUniCap_Source::finish()\n";
 
 	/*
 	 Close the device
@@ -251,9 +244,33 @@ bool CameraUniCap_Source::finish() {
 
 }
 
-int CameraUniCap_Source::step() {
+bool CameraUniCap_Source::onStep() {
+	return true;
+}
 
-	return 0;
+bool CameraUniCap_Source::onStart() {
+	LOG(INFO) << "CameraUniCap_Source::start()\n";
+	/*
+	 Start the capture process on the device
+	 */
+	if (!SUCCESS(unicap_start_capture(handle))) {
+		LOG(ERROR) << "Failed to start capture on device: "	<< device.identifier << '\n';
+		return false;
+	}
+	return true;
+}
+
+bool CameraUniCap_Source::onStop() {
+	LOG(INFO) << "CameraUniCap_Source::stop()\n";
+	/*
+	 Stop the device
+	 */
+	if (!SUCCESS(unicap_stop_capture(handle))) {
+		LOG(ERROR) << "Failed to stop capture on device: " << device.identifier << "\n";
+		return false;
+	}
+
+	return true;
 }
 
 void CameraUniCap_Source::new_frame_cb(unicap_event_t event,
@@ -268,8 +285,11 @@ void CameraUniCap_Source::new_frame_cb(unicap_event_t event,
 									== (char*) &((CameraUniCap_Source*) (usr_data))->format.fourcc) ? CV_8UC1
 									: CV_8UC3, (void *) buffer->data).clone();
 
+	LOG(TRACE) << "Got new frame\n";
+
 	((CameraUniCap_Source*) (usr_data))->out_img.write(frame);
 	((CameraUniCap_Source*) (usr_data))->newImage->raise();
+
 
 }
 

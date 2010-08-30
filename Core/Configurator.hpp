@@ -9,20 +9,20 @@
 #ifndef CONFIGURATOR_HPP_
 #define CONFIGURATOR_HPP_
 
+#include "Task.hpp"
+
 #include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
 
-#include <sys/stat.h>
-#include <iostream>
 #include <string>
-
-#include "Singleton.hpp"
-#include "Names_Aux.hpp"
-#include "Kernel_Aux.hpp"
+#include <map>
 
 namespace Core {
 
 using namespace boost::property_tree;
+
+class ComponentManager;
+class ExecutorManager;
+class ConnectionManager;
 
 /*!
  * \class Configurator
@@ -31,16 +31,9 @@ using namespace boost::property_tree;
  * \date April 8 2010
  * \author tkornuta
  */
-class Configurator//: public Base::Singleton <Configurator>
+class Configurator
 {
-
-	/*!
-	 * Singleton class must be a friend, because only it can call protected constructor.
-	 */
-	//friend class Base::Singleton <Configurator>;
 private:
-
-//protected:
 
 	typedef std::pair<std::string, ptree> TreeNode;
 
@@ -54,20 +47,14 @@ private:
 	 */
 	std::string configuration_filename;
 
-	/*!
-	 * Main XmlNode with settings.
-	 */
-	bool node_settings;
+	ExecutorManager * executorManager;
+	ComponentManager * componentManager;
+	ConnectionManager * connectionManager;
 
 	/*!
-	 * XmlNode with sources.
+	 * List containing execution thread name for each component
 	 */
-	ptree * node_sources;
-
-	/*!
-	 * XmlNode with processors.
-	 */
-	ptree * node_processors;
+	std::map<std::string, std::string> component_executor;
 
 public:
 	Configurator();
@@ -77,38 +64,26 @@ public:
 	/*!
 	 * Loads configuration from xml file.
 	 */
-	void loadConfiguration(std::string filename);
+	Task loadConfiguration(std::string filename, const std::vector<std::pair<std::string, std::string> > & overrides);
 
-	/*!
-	 * Creates xml document with default nodes: root (Settings) and children related to KernelManages (Soures, Processors).
-	 */
-	void createDefaultConfiguration();
+	void loadExecutors(const ptree * node, Task & task);
+	void loadComponents(const ptree * node, Task & task);
+	void loadEvents(const ptree * node);
+	void loadConnections(const ptree * node);
 
-	/*!
-	 * Saves configuration from xml doc to file.
-	 */
-	void saveConfiguration();
+	void setExecutorManager(ExecutorManager * em) {
+		executorManager = em;
+	}
 
-	/*!
-	 * Returns node related to one of the managers.
-	 */
-	ptree * returnManagerNode(Base::kernelType kernel_type_);
+	void setComponentManager(ComponentManager * km) {
+		componentManager = km;
+	}
 
-	/*!
-	 * Returns existing (or creates new) node for kernel of given type.
-	 */
-	ptree * returnKernelNode(Base::kernelType kernel_type_, const char* node_name_);
-
+	void setConnectionManager(ConnectionManager * cm) {
+		connectionManager = cm;
+	}
 };
 
 }//: namespace Core
-
-/*!
- * \def CONFIGURATOR
- * \brief A macro for shorten the call to retrieve the instance of configurator.
- * \author tkornuta
- * \date Apr 9, 2010
- */
-#define CONFIGURATOR Core::Configurator::instance()
 
 #endif /* CONFIGURATOR_HPP_ */

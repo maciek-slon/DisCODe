@@ -80,7 +80,11 @@ static void process_image(void * p)
 {
 	fputc('.', stdout);
 
-	frame = Mat(480, 640, CV_8UC3, p);
+	frame = Mat(480, 640, CV_8UC2, p);
+
+	Mat rgb;
+	//cvtColor(frame, rgb, CV_YCrCb2BGR);
+
 	imshow( "video", frame );
 	waitKey( 10 );
 
@@ -256,8 +260,8 @@ void printStandards() {
 	   empty unless this device falls under the USB exception. */
 
 	if (errno != EINVAL || standard.index == 0) {
-			perror ("VIDIOC_ENUMSTD");
-			exit (EXIT_FAILURE);
+		perror ("VIDIOC_ENUMSTD");
+		//exit (EXIT_FAILURE);
 	}
 }
 
@@ -284,8 +288,7 @@ void printSizes() {
 	   empty unless this device falls under the USB exception. */
 
 	if (errno != EINVAL || size.index == 0) {
-			perror ("VIDIOC_ENUM_FRAMESIZES");
-			exit (EXIT_FAILURE);
+		perror ("VIDIOC_ENUM_FRAMESIZES");
 	}
 }
 
@@ -617,6 +620,7 @@ static void init_mmap(void)
 			errno_exit("VIDIOC_QUERYBUF");
 
 		buffers[n_buffers].length = buf.length;
+		printf("%d\n", buf.length);
 		buffers[n_buffers].start
 				= mmap(NULL /* start anywhere */, buf.length, PROT_READ | PROT_WRITE /* required */, MAP_SHARED /* recommended */, fd, buf.m.offset);
 
@@ -746,8 +750,12 @@ static void init_device(void)
 	fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_BGR24;
 	fmt.fmt.pix.field = V4L2_FIELD_INTERLACED;
 
-	if (-1 == xioctl(fd, VIDIOC_S_FMT, &fmt))
-		errno_exit("VIDIOC_S_FMT");
+	if (-1 == xioctl(fd, VIDIOC_S_FMT, &fmt)) {
+		if (io != IO_METHOD_MMAP) {
+			fprintf(stderr, "Can't read format settings and io != MMAP");
+			errno_exit("VIDIOC_S_FMT");
+		}
+	}
 
 	/* Note VIDIOC_S_FMT may change width and height. */
 
@@ -803,6 +811,8 @@ static void open_device(void)
 		fprintf(stderr, "Cannot open '%s': %d, %s\n", dev_name, errno, strerror(errno));
 		exit(EXIT_FAILURE);
 	}
+
+	printf("Device %s opened.\n", dev_name);
 }
 
 static void usage(FILE * fp, int argc, char ** argv)
@@ -881,7 +891,9 @@ int main(int argc, char ** argv)
 
 	printFormats();
 
-	printControls();
+//	printControls();
+
+	printSizes();
 
 	start_capturing();
 

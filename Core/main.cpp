@@ -1,118 +1,262 @@
 /*!
  * \file main.cpp
- * \brief Main body responsible for menu showing
- * and image processing.
+ * \brief Main body responsible for menu showing and image processing.
  * \author tkornuta
  * \date 11.09.2007
  */
 
 #include <cstring>
 #include <iostream>
+#include <fstream>
+#include <utility>
+
+#include <signal.h>
 
 #include "FraDIAException.hpp"
 #include "ConnectionManager.hpp"
-#include "KernelManager.hpp"
-#include "KernelFactory.hpp"
+#include "ComponentManager.hpp"
+#include "ExecutorManager.hpp"
+#include "ComponentFactory.hpp"
 #include "Configurator.hpp"
 #include "Executor.hpp"
 #include "Logger.hpp"
+
+#include <boost/program_options.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 using namespace Common;
 using namespace Core;
 
+namespace po = boost::program_options;
+namespace pt = boost::property_tree;
+
+volatile bool running = true;
+bool unstopable = false;
+
+void terminate (int param) {
+	if (unstopable) {
+		std::cout << "\rGet lost! WMAHAHA!\n";
+		return;
+	}
+
+	std::cout << "\rTerminating program...\n";
+	running = false;
+}
+
 /*!
  * Main body - creates two threads - one for window and and one
  * for images acquisition/processing.
  */
-int main(int argc_, char** argv_)
+int main(int argc, char* argv[])
 {
-	Configurator configurator;
-	SourcesManager sourcesManager;
-	ProcessorsManager processorsManager;
+	// FraDIA config filename.
+	std::string config_name;
+
+	// Task config filename.
+	std::string task_name;
+
+	// Task settings overrides
+	std::vector <std::string> task_overrides;
+
+	// Log level
+	int log_lvl = 2;
+
+	void (*prev_fn)(int);
+
+	prev_fn = signal (SIGINT, terminate);
+	if (prev_fn==SIG_IGN) signal (SIGINT,SIG_IGN);
+
+	// =========================================================================
+	// === Program command-line options
+	// =========================================================================
+
+	// Declare the supported options.
+	po::options_description desc("Allowed options");
+	desc.add_options()
+		("help", "produce help message")
+		("config,C", po::value<std::string>(&config_name)->default_value("config.xml"), "choose config file")
+		("create-config,D", "create default configuration file")
+		("task,T", po::value<std::string>(&task_name), "choose task file")
+		("create-task", "create default task file")
+		("log-level,L", po::value<int>(&log_lvl)->default_value(3), "set log severity level")
+		("unstopable","MWAHAHAHA!")
+		("set,S",po::value< vector<string> >(&task_overrides),"override task settings")
+	;
+
+	po::variables_map vm;
 
 	try {
-		// FraDIA config filename.
-		std::string config_name;
-		// Check whether other file wasn't pointed.
-		if (argc_ == 2)
-			config_name = argv_[1];
-		else
-			// Default configuration file.
-			config_name = "config.xml";
+		po::store(po::parse_command_line(argc, argv, desc), vm);
+		po::notify(vm);
+	}
+	catch (const po::error & u) {
+		std::cout << u.what() << "\n";
+		return 0;
+	}
 
-		configurator.loadConfiguration(config_name);
+	if (vm.count("help")) {
+		std::cout << desc << "\n";
+		return 0;
+	}
 
-		sourcesManager.initializeKernelsList(configurator.returnManagerNode(Base::KERNEL_SOURCE));
-		processorsManager.initializeKernelsList(configurator.returnManagerNode(Base::KERNEL_PROCESSOR));
+	// set logger severity level
+	LOGGER.setLevel((Utils::Logger::Severity)log_lvl);
+	LOGGER.addOutput(new Utils::Logger::ConsoleOutput, (Utils::Logger::Severity)log_lvl);
 
-		// Test code.
+	if (vm.count("create-task")) {
+		cout << "Creating task file " << task_name << "\n";
 
-		Core::Executor ex1, ex2;
+		std::ofstream cfg(task_name.c_str());
 
-		Base::Kernel * src = sourcesManager.getActiveKernel()->getObject();
-		Base::Kernel * proc = processorsManager.getActiveKernel()->getObject();
+		cfg << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+				"<Task>\n"
+				"\t<!-- List of components -->\n"
+				"\t<Components>\n"
+				"\t</Components>\n"
+				"\n"
+				"\t<!-- Threads of execution -->\n"
+				"\t<Executors>\n"
+				"\t\t<Thread1 type=\"passive\">\n"
+				"\t\t</Thread1>\n"
+				"\t</Executors>\n"
+				"\n"
+				"\t<!-- Event connections -->\n"
+				"\t<Events>\n"
+				"\t</Events>\n"
+				"\n"
+				"\t<!-- Data stream assignments -->\n"
+				"\t<DataStreams>\n"
+				"\t</DataStreams>\n"
+				"</Task>\n";
 
-		src->printEvents();
-		src->printHandlers();
-		src->printStreams();
+		cfg.close();
 
-		proc->printEvents();
-		proc->printHandlers();
-		proc->printStreams();
+		return 0;
+	}
 
-		// add components to separate threads
-		ex1.addKernel(src, true);
-		ex1.addKernel(proc);
+	if (vm.count("create-config")) {
+		cout << "Creating configuration file " << config_name << "\n";
 
-		// connect src -> newImage event to proc -> onNewImage handler
-		Base::EventHandlerInterface * h = proc->getHandler("onNewImage");
-		//src->getEvent("newImage")->addHandler(ex2.scheduleHandler(h));
-		src->getEvent("newImage")->addHandler(h);
+		std::ofstream cfg(config_name.c_str());
 
-		// connect src -> out_delay data stream to proc -> in_delay data stream
-		Base::Connection * con_1 = CONNECTION_MANAGER.get("con_1");
-		con_1->addListener(proc->getStream("in_img"));
-		if (src->getStream("out_img")) {
-			src->getStream("out_img")->setConnection(con_1);
+		cfg << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+				"<FraDIA>\n"
+				"\t<task>blob.xml</task>"
+				"</FraDIA>\n";
+
+		cfg.close();
+
+		return 0;
+	}
+
+	if (vm.count("unstopable")) {
+		unstopable = true;
+	}
+
+	// =========================================================================
+	// === FraDIA configuration
+	// =========================================================================
+
+	config_name = vm["config"].as<std::string>();
+
+	pt::ptree conf;
+	try {
+		read_xml(config_name, conf);
+	}
+	catch(xml_parser_error&) {
+		throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + config_name + "' file.\n");
+	}
+
+	if (!vm.count("task")) {
+		task_name = conf.get("FraDIA.task","task.xml");
+		LOG(INFO) << "Task: " << task_name << " from configuration file\n";
+	} else {
+		LOG(INFO) << "Task: " << task_name << " from command line\n";
+	}
+
+	std::vector<std::pair<std::string, std::string> > overrides;
+	for (size_t i = 0; i < task_overrides.size(); ++i) {
+		std::vector<std::string> strs;
+		boost::split(strs, task_overrides[i], boost::is_any_of("="));
+		if (strs.size() == 1) {
+			LOG(WARNING) << strs[0] << "have no assigned value";
 		} else {
-			cout << "Stream find error!\n";
+			overrides.push_back(std::make_pair(strs[0], strs[1]));
+		}
+	}
+
+	// =========================================================================
+	// === Main program part
+	// =========================================================================
+
+	Configurator configurator;
+	ComponentManager km;
+	ExecutorManager em;
+	ConnectionManager cm;
+
+	configurator.setExecutorManager(&em);
+	configurator.setComponentManager(&km);
+	configurator.setConnectionManager(&cm);
+
+	try {
+		Task task;
+
+		km.initializeComponentsList();
+
+		task = configurator.loadConfiguration(task_name, overrides);
+		if (!task.start()) {
+			LOG(FATAL) << "Task::start() returned false\n";
+			running = false;
 		}
 
-		// set parameters of each thread executor
-		ex1.setExecutionMode(Executor::ExecPeriodic);
-		ex1.setInterval(0.04);
 
-		ex2.setExecutionMode(Executor::ExecPassive);
+		while(running) {
+			Common::Thread::msleep(50);
+		}
 
-		// start both threads
-		ex1.start();
+		//Common::Thread::msleep(5000);
 
-		Common::Thread::msleep(1000);
+		Common::Thread::msleep(500);
 
-		// stop threads
-		ex1.finish();
+		task.finish();
 
-		// wait for both threads to finish execution
-		ex1.wait(1000);
+		// wait for threads to finish execution
+		//Common::Thread::msleep(3000);
 
 		// End of test code.
 
-		sourcesManager.stopAll();
-		sourcesManager.deactivateKernelList();
 
-		processorsManager.stopAll();
-		processorsManager.deactivateKernelList();
+
+		km.release();
+		cm.release();
+		em.release();
+
+		km.deactivateComponentList();
 
 	}//: try
-	catch (exception& ex){
-		cout << "Fatal error:\n";
-		// If required print exception description.
-		if (!strcmp(ex.what(), ""))
-			LOG(FATAL) << ex.what() << "\n";
 
+	// =========================================================================
+	// === Exception handling
+	// =========================================================================
+
+	catch (Common::FraDIAException& ex) {
+		LOG(FATAL) << ex.what() << "\n";
+		ex.printStackTrace();
+		exit(EXIT_FAILURE);
+	}
+	catch (exception& ex) {
+		LOG(FATAL) << ex.what() << "\n";
+		exit(EXIT_FAILURE);
+	}
+	catch (const char * ex) {
+		LOG(FATAL) << ex << "\n";
+		exit(EXIT_FAILURE);
+	}
+	catch (...) {
+		LOG(FATAL) << "Unknown exception.\n";
 		exit(EXIT_FAILURE);
 	}//: catch
-
-	//CONFIGURATOR.saveConfiguration();
 }

@@ -14,7 +14,6 @@
 
 #include <boost/foreach.hpp>
 
-#include "Singleton.hpp"
 #include "Connection.hpp"
 
 namespace Core {
@@ -28,20 +27,18 @@ namespace Core {
  *
  * \author mstefanc
  */
-class ConnectionManager : public Base::Singleton<ConnectionManager> {
-	/*!
-	 * Singleton class must be a friend, because only it can call protected constructor.
-	 */
-	friend class Base::Singleton <ConnectionManager> ;
+class ConnectionManager {
 
 public:
 	/*!
 	 * Destructor, called only once, when related singleton is destroyed.
 	 */
 	~ConnectionManager() {
-		/// \todo uncomment!
-		/*BOOST_FOREACH(std::pair<std::string, Connection *> con, connections)
-			delete con.second;*/
+	}
+	
+	void release() {
+		BOOST_FOREACH(con_pair con, connections)
+			delete con.second;
 	}
 
 	/*!
@@ -57,22 +54,22 @@ public:
 		return connections[name];
 	}
 
-protected:
 	/*!
-	 * Protected constructor, called only by the Singleton::init() method.
+	 *
 	 */
 	ConnectionManager() {
 
 	}
 
+protected:
 	/*!
 	 * List of already created connections, name of connection is key value.
 	 */
 	std::map<std::string, Base::Connection *> connections;
+	
+	typedef std::pair<std::string, Base::Connection *> con_pair;
 };
 
 } //: namespace Core
-
-#define CONNECTION_MANAGER Core::ConnectionManager::instance()
 
 #endif /* CONNECTIONMANAGER_HPP_ */

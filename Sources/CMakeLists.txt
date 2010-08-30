@@ -6,4 +6,3 @@ ADD_SOURCE(Movie)
 ADD_SOURCE(CameraV4L)
 ADD_SOURCE(CameraOpenCV)
 ADD_SOURCE(CameraUniCap)
-
