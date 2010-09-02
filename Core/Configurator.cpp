@@ -169,7 +169,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 
 void Configurator::loadEvents(const ptree * node) {
 	LOG(INFO) << "Connecting events\n";
-	std::string src, dst, name, caller, receiver;
+	std::string src, dst, name, caller, receiver, type;
 	Base::Component * src_k, * dst_k;
 	Base::EventHandlerInterface * h;
 	Base::Event * e;
@@ -189,6 +189,8 @@ void Configurator::loadEvents(const ptree * node) {
 			LOG(ERROR) << "No event destination specified...\n";
 			continue;
 		}
+
+		type=tmp.get("type", "");
 
 		caller = src.substr(0, src.find_first_of("."));
 		src = src.substr(src.find_first_of(".")+1);
@@ -212,7 +214,7 @@ void Configurator::loadEvents(const ptree * node) {
 		}
 
 		// asynchronous connection
-		if (component_executor[caller] != component_executor[receiver]) {
+		if ( (component_executor[caller] != component_executor[receiver]) || (type=="async")) {
 			Executor * ex = executorManager->getExecutor(component_executor[receiver]);
 			h = ex->scheduleHandler(h);
 			e->addAsyncHandler(h);

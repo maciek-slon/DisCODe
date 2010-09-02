@@ -15,3 +15,6 @@ ADD_PROCESSOR(CvPixelOperator)
 # Task specific processors
 ADD_PROCESSOR(MS_Sign_LUT)
 ADD_PROCESSOR(MS_Sign_Decide)
+
+ADD_PROCESSOR(MS_Barcode_Macro)
+ADD_PROCESSOR(MS_Barcode_Prepare)
