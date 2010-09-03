@@ -76,28 +76,38 @@ void MS_Barcode_Macro::onNewImage()
 {
 	LOG(TRACE) << "MS_Barcode_Macro::onNewImage\n";
 
-	cv::Mat img = in_img.read();
+	cv::Mat img;
+
+	try {
+		img = in_img.read();
+	}
+	catch(...) {
+		return;
+	}
 
 	img.convertTo(sf, CV_32FC1, 1./255.);
 
+	//~ if (sf.empty())
+		//~ return;
+
 	cv::filter2D(sf, sf1, -1, props.kernel_1, cv::Size(-1, -1), 0, cv::BORDER_REPLICATE);
 	cv::normalize(sf1, sf1, 1.0, 0.0, CV_C);
-	cv::dilate(sf1, sfe1, cv::Mat(), cv::Point(-1,-1), 2);
+	cv::dilate(sf1, sfe1, cv::Mat(), cv::Point(-1,-1), props.dil0);
 
 	cv::filter2D(sf, sf2, -1, props.kernel_2, cv::Size(-1, -1), 0, cv::BORDER_REPLICATE);
 	cv::normalize(sf2, sf2, 1.0, 0.0, CV_C);
-	cv::dilate(sf2, sfe2, cv::Mat(), cv::Point(-1,-1), 2);
+	cv::dilate(sf2, sfe2, cv::Mat(), cv::Point(-1,-1), props.dil0);
 
 	sf1 = sf1 - sfe2;
 	sf2 = sf2 - sfe1;
 
-	cv::dilate(sf1, sf1, cv::Mat(), cv::Point(-1,-1), 3);
-	cv::erode(sf1, sf1, cv::Mat(), cv::Point(-1,-1), 6);
-	cv::dilate(sf1, sf1, cv::Mat(), cv::Point(-1,-1), 3);
+	cv::dilate(sf1, sf1, cv::Mat(), cv::Point(-1,-1), props.dil1);
+	cv::erode(sf1, sf1, cv::Mat(), cv::Point(-1,-1), props.ero);
+	cv::dilate(sf1, sf1, cv::Mat(), cv::Point(-1,-1), props.dil2);
 
-	cv::dilate(sf2, sf2, cv::Mat(), cv::Point(-1,-1), 3);
-	cv::erode(sf2, sf2, cv::Mat(), cv::Point(-1,-1), 6);
-	cv::dilate(sf2, sf2, cv::Mat(), cv::Point(-1,-1), 3);
+	cv::dilate(sf2, sf2, cv::Mat(), cv::Point(-1,-1), props.dil1);
+	cv::erode(sf2, sf2, cv::Mat(), cv::Point(-1,-1), props.ero);
+	cv::dilate(sf2, sf2, cv::Mat(), cv::Point(-1,-1), props.dil2);
 
 	cv::threshold(sf1, sf1, props.thresh, 1.0, CV_THRESH_BINARY);
 	cv::threshold(sf2, sf2, props.thresh, 1.0, CV_THRESH_BINARY);
@@ -108,7 +118,8 @@ void MS_Barcode_Macro::onNewImage()
 	out_sfe1.write(sfe1);
 	out_sf2.write(sf2);
 	out_sfe2.write(sfe2);
-	out_img.write(sf);
+
+	out_img.write(sf.clone());
 	newImage->raise();
 }
 

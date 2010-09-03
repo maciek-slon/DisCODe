@@ -38,6 +38,8 @@ struct Props: public Base::Props
 
 	double thresh;
 
+	int dil0, dil1, dil2, ero;
+
 	/*!
 	 * \copydoc Base::Props::load
 	 */
@@ -47,6 +49,11 @@ struct Props: public Base::Props
 		kernel_2 = str2mat(cv::Size(3,3), pt.get("kernel_2", ""), 1);
 
 		thresh = pt.get("thresh", 128.0);
+
+		dil0 = pt.get("dil0", 2);
+		dil1 = pt.get("dil1", 3);
+		dil2 = pt.get("dil2", 3);
+		ero = pt.get("ero", 6);
 	}
 
 	/*!
@@ -138,7 +145,7 @@ protected:
 	Base::EventHandler <MS_Barcode_Macro> h_onNewImage;
 
 	/// Input image
-	Base::DataStreamIn <cv::Mat> in_img;
+	Base::DataStreamIn <cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex> in_img;
 
 	/// Event raised, when data is processed
 	Base::Event * newImage;

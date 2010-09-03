@@ -1,10 +1,6 @@
 /*!
  * \file BlobExtractor_Processor.cpp
- * \brief Declaration of an example class,
- * responsible for image processing.
- * - methods definitions
- * \author tkornuta
- * \date 11.03.2008
+ * \brief
  */
 
 #include <memory>

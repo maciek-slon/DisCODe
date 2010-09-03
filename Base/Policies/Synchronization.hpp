@@ -52,7 +52,7 @@ public:
 	}
 
 private:
-	//// Mutex for access synchronization
+	/// Mutex for access synchronization
 	boost::mutex mtx;
 };
 
@@ -74,6 +74,21 @@ public:
 	void unlock() {}
 };
 
+
+template<typename T>
+class ScopeSync {
+public:
+	ScopeSync(T & t) : t_(t) {
+		t_.lock();
+	}
+
+	~ScopeSync() {
+		t_.unlock();
+	}
+
+private:
+	T & t_;
+};
 
 } //: Synchronization
 } //: Base

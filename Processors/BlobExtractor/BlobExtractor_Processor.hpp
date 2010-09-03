@@ -1,8 +1,6 @@
 /*!
  * \file BlobExtractor_Processor.hpp
- * \brief Declaration of an example class, responsible for image processing.
- * \author tkornuta
- * \date 11.03.2008
+ * \brief
  */
 
 #ifndef BLOBEXTRACTOR_PROCESSOR_HPP_

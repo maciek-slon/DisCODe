@@ -67,6 +67,7 @@ protected:
 		} else {
 			/// \todo Throw correct exception
 			throw "Empty buffer!";
+			// throwing disabled until scopeLock will be implemented in DataStream
 		}
 	}
 

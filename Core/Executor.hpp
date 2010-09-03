@@ -53,8 +53,9 @@ public:
 	 * Queue event handler in internal FIFO buffer
 	 */
 	void queueEvent(Base::EventHandlerInterface * h) {
-		/// \todo Add synchronization
+		mtx.lock();
 		queue.push(h);
+		mtx.unlock();
 	}
 
 	/*!
@@ -102,6 +103,21 @@ public:
 	}
 
 protected:
+
+	/**
+	 * Execute all pending events.
+	 */
+	void executeEvents() {
+		while (!queue.empty()) {
+			Base::EventHandlerInterface * h;
+			mtx.lock();
+			h = queue.front();
+			queue.pop();
+			mtx.unlock();
+			h->execute();
+		}
+	}
+
 	/// List of components managed by this Executor
 	std::map<std::string, Base::Component *> components;
 
@@ -116,6 +132,9 @@ protected:
 
 	/// Name of execution thread
 	std::string name_;
+
+	/// Asynchronous event queue synchronisation
+	boost::mutex mtx;
 };
 
 
@@ -172,10 +191,7 @@ protected:
 				continue;
 			}
 
-			while (!queue.empty()) {
-				queue.front()->execute();
-				queue.pop();
-			}
+			executeEvents();
 
 			// check if there is any component to execute
 			if (main_component && main_component->running()) {
@@ -253,10 +269,7 @@ protected:
 			}
 
 			// process all waiting events
-			while (!queue.empty()) {
-				queue.front()->execute();
-				queue.pop();
-			}
+			executeEvents();
 
 			yield();
 		}
@@ -316,10 +329,7 @@ protected:
 				continue;
 			}
 
-			while (!queue.empty()) {
-				queue.front()->execute();
-				queue.pop();
-			}
+			executeEvents();
 
 			if (timer.elapsed() > interval) {
 				timer.restart();

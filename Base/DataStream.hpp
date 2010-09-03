@@ -33,18 +33,14 @@ template
 <
     typename T,
     template <class T> class BufferingPolicy = DataStreamBuffer::Queue,
-    class ReadSync = Synchronization::NoSync,
-    class WriteSync = Synchronization::NoSync
+    class Sync = Synchronization::NoSync
 >
 class DataStreamIn : public DataStreamInterface, public BufferingPolicy<T>
 {
 	using BufferingPolicy<T>::retrieve;
 
 	/// Object used for synchronization of data reading
-	ReadSync read_sync;
-
-	/// Object used for synchronization of data writing
-	WriteSync write_sync;
+	Sync sync;
 
 public:
 	virtual dsType type() {
@@ -52,18 +48,20 @@ public:
 	}
 
 	T read() {
-		read_sync.lock();
+		Synchronization::ScopeSync<Sync> ss(sync);
+		//sync.lock();
 		T t = retrieve();
-		read_sync.unlock();
+		//sync.unlock();
 		return t;
 	}
 
 protected:
 	virtual void internalSet(void * ptr) {
-		write_sync.lock();
+		Synchronization::ScopeSync<Sync> ss(sync);
+		//sync.lock();
 		T t = *((T*)ptr);
 		store(t);
-		write_sync.unlock();
+		//sync.unlock();
 	}
 };
 
@@ -109,18 +107,14 @@ template
 <
     typename T,
     template <class T> class BufferingPolicy = DataStreamBuffer::Queue,
-    class ReadSync = Synchronization::NoSync,
-    class WriteSync = Synchronization::NoSync
+    class Sync = Synchronization::NoSync
 >
 class DataStreamInPtr : public DataStreamInterface, public BufferingPolicy< boost::shared_ptr<T> >
 {
 	using BufferingPolicy< boost::shared_ptr<T> >::retrieve;
 
 	/// Object used for synchronization of data reading
-	ReadSync read_sync;
-
-	/// Object used for synchronization of data writing
-	WriteSync write_sync;
+	Sync sync;
 
 public:
 	virtual dsType type() {
@@ -128,20 +122,21 @@ public:
 	}
 
 	boost::shared_ptr<T> read() {
-		read_sync.lock();
+		Synchronization::ScopeSync<Sync> ss(sync);
+		//sync.lock();
 		boost::shared_ptr<T> t = retrieve();
-		read_sync.unlock();
+		//sync.unlock();
 		return t;
 	}
 
 protected:
 	virtual void internalSet(void * ptr) {
-		write_sync.lock();
+		Synchronization::ScopeSync<Sync> ss(sync);
+		//sync.lock();
 		T* t = (T*)ptr;
-
 		boost::shared_ptr<T> p(t->clone());
 		store(p);
-		write_sync.unlock();
+		//sync.unlock();
 	}
 };
 

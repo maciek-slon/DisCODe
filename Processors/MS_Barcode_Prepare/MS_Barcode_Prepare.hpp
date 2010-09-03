@@ -19,9 +19,6 @@
 
 #include <vector>
 
-#include "Types/Blobs/BlobResult.hpp"
-#include "Types/DrawableContainer.hpp"
-
 namespace Processors {
 namespace MS_Barcode {
 
@@ -144,10 +141,10 @@ protected:
 	Base::DataStreamOut < cv::Mat > out_img;
 
 	/// Input images
-	Base::DataStreamIn < cv::Mat > in_img1;
-	Base::DataStreamIn < cv::Mat > in_img2;
-	Base::DataStreamIn < cv::Mat > in_img3;
-	Base::DataStreamIn < cv::Mat > in_img4;
+	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex > in_img1;
+	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex > in_img2;
+	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex > in_img3;
+	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex > in_img4;
 
 	/// Properties
 	Props props;
