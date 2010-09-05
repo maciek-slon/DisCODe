@@ -68,6 +68,15 @@ protected:
 	bool onStop();
 
 
+	/*!
+	 * Event handler function.
+	 */
+	void onTrigger();
+
+	/// Event handler.
+	Base::EventHandler<CameraOpenCV_Source> h_onTrigger;
+
+
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 
@@ -79,6 +88,8 @@ protected:
 
 	/// Movie frame
 	Mat frame;
+
+	bool trig;
 };
 
 }//: namespace CameraOpenCV

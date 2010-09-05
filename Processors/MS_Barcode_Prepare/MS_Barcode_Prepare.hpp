@@ -141,10 +141,10 @@ protected:
 	Base::DataStreamOut < cv::Mat > out_img;
 
 	/// Input images
-	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex > in_img1;
-	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex > in_img2;
-	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex > in_img3;
-	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex > in_img4;
+	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest > in_img1;
+	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest > in_img2;
+	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest > in_img3;
+	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest > in_img4;
 
 	/// Properties
 	Props props;

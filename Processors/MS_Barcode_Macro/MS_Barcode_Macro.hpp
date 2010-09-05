@@ -145,7 +145,7 @@ protected:
 	Base::EventHandler <MS_Barcode_Macro> h_onNewImage;
 
 	/// Input image
-	Base::DataStreamIn <cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex> in_img;
+	Base::DataStreamIn <cv::Mat, Base::DataStreamBuffer::Newest> in_img;
 
 	/// Event raised, when data is processed
 	Base::Event * newImage;

@@ -124,11 +124,11 @@ bool MS_Sign_Decide::onStep()
 			++id;
 
 			signs.add(new Types::Ellipse(Point(r2.center.x, r2.center.y), Size(r2.size.width, r2.size.height), r2.angle));
-
-			out_signs.write(signs);
-
-			newImage->raise();
 		}
+
+		out_signs.write(signs);
+
+		newImage->raise();
 
 		return true;
 	} catch (...) {

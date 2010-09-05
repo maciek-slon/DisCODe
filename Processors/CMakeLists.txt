@@ -11,6 +11,7 @@ ADD_PROCESSOR(CvSplit)
 ADD_PROCESSOR(CvMorphology)
 ADD_PROCESSOR(CvFilter2D)
 ADD_PROCESSOR(CvPixelOperator)
+ADD_PROCESSOR(ExecTimer)
 
 # Task specific processors
 ADD_PROCESSOR(MS_Sign_LUT)

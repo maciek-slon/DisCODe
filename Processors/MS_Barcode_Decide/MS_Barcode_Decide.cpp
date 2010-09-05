@@ -75,7 +75,7 @@ bool MS_Barcode_Decide::onStep()
 
 			// get blob bounding rectangle and ellipse
 			//CvBox2D be = currentBlob->GetEllipse();
-			CvRect bb = currentBlob->GetBoundingBox();
+			cv::Rect bb = currentBlob->GetBoundingBox();
 
 			signs.add(new Types::Rectangle(bb.x, bb.y, bb.width, bb.height));
 
