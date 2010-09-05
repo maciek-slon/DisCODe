@@ -112,6 +112,9 @@ protected:
 
 	Props props;
 
+private:
+	cv::Mat img_uchar;
+
 };
 
 }//: namespace BlobExtractor

@@ -74,8 +74,8 @@ void BlobExtractor_Processor::onNewImage() {
 	timer.restart();
 
 	cv::Mat in = in_img.read();
-
-	IplImage * img = &IplImage(in);
+	in.convertTo(img_uchar, CV_8UC1);
+	IplImage * img = &IplImage(img_uchar);
 	//cv::Mat out = cv::Mat::zeros(in.size(), CV_8UC3);
 
 	Types::Blobs::Blob_vector res;

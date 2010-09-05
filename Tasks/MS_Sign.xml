@@ -29,7 +29,7 @@
 		</MorphOpen>
 
 		<Blob type="BlobExtractor" thread="Thread1" group="s1">
-			<min_size>100</min_size>;
+			<min_size>100</min_size>
 		</Blob>
 
 		<Window type="CvWindow" thread="Thread1" group="s1">

@@ -9,7 +9,7 @@
 			<type>BGR2GRAY</type>
 		</ColorConv>
 
-		<M1 type="MS_Barcode_Macro" thread="Thread3" group="s1">
+		<M1 type="MS_Barcode_Macro" thread="Thread2" group="s1">
 			<kernel_1>
 				1  1  1
 				0  0  0
@@ -23,10 +23,10 @@
 
 			<thresh>0.15</thresh>
 
-			<dil2>5</dil2>
+			<dil2>10</dil2>
 		</M1>
-<!--
-		<M2 type="MS_Barcode_Macro" thread="Thread3" group="s1">
+
+		<M2 type="MS_Barcode_Macro" thread="Thread2" group="s1">
 			<kernel_1>
 				1  1  0
 				1  0 -1
@@ -39,10 +39,10 @@
 			</kernel_2>
 
 			<thresh>0.15</thresh>
-			<dil2>5</dil2>
+			<dil2>10</dil2>
 		</M2>
--->
-		<M3 type="MS_Barcode_Macro" thread="Thread2" group="s1">
+
+		<M3 type="MS_Barcode_Macro" thread="Thread3" group="s1">
 			<kernel_1>
 				1  1  0
 			   -1  0  1
@@ -55,10 +55,10 @@
 			</kernel_2>
 
 			<thresh>0.15</thresh>
-			<dil2>5</dil2>
+			<dil2>10</dil2>
 		</M3>
-<!--
-		<M4 type="MS_Barcode_Macro" thread="Thread2" group="s1">
+
+		<M4 type="MS_Barcode_Macro" thread="Thread3" group="s1">
 			<kernel_1>
 				0  1  1
 				1  0 -1
@@ -71,15 +71,18 @@
 			</kernel_2>
 
 			<thresh>0.15</thresh>
-			<dil2>5</dil2>
+			<dil2>10</dil2>
 		</M4>
 
-		<Dec type="MS_Barcode_Prepare" thread="Thread1" group="s1">
+		<Prep type="MS_Barcode_Prepare" thread="Thread1" group="s1">
+		</Prep>
 
+		<Dec type="MS_Barcode_Decide" thread="Thread1" group="s1">
 		</Dec>
--->
+
+
 		<Blob type="BlobExtractor" thread="Thread1" group="s1">
-			<min_size>100</min_size>;
+			<min_size>700</min_size>
 		</Blob>
 
 		<InWindow type="CvWindow" thread="Thread1" group="s1">
@@ -106,22 +109,22 @@
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Movie.newImage"     destination="ColorConv.onNewImage" type="async"/>
-		<Event source="Movie.newImage"     destination="InWindow.onNewImage" type="async"/>
+		<Event source="Movie.newImage"     destination="ColorConv.onNewImage"/>
+		<Event source="Movie.newImage"     destination="InWindow.onNewImage"/>
 
-		<Event source="ColorConv.newImage" destination="M1.onNewImage" type="async"/>
-<!--		<Event source="ColorConv.newImage" destination="M2.onNewImage"/>-->
-		<Event source="ColorConv.newImage" destination="M3.onNewImage" type="async"/>
-<!--		<Event source="ColorConv.newImage" destination="M4.onNewImage"/>-->
+		<Event source="ColorConv.newImage" destination="M1.onNewImage"/>
+		<Event source="ColorConv.newImage" destination="M2.onNewImage"/>
+		<Event source="ColorConv.newImage" destination="M3.onNewImage"/>
+		<Event source="ColorConv.newImage" destination="M4.onNewImage"/>
 
-<!--		<Event source="M1.newImage"        destination="Dec.onNewImage1"/>-->
-<!--		<Event source="M2.newImage"        destination="Dec.onNewImage2"/>-->
-<!--		<Event source="M3.newImage"        destination="Dec.onNewImage3"/>-->
-<!--		<Event source="M4.newImage"        destination="Dec.onNewImage4"/>-->
-			<Event source="M3.newImage"        destination="Window.onNewImage"/>
+		<Event source="M1.newImage"        destination="Prep.onNewImage1"/>
+		<Event source="M2.newImage"        destination="Prep.onNewImage2"/>
+		<Event source="M3.newImage"        destination="Prep.onNewImage3"/>
+		<Event source="M4.newImage"        destination="Prep.onNewImage4"/>
 
-<!--		<Event source="Dec.newImage"       destination="Blob.onNewImage"/>-->
-<!--		<Event source="Dec.newImage"       destination="Window.onNewImage"/>-->
+		<Event source="Prep.newImage"      destination="Blob.onNewImage"/>
+		<Event source="Blob.newBlobs"      destination="Dec.onNewBlobs"/>
+		<Event source="Prep.newImage"      destination="Window.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -139,40 +142,46 @@
 			<in_img type="in" group="Con2"/>
 			<out_img type="out" group="ConM1"/>
 		</M1>
-<!--
+
 		<M2>
 			<in_img type="in" group="Con2"/>
 			<out_img type="out" group="ConM2"/>
 		</M2>
--->
+
 		<M3>
 			<in_img type="in" group="Con2"/>
 			<out_img type="out" group="ConM3"/>
 		</M3>
-<!--
+
 		<M4>
 			<in_img type="in" group="Con2"/>
 			<out_img type="out" group="ConM4"/>
 		</M4>
 
-		<Dec>
+		<Prep>
 			<in_img1 type="in" group="ConM1"/>
 			<in_img2 type="in" group="ConM2"/>
 			<in_img3 type="in" group="ConM3"/>
 			<in_img4 type="in" group="ConM4"/>
 			<out_img type="out" group="Con3"/>
-		</Dec>
--->
-<!--		<Blob>
+		</Prep>
+
+		<Blob>
 			<in_img    type="in"  group="Con3"/>
 			<out_blobs type="out" group="con_blobs"/>
-		</Blob>-->
+		</Blob>
+
+		<Dec>
+			<in_blobs  type="in"  group="con_blobs"/>
+			<out_signs type="out" group="con_signs"/>
+		</Dec>
 
 		<Window>
-			<in_img type="in" group="ConM3"/>
+			<in_img type="in" group="Con3"/>
 		</Window>
 
 		<InWindow>
+			<in_draw type="in" group="con_signs"/>
 			<in_img type="in" group="Con1"/>
 		</InWindow>
 	</DataStreams>

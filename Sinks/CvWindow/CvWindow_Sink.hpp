@@ -176,6 +176,9 @@ protected:
 
 	/// Window properties
 	WndProps props;
+
+
+	boost::shared_ptr<Types::Drawable> to_draw;
 };
 
 }//: namespace CvWindow

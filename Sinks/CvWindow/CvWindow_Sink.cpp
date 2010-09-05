@@ -64,11 +64,12 @@ void CvWindow_Sink::onNewImage() {
 	try {
 		cv::Mat img = in_img.read().clone();
 
-
 		if (!in_draw.empty()) {
-			boost::shared_ptr<Types::Drawable> to_draw(in_draw.read());
-			to_draw->draw(img, CV_RGB(255,0,255));
+			to_draw = in_draw.read();
 		}
+
+		if (to_draw)
+			to_draw->draw(img, CV_RGB(255,0,255));
 
 		imshow( props.title, img );
 		waitKey( 2 );

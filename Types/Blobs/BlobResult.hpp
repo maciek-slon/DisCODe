@@ -115,6 +115,11 @@ public:
 	void draw(cv::Mat & image, CvScalar color, int offsetx = 0, int offsety = 0);
 
 
+	virtual Drawable * clone() {
+		return new BlobResult(*this);
+	}
+
+
 //Metodes GET/SET
 
 	//! Retorna el total de blobs

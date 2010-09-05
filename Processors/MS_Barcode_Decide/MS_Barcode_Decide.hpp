@@ -32,15 +32,11 @@ using namespace cv;
  */
 struct Props: public Base::Props
 {
-
-	double thresh;
-
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
-		thresh = pt.get("thresh", 0.1);
 	}
 
 	/*!
@@ -50,24 +46,6 @@ struct Props: public Base::Props
 	{
 	}
 
-protected:
-	cv::Mat str2mat(cv::Size size, std::string s, double norm) {
-		std::stringstream ss;
-		cv::Mat mat = cv::Mat::eye(size, CV_32F);
-		double val;
-
-		ss << s;
-
-		for (int i = 0; i < size.height; ++i) {
-			for (int j = 0; j < size.width; ++j) {
-				ss >> val;
-				val /= norm;
-				mat.at<float>(i,j) = val;
-			}
-		}
-
-		return mat;
-	}
 };
 
 /*!
@@ -126,37 +104,44 @@ protected:
 	/*!
 	 * Event handler function.
 	 */
-	void onNewImage1();
-	void onNewImage2();
-	void onNewImage3();
-	void onNewImage4();
+	void onNewImage();
 
 	/// New image is waiting
-	Base::EventHandler <MS_Barcode_Decide> h_onNewImage1;
-	Base::EventHandler <MS_Barcode_Decide> h_onNewImage2;
-	Base::EventHandler <MS_Barcode_Decide> h_onNewImage3;
-	Base::EventHandler <MS_Barcode_Decide> h_onNewImage4;
+	Base::EventHandler <MS_Barcode_Decide> h_onNewImage;
+
+
+	/*!
+	 * Event handler function.
+	 */
+	void onNewBlobs();
+
+	/// New set of blobs is waiting
+	Base::EventHandler <MS_Barcode_Decide> h_onNewBlobs;
+
+
+	/// Input blobs
+	Base::DataStreamIn <Types::Blobs::BlobResult> in_blobs;
+
+	/// Input hue image
+	Base::DataStreamIn <cv::Mat> in_hue;
 
 	/// Event raised, when data is processed
 	Base::Event * newImage;
 
-	/// Output image
-	Base::DataStreamOut < cv::Mat > out_img;
-
-	/// Input images
-	Base::DataStreamIn < cv::Mat > in_img1;
-	Base::DataStreamIn < cv::Mat > in_img2;
-	Base::DataStreamIn < cv::Mat > in_img3;
-	Base::DataStreamIn < cv::Mat > in_img4;
+	/// Output data stream - list of ellipses around found signs
+	Base::DataStreamOut < Types::DrawableContainer > out_signs;
 
 	/// Properties
 	Props props;
 
 private:
-	cv::Mat out;
-	cv::Mat sum;
+	cv::Mat hue_img;
+	cv::Mat segments;
 
-	int count;
+	bool blobs_ready;
+	bool hue_ready;
+
+	Types::Blobs::BlobResult blobs;
 };
 
 }//: namespace MS_Barcode

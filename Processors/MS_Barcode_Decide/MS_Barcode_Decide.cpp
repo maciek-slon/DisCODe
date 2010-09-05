@@ -11,7 +11,7 @@
 #include "MS_Barcode_Decide.hpp"
 #include "Logger.hpp"
 
-#include "Types/Ellipse.hpp"
+#include "Types/Rectangle.hpp"
 
 namespace Processors {
 namespace MS_Barcode {
@@ -19,7 +19,7 @@ namespace MS_Barcode {
 MS_Barcode_Decide::MS_Barcode_Decide(const std::string & name) : Base::Component(name)
 {
 	LOG(TRACE) << "Hello MS_Barcode_Decide\n";
-	count = 0;
+	blobs_ready = hue_ready = false;
 }
 
 MS_Barcode_Decide::~MS_Barcode_Decide()
@@ -31,26 +31,18 @@ bool MS_Barcode_Decide::onInit()
 {
 	LOG(TRACE) << "MS_Barcode_Decide::initialize\n";
 
-	h_onNewImage1.setup(this, &MS_Barcode_Decide::onNewImage1);
-	registerHandler("onNewImage1", &h_onNewImage1);
+	h_onNewImage.setup(this, &MS_Barcode_Decide::onNewImage);
+	registerHandler("onNewImage", &h_onNewImage);
 
-	h_onNewImage2.setup(this, &MS_Barcode_Decide::onNewImage2);
-	registerHandler("onNewImage2", &h_onNewImage2);
+	h_onNewBlobs.setup(this, &MS_Barcode_Decide::onNewBlobs);
+	registerHandler("onNewBlobs", &h_onNewBlobs);
 
-	h_onNewImage3.setup(this, &MS_Barcode_Decide::onNewImage3);
-	registerHandler("onNewImage3", &h_onNewImage3);
-
-	h_onNewImage4.setup(this, &MS_Barcode_Decide::onNewImage4);
-	registerHandler("onNewImage4", &h_onNewImage4);
-
-	registerStream("in_img1", &in_img1);
-	registerStream("in_img2", &in_img2);
-	registerStream("in_img3", &in_img3);
-	registerStream("in_img4", &in_img4);
+	registerStream("in_blobs", &in_blobs);
+	registerStream("in_hue", &in_hue);
 
 	newImage = registerEvent("newImage");
 
-	registerStream("out_img", &out_img);
+	registerStream("out_signs", &out_signs);
 
 	return true;
 }
@@ -64,17 +56,40 @@ bool MS_Barcode_Decide::onFinish()
 
 bool MS_Barcode_Decide::onStep()
 {
-	LOG(TRACE) << "MS_Barcode_Decide::step\n";
+	blobs_ready = hue_ready = false;
 
-	count = 0;
+	try {
+		int i;
+		IplImage h = IplImage(hue_img);
+		Types::Blobs::Blob *currentBlob;
+		Types::DrawableContainer signs;
 
-	cv::threshold(sum, sum, props.thresh, 1.0, CV_THRESH_BINARY);
-	//cv::normalize(sum, sum, 1.0, 0.0, CV_C);
+		// iterate through all found blobs
+		for (i = 0; i < blobs.GetNumBlobs(); i++ )
+		{
+			currentBlob = blobs.GetBlob(i);
 
-	out_img.write(sum);
-	newImage->raise();
+			// get mean color from area coverd by blob (from hue component)
+			double me = currentBlob->Mean(&h);
+			double st = currentBlob->StdDev(&h);
 
-	return true;
+			// get blob bounding rectangle and ellipse
+			//CvBox2D be = currentBlob->GetEllipse();
+			CvRect bb = currentBlob->GetBoundingBox();
+
+			signs.add(new Types::Rectangle(bb.x, bb.y, bb.width, bb.height));
+
+		}
+
+		out_signs.write(signs);
+
+		newImage->raise();
+
+		return true;
+	} catch (...) {
+		LOG(ERROR) << "MS_Sign_Decide::onNewImage failed\n";
+		return false;
+	}
 }
 
 bool MS_Barcode_Decide::onStop()
@@ -87,63 +102,24 @@ bool MS_Barcode_Decide::onStart()
 	return true;
 }
 
-void MS_Barcode_Decide::onNewImage1()
+void MS_Barcode_Decide::onNewImage()
 {
-	LOG(TRACE) << "MS_Barcode_Decide::onNewImage1\n";
+	LOG(TRACE) << "v::onNewImage\n";
 
-	cv::Mat img = in_img1.read();
-
-	if (count == 0)
-		sum = img.clone();
-	else
-		sum = sum + img;
-
-	if (++count == 4)
+	hue_ready = true;
+	hue_img = in_hue.read();
+	hue_img = hue_img.clone();
+	if (blobs_ready && hue_ready)
 		onStep();
 }
 
-void MS_Barcode_Decide::onNewImage2()
+void MS_Barcode_Decide::onNewBlobs()
 {
-	LOG(TRACE) << "MS_Barcode_Decide::onNewImage2\n";
+	LOG(TRACE) << "MS_Barcode_Decide::onNewBlobs\n";
 
-	cv::Mat img = in_img2.read();
-
-	if (count == 0)
-		sum = img.clone();
-	else
-		sum = sum + img;
-
-	if (++count == 4)
-		onStep();
-}
-
-void MS_Barcode_Decide::onNewImage3()
-{
-	LOG(TRACE) << "MS_Barcode_Decide::onNewImage3\n";
-
-	cv::Mat img = in_img3.read();
-
-	if (count == 0)
-		sum = img.clone();
-	else
-		sum = sum + img;
-
-	if (++count == 4)
-		onStep();
-}
-
-void MS_Barcode_Decide::onNewImage4()
-{
-	LOG(TRACE) << "MS_Barcode_Decide::onNewImage4\n";
-
-	cv::Mat img = in_img4.read();
-
-	if (count == 0)
-		sum = img.clone();
-	else
-		sum = sum + img;
-
-	if (++count == 4)
+	blobs_ready = true;
+	blobs = in_blobs.read();
+	//if (blobs_ready && hue_ready)
 		onStep();
 }
 

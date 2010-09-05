@@ -21,8 +21,9 @@ public:
 	~DrawableContainer() {}
 
 	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
-		for (size_t i = 0; i < items.size(); ++i)
+		for (size_t i = 0; i < items.size(); ++i) {
 			items[i]->draw(image, color, offsetX, offsetY);
+		}
 	}
 
 	void add(Drawable * it) {

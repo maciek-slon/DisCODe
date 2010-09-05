@@ -91,7 +91,13 @@ void MS_Barcode_Prepare::onNewImage1()
 {
 	LOG(TRACE) << "MS_Barcode_Prepare::onNewImage1\n";
 
-	cv::Mat img = in_img1.read();
+	cv::Mat img;
+	try {
+		img = in_img1.read();
+	}
+	catch(...) {
+		return;
+	}
 
 	if (count == 0)
 		sum = img.clone();
@@ -106,7 +112,13 @@ void MS_Barcode_Prepare::onNewImage2()
 {
 	LOG(TRACE) << "MS_Barcode_Prepare::onNewImage2\n";
 
-	cv::Mat img = in_img2.read();
+	cv::Mat img;
+	try {
+		img = img = in_img2.read();
+	}
+	catch(...) {
+		return;
+	}
 
 	if (count == 0)
 		sum = img.clone();
@@ -121,7 +133,13 @@ void MS_Barcode_Prepare::onNewImage3()
 {
 	LOG(TRACE) << "MS_Barcode_Prepare::onNewImage3\n";
 
-	cv::Mat img = in_img3.read();
+	cv::Mat img;
+	try {
+		img = img = in_img3.read();
+	}
+	catch(...) {
+		return;
+	}
 
 	if (count == 0)
 		sum = img.clone();
@@ -136,7 +154,13 @@ void MS_Barcode_Prepare::onNewImage4()
 {
 	LOG(TRACE) << "MS_Barcode_Prepare::onNewImage4\n";
 
-	cv::Mat img = in_img4.read();
+	cv::Mat img;
+	try {
+		img = img = in_img4.read();
+	}
+	catch(...) {
+		return;
+	}
 
 	if (count == 0)
 		sum = img.clone();
