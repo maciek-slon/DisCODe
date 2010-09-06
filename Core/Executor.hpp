@@ -54,7 +54,7 @@ public:
 	 */
 	void queueEvent(Base::EventHandlerInterface * h) {
 		mtx.lock();
-		queue.push(h);
+		queue.push_back(h);
 		mtx.unlock();
 	}
 
@@ -108,12 +108,15 @@ protected:
 	 * Execute all pending events.
 	 */
 	void executeEvents() {
-		while (!queue.empty()) {
+		mtx.lock();
+		loc_queue = queue;
+		queue.clear();
+		mtx.unlock();
+
+		while (!loc_queue.empty()) {
 			Base::EventHandlerInterface * h;
-			mtx.lock();
-			h = queue.front();
-			queue.pop();
-			mtx.unlock();
+			h = loc_queue.front();
+			loc_queue.pop_front();
 			h->execute();
 		}
 	}
@@ -128,13 +131,18 @@ protected:
 	volatile bool paused;
 
 	/// FIFO queue for incoming events
-	std::queue<Base::EventHandlerInterface *> queue;
+	std::deque<Base::EventHandlerInterface *> queue;
+
+	std::deque<Base::EventHandlerInterface *> loc_queue;
 
 	/// Name of execution thread
 	std::string name_;
 
-	/// Asynchronous event queue synchronisation
+	/// Asynchronous event queue synchronization
 	boost::mutex mtx;
+
+	///
+	boost::mutex ev_mtx;
 };
 
 
@@ -265,7 +273,7 @@ protected:
 
 			// here should be mutex, and will be ;-)
 			while (queue.empty()) {
-				Common::Thread::msleep(10);
+				Common::Thread::msleep(1);
 			}
 
 			// process all waiting events

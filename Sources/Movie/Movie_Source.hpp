@@ -131,6 +131,17 @@ protected:
 	 */
 	bool onStop();
 
+
+
+	/*!
+	 * Event handler function.
+	 */
+	void onTrigger();
+
+	/// Event handler.
+	Base::EventHandler<Movie_Source> h_onTrigger;
+
+
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 

@@ -29,6 +29,9 @@ bool Movie_Source::onInit() {
 
 	registerStream("out_img", &out_img);
 
+	h_onTrigger.setup(this, &Movie_Source::onTrigger);
+	registerHandler("onTrigger", &h_onTrigger);
+
 	cap.open(props.filename);
 
 	return true;
@@ -66,6 +69,10 @@ bool Movie_Source::onStart() {
 
 bool Movie_Source::onStop() {
 	return true;
+}
+
+void Movie_Source::onTrigger() {
+	trig = true;
 }
 
 

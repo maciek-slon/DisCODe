@@ -31,6 +31,7 @@ struct Props: public Base::Props
 {
 
 	double thresh;
+	int inputs;
 
 	/*!
 	 * \copydoc Base::Props::load
@@ -38,6 +39,7 @@ struct Props: public Base::Props
 	void load(const ptree & pt)
 	{
 		thresh = pt.get("thresh", 0.1);
+		inputs = pt.get("inputs", 4);
 	}
 
 	/*!

@@ -2,7 +2,8 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Movie type="CameraUniCap" thread="Thread1" group="s1">
+		<Movie type="Movie" thread="Thread1" group="s1">
+				<filename>output.avi</filename>
 		</Movie>
 
 		<ColorConv type="CvColorConv" thread="Thread1" group="s1">
@@ -12,7 +13,7 @@
 		<Timer type="ExecTimer" thread="Thread1" group="s1">
 		</Timer>
 
-		<M1 type="MS_Barcode_Macro" thread="Thread2" group="s1">
+		<M1 type="MS_Barcode_Macro" thread="Thread1" group="s1">
 			<kernel_1>
 				1  1  1
 				0  0  0
@@ -67,7 +68,7 @@
 -->
 		</M3>
 
-		<M4 type="MS_Barcode_Macro" thread="Thread1" group="s1">
+		<M4 type="MS_Barcode_Macro" thread="Thread2" group="s1">
 			<kernel_1>
 				0  1  1
 				1  0 -1
@@ -113,11 +114,17 @@
 
 		<Thread2 type="passive">
 		</Thread2>
+		
+		<Thread3 type="passive">
+		</Thread3>
+		
+		<Thread4 type="passive">
+		</Thread4>
 	</Executors>
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Movie.newImage"     destination="Timer.onStartExec" type="async"/>
+		<Event source="Movie.newImage"     destination="Timer.onStartExec"/>
 		<Event source="Timer.started"      destination="ColorConv.onNewImage"/>
 		<Event source="Movie.newImage"     destination="InWindow.onNewImage"/>
 

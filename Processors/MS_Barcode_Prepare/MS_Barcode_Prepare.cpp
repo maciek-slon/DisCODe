@@ -104,7 +104,7 @@ void MS_Barcode_Prepare::onNewImage1()
 	else
 		sum = sum + img;
 
-	if (++count == 4)
+	if (++count == props.inputs)
 		onStep();
 }
 
@@ -125,7 +125,7 @@ void MS_Barcode_Prepare::onNewImage2()
 	else
 		sum = sum + img;
 
-	if (++count == 4)
+	if (++count == props.inputs)
 		onStep();
 }
 
@@ -146,7 +146,7 @@ void MS_Barcode_Prepare::onNewImage3()
 	else
 		sum = sum + img;
 
-	if (++count == 4)
+	if (++count == props.inputs)
 		onStep();
 }
 
@@ -167,7 +167,7 @@ void MS_Barcode_Prepare::onNewImage4()
 	else
 		sum = sum + img;
 
-	if (++count == 4)
+	if (++count == props.inputs)
 		onStep();
 }
 
