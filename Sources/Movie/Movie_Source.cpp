@@ -16,6 +16,7 @@ Movie_Source::Movie_Source(const std::string & name) : Base::Component(name) {
 	LOG(TRACE) << "Movie_Source::Movie_Source()\n";
 
 	cap = NULL;
+	trig = true;
 }
 
 Movie_Source::~Movie_Source() {
@@ -41,6 +42,9 @@ bool Movie_Source::onFinish() {
 }
 
 bool Movie_Source::onStep() {
+	if (props.triggered && !trig)
+		return true;
+
 	LOG(TRACE) << "Movie_Source::step() start\n";
 	cap >> frame;
 	if (frame.empty()) {

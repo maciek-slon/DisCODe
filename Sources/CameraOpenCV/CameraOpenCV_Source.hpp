@@ -22,6 +22,24 @@ namespace CameraOpenCV {
 
 using namespace cv;
 
+struct Props : public Base::Props {
+	bool triggered;
+
+	/*!
+		 * \copydoc Base::Props::load
+		 */
+		void load(const ptree & pt) {
+			triggered = pt.get("triggered", false);
+		}
+
+		/*!
+		 * \copydoc Base::Props::save
+		 */
+		void save(ptree & pt) {
+			pt.put("triggered", triggered);
+		}
+};
+
 /*!
  * \class CameraOpenCV_Source
  * \brief Class responsible for retrieving images from movies.
@@ -39,6 +57,9 @@ public:
 	 */
 	virtual ~CameraOpenCV_Source();
 
+	Base::Props * getProperties() {
+		return &props;
+	}
 
 protected:
 
@@ -90,6 +111,8 @@ protected:
 	Mat frame;
 
 	bool trig;
+
+	Props props;
 };
 
 }//: namespace CameraOpenCV

@@ -54,7 +54,7 @@ bool CameraOpenCV_Source::onFinish() {
 
 
 bool CameraOpenCV_Source::onStep() {
-	if (!trig)
+	if (props.triggered && !trig)
 		return true;
 
 	trig = false;

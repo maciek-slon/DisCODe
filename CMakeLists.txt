@@ -138,7 +138,6 @@ ENDIF(WITH_TMP_PROGRAMS)
 # Create documentation
 add_subdirectory(doc_src)
 
-
 # =======================================================================
 # CPack: binary installer generator
 # =======================================================================

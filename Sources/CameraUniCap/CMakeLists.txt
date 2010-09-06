@@ -9,12 +9,12 @@ FIND_PACKAGE( OpenCV REQUIRED )
 # Create a variable containing all .cpp files:
 FILE(GLOB files *.cpp)
 
+PKG_SEARCH_MODULE(Unicap REQUIRED libunicap)
+
+INCLUDE_DIRECTORIES(${Unicap_INCLUDE_DIRS})
+
 # Create an executable file from sources:
 ADD_LIBRARY(srcCameraUniCap SHARED ${files})
-
-pkg_search_module(Unicap REQUIRED libunicap)
-
-include_directories(${Unicap_INCLUDE_DIRS})
 
 # Link external libraries
 TARGET_LINK_LIBRARIES(srcCameraUniCap ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES} ${Unicap_LIBRARIES} )

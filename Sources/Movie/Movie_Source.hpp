@@ -62,12 +62,14 @@ using namespace cv;
 struct MovieProps : public Base::Props {
 
 	std::string filename;
+	bool triggered;
 
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt) {
 		filename = pt.get("filename", "");
+		triggered = pt.get("triggered", false);
 	}
 
 	/*!
@@ -75,6 +77,7 @@ struct MovieProps : public Base::Props {
 	 */
 	void save(ptree & pt) {
 		pt.put("filename", filename);
+		pt.put("triggered", triggered);
 	}
 };
 
@@ -142,6 +145,8 @@ protected:
 
 	/// Movie properties
 	MovieProps props;
+
+	bool trig;
 };
 
 }//: namespace Movie
