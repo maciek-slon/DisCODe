@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(MS_Barcode_Decide SHARED ${files})
-TARGET_LINK_LIBRARIES(MS_Barcode_Decide ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(MS_Barcode_Decide ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
 
 INSTALL_PROCESSOR(MS_Barcode_Decide)

@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(procCvMorphology SHARED ${files})
-TARGET_LINK_LIBRARIES(procCvMorphology ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(procCvMorphology ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
 
 INSTALL_PROCESSOR(procCvMorphology)

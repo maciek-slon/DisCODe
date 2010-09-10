@@ -121,12 +121,10 @@ protected:
 	}
 
 	std::string cc2str(int cc) {
-		switch(cc) {
-			case CV_FOURCC('M','J','P','G'):
-				return "MJPG";
-			default:
-				return "MJPG";
-		}
+		if (cc == CV_FOURCC('M','J','P','G'))
+			return "MJPG";
+		else
+			return "MJPG";
 	}
 };
 

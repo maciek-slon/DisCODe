@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(CvFilter2D SHARED ${files})
-TARGET_LINK_LIBRARIES(CvFilter2D ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(CvFilter2D ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
 
 INSTALL_PROCESSOR(CvFilter2D)

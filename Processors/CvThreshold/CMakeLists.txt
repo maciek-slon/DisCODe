@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(procCvThreshold SHARED ${files})
-TARGET_LINK_LIBRARIES(procCvThreshold ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(procCvThreshold ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
 
 INSTALL_PROCESSOR(procCvThreshold)

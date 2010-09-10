@@ -6,13 +6,15 @@
 #ifndef BLOBEXTRACTOR_PROCESSOR_HPP_
 #define BLOBEXTRACTOR_PROCESSOR_HPP_
 
+#define CV_NO_BACKWARD_COMPATIBILITY
+
+
 #include "Component_Aux.hpp"
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 
 #include <cv.h>
-#include <cxtypes.h>
 
 #include "Types/Blobs/BlobResult.hpp"
 

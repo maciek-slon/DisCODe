@@ -1,7 +1,7 @@
 #ifndef DRAWABLE_HPP_
 #define DRAWABLE_HPP_
 
-#include <cxtypes.h>
+#include <cv.h>
 
 namespace Types {
 

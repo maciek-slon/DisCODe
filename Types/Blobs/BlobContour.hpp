@@ -11,7 +11,6 @@
 #include <list>
 
 #include <cv.h>
-#include <cxtypes.h>
 
 namespace Types {
 namespace Blobs {
