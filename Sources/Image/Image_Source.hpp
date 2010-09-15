@@ -1,5 +1,5 @@
 /*!
- * \file Source_Image.hpp
+ * \file Image_Source.hpp
  * \brief Class responsible for retrieving images from files - class declaration.
  * \author tkornuta
  * \date 2009-11-05
@@ -9,8 +9,8 @@
 #ifndef IMAGE_SOURCE_HPP_
 #define IMAGE_SOURCE_HPP_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
+#include "Component_Aux.hpp"
+#include "Component.hpp"
 #include "Image_Panel.hpp"
 #include "DataStream.hpp"
 
@@ -23,35 +23,46 @@ namespace Image {
  * \author tkornuta
  * \date 2009-11-05
  */
-class Image_Source : public Base::Kernel {
+class Image_Source : public Base::Component {
 
 public:
 	/*!
 	 * Constructor. Sets ID and startup variables.
 	 */
-	Image_Source();
+	Image_Source(const std::string & name = "");
 
 	/*!
 	 * Destructor.
 	 */
-	~Image_Source();
+	virtual ~Image_Source();
+
+protected:
 
 	/*!
 	 * Connects source to given device.
 	 */
-	void initialize();
+	bool onInit();
 
 	/*!
 	 * Disconnect source from device, closes streams, etc.
 	 */
-	void finish();
+	bool onFinish();
 
 	/*!
 	 * Retrieves data from device.
 	 */
-	int step();
+	bool onStep();
 
-protected:
+	/*!
+	 * Start component
+	 */
+	bool onStart();
+
+	/*!
+	 * Stop component
+	 */
+	bool onStop();
+
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 
@@ -63,8 +74,8 @@ protected:
 }//: namespace Sources
 
 /*
- * Register source kernel.
+ * Register source component.
  */
-REGISTER_SOURCE_KERNEL("Image", Sources::Image::Image_Source, Sources::Image::Image_Panel)
+REGISTER_SOURCE_COMPONENT("Image", Sources::Image::Image_Source, Sources::Image::Image_Panel)
 
 #endif /* IMAGE_SOURCE_HPP_ */

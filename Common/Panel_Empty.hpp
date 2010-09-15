@@ -1,6 +1,6 @@
 /*!
  * \file Panel_Empty.hpp
- * \brief Empty panel - used for all kernels that doesn't require panel.
+ * \brief Empty panel - used for all components that doesn't require panel.
  * - class declaration
  * \author tkornuta
  * \date 04.03.2008
@@ -16,7 +16,7 @@ namespace Common {
 
 /*!
  * \class Panel_Empty
- * \brief Empty panel - used for all kernels that doesn't require task panel.
+ * \brief Empty panel - used for all components that doesn't require task panel.
  * \author tkornuta
  */
 class Panel_Empty: public Base::Panel

@@ -15,6 +15,7 @@
 #include <boost/foreach.hpp>
 
 #include "DataStreamInterface.hpp"
+#include "Logger.hpp"
 
 namespace Base {
 
@@ -39,6 +40,7 @@ public:
 	}
 
 	void addListener(DataStreamInterface * listener) {
+		LOG(INFO) << "Connection " << name << ": added new listener: " << listener->name();
 		listeners.push_back(listener);
 	}
 

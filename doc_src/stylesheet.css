@@ -5,9 +5,33 @@
 	position: absolute;
 }
 
+div.summary {
+	visibility: hidden;
+	position: absolute;
+}
+
 body, table, div, p, dl {
 	font-family: Lucida Grande, Verdana, Geneva, Arial, sans-serif;
 	font-size: 12px;
+}
+
+body {
+	counter-reset: section;
+}
+
+table.simple_table {
+	border: 0;
+}
+
+table.simple_table td {
+	border-bottom: 1px solid #B0B0B0;
+	padding: 3px;
+}
+
+table.simple_table td.head {
+	border-bottom: 1px solid #606060;
+	font-weight: bold;
+	text-align: center;
 }
 
 div.linkimage {
@@ -20,10 +44,10 @@ div.linkimage {
 
 	-webkit-border-radius: 6px;
     -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
-	
+
 	-moz-border-radius: 6px;
     -moz-box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
-	
+
 	border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
 }
@@ -41,6 +65,9 @@ div.linkimage div {
 h1 {
 	text-align: center;
 	font-size: 150%;
+	font-weight: bold;
+	margin-top: 0;
+	padding-top: 10px;
 }
 
 h1.title {
@@ -53,6 +80,16 @@ h1.title {
 	font-family: Verdana, Tahoma, Arial;
 	position: absolute;
 	right: 0;
+}
+
+h2 a.anchor {
+	font-weight: bold;
+}
+
+h2 a.anchor:before {
+	counter-increment: section;
+	counter-reset: subsection;
+	content: counter(section) ". ";
 }
 
 h2 {
@@ -68,8 +105,34 @@ h2.subtitle {
 	font-size: 30px;
 }
 
+code {
+	font-family: DejaVu Sans Mono, Courier New;
+/*	font-size: 120%; */
+/*	font-style: italic; */
+}
+
 h3 {
 	font-size: 100%;
+}
+
+h3 a.anchor {
+	font-weight: bold;
+}
+
+h3 a.anchor:before {
+	counter-increment: subsection;
+	content: counter(section) "." counter(subsection) ". ";
+}
+
+h3.version {
+	text-align: center;
+	border: 0;
+	border-bottom: 1px solid #CCCCCC;
+	padding-bottom: 5px;
+}
+
+h3.version:before {
+	content: "version ";
 }
 
 dt {
@@ -111,7 +174,17 @@ span.legend {
         text-align: center;
 }
 
-div.qindex, div.navtab{
+div.qindex {
+	background-color: white;
+	border: 0;
+	border-bottom: 1px solid #cccccc;
+	border-top: 1px solid #cccccc;
+	text-align: center;
+	margin: 2px;
+	padding: 2px;
+}
+
+div.navtab {
 	background-color: #e8eef2;
 	border: 1px solid #84b0c7;
 	text-align: center;
@@ -142,6 +215,20 @@ a {
 
 a:hover {
 	text-decoration: underline;
+}
+
+a.anchor {
+	color: black;
+	text-decoration: none;
+}
+
+h1 a.anchor {
+	font-weight: bold;
+}
+
+a.anchor:hover {
+	color: black;
+	text-decoration: none;
 }
 
 a.qindex {
@@ -183,18 +270,26 @@ dl.el {
 	font-size: 105%;
 }
 
+pre.console {
+	background: #303030;
+	color: #eeeeee;
+	font-weight: bold;
+	padding: 5px 8px;
+	margin: 4px 8px 4px 2px;
+}
+
 pre.fragment {
 	border: 1px solid #CCCCCC;
 	background-color: #f5f5f5;
 	padding: 5px 8px;
 	margin: 4px 8px 4px 2px;
-	
+
 	-webkit-border-radius: 6px;
     -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
-	
+
 	-moz-border-radius: 6px;
     -moz-box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
-	
+
 	border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
 }
@@ -203,13 +298,11 @@ div.ah {
 	background-color: black;
 	font-weight: bold;
 	color: #ffffff;
-	margin-bottom: 3px;
-	margin-top: 3px
 }
 
 div.groupHeader {
 	margin-left: 16px;
-	margin-top: 12px;
+	margin-top: 0px;
 	margin-bottom: 6px;
 	font-weight: bold;
 }
@@ -228,16 +321,18 @@ body {
 }
 
 td.indexkey {
-	background-color: #e8eef2;
+	background-color: #ffffff;
 	font-weight: bold;
-	border: 1px solid #CCCCCC;
+	border: 0;
+	border-bottom: 1px solid #CCCCCC;
 	margin: 2px 0px 2px 0;
 	padding: 2px 10px;
 }
 
 td.indexvalue {
-	background-color: #e8eef2;
-	border: 1px solid #CCCCCC;
+	background-color: #ffffff;
+	border: 0;
+	border-bottom: 1px solid #CCCCCC;
 	padding: 2px 10px;
 	margin: 2px 0px;
 }
@@ -251,7 +346,7 @@ p.formulaDsp {
 }
 
 img.formulaDsp {
-	
+
 }
 
 img.formulaInl {
@@ -306,20 +401,20 @@ span.charliteral {
 	color: #008080
 }
 
-span.vhdldigit { 
-	color: #ff00ff 
+span.vhdldigit {
+	color: #ff00ff
 }
 
-span.vhdlchar { 
-	color: #000000 
+span.vhdlchar {
+	color: #000000
 }
 
-span.vhdlkeyword { 
-	color: #700070 
+span.vhdlkeyword {
+	color: #700070
 }
 
-span.vhdllogic { 
-	color: #ff0000 
+span.vhdllogic {
+	color: #ff0000
 }
 
 /* @end */
@@ -424,17 +519,17 @@ hr {
 }
 
 .memproto {
-	border: 1px solid #84b0c7;	
+	border: 1px solid #84b0c7;
 	padding: 0;
 	background-color: #d5e1e8;
 	font-weight: bold;
-	
+
 	-webkit-border-radius: 6px;
     -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
-	
+
 	-moz-border-radius: 6px;
     -moz-box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
-	
+
 	border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
 }
@@ -632,13 +727,6 @@ DIV.tabs SPAN
    white-space      : nowrap;
 }
 
-DIV.tabs #MSearchBox
-{
-   float            : right;
-   display          : inline;
-   font-size        : 1em;
-}
-
 DIV.tabs TD
 {
    font-size        : 80%;
@@ -668,7 +756,7 @@ DIV.tabs LI.current SPAN
 
 #menu {
 	width: 190px; /* set width of menu */
-} 
+}
 
 #menu ul { /* remove bullets and list indents */
 	list-style: none;
@@ -699,6 +787,7 @@ DIV.tabs LI.current SPAN
 	margin-top: 15px;
 	margin-bottom: 1px;
 	padding: 0;
+	letter-spacing: 3px;
 }
 
 #menu a {
@@ -716,3 +805,15 @@ DIV.tabs LI.current SPAN
 	background: #eef;
 	border-bottom: 1px solid #a00;
 }
+
+#menu a.close {
+	text-decoration: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: relative;
+	top: 2px;
+	display: none;
+}
+
+

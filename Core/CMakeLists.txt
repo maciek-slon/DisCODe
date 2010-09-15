@@ -8,7 +8,7 @@ FILE(GLOB files *.cpp)
 ADD_EXECUTABLE(FraDIA ${files})
 
 # Link required libraries
-TARGET_LINK_LIBRARIES(FraDIA ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(FraDIA ${FraDIA_Core_LIBRARIES})
 
  install(TARGETS FraDIA
    RUNTIME

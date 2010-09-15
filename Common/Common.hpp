@@ -14,4 +14,3 @@
 
 #include "FraDIAException.hpp"
 #include "Panel_Empty.hpp"
-#include "StringState.hpp"

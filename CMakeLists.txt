@@ -49,7 +49,7 @@ endif(WIN32)
 SET(Boost_DEBUG FALSE)
 
 # Find all required packages
-FIND_PACKAGE( Boost REQUIRED thread filesystem system regex)
+FIND_PACKAGE( Boost REQUIRED thread filesystem system regex program_options)
 
 # Make makefiles more verbose
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
@@ -60,13 +60,14 @@ SET(FraDIA_LIBRARIES
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_REGEX_LIBRARY}
+    ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )
 
 # Specify include directories for the build
-include_directories( . Base Core Common ${Boost_INCLUDE_DIR})
+include_directories( . Base Core Common Types ${Boost_INCLUDE_DIR})
 
 # Specify directories in which the linker will look for libraries
-LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
+LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
 add_definitions(-Wall)
@@ -103,12 +104,28 @@ add_subdirectory(Common)
 
 # Use created library
 SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} Common)
+SET(FraDIA_Core_LIBRARIES ${FraDIA_LIBRARIES})
+
+# Create Types library
+add_subdirectory(Types)
+
+# Use created library
+SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} Types)
 
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
 add_subdirectory(Base)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
+add_subdirectory(Sinks)
+
+# Small utility programs
+set(WITH_TOOLS ON CACHE BOOL "Build tools")
+
+IF (WITH_TOOLS)
+    MESSAGE(STATUS "Building tools")
+    add_subdirectory(Tools)
+ENDIF(WITH_TOOLS)
 
 # Small test programs
 set(WITH_TMP_PROGRAMS OFF CACHE BOOL "Build temporary programs")
@@ -121,7 +138,6 @@ ENDIF(WITH_TMP_PROGRAMS)
 
 # Create documentation
 add_subdirectory(doc_src)
-
 
 # =======================================================================
 # CPack: binary installer generator

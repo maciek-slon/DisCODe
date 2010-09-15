@@ -1,109 +1,73 @@
-// ----------------------------------------------------------------------------
-// Copyright (C) 2002-2006 Marcin Kalicinski
-//
-// Distributed under the Boost Software License, Version 1.0.
-// (See accompanying file LICENSE_1_0.txt or copy at
-// http://www.boost.org/LICENSE_1_0.txt)
-//
-// For more information, see www.boost.org
-// ----------------------------------------------------------------------------
+/*!
+ * \file xmltree.cpp
+ * \brief Simple program printing XML-tree from given file.
+ *
+ * File name must be passed as first argument, tree is printed in very simple
+ * form, with indents indicating child-parent relationship. For each node
+ * value is printed, event if there is no value associated (in that case empty
+ * string is shown).
+ *
+ * \author mstefanc
+ */
+
+#include <string>
+#include <exception>
+#include <iostream>
+
+#include <cv.h>
+
+template <typename Ch, typename Traits, typename t>
+std::basic_ostream<Ch, Traits> & operator<<(std::basic_ostream<Ch, Traits> & out, const cv::Size_<t> & s) {
+	out << s.width << " " << s.height;
+	return out;
+}
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
-#include <string>
-#include <set>
-#include <exception>
-#include <iostream>
-
-struct debug_settings
-{
-    std::string m_file;               // log filename
-    int m_level;                      // debug level
-    std::set<std::string> m_modules;  // modules where logging is enabled
-    void load(const std::string &filename);
-    void save(const std::string &filename);
-};
 
 using boost::property_tree::ptree;
 
-void debug_settings::load(const std::string &filename)
-{
-
-    // Create empty property tree object
-    using boost::property_tree::ptree;
-    ptree pt;
-
-    // Load XML file and put its contents in property tree.
-    // No namespace qualification is needed, because of Koenig
-    // lookup on the second argument. If reading fails, exception
-    // is thrown.
-    read_xml(filename, pt);
-
-    // Get filename and store it in m_file variable. Note that
-    // we specify a path to the value using notation where keys
-    // are separated with dots (different separator may be used
-    // if keys themselves contain dots). If debug.filename key is
-    // not found, exception is thrown.
-    m_file = pt.get<std::string>("debug.filename");
-    std::cout << m_file << std::endl;
-
-    // Get debug level and store it in m_level variable. This is
-    // another version of get method: if debug.level key is not
-    // found, it will return default value (specified by second
-    // parameter) instead of throwing. Type of the value extracted
-    // is determined by type of second parameter, so we can simply
-    // write get(...) instead of get<int>(...).
-    m_level = pt.get("debug.level", 0.0);
-    std::cout << m_level << std::endl;
-
-    // Iterate over debug.modules section and store all found
-    // modules in m_modules set. get_child() function returns a
-    // reference to child at specified path; if there is no such
-    // child, it throws. Property tree iterator can be used in
-    // the same way as standard container iterator. Category
-    // is bidirectional_iterator.
-    BOOST_FOREACH(ptree::value_type &v, pt.get_child("debug.modules")) {
-        m_modules.insert(v.second.data());
-        std::cout << v.second.data() << std::endl;
-    }
-
-}
-
-void debug_settings::save(const std::string &filename)
-{
-
-    // Create empty property tree object
-    using boost::property_tree::ptree;
-    ptree pt;
-
-    // Put log filename in property tree
-    pt.put("debug.filename", m_file);
-
-    // Put debug level in property tree
-    pt.put("debug.level", m_level);
-
-    // Iterate over modules in set and put them in property
-    // tree. Note that put function places new key at the
-    // end of list of keys. This is fine in most of the
-    // situations. If you want to place item at some other
-    // place (i.e. at front or somewhere in the middle),
-    // this can be achieved using combination of insert
-    // and put_value functions
-    //BOOST_FOREACH(const std::string &name, m_modules)
-    //    pt.put("debug.modules.module", name);
-
-    // Write property tree to XML file
-    write_xml(filename, pt);
-}
-
 typedef std::pair<std::string, ptree> sp;
+
+namespace boost { namespace property_tree {
+
+// No whitespace skipping for single characters.
+template <typename Ch, typename Traits, typename t>
+struct customize_stream<Ch, Traits, cv::Size_<t>, void>
+{
+
+	static void insert(std::basic_ostream<Ch, Traits>& s, const cv::Size_<t>& e) {
+		s << e.width << " " << e.height;
+	}
+
+	static void extract(std::basic_istream<Ch, Traits>& s, cv::Size_<t>& e) {
+		t w,h;
+		s >> w >> h;
+		e.width = w;
+		e.height = h;
+	}
+};
+
+}}
+
+void colprint(const std::string & key, const std::string & val, int colwidth, int indent = 0, char ch = '.') {
+	for (int i = 0; i < indent; ++i)
+		std::cout << " ";
+
+	std::cout << key << " ";
+
+	for (int i = key.length() + indent; i < colwidth-2; ++i)
+		std::cout << ch;
+
+	std::cout << " \"" << val << "\"";
+
+	std::cout << std::endl;
+}
 
 void printTree(const ptree & pt, int lvl) {
 	BOOST_FOREACH( sp p, pt) {
-		for (int i = 0; i < lvl; ++i)
-			std::cout << "  ";
-		std::cout << p.first << std::endl;
+		colprint(p.first, pt.get(p.first, ""), 25, lvl*2);
 		printTree(p.second, lvl+1);
 	}
 }
@@ -119,6 +83,11 @@ void iterate(const std::string &filename) {
 	// is thrown.
 	read_xml(filename, pt);
 
+	pt.put("test", cv::Size2f(1.2,1.4));
+
+	cv::Size2f s = pt.get<cv::Size2f>("test");
+	std::cout << "Test=" << s << "\n";
+
 	printTree(pt, 0);
 }
 
@@ -128,6 +97,8 @@ int main(int argc, const char * argv[])
 		std::cout << "Supply filename.\n";
 		return 1;
 	}
+
+	std::cout << cv::Size(1,1);
 
     try
     {

@@ -88,6 +88,13 @@ public:
 		boost::this_thread::sleep(boost::posix_time::milliseconds(msec));
 	}
 
+	/*!
+	 * Suspends the calling thread until the specified time in microseconds has been reached.
+	 */
+	static void usleep(int usec) {
+		boost::this_thread::sleep(boost::posix_time::microseconds(usec));
+	}
+
 protected:
 	/*!
 	 * This method must be implemented in derived classes and is called when thread starts execution.

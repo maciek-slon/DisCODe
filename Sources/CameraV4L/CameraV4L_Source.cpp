@@ -20,17 +20,15 @@
 namespace Sources {
 namespace CameraV4L {
 
-CameraV4L_Source::CameraV4L_Source() {
+CameraV4L_Source::CameraV4L_Source(const std::string & name) : Base::Component(name) {
 	cout << "Hello CameraV4L_Source from dl\n";
 }
 
 CameraV4L_Source::~CameraV4L_Source() {
-	finish();
-
 	cout << "Goodbye CameraV4L_Source from dl\n";
 }
 
-void CameraV4L_Source::initialize() {
+bool CameraV4L_Source::onInit() {
 	cout << "CameraV4L_Source::initialize\n";
 
 	newImage = registerEvent("newImage");
@@ -58,23 +56,35 @@ void CameraV4L_Source::initialize() {
 	}
 	if (cam != NULL) {
 		cam->loadFrameGrabber(1, props);
+		return true;
+	} else {
+		return false;
 	}
 }
 
 
-void CameraV4L_Source::finish() {
+bool CameraV4L_Source::onFinish() {
 	cout << "CameraV4L_Source::finish\n";
+	return true;
 }
 
 
-int CameraV4L_Source::step() {
+bool CameraV4L_Source::onStep() {
 	frame = Mat(cam->getOneFrame());
 
 	out_img.write(frame);
 
 	newImage->raise();
 
-	return 0;
+	return true;
+}
+
+bool CameraV4L_Source::onStart() {
+	return true;
+}
+
+bool CameraV4L_Source::onStop() {
+	return true;
 }
 
 

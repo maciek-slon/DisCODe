@@ -21,7 +21,28 @@
 namespace Common {
 
 /*!
- * \brief Simple timer object that measures elapsed time.
+ * \brief Simple high-resolution timer
+ *
+ * \par Goal
+ * It's crucial in many situations to measure small periods, for example when measuring algorithm performance.
+ * Unfortunately - standard library method (using clock() function from ctime) on some systems gives very bad precision
+ * (for example in WindowsNT family, up to Windows XP it's about 15ms). This timer uses system-provided methods of
+ * measuring time (QueryPerformanceCounter on Windows, clock_gettime on Linux), and has option to fallback to standard
+ * mode (by defining UNIFIED_TIMER macro).
+ *
+ * \par Usage
+ * \code
+ * #include <Common/Timer.hpp>
+ *
+ * Common::Timer timer;
+ * // ...
+ * timer.restart();              // start new measure
+ * // do some time-consuming job
+ * std::cout << timer.elapsed(); // print elapsed time
+ * \endcode
+ *
+ * \note
+ * When using this class on Linux \c rt library must be linked (for \c g++ it's \c -lrt switch)
  */
 class Timer {
 public:
@@ -52,6 +73,9 @@ public:
 		return double(std::clock() - start_time) / freq;
 	}
 
+	/*!
+	 * Get timer frequency (in Hz)
+	 */
 	long frequency() const {
 		return freq;
 	}
@@ -82,6 +106,9 @@ public:
 		return double(end_time.QuadPart - start_time.QuadPart) / freq.QuadPart;
 	}
 
+	/*!
+	 * Get timer frequency (in Hz)
+	 */
 	long frequency() const {
 		return freq.QuadPart;
 	}
@@ -114,6 +141,9 @@ public:
 		return double(end_time.tv_sec - start_time.tv_sec + ns);
 	}
 
+	/*!
+	 * Get timer frequency (in Hz)
+	 */
 	long frequency() const {
 		return freq;
 	}
@@ -129,15 +159,15 @@ private:
 	clock_t end_time;
 #elif defined(WIN32)
 	/// ticks per second
-    LARGE_INTEGER freq;
-    /// start time
-    LARGE_INTEGER start_time;
-    /// end time
-    LARGE_INTEGER end_time;
+	LARGE_INTEGER freq;
+	/// start time
+	LARGE_INTEGER start_time;
+	/// end time
+	LARGE_INTEGER end_time;
 #else /* *nix */
-    /// ticks per second
-    long freq;
-    /// start time
+	/// ticks per second
+	long freq;
+	/// start time
 	timespec start_time;
 	/// end time
 	timespec end_time;
