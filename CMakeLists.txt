@@ -67,7 +67,7 @@ SET(FraDIA_LIBRARIES
 include_directories( . Base Core Common Types ${Boost_INCLUDE_DIR})
 
 # Specify directories in which the linker will look for libraries
-LINK_DIRECTORIES( &{Boost_LIBRARY_DIRS} )
+LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
 add_definitions(-Wall)
@@ -104,6 +104,7 @@ add_subdirectory(Common)
 
 # Use created library
 SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} Common)
+SET(FraDIA_Core_LIBRARIES ${FraDIA_LIBRARIES})
 
 # Create Types library
 add_subdirectory(Types)
@@ -116,6 +117,7 @@ add_subdirectory(Core)
 add_subdirectory(Base)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
+add_subdirectory(Sinks)
 
 # Small utility programs
 set(WITH_TOOLS ON CACHE BOOL "Build tools")
@@ -136,7 +138,6 @@ ENDIF(WITH_TMP_PROGRAMS)
 
 # Create documentation
 add_subdirectory(doc_src)
-
 
 # =======================================================================
 # CPack: binary installer generator

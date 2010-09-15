@@ -17,7 +17,6 @@
 #include "ConnectionManager.hpp"
 
 #include <boost/filesystem.hpp>
-
 #include <boost/property_tree/xml_parser.hpp>
 
 namespace Core {
@@ -34,7 +33,7 @@ Configurator::~Configurator()
 
 }
 
-Task Configurator::loadConfiguration(std::string filename_)
+Task Configurator::loadConfiguration(std::string filename_, const std::vector<std::pair<std::string, std::string> > & overrides)
 {
 	// Set filename pointer to given one.
 	configuration_filename = filename_;
@@ -56,6 +55,12 @@ Task Configurator::loadConfiguration(std::string filename_)
 		catch(xml_parser_error&) {
 			LOG(FATAL) << "Configuration: Couldn't parse '" << configuration_filename << "' file.\n";
 			throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
+		}
+
+		// Take overrides into account
+		for (size_t i = 0; i < overrides.size(); ++i) {
+			std::cout << overrides[i].first << " set to " << overrides[i].second << std::endl;
+			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
 
 		try {
@@ -164,7 +169,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 
 void Configurator::loadEvents(const ptree * node) {
 	LOG(INFO) << "Connecting events\n";
-	std::string src, dst, name, caller, receiver;
+	std::string src, dst, name, caller, receiver, type;
 	Base::Component * src_k, * dst_k;
 	Base::EventHandlerInterface * h;
 	Base::Event * e;
@@ -184,6 +189,8 @@ void Configurator::loadEvents(const ptree * node) {
 			LOG(ERROR) << "No event destination specified...\n";
 			continue;
 		}
+
+		type=tmp.get("type", "");
 
 		caller = src.substr(0, src.find_first_of("."));
 		src = src.substr(src.find_first_of(".")+1);
@@ -207,11 +214,13 @@ void Configurator::loadEvents(const ptree * node) {
 		}
 
 		// asynchronous connection
-		if (component_executor[caller] != component_executor[receiver]) {
+		if ( (component_executor[caller] != component_executor[receiver]) || (type=="async")) {
 			Executor * ex = executorManager->getExecutor(component_executor[receiver]);
 			h = ex->scheduleHandler(h);
+			e->addAsyncHandler(h);
+		} else {
+			e->addHandler(h);
 		}
-		e->addHandler(h);
 
 		LOG(INFO) << name << ": src=" << src << ", dst=" << dst << "\n";
 	}
@@ -234,6 +243,8 @@ void Configurator::loadConnections(const ptree * node) {
 		kern = componentManager->getComponent(name);
 		BOOST_FOREACH( TreeNode ds_nd, tmp ) {
 			ds_name = ds_nd.first;
+			if (ds_name == "<xmlcomment>") continue;
+
 			ptree ds_tmp = ds_nd.second;
 			type = ds_tmp.get("<xmlattr>.type", "out");
 			con_name = ds_tmp.get("<xmlattr>.group", "DefaultGroup");
@@ -244,6 +255,8 @@ void Configurator::loadConnections(const ptree * node) {
 			if (!ds) {
 				LOG(ERROR) << "Component " << name << " has no data stream named '" << ds_name << "'!\n";
 			}
+
+			LOG(INFO) << name << ": str=" << ds_name << " [" << type << "] in " << con_name;
 
 			if (type == "out") {
 				ds->setConnection(con);

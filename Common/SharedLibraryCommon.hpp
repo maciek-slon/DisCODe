@@ -22,11 +22,28 @@ namespace Common {
 #define SHARED_LIBRARY_MAX_FUNCTOR_PARAMS 10
 #endif
 
+// If Doxygen is being run, use more readable definitions for the documentation.
+#ifdef DOXYGEN_INVOKED
+
+/*!
+ * \def LIB_EXT
+ * \brief Library file extension
+ *
+ * It extends to \c "dll" on Windows platform, and \c "so" under Linux
+ */
+#define LIB_EXT
+
+#else /* DOXYGEN_INVOKED */
+
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(MSC_VER)
 #  define LIB_EXT "dll"
 #else
 #  define LIB_EXT "so"
 #endif
+
+#endif /* DOXYGEN_INVOKED */
+
+
 
 typedef void* library_handle;
 

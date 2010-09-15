@@ -1,12 +1,13 @@
 /*!
  * \file BlobExtractor_Processor.hpp
- * \brief Declaration of an example class, responsible for image processing.
- * \author tkornuta
- * \date 11.03.2008
+ * \brief
  */
 
 #ifndef BLOBEXTRACTOR_PROCESSOR_HPP_
 #define BLOBEXTRACTOR_PROCESSOR_HPP_
+
+#define CV_NO_BACKWARD_COMPATIBILITY
+
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -14,12 +15,26 @@
 #include "DataStream.hpp"
 
 #include <cv.h>
-#include <cxtypes.h>
 
-#include "BlobResult.hpp"
+#include "Types/Blobs/BlobResult.hpp"
 
 namespace Processors {
 namespace BlobExtractor {
+
+struct Props : public Base::Props {
+
+	int min_size;
+	int bkg_color;
+
+	void load(const ptree & pt) {
+		min_size = pt.get("min_size", 100);
+		bkg_color = pt.get("bkg_color", 0);
+	}
+
+	void save(ptree & pt) {
+
+	}
+};
 
 /*!
  * \class BlobExtractor_Processor
@@ -38,6 +53,14 @@ public:
 	 * Destructor
 	 */
 	virtual ~BlobExtractor_Processor();
+
+	/*!
+	 * Return properties
+	 */
+	Base::Props * getProperties()
+	{
+		return &props;
+	}
 
 protected:
 
@@ -89,8 +112,11 @@ protected:
 	/// Output data stream - list of detected blobs
 	Base::DataStreamOut<Types::Blobs::BlobResult> out_blobs;
 
-	/// Background color for blob extraction
-	uchar bkg_color;
+	Props props;
+
+private:
+	cv::Mat img_uchar;
+
 };
 
 }//: namespace BlobExtractor

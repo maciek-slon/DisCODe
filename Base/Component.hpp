@@ -27,13 +27,23 @@ class Props;
 
 /*!
  * \class Component
+
+ * \~english
  * \brief Abstract interface class for all modules - data sources, processors etc.
  *
  * Every component should derive from this class, and override at least three methods:
- * initialize, finish and step.
+ * onInit, onFinish, onStart, onStop and onStep.
  *
  * For more information about creating components, see \ref dev_components "developing components"
  * in \ref tutorials section.
+ *
+ * \~polish
+ * \brief Klasa interfejsowa dla wszystkich komponentów - źródeł danych, procesorów itp.
+ *
+ * Każdy komponent powinien dziedziczyć po tej klasie i implementować kilka wymaganych metod
+ * (onInit, onFinish, onStart, onStop oraz onStep).
+ *
+ * \~
  * \author mstefanc
  * \date 2010-04-29
  */
@@ -45,25 +55,34 @@ class Component
 
 public:
 	/*!
+	 * \~english
 	 * Components state
+	 * \~polish
+	 * Stan komponentu
 	 */
 	enum State {
-		Running,         ///< Component is running
-		Ready,           ///< Component is stopped, ready to run
-		Unready          ///< Component hasn't been initialized or has been finished
+		Running,         ///< \~english Component is running                         \~polish Komponent jest uruchomiony
+		Ready,           ///< \~english Component is stopped, ready to run           \~polish Komponent zatrzymany, gotowy do uruchomienia
+		Unready          ///< \~english Component hasn't been initialized or has been finished \~polish Komponent nie został jeszcze zainicjowany albo został już zakończony
 	};
 
 	/*!
+	 * \~english
 	 * Base constructor
+	 * \~polish
+	 * Bazowy konstruktor
 	 */
-	//                    TUTAJ MIAŁEM name(name), i godzinę szukałem błędu :/
-	Component(const std::string & n) : name(n), state(Unready)
+	Component(const std::string & n) : name_(n), state(Unready)
 	{
 
 	}
 
 	void setName(const std::string & n) {
-		name = n;
+		name_ = n;
+	}
+
+	std::string name() {
+		return name_;
 	}
 
 	/*!
@@ -78,7 +97,10 @@ public:
 	}
 
 	/*!
+	 * \~english
 	 * Initialize component. For example for sources it would be opening streams or devices.
+	 * \~polish
+	 * Zainicjuj komponent.
 	 */
 	bool initialize() {
 		if (state == Unready) {
@@ -91,12 +113,12 @@ public:
 		}
 
 		if (state == Ready) {
-			LOG(WARNING) << name << " already initialized.\n";
+			LOG(WARNING) << name_ << " already initialized.\n";
 			return true;
 		}
 
 		if (state == Running) {
-			LOG(WARNING) << name << " already initialized and running.\n";
+			LOG(WARNING) << name_ << " already initialized and running.\n";
 			return true;
 		}
 
@@ -117,12 +139,12 @@ public:
 		}
 
 		if (state == Running) {
-			LOG(WARNING) << name << " already running.\n";
+			LOG(WARNING) << name_ << " already running.\n";
 			return true;
 		}
 
 		if (state == Unready) {
-			LOG(WARNING) << name << " is not ready to run.\n";
+			LOG(WARNING) << name_ << " is not ready to run.\n";
 			return false;
 		}
 
@@ -143,12 +165,12 @@ public:
 		}
 
 		if (state == Ready) {
-			LOG(WARNING) << name << " already stopped.\n";
+			LOG(WARNING) << name_ << " already stopped.\n";
 			return true;
 		}
 
 		if (state == Unready) {
-			LOG(WARNING) << name << " is not initialized.\n";
+			LOG(WARNING) << name_ << " is not initialized.\n";
 			return false;
 		}
 
@@ -169,16 +191,16 @@ public:
 		}
 
 		if (state == Unready) {
-			LOG(WARNING) << name << " is already finished.\n";
+			LOG(WARNING) << name_ << " is already finished.\n";
 			return true;
 		}
 
 		if (state == Running) {
-			LOG(WARNING) << name << " still running. Trying to stop...\n";
+			LOG(WARNING) << name_ << " still running. Trying to stop...\n";
 			if (stop())
-				LOG(WARNING) << name << " stopped. Finishing...\n";
+				LOG(WARNING) << name_ << " stopped. Finishing...\n";
 			else
-				LOG(WARNING) << name << " didn't stop. Finishing anyway...\n";
+				LOG(WARNING) << name_ << " didn't stop. Finishing anyway...\n";
 
 			onFinish();
 
@@ -201,7 +223,7 @@ public:
 			onStep();
 			return timer.elapsed();
 		} else {
-			LOG(WARNING) << name << " is not running. Step can't be done.\n";
+			LOG(WARNING) << name_ << " is not running. Step can't be done.\n";
 			return 0;
 		}
 	}
@@ -369,7 +391,7 @@ protected:
 
 private:
 	/// name of particular object
-	std::string name;
+	std::string name_;
 
 	/// state of component
 	State state;

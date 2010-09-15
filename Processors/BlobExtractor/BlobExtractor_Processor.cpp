@@ -1,10 +1,6 @@
 /*!
  * \file BlobExtractor_Processor.cpp
- * \brief Declaration of an example class,
- * responsible for image processing.
- * - methods definitions
- * \author tkornuta
- * \date 11.03.2008
+ * \brief
  */
 
 #include <memory>
@@ -16,7 +12,7 @@
 
 #include "Logger.hpp"
 #include "Timer.hpp"
-#include "BlobOperators.hpp"
+#include "Types/Blobs/BlobOperators.hpp"
 
 #include <boost/thread.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -45,8 +41,6 @@ bool BlobExtractor_Processor::onInit() {
 	registerStream("in_img", &in_img);
 	registerStream("out_img", &out_img);
 	registerStream("out_blobs", &out_blobs);
-
-	bkg_color = 0;
 
 	return true;
 }
@@ -80,16 +74,16 @@ void BlobExtractor_Processor::onNewImage() {
 	timer.restart();
 
 	cv::Mat in = in_img.read();
-
-	IplImage * img = &IplImage(in);
-	cv::Mat out = cv::Mat::zeros(in.size(), CV_8UC3);
+	in.convertTo(img_uchar, CV_8UC1);
+	IplImage * img = &IplImage(img_uchar);
+	//cv::Mat out = cv::Mat::zeros(in.size(), CV_8UC3);
 
 	Types::Blobs::Blob_vector res;
 	bool success;
 
 	try
 	{
-		success = ComponentLabeling( img, NULL, bkg_color, res );
+		success = ComponentLabeling( img, NULL, props.bkg_color, res );
 	}
 	catch(...)
 	{
@@ -97,23 +91,30 @@ void BlobExtractor_Processor::onNewImage() {
 		LOG(WARNING) << "blob find error\n";
 	}
 
-	if( !success ) {
-		LOG(ERROR) << "Blob find error\n";
-	} else {
-		Types::Blobs::BlobResult result(res);
+		try {
+		if( !success ) {
+			LOG(ERROR) << "Blob find error\n";
+		} else {
+			LOG(TRACE) << "blobs found";
+			Types::Blobs::BlobResult result(res);
 
-		result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, 100 );
+			result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, props.min_size );
 
-		//out_blobs.write(result);
+			out_blobs.write(result);
+			LOG(TRACE) << "blobs written";
+			newBlobs->raise();
+			LOG(TRACE) << "blobs sent";
+			//result.draw(out, CV_RGB(255, 0, 0), 0, 0);
+			//out_img.write(in);
+			//newImage->raise();
+		}
 
-		//newBlobs->raise();
-
-		result.draw(&IplImage(out), CV_RGB(255, 0, 0), 0, 0);
-		out_img.write(out);
-		newImage->raise();
+		LOG(INFO) << "Blobing took " << timer.elapsed() << " seconds\n";
 	}
-
-	LOG(INFO) << "Blobing took " << timer.elapsed() << " seconds\n";
+	catch(...)
+	{
+		LOG(ERROR) << "BlobExtractor onNewImage failure";
+	}
 }
 
 }//: namespace BlobExtractor

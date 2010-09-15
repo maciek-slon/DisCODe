@@ -15,7 +15,8 @@ namespace Movie {
 Movie_Source::Movie_Source(const std::string & name) : Base::Component(name) {
 	LOG(TRACE) << "Movie_Source::Movie_Source()\n";
 
-	cap = NULL;
+//	cap = NULL;
+	trig = true;
 }
 
 Movie_Source::~Movie_Source() {
@@ -28,9 +29,13 @@ bool Movie_Source::onInit() {
 
 	registerStream("out_img", &out_img);
 
+	h_onTrigger.setup(this, &Movie_Source::onTrigger);
+	registerHandler("onTrigger", &h_onTrigger);
+
+
 	cap.open(props.filename);
 
-	return true;
+	return cap.isOpened();
 }
 
 bool Movie_Source::onFinish() {
@@ -41,13 +46,21 @@ bool Movie_Source::onFinish() {
 }
 
 bool Movie_Source::onStep() {
+	if (props.triggered && !trig)
+		return true;
 
+	LOG(TRACE) << "Movie_Source::step() start\n";
 	cap >> frame;
+	if (frame.empty()) {
+		return false;
+	}
 
-	out_img.write(frame);
+	cv::Mat img = frame.clone();
+	out_img.write(img);
 
 	newImage->raise();
 
+	LOG(TRACE) << "Movie_Source::step() end\n";
 	return true;
 }
 
@@ -57,6 +70,10 @@ bool Movie_Source::onStart() {
 
 bool Movie_Source::onStop() {
 	return true;
+}
+
+void Movie_Source::onTrigger() {
+	trig = true;
 }
 
 

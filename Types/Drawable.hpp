@@ -1,7 +1,7 @@
 #ifndef DRAWABLE_HPP_
 #define DRAWABLE_HPP_
 
-#include <cxtypes.h>
+#include <cv.h>
 
 namespace Types {
 
@@ -16,7 +16,13 @@ namespace Types {
  */
 class Drawable {
 public:
-	virtual void draw(IplImage *image, CvScalar color, int offsetX = 0, int offsetY = 0) = 0;
+	virtual ~Drawable() {}
+
+	virtual void draw(cv::Mat& image, CvScalar color, int offsetX = 0, int offsetY = 0) = 0;
+
+	virtual Drawable * clone() {
+		return NULL;
+	}
 };
 
 } //: namespace Types

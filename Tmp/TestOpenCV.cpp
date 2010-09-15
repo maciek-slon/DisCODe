@@ -10,7 +10,6 @@
 #include <cvaux.hpp>
 #include <cxcore.hpp>
 #include <highgui.h>
-#include <highgui.hpp>
 
 using namespace cv;
 

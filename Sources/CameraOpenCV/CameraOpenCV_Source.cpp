@@ -1,5 +1,5 @@
 /*!
- * \file CameraOpenCV.cpp
+ * \file CameraOpenCV_Source.cpp
  * \brief Class responsible for retrieving images from camera.
  * \author mstefanc
  * \date 2010-06-10
@@ -15,6 +15,7 @@ namespace CameraOpenCV {
 
 CameraOpenCV_Source::CameraOpenCV_Source(const std::string & name) : Base::Component(name) {
 	LOG(TRACE) << "CameraOpenCV_Source::CameraOpenCV_Source()\n";
+	trig = true;
 }
 
 CameraOpenCV_Source::~CameraOpenCV_Source() {
@@ -24,6 +25,12 @@ CameraOpenCV_Source::~CameraOpenCV_Source() {
 bool CameraOpenCV_Source::onInit() {
 	LOG(TRACE) << "CameraOpenCV_Source::initialize()\n";
 	newImage = registerEvent("newImage");
+
+
+
+	h_onTrigger.setup(this, &CameraOpenCV_Source::onTrigger);
+	registerHandler("onTrigger", &h_onTrigger);
+
 
 	registerStream("out_img", &out_img);
 
@@ -47,7 +54,10 @@ bool CameraOpenCV_Source::onFinish() {
 
 
 bool CameraOpenCV_Source::onStep() {
+	if (props.triggered && !trig)
+		return true;
 
+	trig = false;
 	cap >> frame;
 
 	if (frame.empty()) {
@@ -70,6 +80,10 @@ bool CameraOpenCV_Source::onStop() {
 	return true;
 }
 
+
+void CameraOpenCV_Source::onTrigger() {
+	trig = true;
+}
 
 }//: namespace CameraOpenCV
 }//: namespace Sources

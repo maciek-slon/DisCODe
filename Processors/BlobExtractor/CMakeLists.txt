@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 add_library(procBlobExtractor SHARED ${files})
-target_link_libraries(procBlobExtractor ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
+target_link_libraries(procBlobExtractor ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
 
 INSTALL_PROCESSOR(procBlobExtractor)

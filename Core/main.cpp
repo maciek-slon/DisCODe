@@ -8,6 +8,7 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
+#include <utility>
 
 #include <signal.h>
 
@@ -23,6 +24,7 @@
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 using namespace Common;
@@ -56,8 +58,11 @@ int main(int argc, char* argv[])
 	// Task config filename.
 	std::string task_name;
 
+	// Task settings overrides
+	std::vector <std::string> task_overrides;
+
 	// Log level
-	int log_lvl;
+	int log_lvl = 2;
 
 	void (*prev_fn)(int);
 
@@ -78,6 +83,7 @@ int main(int argc, char* argv[])
 		("create-task", "create default task file")
 		("log-level,L", po::value<int>(&log_lvl)->default_value(3), "set log severity level")
 		("unstopable","MWAHAHAHA!")
+		("set,S",po::value< vector<string> >(&task_overrides),"override task settings")
 	;
 
 	po::variables_map vm;
@@ -86,13 +92,13 @@ int main(int argc, char* argv[])
 		po::store(po::parse_command_line(argc, argv, desc), vm);
 		po::notify(vm);
 	}
-	catch (po::unknown_option & u) {
-		LOG(FATAL) << u.what() << "\n";
+	catch (const po::error & u) {
+		std::cout << u.what() << "\n";
 		return 0;
 	}
 
 	if (vm.count("help")) {
-		cout << desc << "\n";
+		std::cout << desc << "\n";
 		return 0;
 	}
 
@@ -171,6 +177,17 @@ int main(int argc, char* argv[])
 		LOG(INFO) << "Task: " << task_name << " from command line\n";
 	}
 
+	std::vector<std::pair<std::string, std::string> > overrides;
+	for (size_t i = 0; i < task_overrides.size(); ++i) {
+		std::vector<std::string> strs;
+		boost::split(strs, task_overrides[i], boost::is_any_of("="));
+		if (strs.size() == 1) {
+			LOG(WARNING) << strs[0] << "have no assigned value";
+		} else {
+			overrides.push_back(std::make_pair(strs[0], strs[1]));
+		}
+	}
+
 	// =========================================================================
 	// === Main program part
 	// =========================================================================
@@ -189,22 +206,20 @@ int main(int argc, char* argv[])
 
 		km.initializeComponentsList();
 
-		task = configurator.loadConfiguration(task_name);
-		if (!task["s1"].start())
-			LOG(WARNING) << "Subtask S1 start() returned false\n";
-		if (!task["s2"].start())
-			LOG(WARNING) << "Subtask S2 start() returned false\n";
+		task = configurator.loadConfiguration(task_name, overrides);
+		if (!task.start()) {
+			LOG(FATAL) << "Task::start() returned false\n";
+			running = false;
+		}
 
-		task.start();
 
 		while(running) {
 			Common::Thread::msleep(50);
 		}
 
-		task.stop();
+		//Common::Thread::msleep(5000);
 
-		task["s1"].stop();
-		task["s2"].stop();
+		Common::Thread::msleep(500);
 
 		task.finish();
 
@@ -212,6 +227,12 @@ int main(int argc, char* argv[])
 		//Common::Thread::msleep(3000);
 
 		// End of test code.
+
+
+
+		km.release();
+		cm.release();
+		em.release();
 
 		km.deactivateComponentList();
 

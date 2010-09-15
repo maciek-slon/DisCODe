@@ -11,6 +11,6 @@ FILE(GLOB files *.cpp)
 ADD_LIBRARY(srcMovie SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(srcMovie ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES} )
+TARGET_LINK_LIBRARIES(srcMovie ${OpenCV_LIBS} ${FraDIA_LIBRARIES} )
 
 INSTALL_SOURCE(srcMovie)

@@ -40,6 +40,11 @@ namespace DataStreamBuffer {
  */
 template <class T>
 class Queue {
+public:
+	bool empty() {
+		return buffer.empty();
+	}
+
 protected:
 	/*!
 	 * Push data on the end of queue
@@ -62,6 +67,7 @@ protected:
 		} else {
 			/// \todo Throw correct exception
 			throw "Empty buffer!";
+			// throwing disabled until scopeLock will be implemented in DataStream
 		}
 	}
 
@@ -84,6 +90,10 @@ public:
 	 */
 	Newest() {
 		fresh = false;
+	}
+
+	bool empty() {
+		return !fresh;
 	}
 
 protected:

@@ -37,6 +37,9 @@ public:
 	Executor(const std::string & n) : running(false), paused(true), name_(n) {
 	}
 
+	virtual ~Executor() {
+	}
+
 	/*!
 	 * Add new Component to Executor.
 	 * \param name name of component
@@ -50,8 +53,9 @@ public:
 	 * Queue event handler in internal FIFO buffer
 	 */
 	void queueEvent(Base::EventHandlerInterface * h) {
-		/// \todo Add synchronization
-		queue.push(h);
+		mtx.lock();
+		queue.push_back(h);
+		mtx.unlock();
 	}
 
 	/*!
@@ -99,6 +103,24 @@ public:
 	}
 
 protected:
+
+	/**
+	 * Execute all pending events.
+	 */
+	void executeEvents() {
+		mtx.lock();
+		loc_queue = queue;
+		queue.clear();
+		mtx.unlock();
+
+		while (!loc_queue.empty()) {
+			Base::EventHandlerInterface * h;
+			h = loc_queue.front();
+			loc_queue.pop_front();
+			h->execute();
+		}
+	}
+
 	/// List of components managed by this Executor
 	std::map<std::string, Base::Component *> components;
 
@@ -109,10 +131,18 @@ protected:
 	volatile bool paused;
 
 	/// FIFO queue for incoming events
-	std::queue<Base::EventHandlerInterface *> queue;
+	std::deque<Base::EventHandlerInterface *> queue;
+
+	std::deque<Base::EventHandlerInterface *> loc_queue;
 
 	/// Name of execution thread
 	std::string name_;
+
+	/// Asynchronous event queue synchronization
+	boost::mutex mtx;
+
+	///
+	boost::mutex ev_mtx;
 };
 
 
@@ -120,12 +150,19 @@ protected:
 
 /*!
  * \class ContinousExecutor
- * \brief This object calls step method from it's main component continously.
+ * \brief Call step continously.
+ * This object calls step method from it's main component continously.
  */
 class ContinousExecutor : public Executor {
 public:
 
 	ContinousExecutor(const std::string & n) : Executor(n) {};
+
+	virtual ~ContinousExecutor() {
+		double spl = elapsed/loops;
+		double lps = 1.0 / spl;
+		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+	}
 
 	/*!
 	 * Load executor settings from given configuration node
@@ -140,6 +177,9 @@ protected:
 	 * Implementation of run method from Thread.
 	 */
 	void run() {
+		elapsed = 0;
+		loops = 0;
+
 		running = true;
 		paused = false;
 
@@ -155,12 +195,11 @@ protected:
 			if (paused) {
 				/// \todo sync with mutex
 				Common::Thread::msleep(50);
+				yield();
+				continue;
 			}
 
-			while (!queue.empty()) {
-				queue.front()->execute();
-				queue.pop();
-			}
+			executeEvents();
 
 			// check if there is any component to execute
 			if (main_component && main_component->running()) {
@@ -171,7 +210,12 @@ protected:
 						break;
 				}
 
-				main_component->step();
+				elapsed += main_component->step();
+				loops++;
+				double spl = elapsed/loops;
+				double lps = 1.0 / spl;
+				LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+
 			} else {
 				Common::Thread::msleep(50);
 			}
@@ -189,13 +233,18 @@ private:
 
 	/// Main component name
 	std::string mk_name;
+
+
+	double elapsed;
+	int loops;
 };
 
 
 
 /*!
  * \class PassiveExecutor
- * \brief This object doesn't call any methods from it's components explicitely,
+ * \brief Don't call any step, only react.
+ * This object doesn't call any methods from it's components explicitely,
  * but only process events and calls connected handlers.
  */
 class PassiveExecutor : public Executor {
@@ -219,18 +268,16 @@ protected:
 			if (paused) {
 				/// \todo sync with mutex
 				Common::Thread::msleep(50);
+				continue;
 			}
 
 			// here should be mutex, and will be ;-)
 			while (queue.empty()) {
-				Common::Thread::msleep(10);
+				Common::Thread::msleep(1);
 			}
 
 			// process all waiting events
-			while (!queue.empty()) {
-				queue.front()->execute();
-				queue.pop();
-			}
+			executeEvents();
 
 			yield();
 		}
@@ -243,12 +290,18 @@ private:
 
 /*!
  * \class PeriodicExecutor
- * \brief This object calls step method from it's main component periodically
- * with given interval.
+ * \brief Execute component periodically.
+ * This object calls step method from it's main component periodically with given interval.
  */
 class PeriodicExecutor : public Executor {
 public:
 	PeriodicExecutor(const std::string & n) : Executor(n) {};
+
+	~PeriodicExecutor() {
+		double spl = elapsed/loops;
+		double lps = 1.0 / spl;
+		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+	}
 
 	/*!
 	 * Load executor settings from given configuration node
@@ -264,6 +317,9 @@ protected:
 	 * Implementation of run method from Thread.
 	 */
 	void run() {
+		elapsed = 0;
+		loops = 0;
+
 		running = true;
 
 		if (components.count(mk_name) < 1) {
@@ -278,12 +334,10 @@ protected:
 			if (paused) {
 				/// \todo sync with mutex
 				Common::Thread::msleep(50);
+				continue;
 			}
 
-			while (!queue.empty()) {
-				queue.front()->execute();
-				queue.pop();
-			}
+			executeEvents();
 
 			if (timer.elapsed() > interval) {
 				timer.restart();
@@ -297,7 +351,11 @@ protected:
 							break;
 					}
 
-					main_component->step();
+					elapsed += main_component->step();
+					loops++;
+					double spl = elapsed/loops;
+					double lps = 1.0 / spl;
+					LOG(INFO) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 				} else {
 					Common::Thread::msleep(50);
 				}
@@ -324,6 +382,9 @@ private:
 
 	/// Periodic mode interval in seconds
 	float interval;
+
+	double elapsed;
+	int loops;
 };
 
 }//: namespace Core

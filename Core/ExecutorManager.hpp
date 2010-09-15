@@ -16,13 +16,25 @@
 #include <string>
 #include <vector>
 
+#include <boost/foreach.hpp>
+
 namespace Core {
 
 class ExecutorManager {
 	std::map<std::string, Executor*> executors;
+	typedef std::pair<std::string, Executor*> exp;
 
 public:
 	ExecutorManager() {
+	}
+
+	~ExecutorManager() {
+	
+	}
+	
+	void release() {
+		BOOST_FOREACH(exp e, executors)
+			delete e.second;
 	}
 
 	Executor * createExecutor(const std::string & name, const std::string & type) {

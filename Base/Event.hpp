@@ -41,6 +41,10 @@ public:
 		handlers.push_back(h);
 	}
 
+	void addAsyncHandler(EventHandlerInterface * h) {
+		handlers.push_front(h);
+	}
+
 	void raise() {
 		BOOST_FOREACH(EventHandlerInterface * h, handlers) {
 			h->execute();

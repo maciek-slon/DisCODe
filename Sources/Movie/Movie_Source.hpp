@@ -18,31 +18,72 @@
 #include <cv.h>
 #include <highgui.h>
 
+/**
+ * \defgroup Movie Movie
+ * \ingroup Sources
+ *
+ * Movie reader, based on OpenCV.
+ *
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamout{out_img,cv::Mat}
+ * Output image
+ *
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * New image is ready
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onTrigger}
+ * Trigger new frame
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{filename,string,""}
+ * Name of movie file
+ *
+ *
+ * \see http://opencv.willowgarage.com/documentation/cpp/reading_and_writing_images_and_video.html#videocapture
+ * @{
+ *
+ * @}
+ */
+
 namespace Sources {
 namespace Movie {
 
 using namespace cv;
 
 /*!
- * \class MovieProps
+ * \class Props
  * \brief Movie_Source properties
  */
-struct MovieProps : public Base::Props {
+struct Props : public Base::Props {
 
 	std::string filename;
+	bool triggered;
 
 	/*!
-	 * \copydoc Common::Props::load
+	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt) {
-		filename = pt.get("filename", "");
+		filename  = pt.get("filename", "");
+		triggered = pt.get("triggered", false);
 	}
 
 	/*!
-	 * \copydoc Common::Props::save
+	 * \copydoc Base::Props::save
 	 */
 	void save(ptree & pt) {
 		pt.put("filename", filename);
+		pt.put("triggered", triggered);
 	}
 };
 
@@ -96,6 +137,17 @@ protected:
 	 */
 	bool onStop();
 
+
+
+	/*!
+	 * Event handler function.
+	 */
+	void onTrigger();
+
+	/// Event handler.
+	Base::EventHandler<Movie_Source> h_onTrigger;
+
+
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 
@@ -109,7 +161,9 @@ protected:
 	Mat frame;
 
 	/// Movie properties
-	MovieProps props;
+	Props props;
+
+	bool trig;
 };
 
 }//: namespace Movie

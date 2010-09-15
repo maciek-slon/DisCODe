@@ -1,8 +1,8 @@
 #ifndef COMPONENTLABELING_HPP_
 #define COMPONENTLABELING_HPP_
 
-#include "Types/BlobContour.hpp"
-#include "Types/Blob.hpp"
+#include "Types/Blobs/BlobContour.hpp"
+#include "Types/Blobs/Blob.hpp"
 
 #include <vector>
 
