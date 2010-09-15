@@ -15,7 +15,7 @@ namespace Movie {
 Movie_Source::Movie_Source(const std::string & name) : Base::Component(name) {
 	LOG(TRACE) << "Movie_Source::Movie_Source()\n";
 
-	cap = NULL;
+//	cap = NULL;
 	trig = true;
 }
 
@@ -32,9 +32,10 @@ bool Movie_Source::onInit() {
 	h_onTrigger.setup(this, &Movie_Source::onTrigger);
 	registerHandler("onTrigger", &h_onTrigger);
 
+
 	cap.open(props.filename);
 
-	return true;
+	return cap.isOpened();
 }
 
 bool Movie_Source::onFinish() {

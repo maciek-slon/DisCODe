@@ -38,6 +38,12 @@
  * New image is ready
  *
  *
+ * \par Event handlers:
+ *
+ * \handler{onTrigger}
+ * Trigger new frame
+ *
+ *
  * \par Properties:
  *
  * \prop{filename,string,""}
@@ -56,10 +62,10 @@ namespace Movie {
 using namespace cv;
 
 /*!
- * \class MovieProps
+ * \class Props
  * \brief Movie_Source properties
  */
-struct MovieProps : public Base::Props {
+struct Props : public Base::Props {
 
 	std::string filename;
 	bool triggered;
@@ -68,7 +74,7 @@ struct MovieProps : public Base::Props {
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt) {
-		filename = pt.get("filename", "");
+		filename  = pt.get("filename", "");
 		triggered = pt.get("triggered", false);
 	}
 
@@ -155,7 +161,7 @@ protected:
 	Mat frame;
 
 	/// Movie properties
-	MovieProps props;
+	Props props;
 
 	bool trig;
 };

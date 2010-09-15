@@ -3,7 +3,7 @@
 	<!-- List of components -->
 	<Components>
 		<Movie type="Movie" thread="Thread1" group="s1">
-			<filename>zakaz_1.avi</filename>
+			<filename>zakaz_1.1280.avi</filename>
 		</Movie>
 
 		<ColorConv type="CvColorConv" thread="Thread1" group="s1">
