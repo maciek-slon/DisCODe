@@ -297,7 +297,7 @@ class PeriodicExecutor : public Executor {
 public:
 	PeriodicExecutor(const std::string & n) : Executor(n) {};
 
-	~PeriodicExecutor() {
+	virtual ~PeriodicExecutor() {
 		double spl = elapsed/loops;
 		double lps = 1.0 / spl;
 		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
