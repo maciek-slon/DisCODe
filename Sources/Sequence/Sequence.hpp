@@ -18,6 +18,52 @@
 
 #include <cv.h>
 
+/**
+ * \defgroup Sequence Sequence
+ * \ingroup Sources
+ *
+ * Image sequence provider. At the moment there is only one type of sequences
+ * available, based on image filename pattern (regular expression) and directory,
+ * in iwhich files will be searched.
+ *
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamout{out_img,cv::Mat}
+ * Output image
+ *
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * New image is ready
+ *
+ *
+ * \par Event handlers:
+ *
+ * None at the moment
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{directory,string,"."}
+ * Directory, where fils will be searched
+ * \prop{pattern,string,".*\.jpg"}
+ * Regex pattern used for searching files
+ * \prop{sort,bool,true}
+ * If set, then found siles will be sorted in ascending order
+ * \prop{prefetch,bool,false}
+ * If set, all files will be loaded beforehand, otherwise images are loaded just before they are needed.
+ *
+ *
+ *
+ *
+ * @{
+ *
+ * @}
+ */
+
 namespace Sources {
 namespace Sequence {
 

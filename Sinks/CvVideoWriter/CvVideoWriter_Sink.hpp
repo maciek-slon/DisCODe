@@ -23,7 +23,7 @@
  * \defgroup CvVideoWriter CvVideoWriter
  * \ingroup Sinks
  *
- * Creates a window and displays the image
+ * Writes all frames into movie file.
  *
  *
  *
@@ -41,31 +41,39 @@
  *
  * \par Properties:
  *
- * \prop{title,string,"video"}
- * Window caption
+ * \prop{filename,string,"output.avi"}
+ * Output file name
+ * \prop{fourcc,string,"MJPG"}
+ * Codec FOURCC code
+ * \prop{size,cv::Size,640 480}
+ * Movie frame size
+ * \prop{fps,double,25.0}
+ * Movie frame rate
  *
  *
- * \see http://opencv.willowgarage.com/documentation/cpp/user_interface.html#namedWindow
- * \see http://opencv.willowgarage.com/documentation/cpp/user_interface.html#cv-imshow
+ * \see http://opencv.willowgarage.com/documentation/cpp/reading_and_writing_images_and_video.html#VideoWriter
  *
  *
  * \par Task configuration template:
  *
  * \code
  * <Components>
- *   <Window type="CvVideoWriter" thread="thread_name" group="group_name">
- *     <title>video</title>
- *   </Window>
+ *   <Writer type="CvVideoWriter" thread="thread_name" group="group_name">
+ *     <filename>output.avi</filename>
+ *     <fourcc>MJPG</fourcc>
+ *     <size>640 480</size>
+ *     <fps>25.0</fps>
+ *   </Writer>
  * </Components>
  *
  * <Events>
- *   <Event source="Component.Event" destination="Window.onNewImage"/>
+ *   <Event source="Component.Event" destination="Writer.onNewImage"/>
  * </Events>
  *
  * <DataStreams>
- *   <Window>
+ *   <Writer>
  *     <in_img type="in" group="connection_name"/>
- *   </Window>
+ *   </Writer>
  * </DataStreams>
  * \endcode
  *
