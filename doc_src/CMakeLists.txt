@@ -28,6 +28,8 @@ if(DOXYGEN_EXECUTABLE)
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/fradia.png ${HTML_OUTPUT_DIR}/fradia.png
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/search.js ${HTML_OUTPUT_DIR}/search/search.js
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/search.css ${HTML_OUTPUT_DIR}/search/search.css
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/header_grad.jpg ${HTML_OUTPUT_DIR}/header_grad.jpg
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/footer_grad.jpg ${HTML_OUTPUT_DIR}/footer_grad.jpg
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         DEPENDS ${CMAKE_SOURCE_DIR}/doc_src/FraDIA.Doxyfile
     )
