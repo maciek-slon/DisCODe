@@ -129,7 +129,7 @@
   <!-- Layout definition for a group page -->
   <group>
     <briefdescription visible="no"/>
-    <detaileddescription title=""/>
+    <detaileddescription title="&nbsp;"/>
     <groupgraph visible="$GROUP_GRAPHS"/>
     <memberdecl>
       <classes visible="yes" title=""/>

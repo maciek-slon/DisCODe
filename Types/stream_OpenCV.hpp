@@ -5,6 +5,9 @@
 
 #include <cv.h>
 
+// hide those functions from Doxygen
+#ifndef DOXYGEN_INVOKED
+
 /*
  * Operators for standard streams
  */
@@ -173,3 +176,5 @@ struct customize_stream<Ch, Traits, cv::Mat_<T>, void>
 
 }
 }
+
+#endif /* DOXYGEN_INVOKED */

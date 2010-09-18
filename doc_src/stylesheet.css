@@ -147,7 +147,7 @@ div.multicol {
 }
 
 .contents {
-	padding: 20px 20px 20px 20px;
+	padding: 00px 20px 20px 20px;
 	background: white;
 }
 
@@ -802,7 +802,7 @@ DIV.tabs LI.current SPAN
 
 #menu a:hover {
 	color: #a00;
-	background: #eef;
+	background: #dddddd url(menu_grad.jpg);
 	border-bottom: 1px solid #a00;
 }
 

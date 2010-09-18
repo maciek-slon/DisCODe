@@ -137,8 +137,8 @@ protected:
 };
 
 /*!
- * \class RGBtoHSV_Processor
- * \brief Example processor class.
+ * \class CvVideoWriter_Sink
+ * \brief Writes all frames into movie file.
  */
 class CvVideoWriter_Sink: public Base::Component
 {

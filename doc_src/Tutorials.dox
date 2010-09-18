@@ -22,15 +22,14 @@ or creating new sources or processors.
 /*!
 \page eclipseconfig Configurating Eclipse
 
-\section eclipse_needed Potrzebne aplikacje
+\section eclipse_needed Required software
 
-- Eclipse CDT: http://www.eclipse.org/downloads/packages/eclipse-ide-cc-developers/galileosr2
+- Eclipse CDT: http://www.eclipse.org/cdt/
 - CMake: http://www.cmake.org/
-- Plugin EGit do obsługi repozytoriów z poziomu Eclipse: http://download.eclipse.org/egit/updates
-- Ewentualnie dodatek do edycji plików CMake wewnątrz Eclipse (podświetlanie składni,
-  podpowiedzi): http://cmakeed.sourceforge.net/eclipse/
+- EGit plugin (for handling git repository under EclipsE): http://download.eclipse.org/egit/updates
+- Feature - CMake Editor for CMake files highlighting etc: http://cmakeed.sourceforge.net/eclipse/
 
-\section eclipse_import Import repozytorium do katalogu roboczego
+\section eclipse_import Import repository
 
 * Importujemy nowy projekt, wybierając opcję importu repozytorium Git
 : [[File:01.jpg]]

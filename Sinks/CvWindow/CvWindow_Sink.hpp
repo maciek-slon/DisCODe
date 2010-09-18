@@ -22,7 +22,9 @@
  * \defgroup CvWindow CvWindow
  * \ingroup Sinks
  *
- * Creates a window and displays the image
+ * Creates a window and displays the image. There is option to draw additional
+ * information on top of displayed image by using in_draw stream (and feeding it
+ * with \ref Types::Drawable "drawable" items).
  *
  *
  *
@@ -30,6 +32,8 @@
  *
  * \streamin{in_img,cv::Mat}
  * Input image
+ * \streamin{in_draw,Types::Drawable}
+ * Things to draw on top of image.
  *
  *
  * \par Event handlers:
@@ -107,8 +111,8 @@ struct WndProps : public Base::Props {
 };
 
 /*!
- * \class RGBtoHSV_Processor
- * \brief Example processor class.
+ * \class CvWindow_Sink
+ * \brief Creates a window and displays the image
  */
 class CvWindow_Sink: public Base::Component
 {
