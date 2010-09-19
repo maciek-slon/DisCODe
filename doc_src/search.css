@@ -165,7 +165,6 @@ iframe#MSearchResults {
     position: absolute;
     left: 0; top: 0;
     border: 1px solid #000;
-    background-color: #EEF1F7;
 }
 
 /* ----------------------------------- */
@@ -188,6 +187,11 @@ iframe#MSearchResults {
 
 body.SRPage {
     margin: 5px 2px;
+    background-color: white;
+    background-image:url(../menu_grad.jpg);
+	background-attachment:fixed;
+	background-position: bottom left;
+	background-repeat: repeat-x;
 }
 
 .SRChildren {

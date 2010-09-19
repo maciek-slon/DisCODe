@@ -20,6 +20,8 @@ namespace Utils {
  * \param root directoory to search files
  * \param regexp regular expression to test file names
  * \param with_path if set to true, then output will be path+filename, otherwise only filename will be returned
+ *
+ * \see \ref regex_basics
  */
 std::vector<std::string> searchFiles(const std::string & root, const std::string & regexp, bool with_path = true);
 

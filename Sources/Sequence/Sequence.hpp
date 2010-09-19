@@ -57,6 +57,7 @@
  * If set, all files will be loaded beforehand, otherwise images are loaded just before they are needed.
  *
  *
+ * \see \ref regex_basics
  *
  *
  * @{

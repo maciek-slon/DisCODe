@@ -293,3 +293,14 @@ enough to fill the high standards of robotic software framework.
 
 */
 
+// Regular expressions basics
+/*!
+\page regex_basics Regular expressions basics
+
+\section why_regex Why regular expressions?
+
+Throughout FraDIA, there are some places where regular expressions are used.
+It's used for example when specifying file name patterns, and this quick tutorial
+will cover this usecase.
+*/
+

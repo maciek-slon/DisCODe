@@ -6,7 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <title>$title</title>
-<!--<link href="$relpath$search/search.css" rel="stylesheet" type="text/css"/>-->
 <link href="$relpath$stylesheet.css" rel="stylesheet" type="text/css"/>
 <link href="$relpath$search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javaScript" src="$relpath$search/search.js"></script>
@@ -47,6 +46,25 @@
 		<li><a href="group__Processors.html">Processors</a></li>
 		<li><a href="group__Sinks.html">Sinks</a></li>
 	</ul></li>
+	<li><h2>Search</h2></li>
+	<li><ul>
+		<li>
+			<img id="MSearchSelect" src="search/mag_sel.png"
+				 onmouseover="return searchBox.OnSearchSelectShow()"
+				 onmouseout="return searchBox.OnSearchSelectHide()"
+				 alt=""
+				 style="margin-left: 10px"/>
+			<input id="MSearchField" type="text" value="Search" accesskey="S"
+				 onfocus="searchBox.OnSearchFieldFocus(true)"
+				 onblur="searchBox.OnSearchFieldFocus(false)"
+				 onkeyup="searchBox.OnSearchFieldChange(event)"
+				 style="width: 145px; float: left"/>
+			<a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"
+				 style="padding: 0 0 0; margin: 0; float: left; display: none; border: 0">
+					<img border="0" src="search/close.png" alt="" style="padding-top: 5px;"/>
+			</a>
+	    </li>
+	</ul></li>
 	<li><h2>Code reference</h2></li>
 	<li><ul>
 		<li><a href="namespaces.html">Namespaces</a></li>
@@ -59,37 +77,10 @@
 		<li><a href="files.html">Files</a></li>
 	</ul></li>
 </ul>
-<!--
-<div id="MSearchBox" class="MSearchBoxInactive" style="width: 200px; background: white; border: 1px solid black;">
-	<img id="MSearchSelect" src="search/mag_sel.png"
-		 onmouseover="return searchBox.OnSearchSelectShow()"
-		 onmouseout="return searchBox.OnSearchSelectHide()"
-		 alt=""/>
-	<input type="text" id="MSearchField" value="Search" accesskey="S"
-		 onfocus="searchBox.OnSearchFieldFocus(true)"
-		 onblur="searchBox.OnSearchFieldFocus(false)"
-		 onkeyup="searchBox.OnSearchFieldChange(event)" style="width: 140px"/>
-	<a id="MSearchClose" class="close" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
-</div>
--->
 
-</div>
-
-<div id="MSearchBox" style="width: 200px; border: 0">
-	<img id="MSearchSelect" src="search/mag_sel.png"
-		 onmouseover="return searchBox.OnSearchSelectShow()"
-		 onmouseout="return searchBox.OnSearchSelectHide()"
-		 alt=""/>
-	<input id="MSearchField" type="text" value="Search" accesskey="S"
-		 onfocus="searchBox.OnSearchFieldFocus(true)"
-		 onblur="searchBox.OnSearchFieldFocus(false)"
-		 onkeyup="searchBox.OnSearchFieldChange(event)"
-		 style="width: 155px; float: left"/>
-	<a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"
-	     style="padding: 0 0 0; margin: 0; float: left"><img border="0" src="search/close.png" alt="" style="padding-top: 5px"/></a>
 </div>
 
 </div>
 
 
-<div style="margin: 0 0 0 200px; border-left: 1px dotted #808080; padding: 0; min-height: 400px">
+<div style="margin: 0 0 0 200px; border-left: 1px dotted #808080; padding: 0; min-height: 420px">
