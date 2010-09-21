@@ -450,7 +450,7 @@
 					</profile>
 					<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
 						<buildOutputProvider>
-							<openAction enabled="true" filePath=""/>
+							<openAction enabled="true" filePath="/home/mstefanc/workspace/fradia/build/Makefile"/>
 							<parser enabled="true"/>
 						</buildOutputProvider>
 						<scannerInfoProvider id="makefileGenerator">
