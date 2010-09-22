@@ -1,5 +1,5 @@
 /*!
- * \file Stero_Processor.cpp
+ * \file Stereo_Processor.cpp
  * \brief
  * \author mstefanc
  * \date 2010-07-05

@@ -821,3 +821,18 @@ DIV.tabs LI.current SPAN
 }
 
 
+
+table.memberdecls tbody tr td p {
+	margin: 0;
+	margin-left: 10px;
+	padding: 0;
+}
+
+ul.components {
+	list-style-type: none;
+}
+
+ul.components p {
+	margin-top: 3pt;
+	margin-left: 20pt;
+}

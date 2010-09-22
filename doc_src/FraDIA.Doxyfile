@@ -195,9 +195,9 @@ ALIASES                = "linkimage{2}=<div class=\"linkimage\">\image html \1 \
                          "endcons=</pre>" \
                          "streamin{2}=\li <tt>[in]&nbsp;</tt> \b \1 <tt>(\2)</tt><br>" \
                          "streamout{2}=\li <tt>[out]</tt> \b \1 <tt>(\2)</tt><br>" \
-                         "event{1}=\li \b \1<br>" \
-                         "handler{1}=\li \b \1<br>" \
-                         "prop{3}=\li \b \1<tt> (\2=\3)</tt><br>"
+                         "event{1}=\li \b \1 <br>" \
+                         "handler{1}=\li \b \1 <br>" \
+                         "prop{3}=\li \b \1 <tt>(\2=\3)</tt><br>"
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C
 # sources only. Doxygen will then generate output that is more tailored for C.

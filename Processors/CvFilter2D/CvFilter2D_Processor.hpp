@@ -53,7 +53,7 @@
  *
  * \prop{size,cv::Size,3 3}
  * Kernel size
- * \prop{kernel,cv::Mat,}
+ * \prop{kernel,cv::Mat,&nbsp;}
  * Kernel itself
  * \prop{norm,double,1.0}
  * Normalisation factor

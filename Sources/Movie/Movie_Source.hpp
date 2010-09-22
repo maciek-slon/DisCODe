@@ -21,8 +21,7 @@
 /**
  * \defgroup Movie Movie
  * \ingroup Sources
- *
- * Movie reader, based on OpenCV.
+ * \brief Movie reader, based on OpenCV.
  *
  *
  *

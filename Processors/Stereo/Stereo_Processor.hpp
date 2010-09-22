@@ -1,5 +1,5 @@
 /*!
- * \file Stero_Processor.hpp
+ * \file Stereo_Processor.hpp
  * \brief
  * \author mstefanc
  * \date 2010-07-05
@@ -20,49 +20,6 @@
 #include <highgui.h>
 
 #include <sstream>
-
-/**
- * \defgroup CvFilter2D CvFilter2D
- * \ingroup Processors
- *
- * Convolves an image with the kernel
- *
- *
- *
- * \par Data streams:
- *
- * \streamin{in_img,cv::Mat}
- * Input image
- * \streamout{out_img,cv::Mat}
- * Output image
- *
- *
- * \par Events:
- *
- * \event{newImage}
- * New image is ready
- *
- *
- * \par Event handlers:
- *
- * \handler{onNewImage}
- * New image arrived
- *
- *
- * \par Properties:
- *
- * \prop{size,cv::Size,3 3}
- * Kernel size
- * \prop{kernel,cv::Mat,}
- * Kernel itself
- * \prop{norm,double,1.0}
- * Normalisation factor
- *
- * \see http://opencv.willowgarage.com/documentation/cpp/image_filtering.html#filter2D
- * @{
- *
- * @}
- */
 
 namespace Processors {
 namespace Stereo {

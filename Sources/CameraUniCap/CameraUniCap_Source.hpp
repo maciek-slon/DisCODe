@@ -16,6 +16,61 @@
 #include <unicap.h>
 #include <opencv/cv.h>
 
+/**
+ * \defgroup CameraUniCap CameraUniCap
+ * \ingroup Sources
+ * \brief Source retrieving frames from cameras, based on UniCap driver.
+ *
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamout{out_img,cv::Mat}
+ * Output image
+ *
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * New image is ready
+ *
+ *
+ * \par Event handlers:
+ * None at the moment
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{dev.device,string,"/dev/video0"}
+ * Device to grab frames from
+ * \prop{dev.input,string,"Composite1"}
+ * Input (when device is framegrabber)
+ * \prop{dev.norm,string,"PAL-BG"}
+ * Video standard
+ * \prop{dev.formar,string,"BGR3"}
+ * Pixel format
+ * \prop{dev.width,int,640}
+ * Frame width
+ * \prop{dev.height,int,480}
+ * Frame height
+ *
+ * All below properties are in range 0.0-1.0.
+ * \prop{image.brightness,double,0.5}
+ * Image brightness
+ * \prop{image.contrast,double,0.5}
+ * Image contrast
+ * \prop{image.saturation,double,0.5}
+ * Image saturation
+ * \prop{image.hue,double,0.5}
+ * Image hue
+ *
+ *
+ * \see http://unicap-imaging.org/
+ * @{
+ *
+ * @}
+ */
+
 namespace Sources {
 namespace CameraUniCap {
 
@@ -25,7 +80,8 @@ using namespace cv;
  * \class CameraUniCapProps
  * \brief CameraUniCap_Source properties
  */
-struct CameraUniCapProps : public Base::Props {
+struct CameraUniCapProps: public Base::Props
+{
 
 	// Device properties
 	std::string device;
@@ -43,11 +99,11 @@ struct CameraUniCapProps : public Base::Props {
 	double saturation;
 	double hue;
 
-
 	/*!
 	 * \copydoc Base::Props::load
 	 */
-	void load(const ptree & pt) {
+	void load(const ptree & pt)
+	{
 		device = pt.get("dev.device", "/dev/video0");
 		input = pt.get("dev.input", "Composite1");
 		norm = pt.get("dev.norm", "PAL-BG");
@@ -64,7 +120,8 @@ struct CameraUniCapProps : public Base::Props {
 	/*!
 	 * \copydoc Base::Props::save
 	 */
-	void save(ptree & pt) {
+	void save(ptree & pt)
+	{
 		pt.put("dev.device", device);
 		pt.put("dev.input", input);
 		pt.put("dev.norm", norm);
@@ -82,7 +139,8 @@ struct CameraUniCapProps : public Base::Props {
 /*!
  * \brief Unicap-based camera source.
  */
-class CameraUniCap_Source: public Base::Component {
+class CameraUniCap_Source: public Base::Component
+{
 public:
 	/*!
 	 * Constructor. Sets ID and startup variables.
@@ -94,7 +152,8 @@ public:
 	 */
 	virtual ~CameraUniCap_Source();
 
-	Base::Props * getProperties() {
+	Base::Props * getProperties()
+	{
 		return &props;
 	}
 
@@ -125,12 +184,11 @@ protected:
 	 */
 	bool onStop();
 
-
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
 
 	/// Output data stream
-	Base::DataStreamOut<Mat> out_img;
+	Base::DataStreamOut <Mat> out_img;
 
 	/// Frame
 	Mat frame;
@@ -144,8 +202,8 @@ protected:
 	CameraUniCapProps props;
 
 private:
-	static void new_frame_cb(unicap_event_t event, unicap_handle_t handle,
-				unicap_data_buffer_t *buffer, void *usr_data);
+	static void
+			new_frame_cb(unicap_event_t event, unicap_handle_t handle, unicap_data_buffer_t *buffer, void *usr_data);
 };
 
 }
