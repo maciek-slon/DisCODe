@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Movie type="Movie" thread="Thread1" group="s1">
+			<filename>zakaz_1.1280.avi</filename>
+		</Movie>
+
+		<Window type="CvWindow" thread="Thread1" group="s1">
+			<title>Preview</title>
+		</Window>
+	</Components>
+
+	<!-- Threads of execution -->
+	<Executors>
+		<Thread1 type="continous">
+			<main_component>Movie</main_component>
+		</Thread1>
+	</Executors>
+
+	<!-- Event connections -->
+	<Events>
+		<Event source="Movie.newImage"      destination="Window.onNewImage"/>
+	</Events>
+
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<Movie>
+			<out_img type="out" group="Con1"/>
+		</Movie>
+
+		<Window>
+			<in_img  type="in" group="Con1"/>
+		</Window>
+	</DataStreams>
+
+</Task>
