@@ -5,6 +5,7 @@
  */
 
 #include "Subtask.hpp"
+#include "Component.hpp"
 #include "Logger.hpp"
 
 namespace Core {

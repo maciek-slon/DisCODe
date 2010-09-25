@@ -1,9 +1,6 @@
 /*!
  * \file ComponentManager.hpp
  * \brief File containing the ComponentManager class
- *
- * \author tkornuta
- * \date Feb 10, 2010
  */
 
 #ifndef COMPONENTMANAGER_HPP_
@@ -17,18 +14,12 @@
 #include <boost/foreach.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 
-#include "boost/filesystem.hpp"
-using namespace boost::filesystem;
-
 #include "Component_Aux.hpp"
 #include "FraDIAException.hpp"
 #include "SharedLibraryCommon.hpp"
 #include "Utils.hpp"
 #include "Logger.hpp"
 #include "ComponentFactory.hpp"
-
-
-using namespace boost::property_tree;
 
 using namespace std;
 
@@ -37,7 +28,6 @@ namespace Core {
 /*!
  * \class ComponentManager
  * \brief
- * \author tkornuta
  */
 class ComponentManager
 {
@@ -83,17 +73,12 @@ public:
 	 */
 	void initializeComponentsList()
 	{
-		// Retrieve node with default settings from configurator.
-		//ptree * tmp_node = CONFIGURATOR.returnManagerNode(COMPONENT_TYPE);
-
 		// Get filenames.
-		vector <string> files = vector <string> ();
+		vector <string> files;
 		getSOList(".", files);
 
 		// Check number of so's to import.
-		if (files.size() == 0) {
-			// I think, that throwing here is much to brutal
-			//throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no dynamic libraries in the current directory."));
+		if (files.empty()) {
 			LOG(WARNING) << "ComponentManager: There are no dynamic libraries in the current directory.\n";
 			return;
 		}
@@ -115,8 +100,6 @@ public:
 		}//: FOREACH
 
 		// Check number of successfully loaded components.
-		//if (!component_factories.size())
-		//	throw Common::FraDIAException(string(MANAGER_NAME)+string("Manager: There are no compatible dynamic libraries in current directory."));
 		LOG(NOTICE) << "Found " << component_factories.size() << " components\n";
 	}
 

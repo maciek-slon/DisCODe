@@ -5,10 +5,26 @@
  */
 
 #include "Task.hpp"
+#include "Executor.hpp"
 
 #include <boost/foreach.hpp>
 
 namespace Core {
+
+Task & Task::operator += (Executor * ex) {
+	executors[ex->name()] = ex;
+	return *this;
+}
+
+
+Subtask & Task::operator[](const std::string & name) {
+	if (subtasks.count(name) < 1) {
+		LOG(WARNING) << "Subtask " << name << " absent. Creating new one...\n";
+		subtasks[name] = Subtask(name);
+	}
+
+	return subtasks[name];
+}
 
 bool Task::start() {
 	BOOST_FOREACH(SubtaskPair sp, subtasks) {
