@@ -171,8 +171,13 @@ int main(int argc, char* argv[])
 	}
 
 	if (!vm.count("task")) {
-		task_name = conf.get("FraDIA.task","task.xml");
-		LOG(INFO) << "Task: " << task_name << " from configuration file\n";
+		if (!conf.get_optional<std::string>("FraDIA.task")) {
+                        LOG(ERROR) << "No task specified!";
+                        exit(EXIT_FAILURE);
+                } else {
+			task_name = conf.get<std::string>("FraDIA.task");
+			LOG(INFO) << "Task: " << task_name << " from configuration file\n";
+		}
 	} else {
 		LOG(INFO) << "Task: " << task_name << " from command line\n";
 	}
