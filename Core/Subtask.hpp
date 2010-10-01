@@ -1,16 +1,17 @@
 /*!
  * \file Subtask.hpp
  * \brief
- * \date 08-07-2010
  */
 
 #ifndef SUBTASK_HPP_
 #define SUBTASK_HPP_
 
-#include "Component.hpp"
-
 #include <vector>
 #include <string>
+
+namespace Base {
+	class Component;
+}
 
 namespace Core {
 

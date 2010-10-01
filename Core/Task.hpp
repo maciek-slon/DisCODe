@@ -11,9 +11,10 @@
 #include <map>
 
 #include "Subtask.hpp"
-#include "Executor.hpp"
 
 namespace Core {
+
+class Executor;
 
 /*!
  * \class Task
@@ -45,14 +46,7 @@ public:
 	 * \return reference to subtask
 	 * \note If no subtask with given name is present, then new one is created
 	 */
-	Subtask & operator[](const std::string & name) {
-		if (subtasks.count(name) < 1) {
-			LOG(WARNING) << "Subtask " << name << " absent. Creating new one...\n";
-			subtasks[name] = Subtask(name);
-		}
-
-		return subtasks[name];
-	}
+	Subtask & operator[](const std::string & name);
 
 	/*!
 	 * Add subtask to task
@@ -67,10 +61,7 @@ public:
 	 * Add executor to task
 	 * \param ex pointer to executor to be added
 	 */
-	Task & operator += (Executor * ex) {
-		executors[ex->name()] = ex;
-		return *this;
-	}
+	Task & operator += (Executor * ex);
 
 private:
 	/// All subtasks
