@@ -17,6 +17,6 @@ INCLUDE_DIRECTORIES(${Unicap_INCLUDE_DIRS})
 ADD_LIBRARY(srcCameraUniCap SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(srcCameraUniCap ${OpenCV_LIBS} ${FraDIA_LIBRARIES} ${Unicap_LIBRARIES} )
+TARGET_LINK_LIBRARIES(srcCameraUniCap ${OpenCV_LIBS} ${DisCODe_LIBRARIES} ${Unicap_LIBRARIES} )
 
 INSTALL_SOURCE(srcCameraUniCap)

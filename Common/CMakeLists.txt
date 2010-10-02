@@ -11,4 +11,4 @@ INSTALL(FILES ${h_files}
 # Create library Common
 FILE(GLOB files *.cpp)
 ADD_LIBRARY(Common STATIC ${files})
-TARGET_LINK_LIBRARIES(Common ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(Common ${DisCODe_LIBRARIES})

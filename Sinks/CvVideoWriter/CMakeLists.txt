@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 add_library(CvVideoWriter SHARED ${files})
-target_link_libraries(CvVideoWriter ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
+target_link_libraries(CvVideoWriter ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(CvVideoWriter)

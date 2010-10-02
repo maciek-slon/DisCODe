@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(MS_Sign_LUT SHARED ${files})
-TARGET_LINK_LIBRARIES(MS_Sign_LUT ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(MS_Sign_LUT ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(MS_Sign_LUT)

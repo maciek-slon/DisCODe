@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(CvPixelOperator SHARED ${files})
-TARGET_LINK_LIBRARIES(CvPixelOperator ${OpenCV_LIBRARIES} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(CvPixelOperator ${OpenCV_LIBRARIES} ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(CvPixelOperator)

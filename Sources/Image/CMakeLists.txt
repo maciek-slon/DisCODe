@@ -8,6 +8,6 @@ FILE(GLOB files *.cpp)
 ADD_LIBRARY(srcImage SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(srcImage ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(srcImage ${DisCODe_LIBRARIES})
 
 INSTALL_SOURCE(srcImage)

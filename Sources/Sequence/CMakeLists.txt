@@ -11,6 +11,6 @@ FILE(GLOB files *.cpp)
 ADD_LIBRARY(Sequence SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(Sequence ${OpenCV_LIBS} ${FraDIA_LIBRARIES} )
+TARGET_LINK_LIBRARIES(Sequence ${OpenCV_LIBS} ${DisCODe_LIBRARIES} )
 
 INSTALL_SOURCE(Sequence)

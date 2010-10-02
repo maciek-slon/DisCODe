@@ -15,14 +15,14 @@
 # =======================================================================
 
 # Project name
-project(FraDIA)
+project(DisCODe)
 
 # CMake required version must be >= 2.6
 cmake_minimum_required(VERSION 2.6)
 
 # Appends the cmake/modules path inside the MAKE_MODULE_PATH variable which stores the
 # directories of additional CMake modules (eg MacroOutOfSourceBuild.cmake):
-set(CMAKE_MODULE_PATH ${FraDIA_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${DisCODe_SOURCE_DIR}/cmake/modules ${CMAKE_MODULE_PATH})
 
 # The macro below forces the build directory to be different from source directory:
 include(MacroOutOfSourceBuild)
@@ -55,7 +55,7 @@ FIND_PACKAGE( Boost REQUIRED thread filesystem system regex program_options)
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
 
 # Set libraries linked with project
-SET(FraDIA_LIBRARIES
+SET(DisCODe_LIBRARIES
     ${Boost_THREAD_LIBRARY}
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
@@ -87,10 +87,10 @@ endif(CPP0x)
 set(WITH_UNIFIED_TIMER OFF CACHE BOOL "Use unified timer (based on ctime)")
 
 IF(WIN32)
-    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} )
+    SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} )
     ADD_DEFINITIONS(-DWIN32)
 ELSE(WIN32)
-    SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} rt dl)
+    SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} rt dl)
 ENDIF(WIN32)
 
 IF(WITH_UNIFIED_TIMER)
@@ -103,14 +103,14 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -fPIC")
 add_subdirectory(Common)
 
 # Use created library
-SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} Common)
-SET(FraDIA_Core_LIBRARIES ${FraDIA_LIBRARIES})
+SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Common)
+SET(DisCODe_Core_LIBRARIES ${DisCODe_LIBRARIES})
 
 # Create Types library
 add_subdirectory(Types)
 
 # Use created library
-SET(FraDIA_LIBRARIES ${FraDIA_LIBRARIES} Types)
+SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Types)
 
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)

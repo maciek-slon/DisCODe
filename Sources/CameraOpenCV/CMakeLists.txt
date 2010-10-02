@@ -11,6 +11,6 @@ FILE(GLOB files *.cpp)
 ADD_LIBRARY(srcCameraOpenCV SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(srcCameraOpenCV ${OpenCV_LIBS} ${FraDIA_LIBRARIES} )
+TARGET_LINK_LIBRARIES(srcCameraOpenCV ${OpenCV_LIBS} ${DisCODe_LIBRARIES} )
 
 INSTALL_SOURCE(srcCameraOpenCV)

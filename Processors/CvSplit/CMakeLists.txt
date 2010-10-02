@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(procCvSplit SHARED ${files})
-TARGET_LINK_LIBRARIES(procCvSplit ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(procCvSplit ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(procCvSplit)

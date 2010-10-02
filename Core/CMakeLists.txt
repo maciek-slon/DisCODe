@@ -5,12 +5,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 FILE(GLOB files *.cpp)
 
 # Create an executable file from sources
-ADD_EXECUTABLE(FraDIA ${files})
+ADD_EXECUTABLE(DisCODe ${files})
 
 # Link required libraries
-TARGET_LINK_LIBRARIES(FraDIA ${FraDIA_Core_LIBRARIES})
+TARGET_LINK_LIBRARIES(DisCODe ${DisCODe_Core_LIBRARIES})
 
- install(TARGETS FraDIA
+ install(TARGETS DisCODe
    RUNTIME
    DESTINATION bin
    COMPONENT applications)

@@ -12,6 +12,7 @@ ADD_PROCESSOR(CvMorphology)
 ADD_PROCESSOR(CvFilter2D)
 ADD_PROCESSOR(CvPixelOperator)
 ADD_PROCESSOR(ExecTimer)
+ADD_PROCESSOR(Stereo)
 
 # Task specific processors
 ADD_PROCESSOR(MS_Sign_LUT)
@@ -20,4 +21,3 @@ ADD_PROCESSOR(MS_Sign_Decide)
 ADD_PROCESSOR(MS_Barcode_Macro)
 ADD_PROCESSOR(MS_Barcode_Prepare)
 ADD_PROCESSOR(MS_Barcode_Decide)
-ADD_PROCESSOR(Stereo)

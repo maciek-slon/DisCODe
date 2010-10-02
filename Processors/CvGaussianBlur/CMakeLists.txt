@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(procCvGaussianBlur SHARED ${files})
-TARGET_LINK_LIBRARIES(procCvGaussianBlur ${OpenCV_LIBS} ${FraDIA_LIBRARIES})
+TARGET_LINK_LIBRARIES(procCvGaussianBlur ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(procCvGaussianBlur)
