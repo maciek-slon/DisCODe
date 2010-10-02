@@ -11,6 +11,9 @@
 #include "Logger.hpp"
 
 #include "Component.hpp"
+#include "Event.hpp"
+#include "EventHandler.hpp"
+#include "DataStreamInterface.hpp"
 
 #include "ComponentManager.hpp"
 #include "ExecutorManager.hpp"

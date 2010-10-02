@@ -101,9 +101,12 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -fPIC")
 
 # Create Common library
 add_subdirectory(Common)
-
 # Use created library
 SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Common)
+
+add_subdirectory(Base)
+SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Base)
+
 SET(DisCODe_Core_LIBRARIES ${DisCODe_LIBRARIES})
 
 # Create Types library
@@ -114,7 +117,6 @@ SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Types)
 
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
-add_subdirectory(Base)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
 add_subdirectory(Sinks)

@@ -14,6 +14,8 @@
 
 #include "EventHandler.hpp"
 
+#include <boost/foreach.hpp>
+
 namespace Base {
 
 /*!
