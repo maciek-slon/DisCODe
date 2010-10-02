@@ -1,8 +1,6 @@
 /*!
  * \file Props.hpp
- * \brief
- * \author mstefanc
- * \date 2010-05-28
+ * \brief Base class for property structures.
  */
 
 #ifndef PROPS_HPP_

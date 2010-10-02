@@ -1,9 +1,6 @@
 /*!
  * \file DataStream.hpp
- * \brief
- *
- * \author mstefanc
- * \date 2010-02-26
+ * \brief Concrete implementations of data streams
  */
 
 #ifndef DATASTREAM_HPP_

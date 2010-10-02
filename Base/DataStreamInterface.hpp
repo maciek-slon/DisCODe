@@ -1,9 +1,6 @@
 /*!
- * \file DataStream.hpp
- * \brief
- *
- * \author mstefanc
- * \date 2010-02-26
+ * \file DataStreamInterface.hpp
+ * \brief Interface class for DataStreams.
  */
 
 #ifndef DATASTREAMINTERFACE_HPP_
