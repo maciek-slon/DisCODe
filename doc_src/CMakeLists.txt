@@ -13,14 +13,14 @@ endif(NOT DOXYGEN_EXECUTABLE)
 if(DOXYGEN_EXECUTABLE)
 
     # Set html output directory location
-    SET(HTML_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/doc/discode.html)
+    SET(HTML_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/doc/html)
 
     # N.B. Both the following custom rules assume the doc directory exists
     # at make time, and the following install(DIRECTORY... must have doc exist
     # at cmake time.  Therefore, create the doc directory at CMake time.
     # (Linux experimentation indicates this is a no-op if the empty or
     # non-empty directory already exists.)
-    file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/doc/discode.html)
+    file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/doc/html)
 
     ADD_CUSTOM_TARGET(
         doc

@@ -36,8 +36,8 @@ include(AddModules)
 include(CheckCXXCompilerFlag)
 
 # Define place for all created executables and libraries
-SET(LIBRARY_OUTPUT_PATH    ${CMAKE_SOURCE_DIR}/bin)
-SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+SET(LIBRARY_OUTPUT_PATH    ${CMAKE_BINARY_DIR}/bin)
+SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
