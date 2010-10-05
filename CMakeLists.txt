@@ -148,15 +148,15 @@ add_subdirectory(doc_src)
 #
 # CPack variables used when generating binary installer
 #
-set(CPACK_PACKAGE_NAME "FraDIA")
-set(CPACK_PACKAGE_VENDOR "FraDIA")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "FraDIA - Framework for Digital Image Analysis")
-set(CPACK_PACKAGE_VERSION "2.0.0")
-set(CPACK_PACKAGE_VERSION_MAJOR "2")
+set(CPACK_PACKAGE_NAME "DisCODe")
+set(CPACK_PACKAGE_VENDOR "DisCODe")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DisCODe - Distributed Component Oriented Data Processing")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "FraDIA")
-set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\icon.bmp")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "DisCODe")
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\doc_src\\\\discode.bmp")
 
 # License file
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
@@ -167,9 +167,9 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 # into the binary installer (the default behavior).
 set(CPACK_COMPONENTS_ALL applications sources processors headers)
 
-# Applications component contains main FraDIA executable and libraries
-set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "FraDIA Executable")
-set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "Framework for Digital Image Analysis")
+# Applications component contains main DisCODe executable and libraries
+set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "DisCODe Executable")
+set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "DisCODe - Distributed Component Oriented Data Processing")
 set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
 
 # Sources component contains all data sources
@@ -185,7 +185,7 @@ set(CPACK_COMPONENT_PROCESSORS_GROUP "Runtime")
 set(CPACK_COMPONENT_PROCESSORS_DEPENDS applications)
 
 # Headers component contains all files necessary to develop
-# additional FraDIA modules (data sources and processors)
+# additional DisCODe modules (data sources and processors)
 set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "Development Headers")
 set(CPACK_COMPONENT_HEADERS_DESCRIPTION "All files necessary to develop additional components (data sources and processors)")
 set(CPACK_COMPONENT_HEADERS_GROUP "SDK")
