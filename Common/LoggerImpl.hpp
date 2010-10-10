@@ -104,7 +104,7 @@ protected:
 	{
 		sum[0] = sum[1] = sum[2] = sum[3] = sum[4] = sum[5] = sum[6] = sum[7] = sum[8] = sum[9] = 0;
 
-		level = Severity::Notice;
+		level = Notice;
 	}
 
 	Logger(const Logger &)
