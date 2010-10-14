@@ -1,14 +1,7 @@
-// description of components
 /*!
-\page manuals_component Component: definition, types, states
-
-\section components Components - description
-According to the definition, a component is a software package, a web service, or a module that encapsulates a set of related functions (or data).
-Our goal is to aggregate sensorical data and extract useful information - useful for example from the point of view of a robotic control system, 
-but as well as useful for a human, solving some perception-related problem.     
-
-In order to achieve the 
- is to divide the a stream that process data into small and lightweight blocks.
+\page manuals_executors Executors - task 'engines'
+<center> [\ref manuals] </center> 
 
 
+<center> Previous: [\ref manuals_events] </center> 
 */

@@ -2,10 +2,20 @@
 /*!
 \page manuals Manuals
 
+\section discode_components DisCODe Components
 
-    
+ - \subpage manuals_components
 
-\subpage manuals_component
+\section discode_tasks DisCODe Tasks
 
+ - \subpage manuals_tasks
+
+\section discode_constant DisCODe Core
+
+ - \subpage manuals_datastreams
+
+ - \subpage manuals_events
+
+ - \subpage manuals_executors
 
 */
