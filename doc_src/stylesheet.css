@@ -806,7 +806,7 @@ DIV.tabs LI.current SPAN
 
 #menu a:hover {
 	color: #a00;
-	background: #dddddd url(menu_grad.jpg);
+	background: #dddddd url(images/menu_grad.jpg);
 	border-bottom: 1px solid #a00;
 }
 

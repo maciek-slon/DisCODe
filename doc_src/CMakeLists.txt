@@ -21,17 +21,14 @@ if(DOXYGEN_EXECUTABLE)
     # (Linux experimentation indicates this is a no-op if the empty or
     # non-empty directory already exists.)
     file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/doc/html)
+    file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/doc/html/images)
 
     ADD_CUSTOM_TARGET(
         doc
         COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/doc_src/DisCODe.Doxyfile
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/discode.png ${HTML_OUTPUT_DIR}/discode.png
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/search.js ${HTML_OUTPUT_DIR}/search/search.js
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/search.css ${HTML_OUTPUT_DIR}/search/search.css
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/header_grad.jpg ${HTML_OUTPUT_DIR}/header_grad.jpg
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/footer_grad.jpg ${HTML_OUTPUT_DIR}/footer_grad.jpg
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/menu_grad.jpg ${HTML_OUTPUT_DIR}/menu_grad.jpg
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc_src/forkme.png ${HTML_OUTPUT_DIR}/forkme.png
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/doc_src/images ${HTML_OUTPUT_DIR}/images
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         DEPENDS ${CMAKE_SOURCE_DIR}/doc_src/DisCODe.Doxyfile
     )
