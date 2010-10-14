@@ -43,7 +43,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Required on Windows
 if(WIN32)
-    SET(BOOST_ROOT D:/boost_1_42_0)
+	SET(DLFCN_WIN32 "dlfcn" CACHE PATH "dlfcn-win32 library base folder")
+	INCLUDE_DIRECTORIES(${DLFCN_WIN32}/include)
+	LINK_DIRECTORIES(${DLFCN_WIN32}/lib)
 endif(WIN32)
 
 SET(Boost_DEBUG FALSE)
@@ -87,7 +89,7 @@ endif(CPP0x)
 set(WITH_UNIFIED_TIMER OFF CACHE BOOL "Use unified timer (based on ctime)")
 
 IF(WIN32)
-    SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} )
+    SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} dl)
     ADD_DEFINITIONS(-DWIN32)
 ELSE(WIN32)
     SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} rt dl)

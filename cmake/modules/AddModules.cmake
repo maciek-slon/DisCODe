@@ -6,28 +6,49 @@
 # Add variable controlling whether to build given corresponding component or not
 # and - if set to TRUE - include component's subdirectory
 #
+# Optionally you can give additional argument to specify platform on which 
+# component can be built (use WIN32 for Windows-only and !WIN32 for *nix-only)
+#
 MACRO(ADD_PROCESSOR PROC_NAME)
-    set(PROCESSORS_${PROC_NAME} ON CACHE BOOL "Build ${PROC_NAME} processor")
-    if (PROCESSORS_${PROC_NAME})
-        MESSAGE(STATUS "\t${PROC_NAME}")
-        ADD_SUBDIRECTORY(${PROC_NAME})
-    endif(PROCESSORS_${PROC_NAME})
+	if ( ${ARGC} LESS 2 )
+		set( ARGV1 1 )
+	endif (${ARGC} LESS 2 )
+	
+	if (${ARGV1})
+		set(PROCESSORS_${PROC_NAME} ON CACHE BOOL "Build ${PROC_NAME} processor")
+		if (PROCESSORS_${PROC_NAME})
+			MESSAGE(STATUS "\t${PROC_NAME}")
+			ADD_SUBDIRECTORY(${PROC_NAME})
+		endif(PROCESSORS_${PROC_NAME})
+	endif (${ARGV1})
 ENDMACRO(ADD_PROCESSOR)
 
 MACRO(ADD_SOURCE SRC_NAME)
-    set(SOURCES_${SRC_NAME} ON CACHE BOOL "Build ${SRC_NAME} source")
-    if (SOURCES_${SRC_NAME})
-        MESSAGE(STATUS "\t${SRC_NAME}")
-        ADD_SUBDIRECTORY(${SRC_NAME})
-    endif(SOURCES_${SRC_NAME})
+	if ( ${ARGC} LESS 2 )
+		set( ARGV1 1 )
+	endif (${ARGC} LESS 2 )
+	
+	if ( ${ARGV1})
+		set(SOURCES_${SRC_NAME} ON CACHE BOOL "Build ${SRC_NAME} source")
+		if (SOURCES_${SRC_NAME})
+			MESSAGE(STATUS "\t${SRC_NAME}")
+			ADD_SUBDIRECTORY(${SRC_NAME})
+		endif(SOURCES_${SRC_NAME})
+	endif( ${ARGV1})
 ENDMACRO(ADD_SOURCE)
 
 MACRO(ADD_SINK SINK_NAME)
-    set(SINKS_${SINK_NAME} ON CACHE BOOL "Build ${SINK_NAME} sink")
-    if (SINKS_${SINK_NAME})
-        MESSAGE(STATUS "\t${SINK_NAME}")
-        ADD_SUBDIRECTORY(${SINK_NAME})
-    endif(SINKS_${SINK_NAME})
+	if ( ${ARGC} LESS 2 )
+		set( ARGV1 1 )
+	endif (${ARGC} LESS 2 )
+
+	if (${ARGV1})
+		set(SINKS_${SINK_NAME} ON CACHE BOOL "Build ${SINK_NAME} sink")
+		if (SINKS_${SINK_NAME})
+			MESSAGE(STATUS "\t${SINK_NAME}")
+			ADD_SUBDIRECTORY(${SINK_NAME})
+		endif(SINKS_${SINK_NAME})
+	endif (${ARGV1})
 ENDMACRO(ADD_SINK)
 
 #

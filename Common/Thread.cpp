@@ -19,7 +19,7 @@ typedef HANDLE thread_handle;
 typedef DWORD err_core;
 
 bool Thread::setPriority(Priority priority) {
-	thread_handle th = thread.native_handle;
+	thread_handle th = thread.native_handle();
 
 	if (!th)
 		return false;
