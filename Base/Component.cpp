@@ -187,11 +187,11 @@ Props * Component::getProperties() {
 }
 
 bool Component::running() {
-	return state == State::Running;
+	return state == Running;
 }
 
 bool Component::initialized() {
-	return state == State::Ready;
+	return state == Ready;
 }
 
 Event * Component::registerEvent(const std::string& name) {
