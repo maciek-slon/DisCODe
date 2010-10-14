@@ -38,5 +38,5 @@ Component are divided into four main types:
  - Sink - Component basing on only one input datastream. Sinks can be utilized for saving processed data to files (single images, their sequences or movies) or displaying results on screen.      
  - Proxy - Utilized for communication with external applications, e.g. robotic control systems, such as MRROC++ or OROCOS, that can utilized received information in control. 
 
-<center> Next: [\ref manuals_tasks] </center> 
+\next{manuals_tasks}
 */

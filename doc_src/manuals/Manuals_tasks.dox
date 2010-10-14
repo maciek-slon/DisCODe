@@ -22,6 +22,5 @@ The DisCODe creates <b>Connections</b> between components (in fact between their
 The tasks are created in the form of XML configuration files, having the form presented in the figure above.
 Only a single task can be loaded during the application start.  
 
-<center> Previous: [\ref manuals_components] </center> 
-<center> Next: [\ref manuals_datastreams] </center> 
+\prevnext{manuals_components,manuals_datastreams}
 */

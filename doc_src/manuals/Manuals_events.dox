@@ -2,7 +2,5 @@
 \page manuals_events Events - mechanisms for control of the flow
 <center> [\ref manuals] </center> 
 
-
-<center> Previous: [\ref manuals_datastreams] </center> 
-<center> Next: [\ref manuals_executors] </center> 
+\prevnext{manuals_datastreams,manuals_executors}
 */

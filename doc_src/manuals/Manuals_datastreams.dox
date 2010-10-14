@@ -9,6 +9,6 @@ DataStreams enable loose coupling of the components.Every component at start can
 
 It is based on the <b>pipes and filters</b> design pattern (more can be found \ref http://msdn.microsoft.com/en-us/library/ff647419.aspx "here").
  
-<center> Previous: [\ref manuals_tasks] </center> 
-<center> Next: [\ref manuals_events] </center> 
+\prevnext{manuals_tasks,manuals_events}
+
 */

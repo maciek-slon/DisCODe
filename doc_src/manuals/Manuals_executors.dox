@@ -3,5 +3,5 @@
 <center> [\ref manuals] </center> 
 
 
-<center> Previous: [\ref manuals_events] </center> 
+\prev{manuals_events}
 */
