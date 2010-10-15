@@ -199,7 +199,7 @@ private:
 /*!
  * \class PassiveExecutor
  * \brief Don't call any step, only react.
- * This object doesn't call any methods from it's components explicitely,
+ * This object doesn't call any methods from it's components explicitly,
  * but only process events and calls connected handlers.
  */
 class PassiveExecutor : public Executor {

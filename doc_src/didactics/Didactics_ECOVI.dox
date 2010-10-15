@@ -4,35 +4,11 @@
 \section Download
 
  - <a href="http://segomo.elka.pw.edu.pl/~discode/discode_pack.zip">Pack</a> - A package for machines working under the control of the GENTOO network linux (segomo). 
- - dane 
+ - Data I - A package containing images and movies used during the 1st tutorial.   
  
-\section tutorial1 Tutorial 1 - Learning DisCODe
-./discode --help
+\section de_t1 Tutorial I 
 
+ - \subpage didactics_tutorial_discode
 
- - Utilize task 1: Load a movie file - description of the configuration file
-./discode -T ../Tasks/dkdjnv
- 
- - Load another movie with change of given parameter - movie name
-./discode -T ../Tasks/dkdjnv -
- 
- - Utilize task 2:Load a movie with the utilization of a "triggered" movie source
-./discode -T ../Tasks/dkdjnv -
- 
- - Write own config: Load a sequence of images with utilization of a "triggered" sequence
-Hint: check properties of the Sequence source. 
- 
- - Write own component: find only blue ball or sth - binarization
-Hint: utilize the create.sh script for generation of the 
-Hint: Utilize the split component
-Write your own treshold
-
- - Write a processing stream: 
-mean -> split -> canny -> merge of 3 edge images
-Find the "best" merge method  
- 
- - Parallize the processing stream
-Change the level of the logger 
-./discode -L0
-
+ - \subpage didactics_tutorial_camera_calibration
 */
