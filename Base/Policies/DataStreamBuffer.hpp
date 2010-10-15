@@ -135,7 +135,7 @@ private:
 /*!
  * \brief Buffering policy - keep only the oldest data
  *
- * Only the oldesd data is remembered, when data comes before reading previous one,
+ * Only the oldest data is remembered, when data comes before reading previous one,
  * newer item is lost.
  */
 template <class T>
