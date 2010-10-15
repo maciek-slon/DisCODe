@@ -19,6 +19,7 @@ Sequence::Sequence(const std::string & name) : Base::Component(name) {
 	LOG(TRACE) << "Hello Sequence from dl\n";
 
 	frame = 0;
+	trig = true;
 }
 
 Sequence::~Sequence() {
@@ -27,6 +28,9 @@ Sequence::~Sequence() {
 
 bool Sequence::onInit() {
 	LOG(TRACE) << "Sequence::initialize\n";
+
+	h_onTrigger.setup(this, &Sequence::onTrigger);
+	registerHandler("onTrigger", &h_onTrigger);
 
 	newImage = registerEvent("newImage");
 
@@ -45,6 +49,11 @@ bool Sequence::onFinish() {
 }
 
 bool Sequence::onStep() {
+	if (props.triggered && !trig)
+		return true;
+
+	trig = false;
+
 	if (frame >= files.size())
 		return false;
 
@@ -78,6 +87,10 @@ bool Sequence::findFiles() {
 		LOG(INFO) << fname;
 
 	return !files.empty();
+}
+
+void Sequence::onTrigger() {
+	trig = true;
 }
 
 }//: namespace Sequence

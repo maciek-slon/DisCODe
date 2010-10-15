@@ -42,7 +42,8 @@
  *
  * \par Event handlers:
  *
- * None at the moment
+ * \handler{onTrigger}
+ * Trigger new frame
  *
  *
  * \par Properties:
@@ -55,6 +56,8 @@
  * If set, then found siles will be sorted in ascending order
  * \prop{prefetch,bool,false}
  * If set, all files will be loaded beforehand, otherwise images are loaded just before they are needed.
+ * \prop{triggered,bool,false}
+ * If set, new frames will be produced only after onTrigger event
  *
  *
  * \see \ref regex_basics
@@ -76,6 +79,8 @@ struct Props : public Base::Props {
 	bool sort;
 	bool prefetch;
 
+	bool triggered;
+
 
 	void load(const ptree & pt) {
 		directory = pt.get("directory", ".");
@@ -83,6 +88,8 @@ struct Props : public Base::Props {
 
 		sort = pt.get("sort", true);
 		prefetch = pt.get("prefetch", false);
+
+		triggered = pt.get("triggered", false);
 	}
 
 	void save(ptree & pt) {
@@ -90,6 +97,7 @@ struct Props : public Base::Props {
 		pt.put("pattern", pattern);
 		pt.put("sort", sort);
 		pt.put("prefetch", prefetch);
+		pt.put("triggered", triggered);
 	}
 };
 
@@ -151,6 +159,15 @@ protected:
 	/// Output data stream
 	Base::DataStreamOut<cv::Mat> out_img;
 
+
+	/*!
+	 * Event handler function.
+	 */
+	void onTrigger();
+
+	/// Event handler.
+	Base::EventHandler<Sequence> h_onTrigger;
+
 private:
 	/**
 	 * Fill list of files according to pattern
@@ -170,6 +187,8 @@ private:
 
 	/// sequence properties
 	Props props;
+
+	bool trig;
 };
 
 }//: namespace Sequence

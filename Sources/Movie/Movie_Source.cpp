@@ -49,6 +49,8 @@ bool Movie_Source::onStep() {
 	if (props.triggered && !trig)
 		return true;
 
+	trig = false;
+
 	LOG(TRACE) << "Movie_Source::step() start\n";
 	cap >> frame;
 	if (frame.empty()) {
