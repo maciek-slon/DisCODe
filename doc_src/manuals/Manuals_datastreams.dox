@@ -1,0 +1,14 @@
+/*!
+\page manuals_datastreams DataStreams - mechanism for passing data between components
+<center> [\ref manuals] </center> 
+
+DataStreams enable loose coupling of the components.Every component at start can create any number of dataports - both inputs and outputs. 
+
+
+<img src="images/class_connection.png" style="margin: 5px;" alt="DataStreams"/>
+
+It is based on the <b>pipes and filters</b> design pattern (more can be found \ref http://msdn.microsoft.com/en-us/library/ff647419.aspx "here").
+ 
+\prevnext{manuals_tasks,manuals_events}
+
+*/

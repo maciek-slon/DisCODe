@@ -1,0 +1,6 @@
+/*!
+\page manuals_events Events - mechanisms for control of the flow
+<center> [\ref manuals] </center> 
+
+\prevnext{manuals_datastreams,manuals_executors}
+*/
