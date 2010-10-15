@@ -23,6 +23,11 @@
  * Define active keys in 'keys' property, and use it's events. For example, with
  * keys="ABC", there are 3 events available: A_Pressed, B_Pressed and C_Pressed.
  *
+ * \par Notes:
+ *
+ * \li it's all case sensitive, so if you specify keys="Aa" there will be two events created: A_Pressed and a_Pressed
+ * \li this component have to be run in separate thread, otherwise task execution will be freezed in each step until ENTER is pressed.
+ *
  *
  * \par Data streams:
  *
@@ -41,7 +46,7 @@
  * \par Properties:
  *
  * \prop{keys,string,"ABC"}
- * Keys, witch have associated events
+ * Keys, which have associated events
  *
  * @{
  *
