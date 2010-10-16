@@ -73,6 +73,7 @@ LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
 add_definitions(-Wall)
+add_definitions(-Werror=return-type)
 
 # Checking if compiler supports C++0x standard
 CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)
@@ -122,6 +123,7 @@ add_subdirectory(Core)
 add_subdirectory(Sources)
 add_subdirectory(Processors)
 add_subdirectory(Sinks)
+add_subdirectory(Proxies)
 
 # Small utility programs
 set(WITH_TOOLS ON CACHE BOOL "Build tools")
