@@ -9,6 +9,8 @@
 
 #include "Movie_Source.hpp"
 
+#include <boost/filesystem.hpp>
+
 namespace Sources {
 namespace Movie {
 
@@ -32,10 +34,21 @@ bool Movie_Source::onInit() {
 	h_onTrigger.setup(this, &Movie_Source::onTrigger);
 	registerHandler("onTrigger", &h_onTrigger);
 
+	if (!boost::filesystem::exists(props.filename)) {
+		LOG(ERROR) << "File " << props.filename << " doesn't exist.";
+		LOG(NOTICE) << "Check config file or override movie filename thorugh -S switch.";
+		return false;
+	}
 
 	cap.open(props.filename);
 
-	return cap.isOpened();
+	if (!cap.isOpened()) {
+		LOG(ERROR) << "Couldn't open movie " << props.filename;
+		LOG(NOTICE) << "Check if you have proper codecs installed.";
+		return false;
+	}
+
+	return true;
 }
 
 bool Movie_Source::onFinish() {
