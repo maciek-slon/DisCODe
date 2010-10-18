@@ -23,3 +23,4 @@ ADD_PROCESSOR(MS_Barcode_Prepare)
 ADD_PROCESSOR(MS_Barcode_Decide)
 
 ADD_PROCESSOR(CvFindChessboardCorners)
+ADD_PROCESSOR(CvSolvePnP)
