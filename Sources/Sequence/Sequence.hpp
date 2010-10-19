@@ -22,10 +22,11 @@
  * \defgroup Sequence Sequence
  * \ingroup Sources
  *
- * Image sequence provider. At the moment there is only one type of sequences
- * available, based on image filename pattern (regular expression) and directory,
- * in iwhich files will be searched.
+ * \brief Image sequence provider.
  *
+ * At the moment there is only one type of sequences
+ * available, based on image filename pattern (regular expression) and directory,
+ * in which files will be searched.
  *
  *
  * \par Data streams:
