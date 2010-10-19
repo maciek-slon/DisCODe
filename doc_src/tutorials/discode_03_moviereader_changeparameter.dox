@@ -1,0 +1,54 @@
+/*!
+\page discode_03_moviereader_changeparameter Change parameter from the command line 
+
+\section d03_1 Description
+Change command line in order to override the default value of parameter.
+\cons
+./DisCODe -T ../Tasks/MovieViewer.xml -SComponents.Movie.filename=/home/discode/public_html/datasets/MS_Sign/Sign_2_HD.avi
+\endcons
+
+\section d03_3 Task file
+The file containing the MovieViewer task is listed below. 
+\code
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Movie type="Movie" thread="Thread1" group="s1">
+			<filename>/home/discode/public_html/datasets/MS_Sign/Sign_1_HD.avi</filename>
+		</Movie>
+
+		<Window type="CvWindow" thread="Thread1" group="s1">
+			<title>Preview</title>
+		</Window>
+	</Components>
+
+	<!-- Threads of execution -->
+	<Executors>
+		<Thread1 type="continous">
+			<main_component>Movie</main_component>
+		</Thread1>
+	</Executors>
+
+	<!-- Event connections -->
+	<Events>
+		<Event source="Movie.newImage"      destination="Window.onNewImage"/>
+	</Events>
+
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<Movie>
+			<out_img type="out" group="Con1"/>
+		</Movie>
+
+		<Window>
+			<in_img  type="in" group="Con1"/>
+		</Window>
+	</DataStreams>
+
+</Task>
+\endcode
+
+
+\see The manual page regarding executors. 
+
+*/

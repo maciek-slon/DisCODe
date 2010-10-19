@@ -1,0 +1,42 @@
+// Using logger
+/*!
+\page using_logger Using Logger class
+
+\section logger_intro Introduction
+
+During application development it's crucial to have ability to show some
+information (for debugging purpose, or to simply trace program execution).
+After development phase methods to print some information are needed.
+Using cout directly has many disadvantages - logging simultanously to file and
+on screen needs explicit code for each output, it's hard to switch some messages
+off (for example leaving only errors and warnings) and almost any change
+in that kind of system leads to code recompiling.
+
+Utils::Logger class meets all expectations mentioned above:
+- provides unified method to log messages to different outputs (screen console,
+  text files, html files and more)
+- has 8 predefined message severity levels (from trace, through info and warning
+  to fatal error)
+- messages can be filtered per output (those below set severity level are ignored)
+
+As a feature logger makes use of functions from Console.hpp to produce nice
+looking color text for console output.
+
+\section logger_examples Examples
+
+\subsection logger_examples_1 Simple logging
+
+\includelineno logger_example_1.cpp
+*/
+
+
+// Regular expressions basics
+/*!
+\page regex_basics Regular expressions basics
+
+\section why_regex Why regular expressions?
+
+Throughout FraDIA, there are some places where regular expressions are used.
+It's used for example when specifying file name patterns, and this quick tutorial
+will cover this usecase.
+*/
