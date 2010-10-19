@@ -9,7 +9,7 @@
  
 \section de_t1 Tutorial I 
 
- - \subpage didactics_tutorial_discode
+ - 1. \subpage didactics_tutorial_discode
 
- - \subpage didactics_tutorial_camera_calibration
+ - 2. \subpage didactics_tutorial_camera_calibration
 */

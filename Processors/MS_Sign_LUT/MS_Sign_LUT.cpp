@@ -147,7 +147,7 @@ void MS_Sign_LUT::onNewImage()
 
 		newImage->raise();
 	}
-	catch (Common::FraDIAException& ex) {
+	catch (Common::DisCODeException& ex) {
 		LOG(ERROR) << ex.what() << "\n";
 		ex.printStackTrace();
 		exit(EXIT_FAILURE);

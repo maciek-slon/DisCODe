@@ -1,11 +1,11 @@
 /*!
- * \file FraDIAException.hpp
+ * \file DisCODeException.hpp
  * \brief Class used for exception handling.
  * \date 25.04.2008
  */
 
-#ifndef _FraDIAException_HPP_
-#define _FraDIAException_HPP_
+#ifndef _DisCODeException_HPP_
+#define _DisCODeException_HPP_
 
 #include <string>
 #include <exception>
@@ -22,11 +22,11 @@ namespace Common
 {
 
 /*!
- * \class FraDIAException
+ * \class DisCODeException
  * \brief Class used during the exception handling.
  * \author tkornuta
  */
-class FraDIAException : public std::exception
+class DisCODeException : public std::exception
 {
 public:
 	/*!
@@ -49,7 +49,7 @@ public:
 	/*!
 	* Constructor - creates description on the base of string.
 	*/
-	FraDIAException(const std::string & description_) : std::exception(), description(description_) {
+	DisCODeException(const std::string & description_) : std::exception(), description(description_) {
 	#if defined(WIN32)
 	#else
 		void * array[25];
@@ -79,7 +79,7 @@ public:
 	/*!
 	* Destructor.
 	*/
-	virtual ~FraDIAException () throw () {
+	virtual ~DisCODeException () throw () {
 	#if defined(WIN32)
 
 	#else

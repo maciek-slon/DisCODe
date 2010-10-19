@@ -15,7 +15,7 @@
 #include <boost/ptr_container/ptr_map.hpp>
 
 #include "Component_Aux.hpp"
-#include "FraDIAException.hpp"
+#include "DisCODeException.hpp"
 #include "SharedLibraryCommon.hpp"
 #include "Utils.hpp"
 #include "Logger.hpp"
@@ -124,7 +124,7 @@ public:
 
 		if (component_factories.count(type) < 1) {
 			LOG(ERROR) << "Module type " << type << " not found!\n";
-			throw Common::FraDIAException("createComponent");
+			throw Common::DisCODeException("createComponent");
 		}
 
 		components[name] = component_factories[type].create(name);
@@ -140,7 +140,7 @@ public:
 	Base::Component * getComponent(const std::string & name) {
 		if (components.count(name) < 1) {
 			LOG(ERROR) << "Module " << name << " can't be found!\n";
-			throw Common::FraDIAException("getComponent");
+			throw Common::DisCODeException("getComponent");
 		}
 
 		return components[name];
