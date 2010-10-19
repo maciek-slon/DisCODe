@@ -10,13 +10,45 @@ or creating new sources or processors.
 - \ref eclipseconfig : Required plugins, importing repository, using cmake.
 
 \section dev_components Introduction to DisCODe:
+- \ref discode_00_description
 - \ref discode_01_parameters
 - \ref discode_02_moviereader
 - \ref discode_03_moviereader_changeparameter
+- \ref discode_04_sequencereader
+- \ref discode_05_trigerred_sequencereader
+- \ref discode_06_refreshedtriggered_sequencereader
+- \ref discode_07_component_images_sharpener
 
-\section using_utils Utility library usage
+\section using_utils Utility library usage:
 - \ref using_logger
 */
 
 
 // - \ref newprocessor
+/*!
+\page discode_00_description How to read the tutorials
+
+\section ts_description Description
+Contains small description of the problem.
+
+\section ts_command Command
+Shell command. 
+
+\section ts_structure Task structure
+Describes the image of the task structure.
+
+\section ts_file Task file
+Contains the description of the task file (XML).
+
+\section ts_component Component
+Contains informations related to given component.
+
+\section ts_result Result
+Describes the results of the given tutorial.
+
+\section ts_sections Related sections
+List of useful links.
+
+\next{discode_01_parameters}
+
+*/

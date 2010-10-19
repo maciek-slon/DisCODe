@@ -1,128 +1,69 @@
 /*!
-\page didactics_tutorial_discode Introduction to DisCODe 
+\page discode_04_sequencereader Create a new task 
 
-\section dtd_1a Show Parameters
-After successful download enter the bin directory and familiarize yourself with DisCODe parameters.
-\cons
-cd bin 
-./DisCODe --help
-\endcons
+\section ts_description
+Create a task responsible for loading sequence of images from files.
 
-<br />
+\section ts_structure Task structure
+The structure of the SequenceViewer task is shown below.
 
-\section dtd_1b Play a default movie
-Load a task responsible for loading movie from file.
-\cons
-./DisCODe -T ../Tasks/MovieReader.xml
-\endcons
+\htmlonly
+<img src="images/SequenceViewer.png" style="margin: 5px; width: 500px;" alt="SequenceViewer"/>
+\endhtmlonly
 
-The structure of the MovieViewer task is shown below.
-<img src="images/MovieViewer.png" style="margin: 5px;" alt="MovieViewer"/>
-
-<br />
-
- 
-\section dtd_1c Play another movie by changing of a parameter from command line 
-Change command line in order to override the default value of parameter.
-\cons
-./DisCODe -T ../Tasks/MovieReader.xml -SComponents.Movie.filename=....
-\endcons
-
-The file containing the MovieReaded task is listed below. 
+\section ts_file Task file
+Create a new SequenceViewer.xml file on the base of the existing MovieViewer.xml.
+Modify required parts:
+- Replace the <b>Movie</b> component with the <b>Sequence</b> component. 
 \code
-<Task>
-	<!-- List of components -->
 	<Components>
-		<Movie type="Movie" thread="Thread1" group="s1">
-			<filename>zakaz_1.1280.avi</filename>
-		</Movie>
-
-		<Window type="CvWindow" thread="Thread1" group="s1">
-			<title>Preview</title>
-		</Window>
-	</Components>
-
-	<!-- Threads of execution -->
-	<Executors>
-		<Thread1 type="continous">
-			<main_component>Movie</main_component>
-		</Thread1>
-	</Executors>
-
-	<!-- Event connections -->
-	<Events>
-		<Event source="Movie.newImage"      destination="Window.onNewImage"/>
-	</Events>
-
-	<!-- Data stream assignments -->
-	<DataStreams>
-		<Movie>
-			<out_img type="out" group="Con1"/>
-		</Movie>
-
-		<Window>
-			<in_img  type="in" group="Con1"/>
-		</Window>
-	</DataStreams>
-
-</Task>
+		...
+		<Sequence type="Sequence" thread="Thread1" group="s1">
+			<directory>/home/discode/public_html/datasets/standard/</directory>
+		</Sequence>
+		...
 \endcode
 
-
-<br />
- 
-\section dtd_1d Play movie frame-by-frame 
-Load a movie with the utilization of a "triggered" movie source.
-\cons
-./DisCODe -T ../Tasks/TriggeredMovie.xml 
-\endcons
- 
-<br />
-  
-\section dtd_1de Utilize the logger
-Change the level of the logger. 
-\cons
-./DisCODe -L0 -T ../Tasks/TriggeredMovie.xml
-\endcons
-
-<br />
-
-\section dtd_1e Display sequence of images one-by-one 
-Write a configuration file utilizing the Sequence source and a Keystroke. 
-\cons
-./DisCODe -T ../Tasks/TriggeredSequenceReader.xml
-\endcons
-\note Check properties of the Sequence source. 
-
-<br />
-
-\section dtd_1f Sharpen the images 
-Write own component responsible for sharpening of the image.
-Utilize the standard Laplacian 3-by-3 kernel shown below.
+- Set the main thread component to <b>Sequence</b>. 
 \code
--1 -1 -1
--1  8 -1
--1 -1 -1
+	<Executors>
+		...
+		<Thread1 type="continous">
+			<main_component>Sequence</main_component>
+		</Thread1>
+		...
 \endcode
-\note Utilize the create.sh script for generation of the new component shell. 
-\see The manual page regarding components. 
 
-<br />
+- Connect events. 
+\code
+	<Events>
+		...
+		<Event source="Sequence.newImage" destination="Window.onNewImage"/>
+		...
+\endcode
 
-\section dtd_1g Detect the blue ball
-Create a processing stream which will threshold image in order to find only blue segments. Write your own component responsible for thresholding.
-\note Utilize the cvSplit component.
+- Assign data streams. 
+\code
+	<DataStreams>
+		...
+		<Sequence>
+			<out_img type="out" group="Con1"/>
+		</Sequence>
+		...
+\endcode
 
+\section ts_result Result
+A sequence of images  will be displayed image  after image.
 
-<br />
+\note To break the program execution press <b>CTRL +C</b> (the SIGINT signal will be sent).
 
-\section dtd_1h Write edge detection processing stream.
- - Stream should consist of the following steps: mean -> split -> canny -> merge of 3 edge images
- - Find the "best" merge method.
- 
-<br />
-  
-\section dtd_1i Parallelize the processing stream
-\see The manual page regarding executors. 
+\section ts_sections Related sections
+\see \ref manuals_tasks : Description of tasks
+\see \ref manuals_components : Description of components
+\see \ref manuals_executors : Description of executors
+\see \ref Sequence : Source responsible for loading image sequence from files.
+\see \ref CvWindow : Sink responsible for displaying images
+
+\prevnext{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
 
 */

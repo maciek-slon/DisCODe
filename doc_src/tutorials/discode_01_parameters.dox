@@ -1,17 +1,16 @@
 /*!
-\page discode_01_parameters Display DisCODe Parameters 
+\page discode_01_parameters Display DisCODe parameters 
 
-\section d01_1 Description
+\section ts_description Description
 Enter the bin directory and familiarize yourself with DisCODe parameters.
 
-\section d01_2 Command
+\section ts_command Command
 \cons
 cd bin 
 ./DisCODe --help
 \endcons
 
-\section d01_3 Result
-<br />
+\section ts_result Result
 Basic options:
   - <b>--help</b>                            Produce the help message.
   - <b>-T [ --task ] arg</b>                 Choose task file to be loaded and executed.
