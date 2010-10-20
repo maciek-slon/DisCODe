@@ -10,6 +10,7 @@
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include <sstream>
+#include <stdexcept>
 
 namespace Base {
 
@@ -22,7 +23,9 @@ matrix <double> Props::str2mat(const std::string& str, int rows, int cols) const
 
 	stringstream ss(str);
 
-	ss>>m;
+	if( !(ss>>m) ){
+		throw runtime_error("Props::str2mat error parsing string: " + str);
+	}
 
 	return m;
 }

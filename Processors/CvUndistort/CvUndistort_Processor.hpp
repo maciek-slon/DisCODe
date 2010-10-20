@@ -1,28 +1,25 @@
 /*
- * CvSolvePnP_Processor.hpp
+ * CvUndistort_Processor.hpp
  *
- *  Created on: 18-10-2010
- *      Author: mateusz
+ *  Created on: Oct 20, 2010
+ *      Author: mboryn
  */
 
-#ifndef CVSOLVEPNP_PROCESSOR_HPP_
-#define CVSOLVEPNP_PROCESSOR_HPP_
+#ifndef CVUNDISTORT_PROCESSOR_HPP_
+#define CVUNDISTORT_PROCESSOR_HPP_
 
 #include <cv.h>
+#include <boost/shared_ptr.hpp>
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
-#include "Props.hpp"
-#include "EventHandler.hpp"
-#include "DataStream.hpp"
-#include "Objects3D/Object3D.hpp"
 
 namespace Processors {
 
-namespace CvSolvePnP {
+namespace CvUndistort {
 
-struct CvSolvePnPProps: Base::Props
+struct CvUndistortProps : public Base::Props
 {
 	cv::Mat cameraMatrix;
 	cv::Mat distCoeffs;
@@ -62,11 +59,11 @@ struct CvSolvePnPProps: Base::Props
 	}
 };
 
-class CvSolvePnP_Processor: public Base::Component
+class CvUndistort_Processor : public Base::Component
 {
 public:
-	CvSolvePnP_Processor(const std::string & n);
-	virtual ~CvSolvePnP_Processor();
+	CvUndistort_Processor(const std::string& n);
+	virtual ~CvUndistort_Processor();
 
 	virtual Base::Props * getProperties();
 protected:
@@ -101,21 +98,29 @@ protected:
 	virtual bool onStep();
 
 private:
+	/*!
+	 * Event handler function.
+	 */
+	void onNewImage();
 
-	void onNewObject3D();
+	/// Event handler.
+	Base::EventHandler <CvUndistort_Processor> h_onNewImage;
+	Base::Event *newUndistortedImage;
 
-	CvSolvePnPProps props;
+	Base::DataStreamIn <cv::Mat> in_img;
+	Base::DataStreamOut <cv::Mat> out_img;
 
-	Base::DataStreamInPtr <Types::Objects3D::Object3D> in_object3d;
-	Base::DataStreamOut <Types::Objects3D::Object3D> out_object3d;
+	cv::Mat map1;
+	cv::Mat map2;
+	int interpolation;
 
-	Base::EventHandler <CvSolvePnP_Processor> h_onNewObject3D;
+	CvUndistortProps props;
 };
 
-} // namespace CvSolvePnP
+} // namespace CvUndistort
 
 } // namespace Processors
 
-REGISTER_PROCESSOR_COMPONENT("CvSolvePnP", Processors::CvSolvePnP::CvSolvePnP_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("CvUndistort", Processors::CvUndistort::CvUndistort_Processor, Common::Panel_Empty)
 
-#endif /* CVSOLVEPNP_PROCESSOR_HPP_ */
+#endif /* CVUNDISTORT_PROCESSOR_HPP_ */

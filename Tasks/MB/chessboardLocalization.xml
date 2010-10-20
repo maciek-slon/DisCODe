@@ -5,8 +5,8 @@
 		</ImageSource>-->
 		
 		<ImageSource type="Movie" thread="Thread1" group="s1">
-			<filename>/mnt/sda2/Mateusz/SEM8/PDI-2/filmy/pbeihszachownica8.avi</filename>
-			<filename>/mnt/sda2/tmp/zabawka.avi</filename>
+			<!-- <filename>/mnt/sda2/Mateusz/SEM8/PDI-2/filmy/pbeihszachownica8.avi</filename> -->
+			<filename>/home/mboryn/filmy_serwomechanizmy_wizyjne/pbeihszachownica8.avi</filename>
 		</ImageSource>
 		
 		<!--  <ImageSource type="CameraUniCap" thread="Thread1" group="s1">
@@ -17,17 +17,23 @@
 		</BGRToGray>
 		
 		<FindChessboard type="CvFindChessboardCorners" thread="Thread1" group="s1">
-			<width>3</width>
-			<height>4</height>
+			<width>4</width>
+			<height>3</height>
 			<squareSize>0.02</squareSize>
 		</FindChessboard>
 		
 		<PositionEstimator type="CvSolvePnP" thread="Thread1" group="s1">
 			<cameraMatrix>
-				asfd
+				[3,3](
+					(647.07647705, 0., 383.50000000),
+					(0., 632.76348877, 287.50000000),
+					(0, 0, 1)
+				)
 			</cameraMatrix>
 			<distCoeffs>
-				wer
+				[1,5](
+					(-0.51084775, 0.23313555, 4.50637517e-03, -6.86281081e-03, 4.94365674e-03)
+				)
 			</distCoeffs>
 		</PositionEstimator>
 		

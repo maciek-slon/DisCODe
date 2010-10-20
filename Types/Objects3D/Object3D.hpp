@@ -21,7 +21,7 @@ struct HomogMatrix
 	double elements[3][4];
 };
 
-class Object3D: public Types::Drawable
+class Object3D : public Types::Drawable
 {
 public:
 	Object3D() :
@@ -43,13 +43,24 @@ public:
 	{
 	}
 
-	void setImagePoints(const cv::vector <cv::Point2f>& imagePoints)
+//	const Object3D& operator=(const Object3D& o)
+//	{
+//		imagePointsSet = o.imagePointsSet;
+//		modelPointsSet = o.imagePointsSet;
+//		positionSet = o.positionSet;
+//		imagePoints = o.imagePoints;
+//		modelPoints = o.modelPoints;
+//		position = o.position;
+//		return *this;
+//	}
+
+	void setImagePoints(const std::vector <cv::Point2f>& imagePoints)
 	{
 		this->imagePoints = imagePoints;
 		imagePointsSet = true;
 		positionSet = false;
 	}
-	const cv::vector <cv::Point2f>& getImagePoints() const
+	const std::vector <cv::Point2f>& getImagePoints() const
 	{
 		if (!imagePointsSet) {
 			throw std::logic_error("imagePoints has not been set.");
@@ -57,14 +68,14 @@ public:
 		return imagePoints;
 	}
 
-	void setModelPoints(const cv::vector <cv::Point3f>& modelPoints)
+	void setModelPoints(const std::vector <cv::Point3f>& modelPoints)
 	{
 		this->modelPoints = modelPoints;
 		modelPointsSet = true;
 		positionSet = false;
 	}
 
-	const cv::vector <cv::Point3f>& getModelPoints() const
+	const std::vector <cv::Point3f>& getModelPoints() const
 	{
 		if (!modelPointsSet) {
 			throw std::logic_error("modelPoints has not been set.");
@@ -86,13 +97,15 @@ public:
 		return position;
 	}
 
+	virtual Object3D* clone() = 0;
+
 protected:
 	bool imagePointsSet;
 	bool modelPointsSet;
 	bool positionSet;
 
-	cv::vector <cv::Point2f> imagePoints;
-	cv::vector <cv::Point3f> modelPoints;
+	std::vector <cv::Point2f> imagePoints;
+	std::vector <cv::Point3f> modelPoints;
 	HomogMatrix position;
 };
 
