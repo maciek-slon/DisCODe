@@ -17,7 +17,7 @@ or creating new sources or processors.
 - \ref discode_04_sequencereader
 - \ref discode_05_trigerred_sequencereader
 - \ref discode_06_refreshedtriggered_sequencereader
-- \ref discode_07_component_images_sharpener
+- \ref discode_07_component_images_blurer
 
 \section using_utils Utility library usage:
 - \ref using_logger

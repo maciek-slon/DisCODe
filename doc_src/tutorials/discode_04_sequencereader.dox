@@ -14,22 +14,22 @@ The structure of the SequenceViewer task is shown below.
 \section ts_file Task file
 Create a new SequenceViewer.xml file on the base of the existing MovieViewer.xml.
 Modify required parts:
-- Replace the <b>Movie</b> component with the <b>Sequence</b> component. 
+- Replace the <b>Mov1</b> component with the <b>Seq1</b> component. 
 \code
 	<Components>
 		...
-		<Sequence type="Sequence" thread="Thread1" group="s1">
+		<Seq1 type="Sequence" thread="Exec1" group="s1">
 			<directory>/home/discode/public_html/datasets/standard/</directory>
-		</Sequence>
+		</Seq1>
 		...
 \endcode
 
-- Set the main thread component to <b>Sequence</b>. 
+- Set the main thread component to <b>Seq1</b>. 
 \code
 	<Executors>
 		...
-		<Thread1 type="continous">
-			<main_component>Sequence</main_component>
+		<Thread1 type="continuous">
+			<main_component>Seq1</main_component>
 		</Thread1>
 		...
 \endcode
@@ -38,7 +38,7 @@ Modify required parts:
 \code
 	<Events>
 		...
-		<Event source="Sequence.newImage" destination="Window.onNewImage"/>
+		<Event source="Seq1.newImage" destination="Wnd1.onNewImage"/>
 		...
 \endcode
 
@@ -46,12 +46,12 @@ Modify required parts:
 \code
 	<DataStreams>
 		...
-		<Sequence>
+		<Seq1>
 			<out_img type="out" group="Con1"/>
-		</Sequence>
-		<Window>
-			<in_img type="in" group="Con1"/>
-		</Window>
+		</Seq1>
+		<Wnd1>
+			<in_img  type="in" group="Con1"/>
+		</Wnd1>
 		...
 \endcode
 
