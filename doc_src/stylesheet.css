@@ -17,6 +17,7 @@ body, table, div, p, dl {
 
 body {
 	counter-reset: section;
+	overflow-y: scroll;
 }
 
 table.simple_table {
@@ -32,6 +33,13 @@ table.simple_table td.head {
 	border-bottom: 1px solid #606060;
 	font-weight: bold;
 	text-align: center;
+}
+
+td.index_header {
+	background: url(images/menu_grad.jpg);
+	border-bottom: 1px dotted #555;
+	font-weight: bold;
+	padding-left: 10px;
 }
 
 div.linkimage {
