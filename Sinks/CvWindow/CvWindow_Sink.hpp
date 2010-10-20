@@ -161,8 +161,6 @@ protected:
 	 */
 	bool onStop();
 
-
-
 	/*!
 	 * Event handler function.
 	 */
@@ -181,6 +179,8 @@ protected:
 	/// Window properties
 	WndProps props;
 
+	/// Image to be drawn.
+	cv::Mat img;
 
 	boost::shared_ptr<Types::Drawable> to_draw;
 };

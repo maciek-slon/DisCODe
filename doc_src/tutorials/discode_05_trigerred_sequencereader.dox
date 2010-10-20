@@ -10,7 +10,7 @@ to trigger the next image load, thus display.
 The structure of the TriggeredSequenceViewer task is shown below.
 
 \htmlonly
-<img src="images/TriggeredSequenceViewer.png" style="margin: 5px; width: 500px;" alt="TriggeredSequenceViewer"/>
+<img src="images/TriggeredSequenceViewer.png" style="margin: 5px; width: 600px;" alt="TriggeredSequenceViewer"/>
 \endhtmlonly
 
 \note The reason of the separate thread for the Keyboard is explained in its description.
@@ -28,6 +28,16 @@ Modify required parts:
 		...
 \endcode
 
+- Set the <b>triggered</b> property of the <b>Sequence</b> component.  
+\code
+		<Sequence type="Sequence" thread="Thread1" group="s1">
+			...
+			<triggered>true</triggered>
+			...
+		</Sequence>
+\endcode
+
+
 - Create second executor and set the main thread component to <b>Kbd</b>. 
 \code
 	<Executors>
@@ -38,7 +48,7 @@ Modify required parts:
 		...
 \endcode
 
-- Add event - thrown when the <b>t</b> button will be pressed and handled by sequence <b>onTrigger</b>. 
+- Add event and event handler - thrown when the <b>t</b> button will be pressed and handled by sequence <b>onTrigger</b>. 
 \code
 	<Events>
 		...

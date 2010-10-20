@@ -8,7 +8,7 @@ Create a task responsible for loading sequence of images from files.
 The structure of the SequenceViewer task is shown below.
 
 \htmlonly
-<img src="images/SequenceViewer.png" style="margin: 5px; width: 500px;" alt="SequenceViewer"/>
+<img src="images/SequenceViewer.png" style="margin: 5px; width: 400px;" alt="SequenceViewer"/>
 \endhtmlonly
 
 \section ts_file Task file
@@ -49,6 +49,9 @@ Modify required parts:
 		<Sequence>
 			<out_img type="out" group="Con1"/>
 		</Sequence>
+		<Window>
+			<in_img type="in" group="Con1"/>
+		</Window>
 		...
 \endcode
 

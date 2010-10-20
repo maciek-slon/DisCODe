@@ -13,7 +13,7 @@ Load a task responsible for loading movie from files.
 The structure of the MovieViewer task is shown below.
 
 \htmlonly
-<img src="images/MovieViewer.png" style="margin: 5px; width: 500px;" alt="MovieViewer"/>
+<img src="images/MovieViewer.png" style="margin: 5px; width: 400px;" alt="MovieViewer"/>
 \endhtmlonly
 
 \section ts_result Result

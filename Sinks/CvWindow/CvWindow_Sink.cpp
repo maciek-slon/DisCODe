@@ -46,6 +46,15 @@ bool CvWindow_Sink::onFinish() {
 bool CvWindow_Sink::onStep()
 {
 	LOG(TRACE)<<"CvWindow_Sink::step\n";
+
+	try {
+		// Refresh image.
+		imshow( props.title, img );
+		waitKey( 2 );
+	}
+	catch(...) {
+		LOG(ERROR) << "CvWindow::onNewImage failed\n";
+	}
 	return true;
 }
 
@@ -63,7 +72,7 @@ void CvWindow_Sink::onNewImage() {
 	LOG(TRACE)<<"CvWindow_Sink::onNewImage\n";
 
 	try {
-		cv::Mat img = in_img.read().clone();
+		img = in_img.read().clone();
 
 		if (!in_draw.empty()) {
 			to_draw = in_draw.read();
@@ -72,6 +81,7 @@ void CvWindow_Sink::onNewImage() {
 		if (to_draw)
 			to_draw->draw(img, CV_RGB(255,0,255));
 
+		// Display image.
 		imshow( props.title, img );
 		waitKey( 2 );
 	}
