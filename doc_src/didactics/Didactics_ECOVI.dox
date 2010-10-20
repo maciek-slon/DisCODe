@@ -4,11 +4,12 @@
 \section Download
 
  - <a href="http://segomo.elka.pw.edu.pl/~discode/discode_pack.zip">Pack</a> - A package for machines working under the control of the GENTOO network linux (segomo). 
- - Data I - A package containing images and movies used during the 1st tutorial.   
+ - Datasets - Images and movies for tutorials can be downloaded from <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/">http://segomo.elka.pw.edu.pl/~discode/datasets/</a>
+ 
  
 \section de_t1 Tutorial I 
 
- - \subpage didactics_tutorial_discode
+ - 1. \subpage didactics_tutorial_discode
 
- - \subpage didactics_tutorial_camera_calibration
+ - 2. \subpage didactics_tutorial_camera_calibration
 */

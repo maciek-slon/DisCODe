@@ -12,7 +12,7 @@
 
 #include <signal.h>
 
-#include "FraDIAException.hpp"
+#include "DisCODeException.hpp"
 #include "ConnectionManager.hpp"
 #include "ComponentManager.hpp"
 #include "ExecutorManager.hpp"
@@ -34,10 +34,10 @@ namespace po = boost::program_options;
 namespace pt = boost::property_tree;
 
 volatile bool running = true;
-bool unstopable = false;
+bool unstoppable = false;
 
 void terminate (int param) {
-	if (unstopable) {
+	if (unstoppable) {
 		std::cout << "\rGet lost! WMAHAHA!\n";
 		return;
 	}
@@ -52,7 +52,7 @@ void terminate (int param) {
  */
 int main(int argc, char* argv[])
 {
-	// FraDIA config filename.
+	// DisCODe config filename.
 	std::string config_name;
 
 	// Task config filename.
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
 		("task,T", po::value<std::string>(&task_name), "choose task file")
 		("create-task", "create default task file")
 		("log-level,L", po::value<int>(&log_lvl)->default_value(3), "set log severity level")
-		("unstopable","MWAHAHAHA!")
+		("unstoppable","MWAHAHAHA!")
 		("set,S",po::value< vector<string> >(&task_overrides),"override task settings")
 	;
 
@@ -143,21 +143,21 @@ int main(int argc, char* argv[])
 		std::ofstream cfg(config_name.c_str());
 
 		cfg << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-				"<FraDIA>\n"
+				"<DisCODe>\n"
 				"\t<task>blob.xml</task>"
-				"</FraDIA>\n";
+				"</DisCODe>\n";
 
 		cfg.close();
 
 		return 0;
 	}
 
-	if (vm.count("unstopable")) {
-		unstopable = true;
+	if (vm.count("unstoppable")) {
+		unstoppable = true;
 	}
 
 	// =========================================================================
-	// === FraDIA configuration
+	// === DisCODe configuration
 	// =========================================================================
 
 	config_name = vm["config"].as<std::string>();
@@ -167,15 +167,15 @@ int main(int argc, char* argv[])
 		read_xml(config_name, conf);
 	}
 	catch(xml_parser_error&) {
-		throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + config_name + "' file.\n");
+		throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + config_name + "' file.\n");
 	}
 
 	if (!vm.count("task")) {
-		if (!conf.get_optional<std::string>("FraDIA.task")) {
+		if (!conf.get_optional<std::string>("DisCODe.task")) {
                         LOG(ERROR) << "No task specified!";
                         exit(EXIT_FAILURE);
                 } else {
-			task_name = conf.get<std::string>("FraDIA.task");
+			task_name = conf.get<std::string>("DisCODe.task");
 			LOG(INFO) << "Task: " << task_name << " from configuration file\n";
 		}
 	} else {
@@ -247,7 +247,7 @@ int main(int argc, char* argv[])
 	// === Exception handling
 	// =========================================================================
 
-	catch (Common::FraDIAException& ex) {
+	catch (Common::DisCODeException& ex) {
 		LOG(FATAL) << ex.what() << "\n";
 		ex.printStackTrace();
 		exit(EXIT_FAILURE);

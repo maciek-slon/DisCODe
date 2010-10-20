@@ -125,22 +125,22 @@ public:
 			lib.setLocation(filename_);
 			// Validate operation.
 			if (!lib.load())
-				throw Common::FraDIAException(std::string("Library open error: ") + lib.error());
+				throw Common::DisCODeException(std::string("Library open error: ") + lib.error());
 
 			// Try to retrieve method returning type.
 			Base::returnType ret_type;
 			ret_type = lib.get<Base::componentType>("returnType");
 			if (!ret_type)
-				throw Common::FraDIAException(std::string("Can't find returnType() in library: ") + lib.error());
+				throw Common::DisCODeException(std::string("Can't find returnType() in library: ") + lib.error());
 			// Check type.
 			/*if (ret_type() != COMPONENT_TYPE)
-				throw Common::FraDIAException(filename_ + string(" doesn't contain a component of given type."));*/
+				throw Common::DisCODeException(filename_ + string(" doesn't contain a component of given type."));*/
 
 			// Try to retrieve method returning component name.
 			Base::returnName ret_name;
 			ret_name = lib.get<std::string>("returnName");
 			if (!ret_name)
-				throw Common::FraDIAException(std::string("Can't find returnName() in library: ") + lib.error());
+				throw Common::DisCODeException(std::string("Can't find returnName() in library: ") + lib.error());
 			// Retrieve component name.
 			name = ret_name();
 
@@ -149,18 +149,18 @@ public:
 			// Try to retrieve method returning processor.
 			ret_object = lib.get<Base::Component*, const std::string &>("returnComponent");
 			if (!ret_object)
-				throw Common::FraDIAException(std::string("Can't load ret_object from library: ") + lib.error());
+				throw Common::DisCODeException(std::string("Can't load ret_object from library: ") + lib.error());
 
 			// Try to retrieve method returning panel.
 			ret_panel = lib.get<Base::Panel*>("returnPanel");
 			if (!ret_panel)
-				throw Common::FraDIAException(std::string("Can't load ret_panel from library: ") + lib.error());
+				throw Common::DisCODeException(std::string("Can't load ret_panel from library: ") + lib.error());
 
 			// Component initialized properly.
 			LOG(INFO) << "ComponentFactory: Dynamic library " << filename_ << " containing " << name
 					<< " component was properly loaded.\n";
 			return true;
-		} catch (Common::FraDIAException& ex) {
+		} catch (Common::DisCODeException& ex) {
 			LOG(INFO) << "ComponentFactory: " << ex.what() << "\n";
 		}
 		return false;

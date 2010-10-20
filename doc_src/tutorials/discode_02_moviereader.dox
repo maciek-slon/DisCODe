@@ -1,0 +1,31 @@
+/*!
+\page discode_02_moviereader Run a simple task 
+
+\section ts_description
+Load a task responsible for loading movie from files.
+
+\section ts_command Command
+\cons
+./DisCODe -T ../Tasks/MovieViewer.xml
+\endcons
+
+\section ts_structure Task structure
+The structure of the MovieViewer task is shown below.
+
+\htmlonly
+<img src="images/MovieViewer.png" style="margin: 5px; width: 500px;" alt="MovieViewer"/>
+\endhtmlonly
+
+\section ts_result Result
+A movie will be displayed frame by frame.
+
+\note To break the program execution press <b>CTRL +C</b> (the SIGINT signal will be sent).
+
+\section ts_sections Related sections
+\see \ref manuals_tasks : Description of tasks
+\see \ref manuals_components : Description of components
+\see \ref Movie : Source responsible for loading frames from movie
+\see \ref CvWindow : Sink responsible for displaying images
+
+\prevnext{discode_01_parameters,discode_03_moviereader_changeparameter}
+*/

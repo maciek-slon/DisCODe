@@ -68,7 +68,7 @@ bool CameraUniCap_Source::onInit() {
 
 	if (!device_found) {
 		LOG(ERROR) << "Device not found: " << props.device << '\n';
-		throw(Common::FraDIAException("Failed to open device"));
+		throw(Common::DisCODeException("Failed to open device"));
 	}
 
 	/*
@@ -77,7 +77,7 @@ bool CameraUniCap_Source::onInit() {
 	if (!SUCCESS(unicap_open(&handle, &device))) {
 		LOG(ERROR) << "Failed to open device: " << device.identifier
 				<< '\n';
-		throw(Common::FraDIAException("Failed to open device"));
+		throw(Common::DisCODeException("Failed to open device"));
 	}
 
 	/*

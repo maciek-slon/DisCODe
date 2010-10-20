@@ -23,5 +23,5 @@ However, in configuration file they are writen as a set of pairs.
 The tasks are created in the form of XML configuration files, having the form presented in the figure above.
 Only a single task can be loaded during the application start.  
 
-\prevnext{manuals_components,manuals_datastreams}
+\next{manuals_components}
 */

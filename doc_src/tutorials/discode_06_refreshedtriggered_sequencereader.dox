@@ -1,0 +1,48 @@
+/*!
+\page discode_06_refreshedtriggered_sequencereader Move one of the components to another thread
+ 
+\section ts_description Description
+Modify the TriggeredSequenceViewer.xml in order to add the displayed image refreshment.
+
+\section ts_structure Task structure
+The structure of the RefreshedTriggeredSequenceViewer task is shown below.
+
+\htmlonly
+<img src="images/RefreshedTriggeredSequenceViewer.png" style="margin: 5px; width: 500px;" alt="RefreshedTriggeredSequenceViewer"/>
+\endhtmlonly
+
+\section ts_file Task file
+Create a new RefreshedTriggeredSequenceViewer.xml file on the base of the previously created TriggeredSequenceViewer.xml.
+Modify required parts:
+- Move the <b>CvWindow</b> component to a separate <b>Thread3</b> thread.  
+\code
+	<Components>
+		...
+		<Window type="CvWindow" thread="Thread3" group="s1">
+			<title>Preview</title>	
+		</Window>
+		...
+\endcode
+
+- Create another executor and set the main thread component to <b>Window</b>. 
+\code
+	<Executors>
+		...
+		<Thread3 type="continous">
+			<main_component>Window</main_component>
+		</Thread3>
+		...
+\endcode
+
+\section ts_result Result
+A sequence of images  will be displayed. After an image will be shown application will wait for user 
+to enter the 't' (must be followed by <enter>) to load and display another. Besides displayed 
+images will be refreshed.
+
+\section ts_sections Related sections
+\see \ref manuals_components : Description of components
+\see \ref manuals_executors : Description of executors
+\see \ref CvWindow : Sink responsible for displaying images
+
+\prevnext{discode_05_trigerred_sequencereader,discode_07_component_images_sharpener}
+*/

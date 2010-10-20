@@ -7,7 +7,7 @@
  */
 
 #include "Configurator.hpp"
-#include "FraDIAException.hpp"
+#include "DisCODeException.hpp"
 #include "Logger.hpp"
 
 #include "Component.hpp"
@@ -57,7 +57,7 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 		}
 		catch(xml_parser_error&) {
 			LOG(FATAL) << "Configuration: Couldn't parse '" << configuration_filename << "' file.\n";
-			throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
+			throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
 		}
 
 		// Take overrides into account
@@ -150,7 +150,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 			}
 			catch(xml_parser_error&) {
 				LOG(FATAL) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
-				throw Common::FraDIAException(std::string("Configuration: Couldn't parse '") + include + "' file.\n");
+				throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + include + "' file.\n");
 			}
 		}
 

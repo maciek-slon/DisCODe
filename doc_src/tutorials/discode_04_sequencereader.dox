@@ -1,0 +1,69 @@
+/*!
+\page discode_04_sequencereader Create a new task 
+
+\section ts_description
+Create a task responsible for loading sequence of images from files.
+
+\section ts_structure Task structure
+The structure of the SequenceViewer task is shown below.
+
+\htmlonly
+<img src="images/SequenceViewer.png" style="margin: 5px; width: 500px;" alt="SequenceViewer"/>
+\endhtmlonly
+
+\section ts_file Task file
+Create a new SequenceViewer.xml file on the base of the existing MovieViewer.xml.
+Modify required parts:
+- Replace the <b>Movie</b> component with the <b>Sequence</b> component. 
+\code
+	<Components>
+		...
+		<Sequence type="Sequence" thread="Thread1" group="s1">
+			<directory>/home/discode/public_html/datasets/standard/</directory>
+		</Sequence>
+		...
+\endcode
+
+- Set the main thread component to <b>Sequence</b>. 
+\code
+	<Executors>
+		...
+		<Thread1 type="continous">
+			<main_component>Sequence</main_component>
+		</Thread1>
+		...
+\endcode
+
+- Connect events. 
+\code
+	<Events>
+		...
+		<Event source="Sequence.newImage" destination="Window.onNewImage"/>
+		...
+\endcode
+
+- Assign data streams. 
+\code
+	<DataStreams>
+		...
+		<Sequence>
+			<out_img type="out" group="Con1"/>
+		</Sequence>
+		...
+\endcode
+
+\section ts_result Result
+A sequence of images  will be displayed image  after image.
+
+\note To break the program execution press <b>CTRL +C</b> (the SIGINT signal will be sent).
+
+\section ts_sections Related sections
+\see \ref manuals_tasks : Description of tasks
+\see \ref manuals_components : Description of components
+\see \ref manuals_executors : Description of executors
+\see \ref Sequence : Source responsible for loading image sequence from files.
+\see \ref CvWindow : Sink responsible for displaying images
+
+\prevnext{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
+
+*/

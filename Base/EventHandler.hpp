@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include "FraDIAException.hpp"
+#include "DisCODeException.hpp"
 
 namespace Base {
 
@@ -90,11 +90,11 @@ public:
 
 	/*!
 	 * Execute event handler function.
-	 * \throws FraDIAException when owner is not associated
+	 * \throws DisCODeException when owner is not associated
 	 */
 	void execute() {
 		if (!owner)
-			throw Common::FraDIAException("Unassigned event handler called.");
+			throw Common::DisCODeException("Unassigned event handler called.");
 
 		if (owner->running())
 			(owner->*method)();
@@ -170,14 +170,14 @@ public:
 
 	/*!
 	 * Execute event handler function.
-	 * \throws FraDIAException when owner is not associated
+	 * \throws DisCODeException when owner is not associated
 	 */
 	void execute() {
 		if (!owner)
-			throw Common::FraDIAException("Unassigned event handler called.");
+			throw Common::DisCODeException("Unassigned event handler called.");
 
 		if (!handler)
-			throw Common::FraDIAException("EventScheduler called without registered handler");
+			throw Common::DisCODeException("EventScheduler called without registered handler");
 
 		(owner->*method)(handler);
 	}
