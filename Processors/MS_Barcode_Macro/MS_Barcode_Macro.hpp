@@ -13,7 +13,6 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
-#include "CvMatTranslator.hpp"
 
 #include <cv.h>
 #include <highgui.h>
@@ -46,14 +45,8 @@ struct Props: public Base::Props
 	 */
 	void load(const ptree & pt)
 	{
-		Types::CvMatTranslator tr(cv::Size(3, 3));
-
-		int s = pt.get<int>("kernel_1", "", tr);
-
-		//kernel_1 = str2mat(cv::Size(3,3), pt.get("kernel_1", ""));
-		kernel_1 = pt.get<cv::Mat>("kernel_1", "", tr);
-
-		kernel_2 = str2mat(cv::Size(3,3), pt.get("kernel_2", ""));
+		kernel_1 = str2mat(cv::Size(3,3), pt.get("kernel_1", ""), 1);
+		kernel_2 = str2mat(cv::Size(3,3), pt.get("kernel_2", ""), 1);
 
 		thresh = pt.get("thresh", 128.0);
 
@@ -68,6 +61,25 @@ struct Props: public Base::Props
 	 */
 	void save(ptree & pt)
 	{
+	}
+
+protected:
+	cv::Mat str2mat(cv::Size size, std::string s, double norm) {
+		std::stringstream ss;
+		cv::Mat mat = cv::Mat::eye(size, CV_32F);
+		double val;
+
+		ss << s;
+
+		for (int i = 0; i < size.height; ++i) {
+			for (int j = 0; j < size.width; ++j) {
+				ss >> val;
+				val /= norm;
+				mat.at<float>(i,j) = val;
+			}
+		}
+
+		return mat;
 	}
 };
 

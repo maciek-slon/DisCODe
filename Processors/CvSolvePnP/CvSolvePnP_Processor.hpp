@@ -10,10 +10,13 @@
 
 #include <cv.h>
 
+#include "Component_Aux.hpp"
 #include "Component.hpp"
+#include "Panel_Empty.hpp"
 #include "Props.hpp"
 #include "EventHandler.hpp"
 #include "DataStream.hpp"
+#include "Objects3D/Object3D.hpp"
 
 namespace Processors {
 
@@ -89,8 +92,8 @@ private:
 
 	CvSolvePnPProps props;
 
-	Base::DataStreamInPtr <Types::Objects3D::Object3D> in_object3d;
-	Base::DataStreamOut <Types::Objects3D::Object3D> out_object3d;
+	Base::DataStreamInPtr <Types::Drawable> in_object3d;
+	Base::DataStreamOut <Types::Drawable> out_object3d;
 
 	Base::EventHandler<CvSolvePnP_Processor> h_onNewObject3D;
 };
@@ -98,5 +101,7 @@ private:
 } // namespace CvSolvePnP
 
 } // namespace Processors
+
+REGISTER_PROCESSOR_COMPONENT("CvSolvePnP", Processors::CvSolvePnP::CvSolvePnP_Processor, Common::Panel_Empty)
 
 #endif /* CVSOLVEPNP_PROCESSOR_HPP_ */

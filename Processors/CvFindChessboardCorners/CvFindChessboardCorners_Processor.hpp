@@ -15,7 +15,7 @@
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "Objects3D/Chessboard.hpp"
-#include "DrawableContainer.hpp"
+#include "Drawable.hpp"
 #include "Timer.hpp"
 
 namespace Processors {
@@ -89,7 +89,7 @@ private:
 
 	Base::EventHandler <CvFindChessboardCorners_Processor> h_onNewImage;
 	Base::DataStreamIn <Mat> in_img;
-	Base::DataStreamOut <Types::DrawableContainer> out_chessboard;
+	Base::DataStreamOut <Types::Drawable> out_chessboard;
 	Base::Event *chessboardFound;
 	Base::Event *chessboardNotFound;
 
