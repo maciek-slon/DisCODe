@@ -167,14 +167,20 @@ int main(int argc, char* argv[])
 		read_xml(config_name, conf);
 	}
 	catch(xml_parser_error&) {
-		throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + config_name + "' file.\n");
+		LOG(WARNING) << "Configuration file " << config_name + " not found.";
+		LOG(NOTICE) << "Quick fixes:";
+		LOG(NOTICE) << "   specify config file name with -C switch";
+		LOG(NOTICE) << "   create default configuration using -D switch";
 	}
 
 	if (!vm.count("task")) {
 		if (!conf.get_optional<std::string>("DisCODe.task")) {
-                        LOG(ERROR) << "No task specified!";
-                        exit(EXIT_FAILURE);
-                } else {
+			LOG(ERROR) << "No task specified!";
+			LOG(NOTICE) << "Quick fixes:";
+			LOG(NOTICE) << "   specify task name using -T switch";
+			LOG(NOTICE) << "   set default task name in config file";
+			exit(EXIT_FAILURE);
+		} else {
 			task_name = conf.get<std::string>("DisCODe.task");
 			LOG(INFO) << "Task: " << task_name << " from configuration file\n";
 		}
@@ -222,18 +228,9 @@ int main(int argc, char* argv[])
 			Common::Thread::msleep(50);
 		}
 
-		//Common::Thread::msleep(5000);
-
 		Common::Thread::msleep(500);
 
 		task.finish();
-
-		// wait for threads to finish execution
-		//Common::Thread::msleep(3000);
-
-		// End of test code.
-
-
 
 		km.release();
 		cm.release();

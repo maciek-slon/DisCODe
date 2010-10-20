@@ -45,8 +45,7 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 
 	// Check whether config file exists.
 	if (!filesystem::exists(configuration_filename)) {
-		LOG(FATAL) << "Configuration: File '" << configuration_filename << "' doesn't exist.\n";
-		throw("loadConfiguration");
+		throw Common::DisCODeException(std::string("Configuration: File '") + configuration_filename + "' doesn't exist.\n");
 	}
 	else {
 		Task task;
