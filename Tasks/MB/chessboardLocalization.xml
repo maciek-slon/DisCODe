@@ -20,7 +20,12 @@
 		</FindChessboard>
 		
 		<PositionEstimator type="CvSolvePnP" thread="Thread1" group="s1">
-			
+			<cameraMatrix>
+	asdf		
+			</cameraMatrix>
+			<distCoeffs>
+aasdf			
+			</distCoeffs>
 		</PositionEstimator>
 		
 		<Window type="CvWindow" thread="Thread1" group="s1">

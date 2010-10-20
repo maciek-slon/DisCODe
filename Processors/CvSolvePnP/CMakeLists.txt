@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(CvSolvePnP SHARED ${files})
-TARGET_LINK_LIBRARIES(CvSolvePnP ${OpenCV_LIBRARIES} ${DisCODe_LIBRARIES})
+TARGET_LINK_LIBRARIES(CvSolvePnP ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(CvSolvePnP)

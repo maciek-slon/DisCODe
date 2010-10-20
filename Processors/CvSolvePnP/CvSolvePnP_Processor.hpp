@@ -34,8 +34,8 @@ struct CvSolvePnPProps: Base::Props
 	 */
 	virtual void load(const ptree & pt)
 	{
-		//cameraMatrix = str2mat(cv::Size(3, 3), pt.get("cameraMatrix"));
-		//distCoeffs = str2mat(cv::Size(1, 5), pt.get("distCoeffs"));
+		cameraMatrix = str2mat(cv::Size(3, 3), pt.get<std::string>("cameraMatrix"));
+		distCoeffs = str2mat(cv::Size(1, 5), pt.get<std::string>("distCoeffs"));
 	}
 
 	/*!
@@ -45,6 +45,25 @@ struct CvSolvePnPProps: Base::Props
 	 */
 	virtual void save(ptree & pt)
 	{
+	}
+
+private:
+	cv::Mat str2mat(cv::Size size, std::string s)
+	{
+		std::stringstream ss;
+		cv::Mat mat = cv::Mat::eye(size, CV_32F);
+		double val;
+
+		ss << s;
+
+		for (int i = 0; i < size.height; ++i) {
+			for (int j = 0; j < size.width; ++j) {
+				ss >> val;
+				mat.at <float> (i, j) = val;
+			}
+		}
+
+		return mat;
 	}
 };
 
@@ -95,7 +114,7 @@ private:
 	Base::DataStreamInPtr <Types::Drawable> in_object3d;
 	Base::DataStreamOut <Types::Drawable> out_object3d;
 
-	Base::EventHandler<CvSolvePnP_Processor> h_onNewObject3D;
+	Base::EventHandler <CvSolvePnP_Processor> h_onNewObject3D;
 };
 
 } // namespace CvSolvePnP
