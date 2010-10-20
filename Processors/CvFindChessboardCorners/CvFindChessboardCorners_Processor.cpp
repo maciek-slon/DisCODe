@@ -77,13 +77,18 @@ void CvFindChessboardCorners_Processor::onNewImage()
 		if(found){
 			LOG(TRACE) << "chessboard found\n";
 
-			Chessboard *cb = new Chessboard(props.patternSize, props.squareSize);
-			cb->setImagePoints(corners);
+//			Chessboard *cb = new Chessboard(props.patternSize, props.squareSize);
+//			cb->setImagePoints(corners);
+//
+//			Types::DrawableContainer dc;
+//
+//			dc.add(cb);
+//			out_chessboard.write(dc);
 
-			Types::DrawableContainer dc;
+			Chessboard cb(props.patternSize, props.squareSize);
+			cb.setImagePoints(corners);
+			out_chessboard.write(cb);
 
-			dc.add(cb);
-			out_chessboard.write(dc);
 			chessboardFound->raise();
 		} else {
 			LOG(TRACE) << "chessboard not found\n";

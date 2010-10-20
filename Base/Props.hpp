@@ -79,6 +79,24 @@ public:
 	 * @param pt root property tree to save settings
 	 */
 	virtual void save(ptree & pt) = 0;
+//
+//protected:
+//	cv::Mat str2mat(cv::Size size, std::string s) {
+//		std::stringstream ss;
+//		cv::Mat mat = cv::Mat::eye(size, CV_32F);
+//		double val;
+//
+//		ss << s;
+//
+//		for (int i = 0; i < size.height; ++i) {
+//			for (int j = 0; j < size.width; ++j) {
+//				ss >> val;
+//				mat.at<float>(i,j) = val;
+//			}
+//		}
+//
+//		return mat;
+//	}
 };
 
 }//: namespace Base
