@@ -2,13 +2,28 @@
 \page manuals_executors Executors - task 'engines'
 <center> [\ref manuals] </center> 
 
+\section executors_desc Introduction
 The \link Core::Executor Executors\endlink are responsible for activation of components of given processing stream.
 Executor object holds \ref Base::Component "components" and implements a message queue.
 
-It is quite important that every executor (besides the executors working in the passive mode)should have a main component set. 
-The most important thing regardsing the main component is that it will be executed first. 
+It is quite important that every executor (besides the executors working in the passive mode) should have a main component set. 
+The most important thing regarding the main component is that it will be executed first. 
+
+\section executors_class Class diagram
 
 <img src="images/class_executor.png" style="margin: 5px;" alt="Events"/>
+
+\section executors_structure Executor structure
+The structure of an exemplary executor is shown below. 
+
+\htmlonly
+<img src="images/Executor.png" style="margin: 5px; width: 350px;" alt="Executor structure"/>
+\endhtmlonly
+
+The component with ❶ is set as the main (of first to be executed).
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+
+\section executors_types Executor types
 
 Currently there are three main types of executors: 
  - \link Core::ContinousExecutor ContinousExecutor\endlink - Calls step() method from it's main component continuously. Other components can activate 

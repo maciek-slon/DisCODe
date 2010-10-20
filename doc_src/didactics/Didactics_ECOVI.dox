@@ -7,9 +7,19 @@
  - Datasets - Images and movies for tutorials can be downloaded from <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/">http://segomo.elka.pw.edu.pl/~discode/datasets/</a>
  
  
-\section de_t1 Tutorial I 
+\section decovi_t0 Tutorial 0: Introduction to DisCODe
 
- - 1. \subpage didactics_tutorial_discode
+- \ref discode_00_description
+- \ref discode_01_parameters
+- \ref discode_02_moviereader
+- \ref discode_03_moviereader_changeparameter
+- \ref discode_04_sequencereader
+- \ref discode_05_trigerred_sequencereader
+- \ref discode_06_refreshedtriggered_sequencereader
+- \ref discode_07_component_images_blurer
 
- - 2. \subpage didactics_tutorial_camera_calibration
+
+\section decovi_t1 Tutorial 1: Camera calibration 
+ - \ref didactics_tutorial_camera_calibration
+
 */

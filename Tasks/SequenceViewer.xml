@@ -2,9 +2,9 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Mov1 type="Movie" thread="Exec1" group="s1">
-			<filename>/home/discode/public_html/datasets/MS_Sign/Sign_1_HD.avi</filename>
-		</Mov1>
+		<Seq1 type="Sequence" thread="Exec1" group="s1">
+			<directory>/home/discode/public_html/datasets/standard/</directory>
+		</Seq1>
 
 		<Wnd1 type="CvWindow" thread="Exec1" group="s1">
 			<title>Preview</title>
@@ -14,20 +14,20 @@
 	<!-- Threads of execution -->
 	<Executors>
 		<Exec1 type="continuous">
-			<main_component>Mov1</main_component>
+			<main_component>Seq1</main_component>
 		</Exec1>
 	</Executors>
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Mov1.newImage" destination="Wnd1.onNewImage"/>
+		<Event source="Seq1.newImage" destination="Wnd1.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
 	<DataStreams>
-		<Mov1>
+		<Seq1>
 			<out_img type="out" group="Con1"/>
-		</Mov1>
+		</Seq1>
 
 		<Wnd1>
 			<in_img  type="in" group="Con1"/>

@@ -16,6 +16,8 @@ The structure of the MovieViewer task is shown below.
 <img src="images/MovieViewer.png" style="margin: 5px; width: 400px;" alt="MovieViewer"/>
 \endhtmlonly
 
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+
 \section ts_result Result
 A movie will be displayed frame by frame.
 
