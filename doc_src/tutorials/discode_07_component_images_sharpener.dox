@@ -8,7 +8,7 @@ The goal is to create a component responsible for sharpening of the images.
 The structure of the ImageSharpener task is shown below.
 
 \htmlonly
-<img src="images/ImageSharpener.png" style="margin: 5px; width: 500px;" alt="ImageSharpener"/>
+<img src="images/ImageSharpener.png" style="margin: 5px; width: 700px;" alt="ImageSharpener"/>
 \endhtmlonly
 
 \section ts_file Task file

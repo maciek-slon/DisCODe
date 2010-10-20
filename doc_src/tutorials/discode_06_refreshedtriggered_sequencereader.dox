@@ -8,7 +8,7 @@ Modify the TriggeredSequenceViewer.xml in order to add the displayed image refre
 The structure of the RefreshedTriggeredSequenceViewer task is shown below.
 
 \htmlonly
-<img src="images/RefreshedTriggeredSequenceViewer.png" style="margin: 5px; width: 500px;" alt="RefreshedTriggeredSequenceViewer"/>
+<img src="images/RefreshedTriggeredSequenceViewer.png" style="margin: 5px; width: 600px;" alt="RefreshedTriggeredSequenceViewer"/>
 \endhtmlonly
 
 \section ts_file Task file
@@ -28,11 +28,13 @@ Modify required parts:
 \code
 	<Executors>
 		...
-		<Thread3 type="continous">
+		<Thread3 type="periodic">
 			<main_component>Window</main_component>
-		</Thread3>
+			<interval>0.2</interval>
+ 		</Thread3>
 		...
 \endcode
+\note Note that the new executor is "periodic", thus require an additional parameter (interval, in seconds) to be set. 
 
 \section ts_result Result
 A sequence of images  will be displayed. After an image will be shown application will wait for user 
