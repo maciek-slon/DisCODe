@@ -64,23 +64,18 @@ void CvUndistort_Processor::onNewImage()
 {
 	cv::Mat originalImage;
 
+	originalImage = in_img.read();
 
-	LOG(TRACE) << "1\n";
-	originalImage = in_img.read().clone();
-	LOG(TRACE) << "2\n";
-
-	cv::Mat undistortedImage = originalImage.clone();
+	//cv::Mat undistortedImage = originalImage.clone();
+	cv::Mat undistortedImage;
 
 	// TODO: replace with initUndistortRectifyMap + remap
 	//initUndistortRectifyMap(props.cameraMatrix, props.distCoeffs, Mat(), );
 	//remap(originalImage, undistortedImage, map1, map2, interpolation);
 	undistort(originalImage, undistortedImage, props.cameraMatrix, props.distCoeffs);
 
-	LOG(TRACE) << "3\n";
 	out_img.write(undistortedImage.clone());
-	LOG(TRACE) << "4\n";
 	newUndistortedImage->raise();
-	LOG(TRACE) << "5\n";
 }
 
 } // namespace CvUndistort
