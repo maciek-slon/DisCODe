@@ -4,13 +4,13 @@
 		<!--  <ImageSource type="CameraOpenCV" thread="Thread1" group="s1">
 		</ImageSource>-->
 		
-		<!--  <ImageSource type="Movie" thread="Thread1" group="s1">
+		<ImageSource type="Movie" thread="Thread1" group="s1">
 			<filename>/mnt/sda2/Mateusz/SEM8/PDI-2/filmy/pbeihszachownica8.avi</filename>
 			<filename>/mnt/sda2/tmp/zabawka.avi</filename>
-		</ImageSource>  -->
-		
-		<ImageSource type="CameraUniCap" thread="Thread1" group="s1">
 		</ImageSource>
+		
+		<!--  <ImageSource type="CameraUniCap" thread="Thread1" group="s1">
+		</ImageSource> -->
 		
 		<BGRToGray type="CvColorConv" thread="Thread1" group="s1">
 			<type>BGR2GRAY</type>
@@ -24,10 +24,10 @@
 		
 		<PositionEstimator type="CvSolvePnP" thread="Thread1" group="s1">
 			<cameraMatrix>
-	asdf		
+				asfd
 			</cameraMatrix>
 			<distCoeffs>
-aasdf			
+				wer
 			</distCoeffs>
 		</PositionEstimator>
 		

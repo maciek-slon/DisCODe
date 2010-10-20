@@ -34,8 +34,26 @@ struct CvSolvePnPProps: Base::Props
 	 */
 	virtual void load(const ptree & pt)
 	{
-		cameraMatrix = str2mat(cv::Size(3, 3), pt.get<std::string>("cameraMatrix"));
-		distCoeffs = str2mat(cv::Size(1, 5), pt.get<std::string>("distCoeffs"));
+		boost::numeric::ublas::matrix <double> cameraMatrixUblas = str2mat(pt.get <std::string> ("cameraMatrix"), 3, 3);
+
+		cameraMatrix = cv::Mat(3, 3, CV_32F);
+		for (int i = 0; i < 3; ++i) {
+			for (int j = 0; j < 3; ++j) {
+				cameraMatrix.at <float> (i, j) = cameraMatrixUblas(i, j);
+				LOG(DEBUG) << "cameraMatrix(" << i << ", " << j << "): " << cameraMatrix.at <float> (i, j) << endl;
+			}
+		}
+
+		//LOG(DEBUG) << "cameraMatrixUblas: " << cameraMatrixUblas << endl;
+
+		//distCoeffs = str2mat(pt.get<std::string>("distCoeffs"), 3, 3);
+		boost::numeric::ublas::matrix <double> distCoeffsUblas = str2mat(pt.get <std::string> ("distCoeffs"), 1, 5);
+
+		distCoeffs = cv::Mat(1, 5, CV_32F);
+		for (int j = 0; j < 5; ++j) {
+			distCoeffs.at <float> (0, j) = distCoeffsUblas(0, j);
+			LOG(DEBUG) << "distCoeffs(" << 0 << ", " << j << "): " << distCoeffs.at <float> (0, j) << endl;
+		}
 	}
 
 	/*!
@@ -45,25 +63,6 @@ struct CvSolvePnPProps: Base::Props
 	 */
 	virtual void save(ptree & pt)
 	{
-	}
-
-private:
-	cv::Mat str2mat(cv::Size size, std::string s)
-	{
-		std::stringstream ss;
-		cv::Mat mat = cv::Mat::eye(size, CV_32F);
-		double val;
-
-		ss << s;
-
-		for (int i = 0; i < size.height; ++i) {
-			for (int j = 0; j < size.width; ++j) {
-				ss >> val;
-				mat.at <float> (i, j) = val;
-			}
-		}
-
-		return mat;
 	}
 };
 
