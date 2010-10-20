@@ -5,8 +5,8 @@
 		</ImageSource>-->
 		
 		<ImageSource type="Movie" thread="Thread1" group="s1">
-			<!-- <filename>/mnt/sda2/Mateusz/SEM8/PDI-2/filmy/pbeihszachownica8.avi</filename> -->
-			<filename>/home/mboryn/filmy_serwomechanizmy_wizyjne/pbeihszachownica8.avi</filename>
+			<filename>/mnt/sda2/Mateusz/SEM8/PDI-2/filmy/pbeihszachownica8.avi</filename>
+			<!-- <filename>/home/mboryn/filmy_serwomechanizmy_wizyjne/pbeihszachownica8.avi</filename> -->
 		</ImageSource>
 		
 		<!--  <ImageSource type="CameraUniCap" thread="Thread1" group="s1">
@@ -31,9 +31,9 @@
 			<title>Preview</title>
 		</Window>
 		
-		<!-- <WindowUndistorted type="CvWindow" thread="Thread1" group="s1">
+		<WindowUndistorted type="CvWindow" thread="Thread1" group="s1">
 			<title>WindowUndistorted</title>
-		</WindowUndistorted> -->
+		</WindowUndistorted>
 	</Components>
 
 	<Executors>
@@ -45,7 +45,7 @@
 	<Events>
 		<Event source="ImageSource.newImage" destination="Window.onNewImage"/>
 		<Event source="ImageSource.newImage" destination="CvUndistort.onNewImage"/>
-		<!--  <Event source="CvUndistort.newUndistortedImage" destination="WindowUndistorted.onNewImage"/> -->
+		<Event source="CvUndistort.newUndistortedImage" destination="WindowUndistorted.onNewImage"/>
 	</Events>
 
 	<DataStreams>
@@ -63,8 +63,8 @@
 		</CvUndistort>
 		
 		
-		<!-- <WindowUndistorted>
+		<WindowUndistorted>
 			<in_img type="in" group="undistortedImage"/>
-		</WindowUndistorted> -->
+		</WindowUndistorted>
 	</DataStreams>
 </Task>
