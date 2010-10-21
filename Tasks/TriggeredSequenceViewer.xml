@@ -7,7 +7,7 @@
         </Kbd1>
 
 		<Seq1 type="Sequence" thread="Exec1" group="s1">
-			<directory>/home/discode/public_html/datasets/standard/</directory>
+			<directory>/home/discode/public_html/datasets/opencv_classics/</directory>
 			<triggered>true</triggered>			
 		</Seq1>
 
@@ -24,7 +24,7 @@
 
 		<Exec2 type="continuous">
 			<main_component>Kbd1</main_component>
-		</Exec1>
+		</Exec2>
 	</Executors>
 
 	<!-- Event connections -->
