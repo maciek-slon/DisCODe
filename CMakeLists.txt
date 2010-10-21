@@ -145,6 +145,9 @@ ENDIF(WITH_TMP_PROGRAMS)
 # Create documentation
 add_subdirectory(doc_src)
 
+add_subdirectory(Tasks)
+add_subdirectory(SDK)
+
 # =======================================================================
 # CPack: binary installer generator
 # =======================================================================
@@ -188,11 +191,23 @@ set(CPACK_COMPONENT_PROCESSORS_DESCRIPTION "Data processors desctiption")
 set(CPACK_COMPONENT_PROCESSORS_GROUP "Runtime")
 set(CPACK_COMPONENT_PROCESSORS_DEPENDS applications)
 
+# Processors component contains all data sinks
+set(CPACK_COMPONENT_SINKS_DISPLAY_NAME "Data sinks")
+set(CPACK_COMPONENT_SINKS_DESCRIPTION "Data sinks desctiption")
+set(CPACK_COMPONENT_SINKS_GROUP "Runtime")
+set(CPACK_COMPONENT_SINKS_DEPENDS applications)
+
 # Headers component contains all files necessary to develop
 # additional DisCODe modules (data sources and processors)
-set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "Development Headers")
-set(CPACK_COMPONENT_HEADERS_DESCRIPTION "All files necessary to develop additional components (data sources and processors)")
-set(CPACK_COMPONENT_HEADERS_GROUP "SDK")
+set(CPACK_COMPONENT_SDK_DISPLAY_NAME "Development Headers")
+set(CPACK_COMPONENT_SDK_DESCRIPTION "All files necessary to develop additional components (data sources and processors)")
+set(CPACK_COMPONENT_SDK_GROUP "SDK")
+
+# Headers component contains all files necessary to develop
+# additional DisCODe modules (data sources and processors)
+set(CPACK_COMPONENT_TASKS_DISPLAY_NAME "Task config files")
+set(CPACK_COMPONENT_TASKS_DESCRIPTION "Example tasks")
+set(CPACK_COMPONENT_TASKS_GROUP "Tasks")
 
 # This must always be last!
 include(CPack)

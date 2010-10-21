@@ -5,10 +5,22 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 FILE(GLOB h_files *.hpp)
 
 INSTALL(FILES ${h_files}
-  DESTINATION include
-  COMPONENT headers)
+  DESTINATION include/Common
+  COMPONENT sdk)
   
 # Create library Common
 FILE(GLOB files *.cpp)
 ADD_LIBRARY(Common STATIC ${files})
 TARGET_LINK_LIBRARIES(Common ${DisCODe_LIBRARIES})
+
+install(TARGETS Common
+  RUNTIME
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  COMPONENT sdk)
+  
+install(TARGETS Common
+  RUNTIME
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  COMPONENT application)
