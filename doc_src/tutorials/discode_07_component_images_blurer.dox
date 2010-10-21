@@ -2,7 +2,7 @@
 \page discode_07_component_images_blurer Create a simple component
  
 \section ts_description Description
-The goal is to create a component responsible for sharpening of the images.
+The goal is to create a component responsible for bluring of the images.
 
 Utilize the standard mean filter with 3-by-3 kernel shown below.
 \htmlonly
@@ -14,7 +14,7 @@ Utilize the standard mean filter with 3-by-3 kernel shown below.
 \endhtmlonly
 
 \section ts_structure Task structure
-The structure of the ImageSharpener task is shown below.
+The structure of the ImageBlurer task is shown below.
 
 <img src="images/ImageBlurer.png" style="margin: 5px; width: 500px;" alt="ImageBlurer"/>
 \endhtmlonly
@@ -23,15 +23,38 @@ The structure of the ImageSharpener task is shown below.
 
 \section ts_component Component
 
-\subsection gen_shell Generate code "shell"
+\subsection component_gen_shell Generate code "shell"
 Utilize the create.sh script for generation of the new component shell. 
-\code
+\cons
 ./create.sh ImageBlurer
-\endcode
+\endcons
 
 \note The script is located in the <b>Component</b> directory.
 
-...
+\subsection component_gen_makefile Generate makefile for created component
+\cons
+cd ImageBlurer
+cmake .
+\endcons
+
+\subsection component_make Compile the component
+From now on you can compile your component by calling the <b>make</b> command. 
+\cons
+make
+\endcons
+
+\subsection component_install Copy the component to bin directory
+After the component is compiled you can copy it to binaries.
+\cons
+cp libImageBlurer.so ../../bin/
+\endcons
+\note Perform those two steps after your component will be finished.
+ 
+\subsection component_edit Implement the blur transformation  
+Edit the component and 
+\code
+\endcode
+ 
 
 \section ts_file Task file
 Create a new ImageBlurer.xml file on the base of the  RefreshedTriggeredSequenceViewer.xml.

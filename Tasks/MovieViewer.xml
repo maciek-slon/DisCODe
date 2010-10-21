@@ -3,7 +3,7 @@
 	<!-- List of components -->
 	<Components>
 		<Mov1 type="Movie" thread="Exec1" group="s1">
-			<filename>/home/discode/public_html/datasets/MS_Sign/Sign_1_HD.avi</filename>
+			<filename>/home/discode/public_html/datasets/movies_sign/Sign_1_HD.avi</filename>
 		</Mov1>
 
 		<Wnd1 type="CvWindow" thread="Exec1" group="s1">
