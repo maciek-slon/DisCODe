@@ -108,7 +108,7 @@
 
 	<!-- Threads of execution -->
 	<Executors>
-		<Thread1 type="continous">
+		<Thread1 type="continuous">
 			<main_component>Movie</main_component>
 		</Thread1>
 
