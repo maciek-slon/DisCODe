@@ -2,7 +2,7 @@
 \page discode_07_component_images_blurer Create a simple component
  
 \section ts_description Description
-The goal is to create a component responsible for sharpening of the images.
+The goal is to create a component responsible for bluring of the images.
 
 Utilize the standard mean filter with 3-by-3 kernel shown below.
 \htmlonly
@@ -14,7 +14,7 @@ Utilize the standard mean filter with 3-by-3 kernel shown below.
 \endhtmlonly
 
 \section ts_structure Task structure
-The structure of the ImageSharpener task is shown below.
+The structure of the ImageBlurer task is shown below.
 
 <img src="images/ImageBlurer.png" style="margin: 5px; width: 500px;" alt="ImageBlurer"/>
 \endhtmlonly
