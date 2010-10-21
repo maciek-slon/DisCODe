@@ -78,8 +78,10 @@ void CvWindow_Sink::onNewImage() {
 			to_draw = in_draw.read();
 		}
 
-		if (to_draw)
+		if (to_draw) {
 			to_draw->draw(img, CV_RGB(255,0,255));
+			to_draw = boost::shared_ptr<Types::Drawable>();
+		}
 
 		// Display image.
 		imshow( props.title, img );

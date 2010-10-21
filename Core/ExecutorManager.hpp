@@ -52,6 +52,7 @@ public:
 			ex = new PeriodicExecutor(name);
 		} else {
 			LOG(ERROR) << "Executor type " << type << " not allowed!\n";
+			LOG(NOTICE) << "Check executor type for " << name;
 			throw Common::DisCODeException("createExecutor");
 		}
 
