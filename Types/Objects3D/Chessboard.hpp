@@ -16,7 +16,7 @@ namespace Types {
 
 namespace Objects3D {
 
-class Chessboard: public Object3D
+class Chessboard : public Object3D
 {
 public:
 	Chessboard(cv::Size patternSize, float squareSize) :
@@ -34,7 +34,7 @@ public:
 	{
 	}
 
-	virtual Drawable * clone()
+	virtual Chessboard* clone()
 	{
 		return new Chessboard(*this);
 	}

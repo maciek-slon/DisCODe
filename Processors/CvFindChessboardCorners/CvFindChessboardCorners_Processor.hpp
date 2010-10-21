@@ -8,25 +8,23 @@
 #ifndef CVFINDCHESSBOARDCORNERS_PROCESSOR_HPP_
 #define CVFINDCHESSBOARDCORNERS_PROCESSOR_HPP_
 
-#define CV_NO_BACKWARD_COMPATIBILITY
+//#define CV_NO_BACKWARD_COMPATIBILITY
 #include <cv.h>
-
+#include <boost/shared_ptr.hpp>
 #include "Component_Aux.hpp"
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "Objects3D/Chessboard.hpp"
-#include "DrawableContainer.hpp"
+#include "Drawable.hpp"
 #include "Timer.hpp"
 
 namespace Processors {
 
 namespace CvFindChessboardCorners {
 
-using namespace cv;
-
 struct CvFindChessboardCornersProps: public Base::Props
 {
-	Size patternSize;
+	cv::Size patternSize;
 	float squareSize;
 	void load(const ptree & pt)
 	{
@@ -88,18 +86,23 @@ private:
 	void onNewImage();
 
 	Base::EventHandler <CvFindChessboardCorners_Processor> h_onNewImage;
-	Base::DataStreamIn <Mat> in_img;
-	Base::DataStreamOut <Types::DrawableContainer> out_chessboard;
+	Base::DataStreamIn <cv::Mat> in_img;
+	//Base::DataStreamOut <Types::Drawable> out_chessboard;
+	Base::DataStreamOut <Types::Objects3D::Object3D> out_chessboard;
 	Base::Event *chessboardFound;
 	Base::Event *chessboardNotFound;
 
-	cv::vector<Point2f> corners;
+	cv::vector<cv::Point2f> corners;
 
 	int findChessboardCornersFlags;
+
+
 
 	Common::Timer timer;
 
 	CvFindChessboardCornersProps props;
+
+	boost::shared_ptr<Types::Objects3D::Chessboard> chessboard;
 };
 
 } // namespace CvFindChessboardCorners {

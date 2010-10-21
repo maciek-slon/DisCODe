@@ -11,6 +11,9 @@ namespace Processors {
 
 namespace CvFindChessboardCorners {
 
+using namespace std;
+using namespace boost;
+using namespace cv;
 using namespace Types::Objects3D;
 
 CvFindChessboardCorners_Processor::CvFindChessboardCorners_Processor(const std::string & name) :
@@ -48,6 +51,17 @@ bool CvFindChessboardCorners_Processor::onInit()
 	LOG(INFO) << "CvFindChessboardCorners_Processor: height: "<< props.patternSize.height << "\n";
 	LOG(INFO) << "CvFindChessboardCorners_Processor: squareSize: "<< props.squareSize << "\n";
 
+	chessboard = boost::shared_ptr<Chessboard>(new Chessboard(props.patternSize, props.squareSize));
+
+	vector<Point3f> modelPoints;
+	for (int i = 0; i < props.patternSize.height; ++i) {
+		for (int j = 0; j < props.patternSize.width; ++j) {
+			modelPoints.push_back(Point3f(-j * props.squareSize, -i * props.squareSize, 0));
+		}
+	}
+
+	chessboard->setModelPoints(modelPoints);
+
 	LOG(TRACE) << "component initialized\n";
 	return true;
 }
@@ -77,13 +91,11 @@ void CvFindChessboardCorners_Processor::onNewImage()
 		if(found){
 			LOG(TRACE) << "chessboard found\n";
 
-			Chessboard *cb = new Chessboard(props.patternSize, props.squareSize);
-			cb->setImagePoints(corners);
+			cornerSubPix(image, corners, Size(5, 5), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 50, 1e-3));
 
-			Types::DrawableContainer dc;
+			chessboard->setImagePoints(corners);
+			out_chessboard.write(*chessboard);
 
-			dc.add(cb);
-			out_chessboard.write(dc);
 			chessboardFound->raise();
 		} else {
 			LOG(TRACE) << "chessboard not found\n";
