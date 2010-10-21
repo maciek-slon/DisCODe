@@ -8,7 +8,7 @@ The latest SDK prepared for machines working under the control of the GENTOO net
 can be downloaded from <a href="http://segomo.elka.pw.edu.pl/~discode/DisCODe-1.0.0-Linux.sh">here</a>.
 
 After successful download please display script parameters.
- \cons
+\cons
 cd bin 
 ./DisCODe-1.0.0-Linux.sh --help
 \endcons
@@ -22,7 +22,7 @@ Movies:
  - <a href="/home/discode/public_html/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a> - Movies containing road signs. 
 
 Images:
- - <a href="/home/discode/public_html/datasets/opencv_standard">/home/discode/public_html/datasets/opencv_standard</a> - images used commonly in computer vision (Lena, etc.). 
+ - <a href="/home/discode/public_html/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> - images used commonly in computer vision (Lena, etc.). 
  - <a href="/home/discode/public_html/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a> - some other images from the OpenCV examples.
 
 Calibration:

@@ -13,6 +13,8 @@ Utilize the standard mean filter with 3-by-3 kernel shown below.
 </TABLE>
 \endhtmlonly
 
+Instead of implementing the blue operation on your own please use the <a href="http://opencv.willowgarage.com/documentation/cpp/image_filtering.html?highlight=blur#blur">cv::blur</a> function from the OpenCV.  
+
 \section ts_structure Task structure
 The structure of the ImageBlurer task is shown below.
 
@@ -37,6 +39,17 @@ cd ImageBlurer
 cmake .
 \endcons
 
+\subsection component_cmake_edit Add OpenCV library to list of linked libraries. 
+Edit the <b>CMakeLists.txt</b> file in order to uncomment the OpenCV library dependency.
+\code
+...
+FIND_PACKAGE( OpenCV REQUIRED )
+SET(LIBS ${OpenCV_LIBS} ${OpenCV_LIBRARIES} ${LIBS} )
+...
+\endcode
+\note To uncommend given line remove the # character from front.
+
+
 \subsection component_make Compile the component
 From now on you can compile your component by calling the <b>make</b> command. 
 \cons
@@ -50,22 +63,134 @@ cp libImageBlurer.so ../../bin/
 \endcons
 \note Perform those two steps after your component will be finished.
  
-\subsection component_edit Implement the blur transformation  
-Edit the component and 
-\code
-\endcode
+\subsection component_edit Edit the header file <b>ImageBlurer.hpp<b/>.   
+Edit the component header and perform changes listed below.
  
+ - Add required OpenCV headers after the existing ones.
+\code
+...
+#include <cv.h>
+...
+\endcode
+
+ - Add access to the OpenCV namespace <b>cv</b>.
+\code
+...
+using namespace cv;
+...
+\endcode
+
+ - Enter the <b>protected</b> section of the <b>ImageBlurer_Processor</b> class and add input and output data streams.
+\code
+	...
+	/// Input data stream
+	Base::DataStreamIn <Mat> in_img;
+
+	/// Output data stream - processed image
+	Base::DataStreamOut <Mat> out_img;
+	...
+\endcode
+
+ - Add event handler (when a new image will arrived) and event (raised when image the image processing will be done). 
+\code
+	...
+	/*!
+	 * Event handler function.
+	 */
+	void onNewImage();
+
+	/// Event handler.
+	Base::EventHandler <ImageBlurer_Processor> h_onNewImage;
+
+	/// Event raised, when image is processed.
+	Base::Event * newImage;
+	...
+\endcode
+
+\subsection component_edit Edit the source file <b>ImageBlurer.cpp<b/>.   
+Edit the component source and perform changes listed below.
+ 
+ - In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
+\code
+	...
+	// Register handler.
+	h_onNewImage.setup(this, &ImageBlurer_Processor::onNewImage);
+	registerHandler("onNewImage", &h_onNewImage);
+	// Register event.
+	newImage = registerEvent("newImage");
+
+	// Register data streams.
+	registerStream("in_img", &in_img);
+	registerStream("out_img", &out_img);
+	...
+\endcode
+
+ - Add new <b>onNewImage()</b> method.
+\code
+...
+void ImageBlurer_Processor::onNewImage()
+{
+	LOG(TRACE) << "ImageBlurer_Processor::onNewImage\n";
+	try {
+		// Read image from input data stream.
+		Mat img = in_img.read();
+		// Perform smoothing.
+		blur(img, img, cv::Size(3,3));
+		// Write blured image to output data stream.
+		out_img.write(img);
+		// Raise event.
+		newImage->raise();
+	} catch (...) {
+		LOG(ERROR) << "ImageBlurer_Processor::onNewImage failed\n";
+	}
+}
+...
+\endcode
+
+ - Compile and copy the component to bin library.
 
 \section ts_file Task file
 Create a new ImageBlurer.xml file on the base of the  RefreshedTriggeredSequenceViewer.xml.
-- Add the <b>Blur1</b> component to the list of components.
-- Set the <b>Blur1</b> executor to <b>Exec1</b>.
+- Add the <b>Blur1</b> component to the list of components, set its executor to <b>Exec1</b>
+\code
+		...
+		<Blur1 type="ImageBlurer" thread="Exec1" group="s1">
+		</Blur1>
+		...
+\endcode
+
 - Connect data ports between: <b>Seq1.Out</b> - <b>Blur1.In</b> and <b>Blur1.Out</b> - <b>Wnd1.In</b>.
+\code
+		...
+		<Seq1>
+			<out_img type="out" group="Con1"/>
+		</Seq1>
+		<Blur1>
+			<in_img  type="in" group="Con1"/>
+		</Blur1>
+
+		<Blur1>
+			<out_img type="out" group="Con2"/>
+		</Blur1>
+		<Wnd1>
+			<in_img  type="in" group="Con2"/>
+		</Wnd1>
+		...
+\endcode
+
 - Connect events and event handlers between: <b>Seq1.NewImage</b> - <b>Blur1.onNewImage</b> and <b>Blur1.NewImage</b> - <b>Wnd1.onNewImage</b>.
+\code
+		...
+		<Event source="Seq1.newImage" destination="Blur1.onNewImage"/>
+		<Event source="Blur1.newImage" destination="Wnd1.onNewImage"/>
+		...
+\endcode
 
 \note For more task file details please refer to the previous tutorials.
 
-
+\section ts_result Result
+A sequence of blurred images  will be displayed.
+\note Please compare result with original images <a href="/home/discode/public_html/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> 
 
 \prev{discode_06_refreshedtriggered_sequencereader}
 */
