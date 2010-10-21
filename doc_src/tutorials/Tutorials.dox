@@ -5,11 +5,11 @@
 There are some tutorials available concerning subjects such as configuration of various IDEs
 or creating new sources or processors.
 
-\section system System and IDE configuration:
+\section system System and IDE configuration
 - \ref git_intro : Introduction to Git and Github as well.
 - \ref eclipseconfig : Required plugins, importing repository, using cmake.
 
-\section dev_components Introduction to DisCODe:
+\section dev_components Introduction to DisCODe
 - \ref discode_00_description
 - \ref discode_01_parameters
 - \ref discode_02_moviereader
@@ -17,9 +17,9 @@ or creating new sources or processors.
 - \ref discode_04_sequencereader
 - \ref discode_05_trigerred_sequencereader
 - \ref discode_06_refreshedtriggered_sequencereader
-- \ref discode_07_component_images_sharpener
+- \ref discode_07_component_images_blurer
 
-\section using_utils Utility library usage:
+\section using_utils Utility library usage
 - \ref using_logger
 */
 
@@ -36,6 +36,14 @@ Shell command.
 
 \section ts_structure Task structure
 Describes the image of the task structure.
+
+Elements of diagrams representing the task structure are explained below.
+
+\htmlonly
+<img src="images/Legend.png" style="margin: 5px; width: 500px;" alt="Legend"/>
+\endhtmlonly
+
+\note For more informations regarding the diagram elements please refer to the manuals.   
 
 \section ts_file Task file
 Contains the description of the task file (XML).

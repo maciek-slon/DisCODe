@@ -10,7 +10,7 @@
 namespace Core {
 
 
-void ContinousExecutor::run() {
+void ContinuousExecutor::run() {
 	elapsed = 0;
 	loops = 0;
 

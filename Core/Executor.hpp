@@ -150,16 +150,16 @@ protected:
 
 
 /*!
- * \class ContinousExecutor
- * \brief Call step continously.
- * This object calls step method from it's main component continously.
+ * \class ContinuousExecutor
+ * \brief Call step continuously.
+ * This object calls step method from it's main component continuously.
  */
-class ContinousExecutor : public Executor {
+class ContinuousExecutor : public Executor {
 public:
 
-	ContinousExecutor(const std::string & n) : Executor(n) {};
+	ContinuousExecutor(const std::string & n) : Executor(n) {};
 
-	virtual ~ContinousExecutor() {
+	virtual ~ContinuousExecutor() {
 		double spl = elapsed/loops;
 		double lps = 1.0 / spl;
 		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
@@ -191,6 +191,7 @@ private:
 
 
 	double elapsed;
+
 	int loops;
 };
 
