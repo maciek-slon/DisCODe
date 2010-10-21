@@ -21,7 +21,17 @@ The \link Base::Component Component\endlink class diagram presents the component
  - \link Base::EventHandlerInterface EventHandlerInt\endlink  can be utilized for retrieving commands from other parts of the system (in order to change its working mode, parameters used in algorithm etc.),
  - \link Base::Event Event\endlink  can be used to push command to other components.
  
-Important note: Interfaces are created and linked dynamically during the load of given task.    
+\note Interfaces are created and linked dynamically during the load of given task.    
+
+\section components_structure Component structure
+The structure of an exemplary component is shown below. 
+
+\htmlonly
+<img src="images/Component.png" style="margin: 5px; width: 350px;" alt="Component structure"/>
+\endhtmlonly
+
+The square blocks are related to the data streams (data flow). The round blocks are related to events (command flow).
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
 
 \section components_states Component states
 <img src="images/component_state.png" style="margin: 5px;" alt="Component state"/>

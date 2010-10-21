@@ -1,0 +1,48 @@
+/*!
+\page discode_07_component_images_blurer Create a simple component
+ 
+\section ts_description Description
+The goal is to create a component responsible for sharpening of the images.
+
+Utilize the standard mean filter with 3-by-3 kernel shown below.
+\htmlonly
+<TABLE>
+<TR> <TD>1</TD> <TD>1</TD> <TD>1</TD> </TR>
+<TR> <TD>1</TD> <TD>1</TD> <TD>1</TD> </TR>
+<TR> <TD>1</TD> <TD>1</TD> <TD>1</TD> </TR>
+</TABLE>
+\endhtmlonly
+
+\section ts_structure Task structure
+The structure of the ImageSharpener task is shown below.
+
+<img src="images/ImageBlurer.png" style="margin: 5px; width: 500px;" alt="ImageBlurer"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+
+\section ts_component Component
+
+\subsection gen_shell Generate code "shell"
+Utilize the create.sh script for generation of the new component shell. 
+\code
+./create.sh ImageBlurer
+\endcode
+
+\note The script is located in the <b>Component</b> directory.
+
+...
+
+\section ts_file Task file
+Create a new ImageBlurer.xml file on the base of the  RefreshedTriggeredSequenceViewer.xml.
+- Add the <b>Blur1</b> component to the list of components.
+- Set the <b>Blur1</b> executor to <b>Exec1</b>.
+- Connect data ports between: <b>Seq1.Out</b> - <b>Blur1.In</b> and <b>Blur1.Out</b> - <b>Wnd1.In</b>.
+- Connect events and event handlers between: <b>Seq1.NewImage</b> - <b>Blur1.onNewImage</b> and <b>Blur1.NewImage</b> - <b>Wnd1.onNewImage</b>.
+
+\note For more task file details please refer to the previous tutorials.
+
+
+
+\prev{discode_06_refreshedtriggered_sequencereader}
+*/
