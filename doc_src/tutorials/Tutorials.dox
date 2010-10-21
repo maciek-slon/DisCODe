@@ -6,8 +6,12 @@ There are some tutorials available concerning subjects such as configuration of 
 or creating new sources or processors.
 
 \section system System and IDE configuration
-- \ref git_intro : Introduction to Git and Github as well.
-- \ref eclipseconfig : Required plugins, importing repository, using cmake.
+-# \ref git_intro \n
+   <small>Introduction to Git and Github as well.</small>
+-# \ref system_requirements\n
+   <small>List of required software and libraries.</small> 
+-# \ref eclipseconfig\n
+   <small>Required plugins, importing repository, using CMake.</small>
 
 \section dev_components Introduction to DisCODe
 - \ref discode_00_description
