@@ -6,7 +6,7 @@ Use the -S option in the command line in order to override the default value of 
 
 \section ts_command Command
 \cons
-./DisCODe -T ../Tasks/MovieViewer.xml -SComponents.Mov1.filename=/home/discode/public_html/datasets/MS_Sign/Sign_2_HD.avi
+./DisCODe -T ../Tasks/MovieViewer.xml -SComponents.Mov1.filename=/home/discode/public_html/datasets/movies_sign/Sign_2_HD.avi
 \endcons
 
 \section ts_file Task file
@@ -17,7 +17,7 @@ The file containing the MovieViewer task is listed below.
 	<!-- List of components -->
 	<Components>
 		<Mov1 type="Movie" thread="Exec1" group="s1">
-			<filename>/home/discode/public_html/datasets/MS_Sign/Sign_1_HD.avi</filename>
+			<filename>/home/discode/public_html/datasets/movies_sign/Sign_1_HD.avi</filename>
 		</Mov1>
 
 		<Wnd1 type="CvWindow" thread="Exec1" group="s1">
@@ -53,7 +53,7 @@ The file containing the MovieViewer task is listed below.
 \section ts_result Result
 Another movie will be displayed frame by frame.
 
-\note To break the program execution press <b>CTRL +C</b> (the SIGINT signal will be sent).
+\note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
 
 \section ts_sections Related sections
 \see \ref discode_01_parameters : Explanations of inline parameters

@@ -284,6 +284,8 @@ pre.console {
 	font-weight: bold;
 	padding: 5px 8px;
 	margin: 4px 8px 4px 2px;
+	
+	overflow-x: auto;
 }
 
 pre.fragment {
@@ -300,6 +302,8 @@ pre.fragment {
 
 	border-radius: 6px;
     box-shadow: rgba(0, 0, 0, 0.15) 4px 4px 4px;
+    
+    overflow-x: auto;
 }
 
 div.ah {

@@ -21,7 +21,7 @@ Modify required parts:
 	<Components>
 		...
 		<Seq1 type="Sequence" thread="Exec1" group="s1">
-			<directory>/home/discode/public_html/datasets/standard/</directory>
+			<directory>/home/discode/public_html/datasets/opencv_classics/</directory>
 		</Seq1>
 		...
 \endcode
@@ -30,9 +30,9 @@ Modify required parts:
 \code
 	<Executors>
 		...
-		<Thread1 type="continuous">
+		<Exec1 type="continuous">
 			<main_component>Seq1</main_component>
-		</Thread1>
+		</Exec1>
 		...
 \endcode
 
@@ -60,7 +60,7 @@ Modify required parts:
 \section ts_result Result
 A sequence of images  will be displayed image  after image.
 
-\note To break the program execution press <b>CTRL +C</b> (the SIGINT signal will be sent).
+\note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
 
 \section ts_sections Related sections
 \see \ref manuals_tasks : Description of tasks
