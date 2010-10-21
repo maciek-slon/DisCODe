@@ -46,7 +46,7 @@ Modify required parts:
 		...
 		<Exec2 type="continuous">
 			<main_component>Kbd1</main_component>
-		</Exec1>
+		</Exec2>
 		...
 \endcode
 

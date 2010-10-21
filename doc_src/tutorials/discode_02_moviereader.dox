@@ -21,7 +21,7 @@ The structure of the MovieViewer task is shown below.
 \section ts_result Result
 A movie will be displayed frame by frame.
 
-\note To break the program execution press <b>CTRL +C</b> (the SIGINT signal will be sent).
+\note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
 
 \section ts_sections Related sections
 \see \ref manuals_tasks : Description of tasks

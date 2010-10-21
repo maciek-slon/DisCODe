@@ -33,13 +33,13 @@ Modify required parts:
 		<Exec3 type="periodic">
 			<main_component>Wnd1</main_component>
 			<interval>0.2</interval>
-		</Exec1>
+		</Exec3>
 		...
 \endcode
 \note Note that the new executor is "periodic", thus require an additional parameter (interval, in seconds) to be set. 
 
 \section ts_result Result
-A sequence of images  will be displayed. After an image will be shown application will wait for user 
+A sequence of images  will be displayed. After an image is shown application will wait for user 
 to enter the 't' (must be followed by <enter>) to load and display another. Besides the displayed 
 images will be refreshed every 0.2s.
 
