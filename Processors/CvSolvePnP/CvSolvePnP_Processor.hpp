@@ -24,8 +24,8 @@ namespace CvSolvePnP {
 
 struct CvSolvePnPProps: Base::Props
 {
-	cv::Mat cameraMatrix;
-	cv::Mat distCoeffs;
+	cv::Mat_<double> cameraMatrix;
+	cv::Mat_<double> distCoeffs;
 
 	/*!
 	 * Load settings
@@ -36,19 +36,19 @@ struct CvSolvePnPProps: Base::Props
 	{
 		LOG(TRACE) << "loading camera parameters.\n";
 		boost::numeric::ublas::matrix <double> cameraMatrixUblas = str2mat(pt.get <std::string> ("cameraMatrix"), 3, 3);
-		cameraMatrix = cv::Mat(3, 3, CV_32F);
+		cameraMatrix = cv::Mat_<double>(3, 3);
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 3; ++j) {
-				cameraMatrix.at <float> (i, j) = cameraMatrixUblas(i, j);
-				LOG(DEBUG) << "cameraMatrix(" << i << ", " << j << "): " << cameraMatrix.at <float> (i, j) << endl;
+				cameraMatrix(i, j) = cameraMatrixUblas(i, j);
+				LOG(DEBUG) << "cameraMatrix(" << i << ", " << j << "): " << cameraMatrix(i, j) << endl;
 			}
 		}
 
 		boost::numeric::ublas::matrix <double> distCoeffsUblas = str2mat(pt.get <std::string> ("distCoeffs"), 1, 5);
-		distCoeffs = cv::Mat(1, 5, CV_32F);
+		distCoeffs = cv::Mat_<double>(1, 5);
 		for (int j = 0; j < 5; ++j) {
-			distCoeffs.at <float> (0, j) = distCoeffsUblas(0, j);
-			LOG(DEBUG) << "distCoeffs(" << 0 << ", " << j << "): " << distCoeffs.at <float> (0, j) << endl;
+			distCoeffs(0, j) = distCoeffsUblas(0, j);
+			LOG(DEBUG) << "distCoeffs(" << 0 << ", " << j << "): " << distCoeffs(0, j) << endl;
 		}
 	}
 
@@ -110,6 +110,7 @@ private:
 	Base::DataStreamOut <Types::Objects3D::Object3D> out_object3d;
 
 	Base::EventHandler <CvSolvePnP_Processor> h_onNewObject3D;
+	Base::Event *objectLocated;
 };
 
 } // namespace CvSolvePnP

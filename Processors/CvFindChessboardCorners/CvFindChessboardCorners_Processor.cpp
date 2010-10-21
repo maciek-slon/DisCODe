@@ -91,6 +91,8 @@ void CvFindChessboardCorners_Processor::onNewImage()
 		if(found){
 			LOG(TRACE) << "chessboard found\n";
 
+			cornerSubPix(image, corners, Size(5, 5), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 50, 1e-3));
+
 			chessboard->setImagePoints(corners);
 			out_chessboard.write(*chessboard);
 

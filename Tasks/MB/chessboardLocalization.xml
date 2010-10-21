@@ -5,8 +5,8 @@
 		</ImageSource>-->
 		
 		<ImageSource type="Movie" thread="Thread1" group="s1">
-			<!-- <filename>/mnt/sda2/Mateusz/SEM8/PDI-2/filmy/pbeihszachownica8.avi</filename> -->
-			<filename>/home/mboryn/filmy_serwomechanizmy_wizyjne/pbeihszachownica8.avi</filename>
+			<filename>/mnt/sda2/Mateusz/SEM8/PDI-2/filmy/pbeihszachownica8.avi</filename>
+			<!-- <filename>/home/mboryn/filmy_serwomechanizmy_wizyjne/pbeihszachownica8.avi</filename> -->
 		</ImageSource>
 		
 		<!--  <ImageSource type="CameraUniCap" thread="Thread1" group="s1">
@@ -66,7 +66,7 @@
 		</ImageSource>
 		
 		<Window>
-			<in_draw type="in" group="LocatedChessboard"/>
+			<in_draw type="in" group="PositionEstimated"/>
 			<in_img type="in" group="ColourImage"/>
 		</Window>
 		<!-- <WindowGray>
@@ -83,8 +83,8 @@
 			<out_chessboard type="out" group="LocatedChessboard"/>
 		</FindChessboard>
 		<PositionEstimator>
-			<in_objects3d type="in" group="LocatedChessboard"/>
-			<out_objects3d type="out" group="PositionEstimated"/>
+			<in_object3d type="in" group="LocatedChessboard"/>
+			<out_object3d type="out" group="PositionEstimated"/>
 		</PositionEstimator>
 		
 		
