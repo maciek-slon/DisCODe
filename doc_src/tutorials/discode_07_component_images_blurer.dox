@@ -3,6 +3,7 @@
  
 \section ts_description Description
 The goal is to create a component responsible for sharpening of the images.
+
 Utilize the standard mean filter with 3-by-3 kernel shown below.
 \htmlonly
 <TABLE>
@@ -12,11 +13,10 @@ Utilize the standard mean filter with 3-by-3 kernel shown below.
 </TABLE>
 \endhtmlonly
 
-
 \section ts_structure Task structure
 The structure of the ImageSharpener task is shown below.
 
-<img src="images/ImageBlurer.png" style="margin: 5px; width: 500px;" alt="ImageSharpener"/>
+<img src="images/ImageBlurer.png" style="margin: 5px; width: 500px;" alt="ImageBlurer"/>
 \endhtmlonly
 
 \note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
@@ -31,8 +31,7 @@ Utilize the create.sh script for generation of the new component shell.
 
 \note The script is located in the <b>Component</b> directory.
 
-\subsection gen_shell Write the main
-
+...
 
 \section ts_file Task file
 Create a new ImageBlurer.xml file on the base of the  RefreshedTriggeredSequenceViewer.xml.
