@@ -39,5 +39,5 @@ Component are divided into four main types:
  - \link Sinks Sink\endlink - Component basing on only one input datastream. Sinks can be utilized for saving processed data to files (single images, their sequences or movies) or displaying results on screen.      
  - \link Proxies Proxy\endlink  - Utilized for communication with external applications, e.g. robotic control systems, such as MRROC++ or OROCOS, that can utilized received information in control. 
 
-\next{manuals_tasks}
+\prevnext{manuals_tasks,manuals_datastreams}
 */

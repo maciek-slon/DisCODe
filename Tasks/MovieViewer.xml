@@ -3,7 +3,7 @@
 	<!-- List of components -->
 	<Components>
 		<Movie type="Movie" thread="Thread1" group="s1">
-			<filename>zakaz_1.1280.avi</filename>
+			<filename>/home/discode/public_html/datasets/MS_Sign/Sign_1_HD.avi</filename>
 		</Movie>
 
 		<Window type="CvWindow" thread="Thread1" group="s1">

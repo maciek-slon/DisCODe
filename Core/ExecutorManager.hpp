@@ -29,9 +29,9 @@ public:
 	}
 
 	~ExecutorManager() {
-	
+
 	}
-	
+
 	void release() {
 		BOOST_FOREACH(exp e, executors)
 			delete e.second;
@@ -52,7 +52,7 @@ public:
 			ex = new PeriodicExecutor(name);
 		} else {
 			LOG(ERROR) << "Executor type " << type << " not allowed!\n";
-			throw Common::FraDIAException("createExecutor");
+			throw Common::DisCODeException("createExecutor");
 		}
 
 		executors[name] = ex;
@@ -64,7 +64,7 @@ public:
 	Executor * getExecutor(const std::string & name) {
 		if (executors.count(name) < 1) {
 			LOG(ERROR) << "Executor " << name << " can't be found!";
-			throw Common::FraDIAException("getExecutor");
+			throw Common::DisCODeException("getExecutor");
 		}
 
 		return executors[name];

@@ -1,0 +1,71 @@
+/*!
+\page discode_05_trigerred_sequencereader Expand task by a new component
+
+\section ts_description Description
+Modify the SequenceViewer.xml (task responsible for loading sequence of images from files and
+displaying them one-by-one) by adding the Keyboard component in order to gain the possibility 
+to trigger the next image load, thus display.    
+
+\section ts_structure Task structure
+The structure of the TriggeredSequenceViewer task is shown below.
+
+\htmlonly
+<img src="images/TriggeredSequenceViewer.png" style="margin: 5px; width: 600px;" alt="TriggeredSequenceViewer"/>
+\endhtmlonly
+
+\note The reason of the separate thread for the Keyboard is explained in its description.
+
+\section ts_file Task file
+Create a new TriggeredSequenceViewer.xml file on the base of the previously created SequenceViewer.xml.
+Modify required parts:
+- Add the <b>Keyboard</b> component to a separate <b>Thread2</b> thread.  
+\code
+	<Components>
+		...
+		<Kbd type="Keyboard" thread="Thread2" group="s1">
+			<keys>tq</keys>	
+		</Kbd>
+		...
+\endcode
+
+- Set the <b>triggered</b> property of the <b>Sequence</b> component.  
+\code
+		<Sequence type="Sequence" thread="Thread1" group="s1">
+			...
+			<triggered>true</triggered>
+			...
+		</Sequence>
+\endcode
+
+
+- Create second executor and set the main thread component to <b>Kbd</b>. 
+\code
+	<Executors>
+		...
+		<Thread2 type="continous">
+			<main_component>Kbd</main_component>
+		</Thread2>
+		...
+\endcode
+
+- Add event and event handler - thrown when the <b>t</b> button will be pressed and handled by sequence <b>onTrigger</b>. 
+\code
+	<Events>
+		...
+		<Event source="Kbd.t_Pressed" destination="Sequence.onTrigger"/>
+		...
+\endcode
+
+\section ts_result Result
+A sequence of images  will be displayed. After an image will be shown application will wait for user 
+to enter the 't' (must be followed by <enter>) to load and display another.
+
+\note Notice the problem of image refreshment - this will be solved in the next tutorial.
+
+\section ts_sections Related sections
+\see \ref manuals_components : Description of components
+\see \ref manuals_executors : Description of executors
+\see \ref Keyboard : Source responsible for raising events related to keystrokes   
+
+\prevnext{discode_04_sequencereader, discode_06_refreshedtriggered_sequencereader}
+*/

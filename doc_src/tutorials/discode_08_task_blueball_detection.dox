@@ -16,14 +16,58 @@ Load a task responsible for loading movie from file.
 ./DisCODe -T ../Tasks/MovieReader.xml
 \endcons
 
+The structure of the MovieViewer task is shown below.
+<img src="images/MovieViewer.png" style="margin: 5px;" alt="MovieViewer"/>
+
 <br />
 
  
 \section dtd_1c Play another movie by changing of a parameter from command line 
 Change command line in order to override the default value of parameter.
 \cons
-./DisCODe -T ../Tasks/MovieReader.xml -SComponents.Movie.filename=/home/mstefanc/workspace/pobr/zakaz_1.avi
+./DisCODe -T ../Tasks/MovieReader.xml -SComponents.Movie.filename=....
 \endcons
+
+The file containing the MovieReaded task is listed below. 
+\code
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Movie type="Movie" thread="Thread1" group="s1">
+			<filename>zakaz_1.1280.avi</filename>
+		</Movie>
+
+		<Window type="CvWindow" thread="Thread1" group="s1">
+			<title>Preview</title>
+		</Window>
+	</Components>
+
+	<!-- Threads of execution -->
+	<Executors>
+		<Thread1 type="continous">
+			<main_component>Movie</main_component>
+		</Thread1>
+	</Executors>
+
+	<!-- Event connections -->
+	<Events>
+		<Event source="Movie.newImage"      destination="Window.onNewImage"/>
+	</Events>
+
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<Movie>
+			<out_img type="out" group="Con1"/>
+		</Movie>
+
+		<Window>
+			<in_img  type="in" group="Con1"/>
+		</Window>
+	</DataStreams>
+
+</Task>
+\endcode
+
 
 <br />
  
