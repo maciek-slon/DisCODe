@@ -1,8 +1,8 @@
-/*
- * CvUndistort_Processor.hpp
- *
- *  Created on: Oct 20, 2010
- *      Author: mboryn
+/*!
+ * \file CvUndistort_Processor.hpp
+ * \brief Camera distortion correction component.
+ * \date Oct 20, 2010
+ * \author mboryn
  */
 
 #ifndef CVUNDISTORT_PROCESSOR_HPP_
@@ -15,10 +15,66 @@
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 
+
+/**
+ * \defgroup CvUndistort CvUndistort
+ * \ingroup Processors
+ *
+ * Applies distortion correction to the image.
+ *
+  * \par Data streams:
+ *
+ * \streamin{in_img,cv::Mat}
+ * Input image
+ * \streamout{out_img,cv::Mat}
+ * Output image
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * New image is ready
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onNewImage}
+ * New image arrived
+ *
+ * \par Properties:
+ *
+ * \prop{cameraMatrix,boost::numeric::ublas::matrix <double> 3x3,}
+ * Camera matrix.
+ * For example:
+ * \verbatim
+[3,3](
+	(647.07647705, 0., 383.50000000),
+	(0., 632.76348877, 287.50000000),
+	(0, 0, 1)
+)
+\endverbatim
+ *
+ * \prop{distCoeffs,boost::numeric::ublas::matrix <double> 1x5,}
+ * Distortion correction coefficients.
+ * For example:
+ * \verbatim
+[1,5](
+	(-0.51084775, 0.23313555, 4.50637517e-03, -6.86281081e-03, 4.94365674e-03)
+)
+	\endverbatim
+ *
+ * \see http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html#cv-undistort
+ * @{
+ *
+ * @}
+ */
+
 namespace Processors {
 
 namespace CvUndistort {
 
+/**
+ * CvUndistort properties.
+ */
 struct CvUndistortProps : public Base::Props
 {
 	cv::Mat cameraMatrix;
@@ -59,6 +115,9 @@ struct CvUndistortProps : public Base::Props
 	}
 };
 
+/**
+ * Component for distortion correction.
+ */
 class CvUndistort_Processor : public Base::Component
 {
 public:

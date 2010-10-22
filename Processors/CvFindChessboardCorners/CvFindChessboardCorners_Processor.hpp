@@ -1,14 +1,13 @@
-/*
- * CvFindChessboardCorners_Processor.hpp
- *
- *  Created on: 16-10-2010
- *      Author: mateusz
+/*!
+ * \file CvFindChessboardCorners_Processor.hpp
+ * \brief Chessboard localization component.
+ * \date Oct 20, 2010
+ * \author mboryn
  */
 
 #ifndef CVFINDCHESSBOARDCORNERS_PROCESSOR_HPP_
 #define CVFINDCHESSBOARDCORNERS_PROCESSOR_HPP_
 
-//#define CV_NO_BACKWARD_COMPATIBILITY
 #include <cv.h>
 #include <boost/shared_ptr.hpp>
 #include "Component_Aux.hpp"
@@ -18,8 +17,55 @@
 #include "Drawable.hpp"
 #include "Timer.hpp"
 
-namespace Processors {
 
+/**
+ * \defgroup CvFindChessboardCorners CvFindChessboardCorners
+ * \ingroup Processors
+ *
+ * Locates chessboard on the image.
+ *
+  * \par Data streams:
+ *
+ * \streamin{in_img,cv::Mat}
+ * Input image.
+ * \streamout{out_chessboard,Types::Objects3D::Chessboard}
+ * Located chessboard.
+ *
+ * \par Events:
+ *
+ * \event{chessboardFound}
+ * Chessboard has been found.
+ *
+ * \event{chessboardNotFound}
+ * Chessboard has not been found.
+ *
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onNewImage}
+ * New image arrived
+ *
+ * \par Properties:
+ * \prop{width,int,}
+ * Chessboard width.
+ * This is number of corners, not the number of fields. Number of corners = number of fields - 1.
+ *
+ * \prop{height,int,}
+ * Chessboard height.
+ * This is number of corners, not the number of fields. Number of corners = number of fields - 1.
+ *
+ * \prop{squareSize,int,}
+ * Square size in meters.
+ *
+ * \see http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html#cv-findchessboardcorners
+ * @{
+ *
+ * @}
+ */
+
+
+namespace Processors {
 namespace CvFindChessboardCorners {
 
 struct CvFindChessboardCornersProps: public Base::Props
@@ -85,18 +131,21 @@ protected:
 private:
 	void onNewImage();
 
+	/** New image event handler. */
 	Base::EventHandler <CvFindChessboardCorners_Processor> h_onNewImage;
+	/** Image stream. */
 	Base::DataStreamIn <cv::Mat> in_img;
-	//Base::DataStreamOut <Types::Drawable> out_chessboard;
-	Base::DataStreamOut <Types::Objects3D::Object3D> out_chessboard;
+	/** Chessboard stream. */
+	Base::DataStreamOut <Types::Objects3D::Chessboard> out_chessboard;
+	/** Raised when chessboard has been located on the image. */
 	Base::Event *chessboardFound;
+	/** Raised when chessboard has not been located on the image. */
 	Base::Event *chessboardNotFound;
 
-	cv::vector<cv::Point2f> corners;
+	/** Located corners.*/
+	std::vector<cv::Point2f> corners;
 
 	int findChessboardCornersFlags;
-
-
 
 	Common::Timer timer;
 
