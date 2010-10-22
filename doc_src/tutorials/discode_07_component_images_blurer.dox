@@ -1,7 +1,7 @@
 /*!
 \page discode_07_component_images_blurer Create a simple component
  
-\section ts_description Description
+\section ts_objectives Tutorial objectives
 The goal is to create a component responsible for bluring of the images.
 
 Utilize the standard mean filter with 3-by-3 kernel shown below.
@@ -23,7 +23,7 @@ The structure of the ImageBlurer task is shown below.
 
 \note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
 
-\section ts_component Component
+\section ts_component_blur The ImageBlurer component
 
 \subsection component_gen_shell Generate code "shell"
 Utilize the create.sh script for generation of the new component shell. 
@@ -47,7 +47,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 SET(LIBS ${OpenCV_LIBS} ${OpenCV_LIBRARIES} ${LIBS} )
 ...
 \endcode
-\note To uncommend given line remove the # character from front.
+\note To uncommend given line remove the # character from the front.
 
 
 \subsection component_make Compile the component
@@ -63,7 +63,7 @@ cp libImageBlurer.so ../../bin/
 \endcons
 \note Perform those two steps after your component will be finished.
  
-\subsection component_edit Edit the header file <b>ImageBlurer.hpp<b/>.   
+\subsection component_edit Edit the header file ImageBlurer.hpp   
 Edit the component header and perform changes listed below.
  
  - Add required OpenCV headers after the existing ones.
@@ -107,7 +107,7 @@ using namespace cv;
 	...
 \endcode
 
-\subsection component_edit Edit the source file <b>ImageBlurer.cpp<b/>.   
+\subsection component_edit Edit the source file ImageBlurer.cpp   
 Edit the component source and perform changes listed below.
  
  - In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
@@ -190,7 +190,13 @@ Create a new ImageBlurer.xml file on the base of the  RefreshedTriggeredSequence
 
 \section ts_result Result
 A sequence of blurred images  will be displayed.
-\note Please compare result with original images <a href="/home/discode/public_html/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> 
+\note Compare the results with original images <a href="/home/discode/public_html/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> 
+
+\section ts_sections Related sections
+\see \ref manuals_components : Description of components
+\see \ref manuals_datastreams : Description of data streams
+\see \ref manuals_events : Description of events
+
 
 \prev{discode_06_refreshedtriggered_sequencereader}
 */

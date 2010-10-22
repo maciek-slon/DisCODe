@@ -1,7 +1,7 @@
 /*!
 \page discode_06_refreshedtriggered_sequencereader Move one of the components to another thread
  
-\section ts_description Description
+\section ts_objectives Tutorial objectives
 Modify the TriggeredSequenceViewer.xml in order to add the displayed image refreshment.
 
 \section ts_structure Task structure

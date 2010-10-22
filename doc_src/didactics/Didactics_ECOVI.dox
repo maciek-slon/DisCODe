@@ -12,8 +12,9 @@ After successful download please display script parameters.
 cd bin 
 ./DisCODe-1.0.0-Linux.sh --help
 \endcons
-\note Utilize the <b>--prefix</b> to set the directory in which SDK will be installed.
 
+Execute the script to install the SDK.
+\note Utilize the <b>--prefix</b> to set the directory in which SDK will be installed.
 
 \subsection discode_datasets The Datasets
 Datasets can be downloaded, as well as used externally.
@@ -27,7 +28,7 @@ Images:
 
 Calibration:
  - <a href="/home/discode/public_html/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a> - chessboard pictures from the OpenCV examples.
- - <a href="/home/discode/public_html/datasets/calibration_SAC_robotics_lab">/home/discode/public_html/datasets/calibration_SAC_robotics_lab</a> - chessboard pictures taken with the use of SAC camera in the Robotics Lab.  
+ - <a href="/home/discode/public_html/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a> - chessboard pictures taken with the use camera from the Robotics Lab.  
 
 \section decovi_t0 Tutorial 0: Introduction to DisCODe
 
@@ -41,8 +42,10 @@ Calibration:
 - \ref discode_07_component_images_blurer
 
 \section decovi_t1 Tutorial 1: Camera calibration 
- - \ref didactics_tutorial_camera_calibration
 
+ - \ref camera_calibration_01_findchessboard
+ - \ref camera_calibration_02_calibration 
+ - \ref camera_calibration_03_undistortion
 */
 
 //\subsection discode_tut0 Additional files

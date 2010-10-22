@@ -28,7 +28,7 @@ or creating new sources or processors.
 /*!
 \page discode_00_description How to read the tutorials
 
-\section ts_description Description
+\section ts_objectives Tutorial objectives
 Contains small description of the problem.
 
 \section ts_command Command
@@ -44,6 +44,9 @@ Elements of diagrams representing the task structure are explained below.
 \endhtmlonly
 
 \note For more informations regarding the diagram elements please refer to the manuals.   
+
+\section ts_hints Hints
+List of useful hints related to given problem. 
 
 \section ts_file Task file
 Contains the description of the task file (XML).

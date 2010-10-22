@@ -1,7 +1,7 @@
 /*!
 \page discode_05_trigerred_sequencereader Expand task by a new component
 
-\section ts_description Description
+\section ts_objectives Tutorial objectives
 Modify the SequenceViewer.xml (task responsible for loading sequence of images from files and
 displaying them one-by-one) by adding the Keyboard component in order to gain the possibility 
 to trigger the next image load, thus its display.    

@@ -1,7 +1,7 @@
 /*!
 \page discode_02_moviereader Run a simple task 
 
-\section ts_description
+\section ts_objectives Tutorial objectives
 Load a task responsible for loading movie from files.
 
 \section ts_command Command

@@ -1,7 +1,7 @@
 /*!
 \page discode_07_component_images_sharpener Create a simple component
  
-\section ts_description Description
+\section ts_objectives Tutorial objectives
 The goal is to create a component responsible for sharpening of the images.
 
 \section ts_structure Task structure
@@ -21,7 +21,5 @@ Utilize the standard Laplacian 3-by-3 kernel shown below.
 -1 -1 -1
 \endcode
 \note Utilize the create.sh script for generation of the new component shell. 
-
-\prevnext{discode_06_refreshedtriggered_sequencereader,}
 
 */
