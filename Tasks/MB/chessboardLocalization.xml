@@ -47,7 +47,7 @@
 	</Components>
 
 	<Executors>
-		<Thread1 type="continous">
+		<Thread1 type="continuous">
 			<main_component>ImageSource</main_component>
 		</Thread1>
 	</Executors>
