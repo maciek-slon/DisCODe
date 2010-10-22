@@ -17,11 +17,21 @@ According to the definition, a component is a software package, a web service, o
 <img src="images/class_component.png" style="margin: 5px;" alt="Component class diagram"/>
 
 The \link Base::Component Component\endlink class diagram presents the component abstract base class in the surrounding of classes being part of its exchangeable interfaces:
- - \link Base::DataStreamInt DataStreamInt\endlink  is a class representing interfaces through which data processed can be passed (in as well as out),
- - \link Base::EventHandlerInt EventHandlerInt\endlink  can be utilized for retrieving commands from other parts of the system (in order to change its working mode, parameters used in algorithm etc.),
+ - \link Base::DataStreamInterface DataStreamInt\endlink  is a class representing interfaces through which data processed can be passed (in as well as out),
+ - \link Base::EventHandlerInterface EventHandlerInt\endlink  can be utilized for retrieving commands from other parts of the system (in order to change its working mode, parameters used in algorithm etc.),
  - \link Base::Event Event\endlink  can be used to push command to other components.
  
-Important note: Interfaces are created and linked dynamically during the load of given task.    
+\note Interfaces are created and linked dynamically during the load of given task.    
+
+\section components_structure Component structure
+The structure of an exemplary component is shown below. 
+
+\htmlonly
+<img src="images/Component.png" style="margin: 5px; width: 350px;" alt="Component structure"/>
+\endhtmlonly
+
+The square blocks are related to the data streams (data flow). The round blocks are related to events (command flow).
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
 
 \section components_states Component states
 <img src="images/component_state.png" style="margin: 5px;" alt="Component state"/>

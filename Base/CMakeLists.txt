@@ -5,10 +5,35 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 FILE(GLOB files *.hpp)
 
 install(FILES ${files}
-  DESTINATION include
-  COMPONENT headers)
+  DESTINATION include/Base
+  COMPONENT sdk)
+  
+FILE(GLOB files Policies/*.hpp)
+install(FILES ${files}
+  DESTINATION include/Base/Policies
+  COMPONENT sdk)
   
 # Create library Base
 FILE(GLOB files *.cpp)
 ADD_LIBRARY(Base SHARED ${files})
 TARGET_LINK_LIBRARIES(Base ${DisCODe_LIBRARIES})
+
+SET_TARGET_PROPERTIES(Base
+   PROPERTIES BUILD_WITH_INSTALL_RPATH OFF
+   INSTALL_RPATH .
+)
+
+
+
+INSTALL(TARGETS Base
+  RUNTIME
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  COMPONENT sdk)
+  
+  
+INSTALL(TARGETS Base
+  RUNTIME
+  ARCHIVE DESTINATION bin
+  LIBRARY DESTINATION bin
+  COMPONENT application)

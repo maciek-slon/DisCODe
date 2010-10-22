@@ -24,5 +24,5 @@ Additional options:
   - <b>--create-task</b>                     Create a default task file.
   - <b>--unstoppable</b>                     Process cannot be stopped by SIGINT (CTRL+C) signal. MWAHAHAHA!
  
-\next{discode_02_moviereader}
+\prevnext{discode_00_description, discode_02_moviereader}
 */

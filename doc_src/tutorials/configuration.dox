@@ -156,6 +156,48 @@ And here's explanation:
 */
 
 
+
+
+// System requirements
+/*!
+\page system_requirements System requirements
+
+\section Software
+
+\subsection CMake
+
+CMake is used as a build system for DisCODe.
+
+Get it from www.cmake.org or from your package manager.
+
+\Doxygen
+
+If you want to generate project documentation, you will need Doxygen to do that.
+
+http://www.doxygen.org
+
+\section Libraries
+
+\subsection Boost
+
+Version 1.41 or higher of Boost libraries is required to build DisCODe. You'll need at least
+those parts compiled: thread, system, filesystem, regex, program_options and date_time.
+
+You can get it from www.boost.org
+
+\subsection OpenCV
+
+Some components depends on OpenCV library, in at least 2.0 version.
+
+You can install this library from your package manager, or compile by hand from
+sources (follow install guide on http://opencv.willowgarage.com).
+
+*/
+
+
+
+
+
 // Git intro
 /*!
 \page git_intro Getting started with Git and GitHub
@@ -244,3 +286,6 @@ will be done by a main project developer after making sure, that your code is go
 enough to fill the high standards of robotic software framework.
 
 */
+
+
+

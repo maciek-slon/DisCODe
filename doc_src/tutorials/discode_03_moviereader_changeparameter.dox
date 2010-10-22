@@ -6,54 +6,54 @@ Use the -S option in the command line in order to override the default value of 
 
 \section ts_command Command
 \cons
-./DisCODe -T ../Tasks/MovieViewer.xml -SComponents.Movie.filename=/home/discode/public_html/datasets/MS_Sign/Sign_2_HD.avi
+./DisCODe -T ../Tasks/MovieViewer.xml -SComponents.Mov1.filename=/home/discode/public_html/datasets/movies_sign/Sign_2_HD.avi
 \endcons
 
 \section ts_file Task file
 The file containing the MovieViewer task is listed below. 
 \code
+<?xml version="1.0" encoding="utf-8"?>
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Movie type="Movie" thread="Thread1" group="s1">
-			<filename>/home/discode/public_html/datasets/MS_Sign/Sign_1_HD.avi</filename>
-		</Movie>
+		<Mov1 type="Movie" thread="Exec1" group="s1">
+			<filename>/home/discode/public_html/datasets/movies_sign/Sign_1_HD.avi</filename>
+		</Mov1>
 
-		<Window type="CvWindow" thread="Thread1" group="s1">
+		<Wnd1 type="CvWindow" thread="Exec1" group="s1">
 			<title>Preview</title>
-		</Window>
+		</Wnd1>
 	</Components>
 
 	<!-- Threads of execution -->
 	<Executors>
-		<Thread1 type="continous">
-			<main_component>Movie</main_component>
-		</Thread1>
+		<Exec1 type="continuous">
+			<main_component>Mov1</main_component>
+		</Exec1>
 	</Executors>
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Movie.newImage"      destination="Window.onNewImage"/>
+		<Event source="Mov1.newImage" destination="Wnd1.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
 	<DataStreams>
-		<Movie>
+		<Mov1>
 			<out_img type="out" group="Con1"/>
-		</Movie>
+		</Mov1>
 
-		<Window>
+		<Wnd1>
 			<in_img  type="in" group="Con1"/>
-		</Window>
+		</Wnd1>
 	</DataStreams>
-
 </Task>
 \endcode
 
 \section ts_result Result
 Another movie will be displayed frame by frame.
 
-\note To break the program execution press <b>CTRL +C</b> (the SIGINT signal will be sent).
+\note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
 
 \section ts_sections Related sections
 \see \ref discode_01_parameters : Explanations of inline parameters

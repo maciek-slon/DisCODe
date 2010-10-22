@@ -44,14 +44,15 @@ public:
 		}
 
 		Executor * ex;
-		if (type == "continous") {
-			ex = new ContinousExecutor(name);
+		if (type == "continuous") {
+			ex = new ContinuousExecutor(name);
 		} else if (type == "passive") {
 			ex = new PassiveExecutor(name);
 		} else if (type == "periodic") {
 			ex = new PeriodicExecutor(name);
 		} else {
 			LOG(ERROR) << "Executor type " << type << " not allowed!\n";
+			LOG(NOTICE) << "Check executor type for " << name;
 			throw Common::DisCODeException("createExecutor");
 		}
 
