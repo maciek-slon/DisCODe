@@ -10,7 +10,7 @@ Those patterns impose general implementation method diverse, multistage data pro
 It was important to develop mechanisms which will simplify the process of processing streams (algorithms) creation, enable switching between 
 different tasks during the application work and, moreover, will offer clear method of their parts (components) separation. 
 In order to create a general management mechanism dealing with any number of components, each of them is encapsulated in a separate
-dynamic library - shared object (SO) in case of the Linux OS and DLL in case of Windows OS.
+dynamic library - SO (Shared Object) in case of the Linux OS and DLL (Dynamic Linked Library) in case of Windows OS.
 
 \b Components are divided into four classes:
  - <em>sources</em> - components responsible for gathering sensor data,

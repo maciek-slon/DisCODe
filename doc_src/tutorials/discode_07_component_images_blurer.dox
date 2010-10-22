@@ -47,7 +47,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 SET(LIBS ${OpenCV_LIBS} ${OpenCV_LIBRARIES} ${LIBS} )
 ...
 \endcode
-\note To uncommend given line remove the # character from the front.
+\note To uncomment given line remove the # character from the front.
 
 
 \subsection component_make Compile the component
@@ -190,7 +190,7 @@ Create a new ImageBlurer.xml file on the base of the  RefreshedTriggeredSequence
 
 \section ts_result Result
 A sequence of blurred images  will be displayed.
-\note Compare the results with original images <a href="/home/discode/public_html/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> 
+\note Compare the results with original images <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> 
 
 \section ts_sections Related sections
 \see \ref manuals_components : Description of components
