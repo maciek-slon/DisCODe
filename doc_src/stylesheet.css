@@ -277,6 +277,24 @@ dl.el {
 	margin-left: -1cm;
 }
 
+.linklist ul {
+	padding-left: 20px;
+}
+
+.linklist ul li {
+	list-style-type: none;
+	padding-left: 20px;
+	text-indent: -20px;
+	margin-bottom: 10px; 
+}
+
+.linklist ul li a.el {
+	font-weight: normal;
+	font-size: 120%; 
+}
+
+.linklist 
+
 .fragment {
 	font-family: monospace, fixed;
 	font-size: 105%;

@@ -1,3 +1,41 @@
+// Installation
+/*!
+\page installation Installation notes
+
+\beginlinklist
+
+\section stepsbystep Step by step
+
+Select your operating system to get detailed, step by step instructions how to get, build and run DisCODe.
+
+\htmlonly
+<table style="border: 0px; margin-left: 40px;">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\subpage Ubuntu
+\htmlonly
+</td></tr>
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\subpage Windows
+\htmlonly
+</td></tr>
+</table>
+\endhtmlonly
+
+
+\section system_ide System and IDE related stuff
+
+- \ref git_intro \n
+  Introduction to Git and Github as well.
+- \ref system_requirements\n
+  List of required software and libraries. 
+- \ref eclipseconfig\n
+  Required plugins, importing repository, using CMake.
+  
+\endlinklist
+*/
+
 // Eclipse configuration
 /// \todo translate to english
 /// \todo insert images
@@ -156,8 +194,6 @@ And here's explanation:
 */
 
 
-
-
 // System requirements
 /*!
 \page system_requirements System requirements
@@ -170,7 +206,7 @@ CMake is used as a build system for DisCODe.
 
 Get it from www.cmake.org or from your package manager.
 
-\Doxygen
+\subsection Doxygen
 
 If you want to generate project documentation, you will need Doxygen to do that.
 
