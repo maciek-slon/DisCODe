@@ -12,12 +12,12 @@ Select your operating system to get detailed, step by step instructions how to g
 <table style="border: 0px; margin-left: 40px;">
 <tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
-\subpage Ubuntu
+\subpage ubuntu "Ubuntu"
 \htmlonly
 </td></tr>
 <tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
-\subpage Windows
+\subpage windows "Windows"
 \htmlonly
 </td></tr>
 </table>
@@ -29,10 +29,10 @@ Select your operating system to get detailed, step by step instructions how to g
 - \ref git_intro \n
   Introduction to Git and Github as well.
 - \ref system_requirements\n
-  List of required software and libraries. 
+  List of required software and libraries.
 - \ref eclipseconfig\n
   Required plugins, importing repository, using CMake.
-  
+
 \endlinklist
 */
 
