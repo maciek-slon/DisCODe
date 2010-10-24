@@ -2,7 +2,6 @@ build*/
 bin/
 doc/
 gdb/
-repl.sh
 .project
 .cproject
 .settings
