@@ -2,7 +2,7 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Source type="CameraUniCap" thread="Thread1" group="s1">
+		<Source type="CameraOpenCV" thread="Thread1" group="s1">
 		</Source>
 
 		<Window type="CvWindow" thread="Thread1" group="s1">
@@ -12,7 +12,7 @@
 
 	<!-- Threads of execution -->
 	<Executors>
-		<Thread1 type="continous">
+		<Thread1 type="continuous">
 			<main_component>Source</main_component>
 		</Thread1>
 	</Executors>
