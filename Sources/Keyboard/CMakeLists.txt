@@ -8,6 +8,6 @@ FILE(GLOB files *.cpp)
 ADD_LIBRARY(Keyboard SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(Keyboard ${DisCODe_LIBRARIES} )
+TARGET_LINK_LIBRARIES(Keyboard ${DisCODe_NoTypes_LIBRARIES} )
 
 INSTALL_SOURCE(Keyboard)
