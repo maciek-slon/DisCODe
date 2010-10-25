@@ -12,9 +12,20 @@
 #include <string>
 #include <vector>
 
-#include "Singleton.hpp"
 #include "LoggerAux.hpp"
 #include "LoggerOutput.hpp"
+
+#if defined (_WIN32)
+  #if defined(COMPILING_DLL)
+    #define  MYLIB_EXPORT __declspec(dllexport)
+	#warning "export"
+  #else
+    #define  MYLIB_EXPORT __declspec(dllimport)
+	#warning "import"
+  #endif /* MyLibrary_EXPORTS */
+#else /* defined (_WIN32) */
+ #define MYLIB_EXPORT
+#endif
 
 namespace Utils {
 namespace Logger {
@@ -25,13 +36,8 @@ namespace Logger {
  *
  * Example usage of this class is available in \ref using_logger.
  */
-class Logger: public Base::Singleton <Logger>
+class MYLIB_EXPORT Logger
 {
-	/*!
-	 * Singleton class must be a friend, because only it can call protected constructor.
-	 */
-	friend class Base::Singleton <Logger>;
-
 public:
 
 	virtual ~Logger();
@@ -41,6 +47,14 @@ public:
 	 * from where printing is called.
 	 */
 	Logger & log(const std::string & file, int line, Severity sev, const std::string & msg);
+
+	static Logger& instance() {
+		if (!inst) {
+			inst = new Logger;
+		}
+
+		return *inst;
+	}
 
 	/*!
 	 * Template stream operator used for printing any type of data.
@@ -121,6 +135,8 @@ protected:
 	int curr_lvl;
 
 	std::vector<LoggerOutput *> outputs;
+
+	static Logger * inst;
 };
 
 }

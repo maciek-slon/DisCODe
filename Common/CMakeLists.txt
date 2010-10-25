@@ -7,10 +7,11 @@ FILE(GLOB h_files *.hpp)
 INSTALL(FILES ${h_files}
   DESTINATION include/Common
   COMPONENT sdk)
-  
+
 # Create library Common
 FILE(GLOB files *.cpp)
-ADD_LIBRARY(Common STATIC ${files})
+ADD_LIBRARY(Common SHARED ${files})
+SET_TARGET_PROPERTIES (Common PROPERTIES DEFINE_SYMBOL  "COMPILING_DLL" )
 TARGET_LINK_LIBRARIES(Common ${DisCODe_LIBRARIES})
 
 install(TARGETS Common
@@ -18,7 +19,7 @@ install(TARGETS Common
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   COMPONENT sdk)
-  
+
 install(TARGETS Common
   RUNTIME
   ARCHIVE DESTINATION lib

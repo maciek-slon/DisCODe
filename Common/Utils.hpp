@@ -13,6 +13,17 @@
 
 namespace Utils {
 
+#if defined (_WIN32)
+  #if defined(COMPILING_DLL)
+    #define  MYLIB_EXPORT __declspec(dllexport)
+	#warning "export"
+  #else
+    #define  MYLIB_EXPORT __declspec(dllimport)
+	#warning "import"
+  #endif /* MyLibrary_EXPORTS */
+#else /* defined (_WIN32) */
+ #define MYLIB_EXPORT
+#endif
 
 /*!
  * \brief Find all files matching given regular expression in specified location
@@ -23,7 +34,7 @@ namespace Utils {
  *
  * \see \ref regex_basics
  */
-std::vector<std::string> searchFiles(const std::string & root, const std::string & regexp, bool with_path = true);
+MYLIB_EXPORT std::vector<std::string> searchFiles(const std::string & root, const std::string & regexp, bool with_path = true);
 
 
 

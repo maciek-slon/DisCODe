@@ -134,6 +134,8 @@ double Component::step() {
 		LOG(WARNING) << name_ << " is not running. Step can't be done.\n";
 		return 0;
 	}
+
+	return 0;
 }
 
 void Component::printEvents() {

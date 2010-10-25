@@ -47,6 +47,12 @@ bool CvWindow_Sink::onStep()
 {
 	LOG(TRACE)<<"CvWindow_Sink::step\n";
 
+	if (img.empty()) {
+		LOG(WARNING) << name() << ": no image to show";
+		return true;
+	}
+
+
 	try {
 		// Refresh image.
 		imshow( props.title, img );
@@ -84,8 +90,7 @@ void CvWindow_Sink::onNewImage() {
 		}
 
 		// Display image.
-		imshow( props.title, img );
-		waitKey( 2 );
+		onStep();
 	}
 	catch(...) {
 		LOG(ERROR) << "CvWindow::onNewImage failed\n";
