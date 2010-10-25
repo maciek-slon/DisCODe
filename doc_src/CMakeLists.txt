@@ -3,9 +3,6 @@
 # =======================================================================
 
 find_package(Doxygen)
-if(NOT DOXYGEN_EXECUTABLE)
-  message(STATUS "WARNING: Doxygen not found so documentation not generated.")
-endif(NOT DOXYGEN_EXECUTABLE)
 
 #
 # Generating documentation with doxygen
@@ -32,5 +29,12 @@ if(DOXYGEN_EXECUTABLE)
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         DEPENDS ${CMAKE_SOURCE_DIR}/doc_src/DisCODe.Doxyfile
     )
-
+else(DOXYGEN_EXECUTABLE)
+    message(STATUS "WARNING: Doxygen not found so documentation not generated.")
+    ADD_CUSTOM_TARGET(
+        doc
+        COMMAND ${CMAKE_COMMAND} -E echo "+-------------------------------------------------"
+        COMMAND ${CMAKE_COMMAND} -E echo "! Doxygen not found so documentation not generated"
+        COMMAND ${CMAKE_COMMAND} -E echo "+-------------------------------------------------"
+    )
 endif(DOXYGEN_EXECUTABLE)
