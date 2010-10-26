@@ -3,7 +3,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Create a variable containing all .cpp files
 FILE(GLOB files *.hpp)
-
 install(FILES ${files}
   DESTINATION include/Base
   COMPONENT sdk)
@@ -23,17 +22,8 @@ SET_TARGET_PROPERTIES(Base
    INSTALL_RPATH .
 )
 
-
-
 INSTALL(TARGETS Base
-  RUNTIME
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  COMPONENT sdk)
-  
-  
-INSTALL(TARGETS Base
-  RUNTIME
-  ARCHIVE DESTINATION bin
-  LIBRARY DESTINATION bin
-  COMPONENT applications)
+  RUNTIME DESTINATION bin COMPONENT applications
+  LIBRARY DESTINATION bin COMPONENT applications
+  ARCHIVE DESTINATION lib COMPONENT sdk
+)
