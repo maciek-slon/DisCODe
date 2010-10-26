@@ -1,6 +1,5 @@
 build*/
 bin/
-doc/
 gdb/
 .project
 .cproject

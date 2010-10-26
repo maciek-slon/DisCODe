@@ -542,7 +542,7 @@ FILE_VERSION_FILTER    =
 # file name after the option, if omitted DoxygenLayout.xml will be used as the name
 # of the layout file.
 
-LAYOUT_FILE            = doc_src/DoxygenLayout.xml
+LAYOUT_FILE            = @CMAKE_SOURCE_DIR@/doc/DoxygenLayout.xml
 
 #---------------------------------------------------------------------------
 # configuration options related to warning and progress messages
@@ -604,15 +604,8 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = Base \
-                         Core \
-                         Common \
-                         doc_src \
-                         Types \
-                         Tools \
-                         Processors \
-                         Sources \
-                         Sinks
+INPUT                  = @CMAKE_SOURCE_DIR@/src \
+                         @CMAKE_SOURCE_DIR@/doc
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -683,8 +676,8 @@ RECURSIVE              = YES
 # excluded from the INPUT source files. This way you can easily exclude a
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = Sources/CameraV4L \
-						 doc_src/examples
+EXCLUDE                = @CMAKE_SOURCE_DIR@/Sources/CameraV4L \
+						 @CMAKE_SOURCE_DIR@/doc/examples
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or
 # directories that are symbolic links (a Unix filesystem feature) are excluded
@@ -712,7 +705,7 @@ EXCLUDE_SYMBOLS        = noncopyable
 # directories that contain example code fragments that are included (see
 # the \include command).
 
-EXAMPLE_PATH           = doc_src/examples
+EXAMPLE_PATH           = @CMAKE_SOURCE_DIR@/doc/examples
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp
@@ -732,7 +725,7 @@ EXAMPLE_RECURSIVE      = YES
 # directories that contain image that are included in the documentation (see
 # the \image command).
 
-IMAGE_PATH             = doc_src/libs
+IMAGE_PATH             = @CMAKE_SOURCE_DIR@/doc/libs
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -862,13 +855,13 @@ HTML_FILE_EXTENSION    = .html
 # each generated HTML page. If it is left blank doxygen will generate a
 # standard header.
 
-HTML_HEADER            = doc_src/header.html
+HTML_HEADER            = @CMAKE_SOURCE_DIR@/doc/header.html
 
 # The HTML_FOOTER tag can be used to specify a personal HTML footer for
 # each generated HTML page. If it is left blank doxygen will generate a
 # standard footer.
 
-HTML_FOOTER            = doc_src/footer.html
+HTML_FOOTER            = @CMAKE_SOURCE_DIR@/doc/footer.html
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading
 # style sheet that is used by each HTML page. It can be used to
@@ -877,7 +870,7 @@ HTML_FOOTER            = doc_src/footer.html
 # the style sheet file to the HTML output directory, so don't put your own
 # stylesheet in the HTML output directory as well, or it will be erased!
 
-HTML_STYLESHEET        = doc_src/stylesheet.css
+HTML_STYLESHEET        = @CMAKE_SOURCE_DIR@/doc/stylesheet.css
 
 # If the HTML_TIMESTAMP tag is set to YES then the footer of each generated HTML
 # page will contain the date and time when the page was generated. Setting
