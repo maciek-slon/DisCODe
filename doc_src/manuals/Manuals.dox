@@ -1,6 +1,5 @@
-// Manuals page
 /*!
-\page manuals Manuals
+\page manuals System overview 
 
 \beginlinklist
 
@@ -13,7 +12,7 @@ The last but not least elements of this puzzle are executors, playing a heart-li
 \section discode_tasks DisCODe Tasks
 
  - \subpage manuals_tasks "Tasks"\n
-   Building monuments from bricks
+   Building monuments from bricks.
 
 \section discode_components DisCODe Components
 
@@ -23,9 +22,9 @@ The last but not least elements of this puzzle are executors, playing a heart-li
 \section discode_constant DisCODe Core
 
  - \subpage manuals_datastreams "Data streams"\n
-   Mechanism for passing data between components
+   Mechanism for passing data between components.
  - \subpage manuals_events "Events"\n
-   Mechanism for controlling the flow
+   Mechanism for control of the processing flow.
  - \subpage manuals_executors "Executors"\n
    Task 'engines', spawns all required threads and keep them running. 
 

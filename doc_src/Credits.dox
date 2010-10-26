@@ -1,9 +1,0 @@
-/*!
-\page credits
-
-<h1>Credits</h1>
-
-\linkimage{boost_logo.png, Boost provides free peer-reviewed portable C++ source libraries.}
-\linkimage{opencv_logo.png, OpenCV (Open Source Computer Vision) is a library of programming functions for real time computer vision.}
-\linkimage{cmake_logo.png, CMake is a family of tools designed to build\, test and package software.}
-*/

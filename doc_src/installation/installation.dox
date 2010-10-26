@@ -23,6 +23,9 @@ Select your operating system to get detailed, step by step instructions how to g
 </table>
 \endhtmlonly
 
+\htmlonly
+<iframe src="http://player.vimeo.com/video/15740907" width="400" height="300" frameborder="0"></iframe><p><a href="http://vimeo.com/15740907">Getting started on Windows - compile</a> from <a href="http://vimeo.com/user4940026">DisCODe</a> on <a href="http://vimeo.com">Vimeo</a>.</p>
+\endhtmlonly
 
 \section system_ide System and IDE related stuff
 
@@ -192,47 +195,6 @@ And here's explanation:
    have many helper objects) it's required to put whole stuff into it's own namespace.
 
 */
-
-
-// System requirements
-/*!
-\page system_requirements System requirements
-
-\section Software
-
-\subsection CMake
-
-CMake is used as a build system for DisCODe.
-
-Get it from www.cmake.org or from your package manager.
-
-\subsection Doxygen
-
-If you want to generate project documentation, you will need Doxygen to do that.
-
-http://www.doxygen.org
-
-\section Libraries
-
-\subsection Boost
-
-Version 1.41 or higher of Boost libraries is required to build DisCODe. You'll need at least
-those parts compiled: thread, system, filesystem, regex, program_options and date_time.
-
-You can get it from www.boost.org
-
-\subsection OpenCV
-
-Some components depends on OpenCV library, in at least 2.0 version.
-
-You can install this library from your package manager, or compile by hand from
-sources (follow install guide on http://opencv.willowgarage.com).
-
-*/
-
-
-
-
 
 // Git intro
 /*!

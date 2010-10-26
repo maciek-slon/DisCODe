@@ -5,8 +5,9 @@
 Load a task responsible for loading movie from files.
 
 \section ts_command Command
+From the <b>bin</b> directory execute the following command.
 \cons
-./DisCODe -T ../Tasks/MovieViewer.xml
+./discode -T ../Tasks/MovieViewer.xml
 \endcons
 
 \section ts_structure Task structure

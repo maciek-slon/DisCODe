@@ -1,0 +1,44 @@
+// System requirements
+/*!
+\page system_requirements System requirements
+
+\section Software
+
+\subsection CMake
+
+\linkimage{cmake_logo.png, CMake is a family of tools designed to build\, test and package software.}
+
+CMake is used as a build system for DisCODe.
+
+Get it from www.cmake.org or from your package manager.
+
+\subsection Doxygen
+
+\linkimage{doxygen_logo.png, Doxygen is a documentation system for multiple diverse programming languages. Besides others it also supports C++.}
+
+If you want to generate project documentation, you will need Doxygen to do that.
+
+The homepace of the Doxygen project is http://www.doxygen.org.
+
+\section Libraries
+
+\subsection Boost
+
+\linkimage{boost_logo.png, Boost provides free peer-reviewed portable C++ source libraries.}
+
+Version 1.41 or higher of Boost libraries is required to build DisCODe. You'll need to compile at least
+those parts: thread, system, filesystem, regex, program_options and date_time.
+
+You can get it from www.boost.org.
+
+\subsection OpenCV
+
+\linkimage{opencv_logo.png, OpenCV (Open Source Computer Vision) is a library of programming functions for real time computer vision.}
+
+Some components depends on OpenCV library, in at least 2.0 version.
+
+You can install this library from your package manager, or compile by hand from
+sources (follow install guide on http://opencv.willowgarage.com).
+
+*/
+

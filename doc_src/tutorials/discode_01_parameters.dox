@@ -5,12 +5,14 @@
 Familiarize yourself with DisCODe parameters.
 
 \section ts_command Command
+From the <b>bin</b> directory execute the discode with option that lists possible parameters.
 \cons
-cd bin 
-./DisCODe --help
+./discode --help
 \endcons
 
 \section ts_result Result
+DisCODe parameters will be listed.
+
 Basic options:
   - <b>--help</b>                            Produce the help message.
   - <b>-T [ --task ] arg</b>                 Choose task file to be loaded and executed.

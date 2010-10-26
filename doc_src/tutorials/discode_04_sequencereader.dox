@@ -4,6 +4,12 @@
 \section ts_objectives Tutorial objectives
 Create a task responsible for loading sequence of images from files.
 
+\section ts_command Command
+From the <b>bin</b> directory execute the following command.
+\cons
+./discode -T ../Tasks/SequenceViewer.xml
+\endcons
+
 \section ts_structure Task structure
 The structure of the SequenceViewer task is shown below.
 
@@ -58,7 +64,7 @@ Modify required parts:
 \endcode
 
 \section ts_result Result
-A sequence of images  will be displayed image  after image.
+A sequence of images  will be displayed image after image.
 
 \note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
 
