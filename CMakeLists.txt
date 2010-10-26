@@ -48,25 +48,25 @@ add_subdirectory(Tasks)
 #
 # CPack variables used when generating binary installer
 #
-#set(CPACK_PACKAGE_NAME "DisCODe")
-#set(CPACK_PACKAGE_VENDOR "DisCODe")
-#set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DisCODe - Distributed Component Oriented Data Processing")
-#set(CPACK_PACKAGE_VERSION "1.0.0")
-#set(CPACK_PACKAGE_VERSION_MAJOR "1")
-#set(CPACK_PACKAGE_VERSION_MINOR "0")
-#set(CPACK_PACKAGE_VERSION_PATCH "0")
-#set(CPACK_PACKAGE_INSTALL_DIRECTORY "DisCODe")
+set(CPACK_PACKAGE_NAME "DisCODe")
+set(CPACK_PACKAGE_VENDOR "DisCODe")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DisCODe - Distributed Component Oriented Data Processing")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "DisCODe")
 #set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\doc_src\\\\discode.bmp")
 
 # License file
-#set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 
 # Tell CPack all of the components to install. The "ALL"
 # refers to the fact that this is the set of components that
 # will be included when CPack is instructed to put everything
 # into the binary installer (the default behavior).
 #set(CPACK_COMPONENTS_ALL applications sources processors sinks sdk tasks)
-#set(CPACK_COMPONENTS_ALL tasks)
+set(CPACK_COMPONENTS_ALL applications)
 
 # Applications component contains main DisCODe executable and libraries
 #set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "DisCODe Executable")

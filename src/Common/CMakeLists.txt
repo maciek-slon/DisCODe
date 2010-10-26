@@ -24,4 +24,4 @@ install(TARGETS Common
   RUNTIME
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  COMPONENT application)
+  COMPONENT applications)
