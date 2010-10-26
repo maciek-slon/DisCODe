@@ -7,6 +7,7 @@
 #define PROPS_HPP_
 
 #include <boost/property_tree/ptree.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
 
 using boost::property_tree::ptree;
 
@@ -79,6 +80,16 @@ public:
 	 * @param pt root property tree to save settings
 	 */
 	virtual void save(ptree & pt) = 0;
+
+protected:
+	/*!
+	 * Parse matrix from string.
+	 * Throws exception if failed.
+	 * @param rows
+	 * @param cols
+	 * @return
+	 */
+	boost::numeric::ublas::matrix<double> str2mat(const std::string& str, int rows, int cols) const;
 };
 
 }//: namespace Base

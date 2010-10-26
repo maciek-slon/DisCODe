@@ -2,6 +2,8 @@
 /*!
 \page manuals Manuals
 
+\beginlinklist
+
 This page contains desription of the most important concepts - parts of the system.
 
 The DisCODe-based system can be compared to a complex living organism. If components are equivalents of limbs,
@@ -10,18 +12,23 @@ The last but not least elements of this puzzle are executors, playing a heart-li
    
 \section discode_tasks DisCODe Tasks
 
- - \subpage manuals_tasks
+ - \subpage manuals_tasks "Tasks"\n
+   Building monuments from bricks
 
 \section discode_components DisCODe Components
 
- - \subpage manuals_components
+ - \subpage manuals_components\n
+   Small independent blocks, basic principle in DisCODe.
 
 \section discode_constant DisCODe Core
 
- - \subpage manuals_datastreams
+ - \subpage manuals_datastreams "Data streams"\n
+   Mechanism for passing data between components
+ - \subpage manuals_events "Events"\n
+   Mechanism for controlling the flow
+ - \subpage manuals_executors "Executors"\n
+   Task 'engines', spawns all required threads and keep them running. 
 
- - \subpage manuals_events
-
- - \subpage manuals_executors
+\endlinklist
 
 */

@@ -11,6 +11,7 @@
 
 #include "Executor.hpp"
 #include "Logger.hpp"
+#include "Utils.hpp"
 
 #include <map>
 #include <string>
@@ -26,6 +27,9 @@ class ExecutorManager {
 
 public:
 	ExecutorManager() {
+		types.push_back("continuous");
+		types.push_back("periodic");
+		types.push_back("passive");
 	}
 
 	~ExecutorManager() {
@@ -52,6 +56,18 @@ public:
 			ex = new PeriodicExecutor(name);
 		} else {
 			LOG(ERROR) << "Executor type " << type << " not allowed!\n";
+			LOG(NOTICE) << "Check executor type for " << name;
+
+			int id = -1, val = 100000;
+			for (size_t i = 0; i < types.size(); ++i) {
+				int tmp = Utils::distLevenshtein(type, types[i]);
+				if (tmp < val) {
+					val = tmp;
+					id = i;
+				}
+			}
+
+			LOG(NOTICE) << "Did you mean " << types[id] << " type?";
 			throw Common::DisCODeException("createExecutor");
 		}
 
@@ -69,6 +85,9 @@ public:
 
 		return executors[name];
 	}
+
+private:
+	std::vector<std::string> types;
 };
 
 } //: namespace Core

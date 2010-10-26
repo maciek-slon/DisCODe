@@ -27,15 +27,18 @@ Subtask & Task::operator[](const std::string & name) {
 }
 
 bool Task::start() {
+	LOG(TRACE) << "Starting subtasks...";
 	BOOST_FOREACH(SubtaskPair sp, subtasks) {
 		if (!sp.second.start())
 			return false;
 	}
 
+	LOG(TRACE) << "Starting executors...";
 	BOOST_FOREACH(ExecutorPair executor, executors) {
 		executor.second->restart();
 	}
 
+	LOG(TRACE) << "Task started successfully";
 	return true;
 }
 

@@ -90,13 +90,13 @@ h1.title {
 	right: 0;
 }
 
-h2 a.anchor {
+.contents h2 {
 	font-weight: bold;
+	counter-reset: subsection;
 }
 
-h2 a.anchor:before {
+.contents h2:before {
 	counter-increment: section;
-	counter-reset: subsection;
 	content: counter(section) ". ";
 }
 
@@ -127,7 +127,7 @@ h3 a.anchor {
 	font-weight: bold;
 }
 
-h3 a.anchor:before {
+.contents h3:before {
 	counter-increment: subsection;
 	content: counter(section) "." counter(subsection) ". ";
 }
@@ -269,9 +269,31 @@ a.codeRef {
 
 /* @end */
 
+ol li {
+	margin-bottom: 10px;
+}
+
 dl.el {
 	margin-left: -1cm;
 }
+
+.linklist ul {
+	padding-left: 20px;
+}
+
+.linklist ul li {
+	list-style-type: none;
+	padding-left: 20px;
+	text-indent: -20px;
+	margin-bottom: 10px; 
+}
+
+.linklist ul li a.el {
+	font-weight: normal;
+	font-size: 120%; 
+}
+
+.linklist 
 
 .fragment {
 	font-family: monospace, fixed;

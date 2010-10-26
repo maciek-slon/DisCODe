@@ -12,6 +12,8 @@
 namespace Utils {
 namespace Logger {
 
+Logger* Logger::inst = NULL;
+
 Logger::~Logger() {
 	for (size_t i = 0; i < outputs.size(); ++i) {
 		delete outputs[i];

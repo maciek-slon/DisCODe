@@ -36,8 +36,10 @@ bool Sequence::onInit() {
 
 	registerStream("out_img", &out_img);
 
-	if (!findFiles())
+	if (!findFiles()) {
+		LOG(ERROR) << name() << ": There are no files matching regex " << props.pattern << " in " << props.directory;
 		return false;
+	}
 
 	return true;
 }
@@ -49,15 +51,25 @@ bool Sequence::onFinish() {
 }
 
 bool Sequence::onStep() {
+	LOG(TRACE) << "Sequence::onStep";
+
 	if (props.triggered && !trig)
 		return true;
 
 	trig = false;
 
-	if (frame >= files.size())
+	if (frame >= files.size()) {
+		LOG(INFO) << name() << ": end of sequence\n";
 		return false;
+	}
 
-	img = cv::imread(files[frame++], -1);
+	LOG(TRACE) << "Sequence: reading image\n";
+	try {
+		img = cv::imread(files[frame++], -1);
+	}
+	catch(...) {
+		LOG(WARNING) << name() << ": image reading failed! [" << files[frame-1] << "]";
+	}
 
 	out_img.write(img);
 	newImage->raise();

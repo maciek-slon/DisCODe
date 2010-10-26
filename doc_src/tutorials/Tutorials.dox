@@ -2,12 +2,7 @@
 /*!
 \page tutorials Tutorials
 
-There are some tutorials available concerning subjects such as configuration of various IDEs
-or creating new sources or processors.
-
-\section system System and IDE configuration
-- \ref git_intro : Introduction to Git and Github as well.
-- \ref eclipseconfig : Required plugins, importing repository, using cmake.
+\beginlinklist
 
 \section dev_components Introduction to DisCODe
 - \ref discode_00_description
@@ -20,7 +15,10 @@ or creating new sources or processors.
 - \ref discode_07_component_images_blurer
 
 \section using_utils Utility library usage
-- \ref using_logger
+- \ref using_logger\n
+  Tired of printf'ing and commenting out old debugs?
+
+\endlinklist
 */
 
 

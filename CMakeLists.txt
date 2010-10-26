@@ -115,6 +115,9 @@ SET(DisCODe_Core_LIBRARIES ${DisCODe_LIBRARIES})
 # Create Types library
 add_subdirectory(Types)
 
+# Libraries without Types (thus not dependend on OpenCV)
+SET(DisCODe_NoTypes_LIBRARIES ${DisCODe_LIBRARIES})
+
 # Use created library
 SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Types)
 
@@ -163,7 +166,7 @@ set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "DisCODe")
-set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\doc_src\\\\discode.bmp")
+#set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\doc_src\\\\discode.bmp")
 
 # License file
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
@@ -172,36 +175,37 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 # refers to the fact that this is the set of components that
 # will be included when CPack is instructed to put everything
 # into the binary installer (the default behavior).
-set(CPACK_COMPONENTS_ALL applications sources processors headers)
+#set(CPACK_COMPONENTS_ALL applications sources processors sinks sdk tasks)
+set(CPACK_COMPONENTS_ALL tasks)
 
 # Applications component contains main DisCODe executable and libraries
-set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "DisCODe Executable")
-set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "DisCODe - Distributed Component Oriented Data Processing")
-set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
+#set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "DisCODe Executable")
+#set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "DisCODe - Distributed Component Oriented Data Processing")
+#set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
 
 # Sources component contains all data sources
-set(CPACK_COMPONENT_SOURCES_DISPLAY_NAME "Data sources")
-set(CPACK_COMPONENT_SOURCES_DESCRIPTION "Data sources description")
-set(CPACK_COMPONENT_SOURCES_GROUP "Runtime")
-set(CPACK_COMPONENT_SOURCES_DEPENDS applications)
+#set(CPACK_COMPONENT_SOURCES_DISPLAY_NAME "Data sources")
+#set(CPACK_COMPONENT_SOURCES_DESCRIPTION "Data sources description")
+#set(CPACK_COMPONENT_SOURCES_GROUP "Runtime")
+#set(CPACK_COMPONENT_SOURCES_DEPENDS applications)
 
 # Processors component contains all data processors
-set(CPACK_COMPONENT_PROCESSORS_DISPLAY_NAME "Data processors")
-set(CPACK_COMPONENT_PROCESSORS_DESCRIPTION "Data processors desctiption")
-set(CPACK_COMPONENT_PROCESSORS_GROUP "Runtime")
-set(CPACK_COMPONENT_PROCESSORS_DEPENDS applications)
+#set(CPACK_COMPONENT_PROCESSORS_DISPLAY_NAME "Data processors")
+#set(CPACK_COMPONENT_PROCESSORS_DESCRIPTION "Data processors desctiption")
+#set(CPACK_COMPONENT_PROCESSORS_GROUP "Runtime")
+#set(CPACK_COMPONENT_PROCESSORS_DEPENDS applications)
 
 # Processors component contains all data sinks
-set(CPACK_COMPONENT_SINKS_DISPLAY_NAME "Data sinks")
-set(CPACK_COMPONENT_SINKS_DESCRIPTION "Data sinks desctiption")
-set(CPACK_COMPONENT_SINKS_GROUP "Runtime")
-set(CPACK_COMPONENT_SINKS_DEPENDS applications)
+#set(CPACK_COMPONENT_SINKS_DISPLAY_NAME "Data sinks")
+#set(CPACK_COMPONENT_SINKS_DESCRIPTION "Data sinks desctiption")
+#set(CPACK_COMPONENT_SINKS_GROUP "Runtime")
+#set(CPACK_COMPONENT_SINKS_DEPENDS applications)
 
 # Headers component contains all files necessary to develop
 # additional DisCODe modules (data sources and processors)
-set(CPACK_COMPONENT_SDK_DISPLAY_NAME "Development Headers")
-set(CPACK_COMPONENT_SDK_DESCRIPTION "All files necessary to develop additional components (data sources and processors)")
-set(CPACK_COMPONENT_SDK_GROUP "SDK")
+#set(CPACK_COMPONENT_SDK_DISPLAY_NAME "Development Headers")
+#set(CPACK_COMPONENT_SDK_DESCRIPTION "All files necessary to develop additional components (data sources and processors)")
+#set(CPACK_COMPONENT_SDK_GROUP "Dev")
 
 # Headers component contains all files necessary to develop
 # additional DisCODe modules (data sources and processors)

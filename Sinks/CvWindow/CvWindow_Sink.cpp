@@ -47,6 +47,12 @@ bool CvWindow_Sink::onStep()
 {
 	LOG(TRACE)<<"CvWindow_Sink::step\n";
 
+	if (img.empty()) {
+		LOG(WARNING) << name() << ": no image to show";
+		return true;
+	}
+
+
 	try {
 		// Refresh image.
 		imshow( props.title, img );
@@ -78,12 +84,13 @@ void CvWindow_Sink::onNewImage() {
 			to_draw = in_draw.read();
 		}
 
-		if (to_draw)
+		if (to_draw) {
 			to_draw->draw(img, CV_RGB(255,0,255));
+			to_draw = boost::shared_ptr<Types::Drawable>();
+		}
 
 		// Display image.
-		imshow( props.title, img );
-		waitKey( 2 );
+		onStep();
 	}
 	catch(...) {
 		LOG(ERROR) << "CvWindow::onNewImage failed\n";

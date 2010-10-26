@@ -1,0 +1,113 @@
+/*!
+
+\page ubuntu Ubuntu 10.10
+
+Those instructions were tested under Ubuntu 10.10, but should work in older
+releases as well. All commands are to be typed in terminal window.
+
+\section software Essential software
+
+\subsection compiler Compiler
+
+First of all, we need working C++ compiler.
+
+\cons
+sudo apt-get install build-essential
+\endcons
+
+\subsection cmake Build system
+
+As a build system, DisCODe uses CMake. We need two packages - CMake itself
+and siimple gui to easy altering compilation settings.
+
+\cons
+sudo apt-get install cmake cmake-curses-gui
+\endcons
+
+\subsection git Git runtime
+
+Obtaining DisCODe sources directly from main GitHub repository makes you sure, that
+your sources are always up to date. And, if you want to actively participate in
+DisCODe development, you'll need git runtime a lot more!
+
+\cons
+sudo apt-get install git-core
+\endcons
+
+There is additional reading available: \ref git_intro
+
+\subsection doxygen Doxygen [optional]
+
+If you want to generate project documentation, you will need Doxygen to do that.
+Apart of main executable, GraphViz is needed to generate diagrams in code
+reference.
+
+\cons
+sudo apt-get install doxygen graphviz
+\endcons
+
+\section libs Libraries
+
+Many of required libraries are available directly from Ubuntu repositories, but
+some must be built manualy.
+
+\subsection boost Boost
+
+Version 1.41 or higher of Boost libraries is required to build DisCODe. In 10.10
+there is version 1.42 available, so you can grab it directly from repo:
+
+\cons
+sudo apt-get install libboost1.42-all-dev
+\endcons
+
+\subsection opencv OpenCV
+
+This library is not required by system core, but is used by most of components.
+In system repository, there are libraries ready to install, but this version is
+lacking some features. In order to utilize full range of opportunities given by
+OpenCV, it's necessary to build it manually.
+
+First, some additional libraries:
+
+\cons
+sudo apt-get install libgtk2.0-dev
+\endcons
+
+Then, grab sources of OpenCV from
+<a href="http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.1/OpenCV-2.1.0.tar.bz2/download">here</a>
+(at the moment it's version 2.1.0) and unpack them somewhere (this folder will then be needed
+to compile DisCODe, so you'd better choose it wise). From now, only 3 steps left:
+
+Prepare build directory:
+
+\cons
+cd directory_where_you_unpacked_opencv
+mkdir build
+cd build
+\endcons
+
+Generate makefiles:
+
+\cons
+cmake ..
+\endcons
+
+And finally, compile:
+
+\cons
+make
+\endcons
+
+\subsection unicap Unicap
+
+One of data sources depends on Unicap library. Just like with OpenCV - version
+available in repository is out of date. But, as I don't have time now to explain
+this, just do:
+
+\cons
+sudo apt-get install libunicap2-dev libunicapgtk2-dev
+\endcons
+
+\section eclipse Installing java and Eclipse
+
+*/
