@@ -25,7 +25,12 @@ SET(LIBS
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_REGEX_LIBRARY}
     ${Boost_PROGRAM_OPTIONS_LIBRARY}
+    Base
+    Common
+    Types
 )
+
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 # Add another libraries here (for example when you need OpenCV):
 # Find OpenCV library files
