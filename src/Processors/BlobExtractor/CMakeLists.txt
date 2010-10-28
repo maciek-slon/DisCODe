@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 add_library(procBlobExtractor SHARED ${files})
-target_link_libraries(procBlobExtractor ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
+target_link_libraries(procBlobExtractor ${OpenCV_LIBS} ${DisCODe_LIBRARIES} TypesBlobs)
 
 INSTALL_PROCESSOR(procBlobExtractor)

@@ -84,12 +84,6 @@ SET(DisCODe_Core_LIBRARIES ${DisCODe_LIBRARIES})
 # Create Types library
 add_subdirectory(Types)
 
-# Libraries without Types (thus not dependend on OpenCV)
-SET(DisCODe_NoTypes_LIBRARIES ${DisCODe_LIBRARIES})
-
-# Use created library
-SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Types)
-
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
 add_subdirectory(Sources)
