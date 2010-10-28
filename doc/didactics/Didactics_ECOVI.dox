@@ -8,7 +8,7 @@ The latest SDK prepared for machines working under the control of the GENTOO net
 can be downloaded from <a href="http://segomo.elka.pw.edu.pl/~discode/DisCODe-1.0.0-Linux.sh">here</a>.
 
 After successful download please display script parameters.
-<<<<<<< HEAD
+
 \cons
 cd bin 
 ./DisCODe-1.0.0-Linux.sh --help
@@ -17,20 +17,10 @@ cd bin
 Execute the script to install the SDK.
 \note Utilize the <b>--prefix</b> to set the directory in which SDK will be installed.
 
-=======
- \cons
-cd bin 
-./DisCODe-1.0.0-Linux.sh --help
-\endcons
-\note Utilize the <b>--prefix</b> to set the directory in which SDK will be installed.
-
-
->>>>>>> 8de1a88ad74389af7fe365a69311849dcada8eb2
 \subsection discode_datasets The Datasets
 Datasets can be downloaded, as well as used externally.
 
 Movies:
-<<<<<<< HEAD
  - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a> - Movies containing road signs. 
 
 Images:
@@ -40,17 +30,7 @@ Images:
 Calibration:
  - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a> - chessboard pictures from the OpenCV examples.
  - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a> - chessboard pictures taken with the use camera from the Robotics Lab.  
-=======
- - <a href="/home/discode/public_html/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a> - Movies containing road signs. 
 
-Images:
- - <a href="/home/discode/public_html/datasets/opencv_standard">/home/discode/public_html/datasets/opencv_standard</a> - images used commonly in computer vision (Lena, etc.). 
- - <a href="/home/discode/public_html/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a> - some other images from the OpenCV examples.
-
-Calibration:
- - <a href="/home/discode/public_html/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a> - chessboard pictures from the OpenCV examples.
- - <a href="/home/discode/public_html/datasets/calibration_SAC_robotics_lab">/home/discode/public_html/datasets/calibration_SAC_robotics_lab</a> - chessboard pictures taken with the use of SAC camera in the Robotics Lab.  
->>>>>>> 8de1a88ad74389af7fe365a69311849dcada8eb2
 
 \section decovi_t0 Tutorial 0: Introduction to DisCODe
 
@@ -63,13 +43,11 @@ Calibration:
 - \ref discode_06_refreshedtriggered_sequencereader
 - \ref discode_07_component_images_blurer
 
-<<<<<<< HEAD
-=======
+
 \subsection discode_tut0 Additional files
  - <a href="/home/discode/public_html/TriggeredSequenceViewer.xml">TriggeredSequenceViewer.xml</a> - Task file related to the 5th part of tutorial.
 
 
->>>>>>> 8de1a88ad74389af7fe365a69311849dcada8eb2
 \section decovi_t1 Tutorial 1: Camera calibration 
 
  - \ref camera_calibration_01_findchessboard
