@@ -25,7 +25,7 @@ bool Keyboard_Source::onInit() {
 
 	for (int i = 0; i < props.keys.length(); ++i) {
 		if (key_events.count(props.keys[i]) < 1) {
-				evname += props.keys[i];
+				evname = props.keys[i];
 				evname += "_Pressed";
 				key_events[props.keys[i]] = registerEvent(evname);
 				LOG(TRACE) << "Event " << evname << " created";
