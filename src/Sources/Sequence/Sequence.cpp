@@ -63,7 +63,7 @@ bool Sequence::onStep() {
 		return false;
 	}
 
-	LOG(TRACE) << "Sequence: reading image\n";
+	LOG(TRACE) << "Sequence: reading image " << files[frame];
 	try {
 		img = cv::imread(files[frame++], -1);
 	}

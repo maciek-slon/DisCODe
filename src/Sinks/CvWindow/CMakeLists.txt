@@ -11,4 +11,4 @@ FILE(GLOB files *.cpp)
 add_library(procCvWindow SHARED ${files})
 target_link_libraries(procCvWindow ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
-INSTALL_PROCESSOR(procCvWindow)
+INSTALL_SINK(procCvWindow)

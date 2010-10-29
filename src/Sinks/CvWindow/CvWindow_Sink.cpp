@@ -56,7 +56,7 @@ bool CvWindow_Sink::onStep()
 	try {
 		// Refresh image.
 		imshow( props.title, img );
-		waitKey( 2 );
+		waitKey( 10 );
 	}
 	catch(...) {
 		LOG(ERROR) << "CvWindow::onNewImage failed\n";

@@ -11,4 +11,4 @@ FILE(GLOB files *.cpp)
 add_library(CvVideoWriter SHARED ${files})
 target_link_libraries(CvVideoWriter ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
-INSTALL_PROCESSOR(CvVideoWriter)
+INSTALL_SINK(CvVideoWriter)

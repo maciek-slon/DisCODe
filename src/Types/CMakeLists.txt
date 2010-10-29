@@ -2,49 +2,54 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 FIND_PACKAGE( OpenCV REQUIRED )
 
+
+
+SET(WITH_BLOBS ON CACHE BOOL "Build blobs library")
+IF(WITH_BLOBS)
+
+    FILE(GLOB blobs Blobs/*.cpp)
+    ADD_LIBRARY(TypesBlobs SHARED ${blobs})
+    TARGET_LINK_LIBRARIES(TypesBlobs ${OpenCV_LIBRARIES})
+
+    SET_TARGET_PROPERTIES(TypesBlobs
+       PROPERTIES BUILD_WITH_INSTALL_RPATH OFF
+       INSTALL_RPATH .
+    )
+
+    INSTALL(
+      TARGETS TypesBlobs
+      RUNTIME DESTINATION bin COMPONENT applications
+      LIBRARY DESTINATION bin COMPONENT applications
+      ARCHIVE DESTINATION lib COMPONENT sdk
+    )
+
+    FILE(GLOB blobs Blobs/*.hpp)
+    install(
+        FILES ${blobs}
+        DESTINATION include/Types/Blobs
+        COMPONENT sdk
+    )
+
+ENDIF(WITH_BLOBS)
+
+
 # One line per subfolder
 FILE(GLOB local *.cpp)
-FILE(GLOB blobs Blobs/*.cpp)
 FILE(GLOB objects3d Objects3D/*.cpp)
-
-SET(files ${local} ${blobs} ${objects3d})
-
-ADD_LIBRARY(Types SHARED ${files})
-TARGET_LINK_LIBRARIES(Types ${OpenCV_LIBRARIES})
-
-SET_TARGET_PROPERTIES(Types
-   PROPERTIES BUILD_WITH_INSTALL_RPATH OFF
-   INSTALL_RPATH .
-)
-
-
-
-
-INSTALL(TARGETS Types
-  RUNTIME
-  ARCHIVE DESTINATION bin
-  LIBRARY DESTINATION bin
-  COMPONENT applications)
-
-INSTALL(TARGETS Types
-  RUNTIME
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  COMPONENT sdk)
 
 
 FILE(GLOB local *.hpp)
-FILE(GLOB blobs Blobs/*.hpp)
+
 FILE(GLOB objects3d Objects3D/*.hpp)
 
-install(FILES ${local}
-  DESTINATION include/Types
-  COMPONENT sdk)
-  
-install(FILES ${blobs}
-  DESTINATION include/Types/Blobs
-  COMPONENT sdk)
-  
-install(FILES ${objects3d}
-  DESTINATION include/Types/Objects3D
-  COMPONENT sdk)
+install(
+    FILES ${local}
+    DESTINATION include/Types
+    COMPONENT sdk
+)
+
+install(
+    FILES ${objects3d}
+    DESTINATION include/Types/Objects3D
+    COMPONENT sdk
+)

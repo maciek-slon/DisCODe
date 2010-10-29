@@ -15,8 +15,8 @@ SET_TARGET_PROPERTIES(discode
    INSTALL_RPATH .
 )
 
-install(TARGETS discode
+install(
+  TARGETS discode
   RUNTIME DESTINATION bin
-  ARCHIVE DESTINATION bin
-  LIBRARY DESTINATION bin
-  COMPONENT applications)
+  COMPONENT applications
+)

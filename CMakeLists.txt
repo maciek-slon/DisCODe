@@ -65,43 +65,43 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 # refers to the fact that this is the set of components that
 # will be included when CPack is instructed to put everything
 # into the binary installer (the default behavior).
-#set(CPACK_COMPONENTS_ALL applications sources processors sinks sdk tasks)
-set(CPACK_COMPONENTS_ALL applications)
+set(CPACK_COMPONENTS_ALL applications sources processors sinks sdk tasks)
 
 # Applications component contains main DisCODe executable and libraries
-#set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "DisCODe Executable")
-#set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "DisCODe - Distributed Component Oriented Data Processing")
-#set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
+set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "DisCODe Executable")
+set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION "DisCODe - Distributed Component Oriented Data Processing")
+set(CPACK_COMPONENT_APPLICATIONS_GROUP "Runtime")
 
 # Sources component contains all data sources
-#set(CPACK_COMPONENT_SOURCES_DISPLAY_NAME "Data sources")
-#set(CPACK_COMPONENT_SOURCES_DESCRIPTION "Data sources description")
-#set(CPACK_COMPONENT_SOURCES_GROUP "Runtime")
-#set(CPACK_COMPONENT_SOURCES_DEPENDS applications)
+set(CPACK_COMPONENT_SOURCES_DISPLAY_NAME "Data sources")
+set(CPACK_COMPONENT_SOURCES_DESCRIPTION "Data sources description")
+set(CPACK_COMPONENT_SOURCES_GROUP "Runtime")
+set(CPACK_COMPONENT_SOURCES_DEPENDS applications)
 
 # Processors component contains all data processors
-#set(CPACK_COMPONENT_PROCESSORS_DISPLAY_NAME "Data processors")
-#set(CPACK_COMPONENT_PROCESSORS_DESCRIPTION "Data processors desctiption")
-#set(CPACK_COMPONENT_PROCESSORS_GROUP "Runtime")
-#set(CPACK_COMPONENT_PROCESSORS_DEPENDS applications)
+set(CPACK_COMPONENT_PROCESSORS_DISPLAY_NAME "Data processors")
+set(CPACK_COMPONENT_PROCESSORS_DESCRIPTION "Data processors desctiption")
+set(CPACK_COMPONENT_PROCESSORS_GROUP "Runtime")
+set(CPACK_COMPONENT_PROCESSORS_DEPENDS applications)
 
 # Processors component contains all data sinks
-#set(CPACK_COMPONENT_SINKS_DISPLAY_NAME "Data sinks")
-#set(CPACK_COMPONENT_SINKS_DESCRIPTION "Data sinks desctiption")
-#set(CPACK_COMPONENT_SINKS_GROUP "Runtime")
-#set(CPACK_COMPONENT_SINKS_DEPENDS applications)
+set(CPACK_COMPONENT_SINKS_DISPLAY_NAME "Data sinks")
+set(CPACK_COMPONENT_SINKS_DESCRIPTION "Data sinks desctiption")
+set(CPACK_COMPONENT_SINKS_GROUP "Runtime")
+set(CPACK_COMPONENT_SINKS_DEPENDS applications)
 
 # Headers component contains all files necessary to develop
 # additional DisCODe modules (data sources and processors)
-#set(CPACK_COMPONENT_SDK_DISPLAY_NAME "Development Headers")
-#set(CPACK_COMPONENT_SDK_DESCRIPTION "All files necessary to develop additional components (data sources and processors)")
+set(CPACK_COMPONENT_SDK_DISPLAY_NAME "Component SDK")
+set(CPACK_COMPONENT_SDK_DESCRIPTION "All files necessary to develop additional components (headers and libraries)")
 #set(CPACK_COMPONENT_SDK_GROUP "Dev")
+set(CPACK_COMPONENT_SDK_DEPENDS applications)
 
 # Headers component contains all files necessary to develop
 # additional DisCODe modules (data sources and processors)
-#set(CPACK_COMPONENT_TASKS_DISPLAY_NAME "Task config files")
-#set(CPACK_COMPONENT_TASKS_DESCRIPTION "Example tasks")
+set(CPACK_COMPONENT_TASKS_DISPLAY_NAME "Task config files")
+set(CPACK_COMPONENT_TASKS_DESCRIPTION "Example tasks")
 #set(CPACK_COMPONENT_TASKS_GROUP "Tasks")
 
 # This must always be last!
-#include(CPack)
+include(CPack)

@@ -69,6 +69,7 @@ void CvThreshold_Processor::onNewImage()
 	try {
 		cv::Mat img = in_img.read();
 		cv::Mat out = img.clone();
+		LOG(TRACE) << "Threshold " << props.thresh;
 		cv::threshold(img, out, props.thresh, props.maxval, props.type);
 		out_img.write(out);
 		newImage->raise();
