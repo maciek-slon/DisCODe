@@ -16,6 +16,9 @@ LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/../../lib)
 # =[ Search for required libraries]======================================
 
 # Boost
+SET(BOOST_INCLUDEDIR $ENV{BASE_PATH}/libs/boost/include)
+MESSAGE(STATUS ${BOOST_INCLUDEDIR})
+
 SET(Boost_DEBUG FALSE)
 FIND_PACKAGE( Boost REQUIRED thread filesystem system regex program_options)
 
@@ -27,7 +30,6 @@ SET(LIBS
     ${Boost_PROGRAM_OPTIONS_LIBRARY}
     Base
     Common
-    Types
 )
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})

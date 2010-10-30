@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(MS_Sign_Decide SHARED ${files})
-TARGET_LINK_LIBRARIES(MS_Sign_Decide ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
+TARGET_LINK_LIBRARIES(MS_Sign_Decide ${OpenCV_LIBS} ${DisCODe_LIBRARIES} TypesBlobs)
 
 INSTALL_PROCESSOR(MS_Sign_Decide)
