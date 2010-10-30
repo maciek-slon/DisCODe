@@ -1,0 +1,12 @@
+/*!
+
+\page windows Windows
+
+\section windows_requirements Requirements
+
+For list of required libraries and software, see \ref system_requirements "this" section.
+You can either install everything manually, or you can grab ready-made package with everything
+included <a href="#">here</a>. Simply unzip it anywhere and you are ready to go (start your work
+by executing env.bat script from where you unpacked it).
+
+*/

@@ -6,6 +6,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 add_library(ExecTimer SHARED ${files})
-target_link_libraries(ExecTimer ${DisCODe_NoTypes_LIBRARIES})
+target_link_libraries(ExecTimer ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(ExecTimer)
