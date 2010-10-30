@@ -67,7 +67,31 @@ void CvPixelOperator_Processor::onNewImage()
 {
 	LOG(TRACE) << "CvPixelOperator_Processor::onNewImage\n";
 	try {
-		cv::Mat img = in_img.read();
+		img = in_img.read();
+
+		cv::Size size = img.size();
+
+		std::cout << size.width << "x" << size.height << "\n";
+		// Check the arrays for continuity and, if this is the case,
+		// treat the arrays as 1D vectors
+		if (img.isContinuous()) {
+			size.width *= size.height * img.channels();
+			size.height = 1;
+		}
+
+		std::cout << size.width << "x" << size.height << "\n";
+
+		for (int i = 0; i < size.height; i++) {
+			// when the arrays are continuous,
+			// the outer loop is executed only once
+			// if not - it's executed for each row
+			uchar* img_p = img.ptr <uchar> (i);
+
+			int j;
+			for (j = 0; j < size.width; ++j) {
+				img_p[j] = (*props.op)(img_p[j]);
+			}
+		}
 
 		out_img.write(img);
 

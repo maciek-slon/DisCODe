@@ -20,7 +20,7 @@ public:
 };
 
 template <typename T>
-class Unit : public PixelOperator<T> {
+class UnitOperator : public PixelOperator<T> {
 public:
 	virtual T operator()(const T& val) {
 		return val;
@@ -46,6 +46,37 @@ public:
 private:
 	double sigma;
 	double mean;
+};
+
+
+template <typename T>
+class AndOperator : public PixelOperator<T> {
+public:
+	virtual T operator()(const T& val) {
+		return val & mask;
+	}
+
+	virtual void load(const ptree & pt) {
+		mask = pt.get("mask", 0xFF);
+	}
+
+private:
+	T mask;
+};
+
+template <typename T>
+class OrOperator : public PixelOperator<T> {
+public:
+	virtual T operator()(const T& val) {
+		return val | mask;
+	}
+
+	virtual void load(const ptree & pt) {
+		mask = pt.get("mask", 0xFF);
+	}
+
+private:
+	T mask;
 };
 
 #endif /* PIXELOPERATORS_HPP_ */

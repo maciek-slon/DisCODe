@@ -33,15 +33,14 @@ using namespace cv;
  */
 struct Props: public Base::Props
 {
-	PixelOperator<double> * op;
-	ptree tmp;
+	PixelOperator<uint8_t> * op;
+	std::string type;
 
 	void load(const ptree & pt)
 	{
-		op = str2operator<double>(pt.get("operator", "unit"));
-
-		tmp = pt.get_child("attr");
-
+		op = str2operator<uint8_t>(pt.get("operator", "unit"));
+		if (op)
+			op->load(pt);
 	}
 
 	/*!
@@ -55,7 +54,7 @@ struct Props: public Base::Props
 		op = NULL;
 	}
 
-	~Props() {
+	virtual ~Props() {
 		delete op;
 	}
 
@@ -63,7 +62,13 @@ private:
 	template<typename T>
 	PixelOperator<T> * str2operator(const std::string & name) {
 		if (name == "tanh")
-			return new TanhOperator<double>;
+			return new TanhOperator<uint8_t>;
+		if (name == "and")
+			return new AndOperator<uint8_t>;
+		if (name == "or")
+			return new OrOperator<uint8_t>;
+		if (name == "unit")
+			return new UnitOperator<uint8_t>;
 
 		return NULL;
 	}
@@ -142,6 +147,8 @@ protected:
 
 	/// Threshold properties
 	Props props;
+
+	cv::Mat img;
 
 };
 
