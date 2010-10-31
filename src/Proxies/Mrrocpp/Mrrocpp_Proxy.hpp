@@ -9,11 +9,13 @@
 #ifndef MRROCPP_PROXY_HPP_
 #define MRROCPP_PROXY_HPP_
 
+#include <cv.h>
+
 #include "Component_Aux.hpp"
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 
-#include <cv.h>
+#include "SampleClass.hpp"
 
 namespace Proxies {
 namespace Mrrocpp {
@@ -64,6 +66,8 @@ private:
 
 	Base::EventHandler<Mrrocpp_Proxy> h_onNewImage;
 	Base::DataStreamIn<Mat> in_img;
+
+	SampleClass sample;
 };
 
 } // namespace Mrrocpp {
