@@ -17,6 +17,12 @@
 
 #include "SampleClass.hpp"
 
+
+#include "xdr/xdr_oarchive.hpp"
+#include "xdr/xdr_iarchive.hpp"
+
+
+
 namespace Proxies {
 namespace Mrrocpp {
 
@@ -62,11 +68,12 @@ protected:
 	 */
 	virtual bool onStep();
 private:
-	void onNewImage();
+	void onNewMsgToSend();
 
-	Base::EventHandler<Mrrocpp_Proxy> h_onNewImage;
-	Base::DataStreamIn<Mat> in_img;
-
+	Base::EventHandler<Mrrocpp_Proxy> h_onNewMsgToSend;
+	Base::Event *newMsgReceived;
+	Base::DataStreamIn<xdr_oarchive<> > msgToSend;
+	Base::DataStreamOut<xdr_iarchive<> > msgReceived;
 	SampleClass sample;
 };
 

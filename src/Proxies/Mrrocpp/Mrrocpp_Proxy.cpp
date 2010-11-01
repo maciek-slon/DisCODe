@@ -9,9 +9,6 @@
 
 #include "Mrrocpp_Proxy.hpp"
 
-#include "xdr/xdr_oarchive.hpp"
-#include "xdr/xdr_iarchive.hpp"
-
 namespace Proxies {
 
 namespace Mrrocpp {
@@ -37,10 +34,13 @@ bool Mrrocpp_Proxy::onInit()
 {
 	LOG(TRACE)<<"Mrrocpp_Proxy::onInit\n";
 
-	h_onNewImage.setup(this, &Mrrocpp_Proxy::onNewImage);
-	registerHandler("onNewImage", &h_onNewImage);
+	h_onNewMsgToSend.setup(this, &Mrrocpp_Proxy::onNewMsgToSend);
+	registerHandler("onNewMsgToSend", &h_onNewMsgToSend);
 
-	registerStream("in_img", &in_img);
+	newMsgReceived = registerEvent("newMsgReceived");
+
+	registerStream("msgToSend", &msgToSend);
+	registerStream("msgReceived", &msgReceived);
 	return true;
 }
 
@@ -87,10 +87,10 @@ bool Mrrocpp_Proxy::onStep()
 	return true;
 }
 
-void Mrrocpp_Proxy::onNewImage()
+void Mrrocpp_Proxy::onNewMsgToSend()
 {
-	in_img.read();
-	LOG(TRACE)<<"Mrrocpp_Proxy::onNewImage\n";
+	msgToSend.read();
+	LOG(TRACE)<<"Mrrocpp_Proxy::onNewMsgToSend\n";
 }
 
 } // namespace Mrrocpp {
