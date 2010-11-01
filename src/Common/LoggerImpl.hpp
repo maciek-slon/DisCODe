@@ -18,10 +18,8 @@
 #if defined (_WIN32)
   #if defined(COMPILING_DLL)
     #define  MYLIB_EXPORT __declspec(dllexport)
-	#warning "export"
   #else
     #define  MYLIB_EXPORT __declspec(dllimport)
-	#warning "import"
   #endif /* MyLibrary_EXPORTS */
 #else /* defined (_WIN32) */
  #define MYLIB_EXPORT
