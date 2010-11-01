@@ -55,7 +55,7 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 			read_xml(configuration_filename, configuration);
 		}
 		catch(xml_parser_error&) {
-			LOG(FATAL) << "Configuration: Couldn't parse '" << configuration_filename << "' file.\n";
+			LOG(LFATAL) << "Configuration: Couldn't parse '" << configuration_filename << "' file.\n";
 			throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
 		}
 
@@ -70,7 +70,7 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 			loadExecutors(tmp_node, task);
 		}
 		catch(ptree_bad_path&) {
-			LOG(FATAL) << "No Executors branch in configuration file!\n";
+			LOG(LFATAL) << "No Executors branch in configuration file!\n";
 		}
 
 		try {
@@ -78,7 +78,7 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 			loadComponents(tmp_node, task);
 		}
 		catch(ptree_bad_path&) {
-			LOG(FATAL) << "No Components branch in configuration file!\n";
+			LOG(LFATAL) << "No Components branch in configuration file!\n";
 		}
 
 		try {
@@ -86,7 +86,7 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 			loadEvents(tmp_node);
 		}
 		catch(ptree_bad_path&) {
-			LOG(FATAL) << "No Events branch in configuration file!\n";
+			LOG(LFATAL) << "No Events branch in configuration file!\n";
 		}
 
 		try {
@@ -94,17 +94,17 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 			loadConnections(tmp_node);
 		}
 		catch(ptree_bad_path&) {
-			LOG(FATAL) << "No DataStreams branch in configuration file!\n";
+			LOG(LFATAL) << "No DataStreams branch in configuration file!\n";
 		}
 
 
-		LOG(INFO) << "Configuration: File \'" << configuration_filename << "\' loaded.\n";
+		LOG(LINFO) << "Configuration: File \'" << configuration_filename << "\' loaded.\n";
 		return task;
 	}//: else
 }
 
 void Configurator::loadExecutors(const ptree * node, Task & task) {
-	LOG(INFO) << "Creating execution threads\n";
+	LOG(LINFO) << "Creating execution threads\n";
 
 	Executor * ex;
 
@@ -118,7 +118,7 @@ void Configurator::loadExecutors(const ptree * node, Task & task) {
 }
 
 void Configurator::loadComponents(const ptree * node, Task & task) {
-	LOG(INFO) << "Loading required components\n";
+	LOG(LINFO) << "Loading required components\n";
 
 	Base::Component * kern;
 	Executor * ex;
@@ -139,7 +139,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 		group = tmp.get("<xmlattr>.group", "DEFAULT");
 		include = tmp.get("<xmlattr>.include", "");
 
-		LOG(TRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
+		LOG(LTRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
 
 		kern = componentManager->createComponent(name, type);
 
@@ -148,7 +148,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 				read_xml(include, tmp);
 			}
 			catch(xml_parser_error&) {
-				LOG(FATAL) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
+				LOG(LFATAL) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
 				throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + include + "' file.\n");
 			}
 		}
@@ -161,7 +161,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 		ex = executorManager->getExecutor(thread);
 		ex->addComponent(name, kern);
 
-		LOG(TRACE) << "Adding component " << name << " to subtask " << group << "\n";
+		LOG(LTRACE) << "Adding component " << name << " to subtask " << group << "\n";
 
 		task[group] += kern;
 
@@ -170,7 +170,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 }
 
 void Configurator::loadEvents(const ptree * node) {
-	LOG(INFO) << "Connecting events\n";
+	LOG(LINFO) << "Connecting events\n";
 	std::string src, dst, name, caller, receiver, type;
 	Base::Component * src_k, * dst_k;
 	Base::EventHandlerInterface * h;
@@ -182,13 +182,13 @@ void Configurator::loadEvents(const ptree * node) {
 
 		src = tmp.get("<xmlattr>.source", "");
 		if (src == "") {
-			LOG(ERROR) << "No event source specified...\n";
+			LOG(LERROR) << "No event source specified...\n";
 			continue;
 		}
 
 		dst = tmp.get("<xmlattr>.destination", "");
 		if (dst == "") {
-			LOG(ERROR) << "No event destination specified...\n";
+			LOG(LERROR) << "No event destination specified...\n";
 			continue;
 		}
 
@@ -205,13 +205,13 @@ void Configurator::loadEvents(const ptree * node) {
 
 		h = dst_k->getHandler(dst);
 		if (!h) {
-			LOG(ERROR) << "Component " << receiver << " has no event handler named '" << dst << "'!\n";
+			LOG(LERROR) << "Component " << receiver << " has no event handler named '" << dst << "'!\n";
 			continue;
 		}
 
 		e = src_k->getEvent(src);
 		if (!e) {
-			LOG(ERROR) << "Component " << caller << " has no event named '" << src << "'!\n";
+			LOG(LERROR) << "Component " << caller << " has no event named '" << src << "'!\n";
 			continue;
 		}
 
@@ -224,12 +224,12 @@ void Configurator::loadEvents(const ptree * node) {
 			e->addHandler(h);
 		}
 
-		LOG(INFO) << name << ": src=" << src << ", dst=" << dst << "\n";
+		LOG(LINFO) << name << ": src=" << src << ", dst=" << dst << "\n";
 	}
 }
 
 void Configurator::loadConnections(const ptree * node) {
-	LOG(INFO) << "Connecting data streams\n";
+	LOG(LINFO) << "Connecting data streams\n";
 	std::string name, ds_name;
 	Base::Component * kern;
 	std::string type, con_name;
@@ -255,10 +255,10 @@ void Configurator::loadConnections(const ptree * node) {
 
 			ds = kern->getStream(ds_name);
 			if (!ds) {
-				LOG(ERROR) << "Component " << name << " has no data stream named '" << ds_name << "'!\n";
+				LOG(LERROR) << "Component " << name << " has no data stream named '" << ds_name << "'!\n";
 			}
 
-			LOG(INFO) << name << ": str=" << ds_name << " [" << type << "] in " << con_name;
+			LOG(LINFO) << name << ": str=" << ds_name << " [" << type << "] in " << con_name;
 
 			if (type == "out") {
 				ds->setConnection(con);
@@ -266,7 +266,7 @@ void Configurator::loadConnections(const ptree * node) {
 			if (type == "in") {
 				con->addListener(ds);
 			} else {
-				LOG(ERROR) << "Unknown data stream type: " << type << "\n";
+				LOG(LERROR) << "Unknown data stream type: " << type << "\n";
 				continue;
 			}
 		}

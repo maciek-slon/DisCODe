@@ -106,10 +106,7 @@ public:
 	/*!
 	 * Add new logger output.
 	 */
-	void addOutput(LoggerOutput * out, Severity lvl) {
-		out->setLvl(lvl);
-		outputs.push_back(out);
-	}
+	void addOutput(LoggerOutput * out, Severity lvl);
 
 protected:
 	Logger()

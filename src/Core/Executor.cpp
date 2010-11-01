@@ -17,10 +17,10 @@ void ContinuousExecutor::run() {
 	running = true;
 	paused = false;
 
-	LOG(TRACE) << name() << "::run()";
+	LOG(LTRACE) << name() << "::run()";
 
 	if (components.count(mk_name) < 1) {
-		LOG(ERROR) << "Component " << mk_name << " is not being executed in this thread.\n";
+		LOG(LERROR) << "Component " << mk_name << " is not being executed in this thread.\n";
 		main_component = NULL;
 		return;
 	} else {
@@ -30,13 +30,13 @@ void ContinuousExecutor::run() {
 	while(running) {
 		if (paused) {
 			/// \todo sync with mutex
-			LOG(TRACE) << name() << " paused";
+			LOG(LTRACE) << name() << " paused";
 			Common::Thread::msleep(50);
 			yield();
 			continue;
 		}
 
-		LOG(TRACE) << name() << " executing events";
+		LOG(LTRACE) << name() << " executing events";
 		executeEvents();
 
 		// check if there is any component to execute
@@ -48,12 +48,12 @@ void ContinuousExecutor::run() {
 					break;
 			}
 
-			LOG(TRACE) << name() << " making step (" << main_component->name() << ")";
+			LOG(LTRACE) << name() << " making step (" << main_component->name() << ")";
 			elapsed += main_component->step();
 			loops++;
 			double spl = elapsed/loops;
 			double lps = 1.0 / spl;
-			LOG(DEBUG) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+			LOG(LDEBUG) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 
 		} else {
 			Common::Thread::msleep(50);
@@ -98,7 +98,7 @@ void PeriodicExecutor::run() {
 	running = true;
 
 	if (components.count(mk_name) < 1) {
-		LOG(ERROR) << "Component " << mk_name << " is not executed in this thread.\n";
+		LOG(LERROR) << "Component " << mk_name << " is not executed in this thread.\n";
 		main_component = NULL;
 		return;
 	} else {
@@ -130,7 +130,7 @@ void PeriodicExecutor::run() {
 				loops++;
 				double spl = elapsed/loops;
 				double lps = 1.0 / spl;
-				LOG(DEBUG) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+				LOG(LDEBUG) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 			} else {
 				Common::Thread::msleep(50);
 			}

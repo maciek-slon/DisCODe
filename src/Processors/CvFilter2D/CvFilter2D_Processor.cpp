@@ -16,17 +16,17 @@ namespace CvFilter2D {
 
 CvFilter2D_Processor::CvFilter2D_Processor(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello CvFilter2D_Processor\n";
+	LOG(LTRACE) << "Hello CvFilter2D_Processor\n";
 }
 
 CvFilter2D_Processor::~CvFilter2D_Processor()
 {
-	LOG(TRACE) << "Good bye CvFilter2D_Processor\n";
+	LOG(LTRACE) << "Good bye CvFilter2D_Processor\n";
 }
 
 bool CvFilter2D_Processor::onInit()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::initialize\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &CvFilter2D_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -42,14 +42,14 @@ bool CvFilter2D_Processor::onInit()
 
 bool CvFilter2D_Processor::onFinish()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::finish\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::finish\n";
 
 	return true;
 }
 
 bool CvFilter2D_Processor::onStep()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::step\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::step\n";
 	return true;
 }
 
@@ -65,7 +65,7 @@ bool CvFilter2D_Processor::onStart()
 
 void CvFilter2D_Processor::onNewImage()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::onNewImage\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::onNewImage\n";
 	try {
 		cv::Mat img = in_img.read();
 
@@ -76,7 +76,7 @@ void CvFilter2D_Processor::onNewImage()
 
 		newImage->raise();
 	} catch (...) {
-		LOG(ERROR) << "CvFilter2D_Processor::onNewImage failed\n";
+		LOG(LERROR) << "CvFilter2D_Processor::onNewImage failed\n";
 	}
 }
 

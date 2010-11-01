@@ -21,15 +21,15 @@ namespace Processors {
 namespace BlobExtractor {
 
 BlobExtractor_Processor::BlobExtractor_Processor(const std::string & name) : Base::Component(name) {
-	LOG(TRACE)<<"Hello BlobExtractor_Processor\n";
+	LOG(LTRACE)<<"Hello BlobExtractor_Processor\n";
 }
 
 BlobExtractor_Processor::~BlobExtractor_Processor() {
-	LOG(TRACE)<<"Good bye BlobExtractor_Processor\n";
+	LOG(LTRACE)<<"Good bye BlobExtractor_Processor\n";
 }
 
 bool BlobExtractor_Processor::onInit() {
-	LOG(TRACE) << "BlobExtractor_Processor::initialize\n";
+	LOG(LTRACE) << "BlobExtractor_Processor::initialize\n";
 
 	newBlobs = registerEvent("newBlobs");
 
@@ -46,14 +46,14 @@ bool BlobExtractor_Processor::onInit() {
 }
 
 bool BlobExtractor_Processor::onFinish() {
-	LOG(TRACE) << "BlobExtractor_Processor::finish\n";
+	LOG(LTRACE) << "BlobExtractor_Processor::finish\n";
 
 	return true;
 }
 
 bool BlobExtractor_Processor::onStep()
 {
-	LOG(TRACE) << "BlobExtractor_Processor::step\n";
+	LOG(LTRACE) << "BlobExtractor_Processor::step\n";
 	return true;
 }
 
@@ -68,7 +68,7 @@ bool BlobExtractor_Processor::onStart()
 }
 
 void BlobExtractor_Processor::onNewImage() {
-	LOG(TRACE) << "BlobExtractor_Processor::onNewImage() called!\n";
+	LOG(LTRACE) << "BlobExtractor_Processor::onNewImage() called!\n";
 
 	Common::Timer timer;
 	timer.restart();
@@ -88,32 +88,32 @@ void BlobExtractor_Processor::onNewImage() {
 	catch(...)
 	{
 		success = false;
-		LOG(WARNING) << "blob find error\n";
+		LOG(LWARNING) << "blob find error\n";
 	}
 
 		try {
 		if( !success ) {
-			LOG(ERROR) << "Blob find error\n";
+			LOG(LERROR) << "Blob find error\n";
 		} else {
-			LOG(TRACE) << "blobs found";
+			LOG(LTRACE) << "blobs found";
 			Types::Blobs::BlobResult result(res);
 
 			result.Filter( result, B_EXCLUDE, Types::Blobs::BlobGetArea(), B_LESS, props.min_size );
 
 			out_blobs.write(result);
-			LOG(TRACE) << "blobs written";
+			LOG(LTRACE) << "blobs written";
 			newBlobs->raise();
-			LOG(TRACE) << "blobs sent";
+			LOG(LTRACE) << "blobs sent";
 			//result.draw(out, CV_RGB(255, 0, 0), 0, 0);
 			//out_img.write(in);
 			//newImage->raise();
 		}
 
-		LOG(INFO) << "Blobing took " << timer.elapsed() << " seconds\n";
+		LOG(LINFO) << "Blobing took " << timer.elapsed() << " seconds\n";
 	}
 	catch(...)
 	{
-		LOG(ERROR) << "BlobExtractor onNewImage failure";
+		LOG(LERROR) << "BlobExtractor onNewImage failure";
 	}
 }
 

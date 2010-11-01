@@ -29,17 +29,17 @@ void V4L2::init(const CameraProps & props) {
 
 	struct stat st;
 	if (-1 == stat(dev_name.c_str(), &st)) {
-		LOG(ERROR) << "Cannot identify " << props.device << "\n";
+		LOG(LERROR) << "Cannot identify " << props.device << "\n";
 	}
 
 	if (!S_ISCHR(st.st_mode)) {
-		LOG(ERROR) << props.device << " is no device\n";
+		LOG(LERROR) << props.device << " is no device\n";
 	}
 
 	fd = open(dev_name.c_str(), O_RDWR /* required */| O_NONBLOCK, 0);
 
 	if (-1 == fd) {
-		LOG(ERROR) << "Cannot open " << props.device << "\n";
+		LOG(LERROR) << "Cannot open " << props.device << "\n";
 	}
 }
 
@@ -217,11 +217,11 @@ void V4L2::startCapture() {
 			buf.m.userptr = (unsigned long) buffers[i].start;
 			buf.length = buffers[i].length;
 			if (-1 == xioctl(fd, VIDIOC_QBUF, &buf))
-				LOG(ERROR) << "VIDIOC_QBUF\n";
+				LOG(LERROR) << "VIDIOC_QBUF\n";
 		}
 		type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 		if (-1 == xioctl(fd, VIDIOC_STREAMON, &type))
-			LOG(ERROR) << "VIDIOC_STREAMON\n";
+			LOG(LERROR) << "VIDIOC_STREAMON\n";
 		break;
 	}
 
@@ -244,7 +244,7 @@ void V4L2::stopCapture() {
 	case IO_METHOD_USERPTR:
 		type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 		if (-1 == xioctl(fd, VIDIOC_STREAMOFF, &type))
-			LOG(ERROR) << "VIDIOC_STREAMOFF\n";
+			LOG(LERROR) << "VIDIOC_STREAMOFF\n";
 		break;
 	}
 	cvFree(&(img.imageData));
@@ -268,10 +268,10 @@ void *V4L2::getFrame() {
 		if (-1 == r) {
 			if (EINTR == errno)
 				continue;
-			LOG(WARNING) << "select\n";
+			LOG(LWARNING) << "select\n";
 		}
 		if (0 == r) {
-			LOG(ERROR) << "select timeout\n";
+			LOG(LERROR) << "select timeout\n";
 		}
 
 		void *p = readFrame();
@@ -315,12 +315,12 @@ void *V4L2::readFrame() {
 				/* Could ignore EIO, see spec. */
 				/* fall through */
 			default:
-				LOG(ERROR) << "VIDIOC_DQBUF\n";
+				LOG(LERROR) << "VIDIOC_DQBUF\n";
 			}
 		}
 		assert(buf.index < n_buffers);
 		if (-1 == xioctl(fd, VIDIOC_QBUF, &buf))
-			LOG(ERROR) << "VIDIOC_QBUF\n";
+			LOG(LERROR) << "VIDIOC_QBUF\n";
 		return buffers[buf.index].start;
 		break;
 
@@ -336,7 +336,7 @@ void *V4L2::readFrame() {
 				/* Could ignore EIO, see spec. */
 				/* fall through */
 			default:
-				LOG(ERROR) << "VIDIOC_DQBUF\n";
+				LOG(LERROR) << "VIDIOC_DQBUF\n";
 			}
 		}
 		for (i = 0; i < n_buffers; ++i)
@@ -345,7 +345,7 @@ void *V4L2::readFrame() {
 				break;
 		assert(i < n_buffers);
 		if (-1 == xioctl(fd, VIDIOC_QBUF, &buf))
-			LOG(ERROR) << "VIDIOC_QBUF\n";
+			LOG(LERROR) << "VIDIOC_QBUF\n";
 		return (void *) (buf.m.userptr);
 		break;
 
@@ -379,19 +379,19 @@ void V4L2::init_mmap(void) {
 	req.memory = V4L2_MEMORY_MMAP;
 	if (-1 == xioctl(fd, VIDIOC_REQBUFS, &req)) {
 		if (EINVAL == errno) {
-			LOG(ERROR) << dev_name << " does not support memory mapping\n";
+			LOG(LERROR) << dev_name << " does not support memory mapping\n";
 		} else {
-			LOG(ERROR) << "VIDIOC_REQBUFS\n";
+			LOG(LERROR) << "VIDIOC_REQBUFS\n";
 		}
 	}
 
 	if (req.count < 2) {
-		LOG(ERROR) << "Insufficient buffer memory on " << dev_name << "\n";
+		LOG(LERROR) << "Insufficient buffer memory on " << dev_name << "\n";
 	}
 
 	buffers = (buffer *) (calloc(req.count, sizeof(*buffers)));
 	if (!buffers) {
-		LOG(ERROR) << "Out of memory\n";
+		LOG(LERROR) << "Out of memory\n";
 	}
 	for (n_buffers = 0; n_buffers < req.count; ++n_buffers) {
 		struct v4l2_buffer buf;
@@ -400,14 +400,14 @@ void V4L2::init_mmap(void) {
 		buf.memory = V4L2_MEMORY_MMAP;
 		buf.index = n_buffers;
 		if (-1 == xioctl(fd, VIDIOC_QUERYBUF, &buf))
-			LOG(ERROR) << "VIDIOC_QUERYBUF\n";
+			LOG(LERROR) << "VIDIOC_QUERYBUF\n";
 		buffers[n_buffers].length = buf.length;
 		buffers[n_buffers].start = mmap(NULL /* start anywhere */, buf.length,
 				PROT_READ | PROT_WRITE /* required */,
 				MAP_SHARED /* recommended */, fd, buf.m.offset);
 
 		if (MAP_FAILED == buffers[n_buffers].start)
-			LOG(WARNING) << "mmap\n";
+			LOG(LWARNING) << "mmap\n";
 	}
 }
 
@@ -422,14 +422,14 @@ void V4L2::init_userp(unsigned int buffer_size) {
 	req.memory = V4L2_MEMORY_USERPTR;
 	if (-1 == xioctl(fd, VIDIOC_REQBUFS, &req)) {
 		if (EINVAL == errno) {
-			LOG(ERROR) << dev_name << " does not support user pointer i/o\n";
+			LOG(LERROR) << dev_name << " does not support user pointer i/o\n";
 		} else {
-			LOG(ERROR) << "VIDIOC_REQBUFS\n";
+			LOG(LERROR) << "VIDIOC_REQBUFS\n";
 		}
 	}
 	buffers = (buffer *) (calloc(4, sizeof(*buffers)));
 	if (!buffers) {
-		LOG(ERROR) << "Out of memory\n";
+		LOG(LERROR) << "Out of memory\n";
 	}
 
 	for (n_buffers = 0; n_buffers < 4; ++n_buffers) {
@@ -437,7 +437,7 @@ void V4L2::init_userp(unsigned int buffer_size) {
 		buffers[n_buffers].start = malloc(buffer_size);
 
 		if (!buffers[n_buffers].start) {
-			LOG(ERROR) << "Out of memory\n";
+			LOG(LERROR) << "Out of memory\n";
 		}
 	}
 }
@@ -649,7 +649,7 @@ int V4L2::getWinProperty(int property) {
 	videoformat.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
 
 	if (-1 == ioctl(fd, VIDIOC_G_FMT, &videoformat))
-		LOG(ERROR) << "VIDIOC_G_FMT\n";
+		LOG(LERROR) << "VIDIOC_G_FMT\n";
 
 	fmtdesc.index = 0;
 	while (0 == ioctl(fd, VIDIOC_ENUM_FMT, &fmtdesc)) {
@@ -765,7 +765,7 @@ IplImage * V4L2::getOneFrame() {
 	void *frame = getFrame();
 
 	if (!frame) {
-		LOG(ERROR) << "Empty frame!\n";
+		LOG(LERROR) << "Empty frame!\n";
 		return NULL;
 	}
 

@@ -17,15 +17,15 @@ namespace Sinks {
 namespace CvVideoWriter {
 
 CvVideoWriter_Sink::CvVideoWriter_Sink(const std::string & name) : Base::Component(name) {
-	LOG(TRACE)<<"Hello CvVideoWriter_Sink\n";
+	LOG(LTRACE)<<"Hello CvVideoWriter_Sink\n";
 }
 
 CvVideoWriter_Sink::~CvVideoWriter_Sink() {
-	LOG(TRACE)<<"Good bye CvVideoWriter_Sink\n";
+	LOG(LTRACE)<<"Good bye CvVideoWriter_Sink\n";
 }
 
 bool CvVideoWriter_Sink::onInit() {
-	LOG(TRACE) << "CvVideoWriter_Sink::initialize\n";
+	LOG(LTRACE) << "CvVideoWriter_Sink::initialize\n";
 
 	h_onNewImage.setup(this, &CvVideoWriter_Sink::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -36,22 +36,22 @@ bool CvVideoWriter_Sink::onInit() {
 	writer.open(props.filename, props.fourcc, props.fps, props.size);
 
 	if (writer.isOpened())
-		LOG(TRACE) << "CameraOpenCV: device opened\n";
+		LOG(LTRACE) << "CameraOpenCV: device opened\n";
 	else
-		LOG(WARNING) << "CameraOpenCV: device NOT opened!\n";
+		LOG(LWARNING) << "CameraOpenCV: device NOT opened!\n";
 
 	return writer.isOpened();
 }
 
 bool CvVideoWriter_Sink::onFinish() {
-	LOG(TRACE) << "CvVideoWriter_Sink::finish\n";
+	LOG(LTRACE) << "CvVideoWriter_Sink::finish\n";
 
 	return true;
 }
 
 bool CvVideoWriter_Sink::onStep()
 {
-	LOG(TRACE)<<"CvVideoWriter_Sink::step\n";
+	LOG(LTRACE)<<"CvVideoWriter_Sink::step\n";
 	return true;
 }
 
@@ -66,7 +66,7 @@ bool CvVideoWriter_Sink::onStart()
 }
 
 void CvVideoWriter_Sink::onNewImage() {
-	LOG(TRACE)<<"CvVideoWriter_Sink::onNewImage\n";
+	LOG(LTRACE)<<"CvVideoWriter_Sink::onNewImage\n";
 
 	try {
 		cv::Mat img = in_img.read().clone();
@@ -74,7 +74,7 @@ void CvVideoWriter_Sink::onNewImage() {
 		writer << img;
 	}
 	catch(...) {
-		LOG(ERROR) << "CvVideoWriter::onNewImage failed\n";
+		LOG(LERROR) << "CvVideoWriter::onNewImage failed\n";
 	}
 }
 

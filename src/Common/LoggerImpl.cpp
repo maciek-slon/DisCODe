@@ -69,5 +69,11 @@ void Logger::dump(Severity sev, const std::string & msg, void * data, int length
 	}
 }
 
+void Logger::addOutput(LoggerOutput * out, Severity lvl) {
+	out->setLvl(lvl);
+	outputs.push_back(out);
+}
+
+
 } //: namespace Logger
 } //: namespace Utils
