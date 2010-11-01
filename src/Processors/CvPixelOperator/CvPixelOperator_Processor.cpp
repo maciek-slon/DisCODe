@@ -79,8 +79,6 @@ void CvPixelOperator_Processor::onNewImage()
 			size.height = 1;
 		}
 
-		std::cout << size.width << "x" << size.height << "\n";
-
 		for (int i = 0; i < size.height; i++) {
 			// when the arrays are continuous,
 			// the outer loop is executed only once

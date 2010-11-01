@@ -368,6 +368,10 @@ protected:
 
 	/// Threshold properties
 	ColorConvProps props;
+
+private:
+	cv::Mat img;
+	cv::Mat out;
 };
 
 }//: namespace CvColorConv

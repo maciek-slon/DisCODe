@@ -11,7 +11,7 @@
 
 		<Op type="CvPixelOperator" thread="Thread1" group="s1">
 			<operator>and</operator>
-			<mask>128</mask>
+			<mask>192</mask>
 		</Op>
 
 		<Window type="CvWindow" thread="Thread1" group="s1">
