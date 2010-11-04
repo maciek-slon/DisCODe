@@ -23,7 +23,7 @@ public:
 	virtual ~ContinuousExecutor() {
 		double spl = elapsed/loops;
 		double lps = 1.0 / spl;
-		LOG(NOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+		LOG(LNOTICE) << "Executor " << name() << " finished.\n\tDid " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 	}
 
 	/*!

@@ -26,7 +26,7 @@ bool CommandInterpreter::execute(const std::string & cmd)
 {
 	std::vector<std::string> tokens = parse(cmd);
 	if (tokens.empty()) {
-		LOG(ERROR) << "Empty string given to execute";
+		LOG(LERROR) << "Empty string given to execute";
 		return false;
 	}
 

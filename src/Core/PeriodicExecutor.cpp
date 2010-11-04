@@ -22,7 +22,7 @@ void PeriodicExecutor::run() {
 	running = true;
 
 	if (components.count(mk_name) < 1) {
-		LOG(ERROR) << "Component " << mk_name << " is not executed in this thread.\n";
+		LOG(LERROR) << "Component " << mk_name << " is not executed in this thread.\n";
 		main_component = NULL;
 		return;
 	} else {
@@ -58,7 +58,7 @@ void PeriodicExecutor::run() {
 				loops++;
 				double spl = elapsed/loops;
 				double lps = 1.0 / spl;
-				LOG(DEBUG) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+				LOG(LDEBUG) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 			} else {
 				Common::Thread::msleep(50);
 			}
@@ -68,7 +68,7 @@ void PeriodicExecutor::run() {
 
 			to_sleep += interval - timer.elapsed();
 			timer.restart();
-			LOG(INFO) << "Thread " << name() << " is going asleep for " << to_sleep;
+			LOG(LINFO) << "Thread " << name() << " is going asleep for " << to_sleep;
 
 		}
 		try {
@@ -81,8 +81,8 @@ void PeriodicExecutor::run() {
 	double spl = time_elapsed/loops;
 	double lps = 1.0 / spl;
 
-	LOG(NOTICE) << "Executor " << name() << ": " << loops << " loops in " << time_elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
-	LOG(INFO) << "Executor " << name() << " is periodic, actual period was " << spl << " while it should be " << interval << " (" << (spl / interval * 100) << "%)";
+	LOG(LNOTICE) << "Executor " << name() << ": " << loops << " loops in " << time_elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+	LOG(LINFO) << "Executor " << name() << " is periodic, actual period was " << spl << " while it should be " << interval << " (" << (spl / interval * 100) << "%)";
 }
 
 }//: namespace Core
