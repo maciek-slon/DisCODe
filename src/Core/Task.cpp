@@ -19,7 +19,7 @@ Task & Task::operator += (Executor * ex) {
 
 Subtask & Task::operator[](const std::string & name) {
 	if (subtasks.count(name) < 1) {
-		LOG(WARNING) << "Subtask " << name << " absent. Creating new one...\n";
+		LOG(LWARNING) << "Subtask " << name << " absent. Creating new one...\n";
 		subtasks[name] = Subtask(name);
 	}
 
@@ -27,18 +27,18 @@ Subtask & Task::operator[](const std::string & name) {
 }
 
 bool Task::start() {
-	LOG(TRACE) << "Starting subtasks...";
+	LOG(LTRACE) << "Starting subtasks...";
 	BOOST_FOREACH(SubtaskPair sp, subtasks) {
 		if (!sp.second.start())
 			return false;
 	}
 
-	LOG(TRACE) << "Starting executors...";
+	LOG(LTRACE) << "Starting executors...";
 	BOOST_FOREACH(ExecutorPair executor, executors) {
 		executor.second->restart();
 	}
 
-	LOG(TRACE) << "Task started successfully";
+	LOG(LTRACE) << "Task started successfully";
 	return true;
 }
 

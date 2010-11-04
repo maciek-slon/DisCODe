@@ -6,7 +6,7 @@ namespace Sources {
 namespace CameraV4L {
 
 void CameraProps::load(const ptree & pt) {
-	LOG(INFO) << "Loading settings for CameraV4L\n";
+	LOG(LINFO) << "Loading settings for CameraV4L\n";
 	device   =              pt.get("device.device", "/dev/video0");
 	io       = convIOMethod(pt.get("device.io", "MMAP"));
 	standard = convStandard(pt.get("device.video_standard", "PAL"));

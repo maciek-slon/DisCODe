@@ -6,6 +6,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 add_library(procExample SHARED ${files})
-target_link_libraries(procExample ${DisCODe_NoTypes_LIBRARIES})
+target_link_libraries(procExample ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(procExample)

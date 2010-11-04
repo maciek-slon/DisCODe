@@ -16,18 +16,18 @@ namespace Sources {
 namespace Sequence {
 
 Sequence::Sequence(const std::string & name) : Base::Component(name) {
-	LOG(TRACE) << "Hello Sequence from dl\n";
+	LOG(LTRACE) << "Hello Sequence from dl\n";
 
 	frame = 0;
 	trig = true;
 }
 
 Sequence::~Sequence() {
-	LOG(TRACE) << "Goodbye Sequence from dl\n";
+	LOG(LTRACE) << "Goodbye Sequence from dl\n";
 }
 
 bool Sequence::onInit() {
-	LOG(TRACE) << "Sequence::initialize\n";
+	LOG(LTRACE) << "Sequence::initialize\n";
 
 	h_onTrigger.setup(this, &Sequence::onTrigger);
 	registerHandler("onTrigger", &h_onTrigger);
@@ -37,7 +37,7 @@ bool Sequence::onInit() {
 	registerStream("out_img", &out_img);
 
 	if (!findFiles()) {
-		LOG(ERROR) << name() << ": There are no files matching regex " << props.pattern << " in " << props.directory;
+		LOG(LERROR) << name() << ": There are no files matching regex " << props.pattern << " in " << props.directory;
 		return false;
 	}
 
@@ -45,13 +45,13 @@ bool Sequence::onInit() {
 }
 
 bool Sequence::onFinish() {
-	LOG(TRACE) << "Sequence::finish\n";
+	LOG(LTRACE) << "Sequence::finish\n";
 
 	return true;
 }
 
 bool Sequence::onStep() {
-	LOG(TRACE) << "Sequence::onStep";
+	LOG(LTRACE) << "Sequence::onStep";
 
 	if (props.triggered && !trig)
 		return true;
@@ -59,16 +59,16 @@ bool Sequence::onStep() {
 	trig = false;
 
 	if (frame >= files.size()) {
-		LOG(INFO) << name() << ": end of sequence\n";
+		LOG(LINFO) << name() << ": end of sequence\n";
 		return false;
 	}
 
-	LOG(TRACE) << "Sequence: reading image " << files[frame];
+	LOG(LTRACE) << "Sequence: reading image " << files[frame];
 	try {
 		img = cv::imread(files[frame++], -1);
 	}
 	catch(...) {
-		LOG(WARNING) << name() << ": image reading failed! [" << files[frame-1] << "]";
+		LOG(LWARNING) << name() << ": image reading failed! [" << files[frame-1] << "]";
 	}
 
 	out_img.write(img);
@@ -94,9 +94,9 @@ bool Sequence::findFiles() {
 	if (props.sort)
 		std::sort(files.begin(), files.end());
 
-	LOG(INFO) << "Sequence loaded.";
+	LOG(LINFO) << "Sequence loaded.";
 	BOOST_FOREACH(std::string fname, files)
-		LOG(INFO) << fname;
+		LOG(LINFO) << fname;
 
 	return !files.empty();
 }

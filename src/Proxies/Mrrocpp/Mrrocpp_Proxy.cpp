@@ -14,23 +14,23 @@ namespace Mrrocpp {
 Mrrocpp_Proxy::Mrrocpp_Proxy(const std::string & name) :
 	Base::Component(name)
 {
-	LOG(FATAL)<<"Mrrocpp_Proxy::Mrrocpp_Proxy\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::Mrrocpp_Proxy\n";
 }
 
 Mrrocpp_Proxy::~Mrrocpp_Proxy()
 {
-	LOG(FATAL)<<"Mrrocpp_Proxy::~Mrrocpp_Proxy\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::~Mrrocpp_Proxy\n";
 }
 
 bool Mrrocpp_Proxy::onStart()
 {
-	LOG(FATAL)<<"Mrrocpp_Proxy::onStart\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onStart\n";
 	return true;
 }
 
 bool Mrrocpp_Proxy::onInit()
 {
-	LOG(FATAL)<<"Mrrocpp_Proxy::onInit\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onInit\n";
 
 	h_onNewImage.setup(this, &Mrrocpp_Proxy::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -41,26 +41,26 @@ bool Mrrocpp_Proxy::onInit()
 
 bool Mrrocpp_Proxy::onStop()
 {
-	LOG(FATAL)<<"Mrrocpp_Proxy::onStop\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onStop\n";
 	return true;
 }
 
 bool Mrrocpp_Proxy::onFinish()
 {
-	LOG(FATAL)<<"Mrrocpp_Proxy::onFinish\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onFinish\n";
 	return true;
 }
 
 bool Mrrocpp_Proxy::onStep()
 {
-	LOG(FATAL)<<"Mrrocpp_Proxy::onStep\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onStep\n";
 	return true;
 }
 
 void Mrrocpp_Proxy::onNewImage()
 {
 	in_img.read();
-	LOG(FATAL)<<"Mrrocpp_Proxy::onNewImage\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onNewImage\n";
 }
 
 } // namespace Mrrocpp {

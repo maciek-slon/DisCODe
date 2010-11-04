@@ -87,13 +87,13 @@ struct CvSolvePnPProps: Base::Props
 	 */
 	virtual void load(const ptree & pt)
 	{
-		LOG(TRACE) << "loading camera parameters.\n";
+		LOG(LTRACE) << "loading camera parameters.\n";
 		boost::numeric::ublas::matrix <double> cameraMatrixUblas = str2mat(pt.get <std::string> ("cameraMatrix"), 3, 3);
 		cameraMatrix = cv::Mat_<double>(3, 3);
 		for (int i = 0; i < 3; ++i) {
 			for (int j = 0; j < 3; ++j) {
 				cameraMatrix(i, j) = cameraMatrixUblas(i, j);
-				LOG(DEBUG) << "cameraMatrix(" << i << ", " << j << "): " << cameraMatrix(i, j) << endl;
+				LOG(LDEBUG) << "cameraMatrix(" << i << ", " << j << "): " << cameraMatrix(i, j) << endl;
 			}
 		}
 
@@ -101,7 +101,7 @@ struct CvSolvePnPProps: Base::Props
 		distCoeffs = cv::Mat_<double>(1, 5);
 		for (int j = 0; j < 5; ++j) {
 			distCoeffs(0, j) = distCoeffsUblas(0, j);
-			LOG(DEBUG) << "distCoeffs(" << 0 << ", " << j << "): " << distCoeffs(0, j) << endl;
+			LOG(LDEBUG) << "distCoeffs(" << 0 << ", " << j << "): " << distCoeffs(0, j) << endl;
 		}
 	}
 

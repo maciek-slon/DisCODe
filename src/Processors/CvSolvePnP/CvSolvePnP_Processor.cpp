@@ -46,7 +46,7 @@ bool CvSolvePnP_Processor::onStop()
 
 bool CvSolvePnP_Processor::onInit()
 {
-	LOG(TRACE) << "CvSolvePnP_Processor::onInit()\n";
+	LOG(LTRACE) << "CvSolvePnP_Processor::onInit()\n";
 
 	h_onNewObject3D.setup(this, &CvSolvePnP_Processor::onNewObject3D);
 	registerHandler("onNewObject3D", &h_onNewObject3D);
@@ -71,7 +71,7 @@ bool CvSolvePnP_Processor::onStep()
 
 void CvSolvePnP_Processor::onNewObject3D()
 {
-	LOG(TRACE) << "CvSolvePnP_Processor::onNewObject3D()\n";
+	LOG(LTRACE) << "CvSolvePnP_Processor::onNewObject3D()\n";
 	boost::shared_ptr <Types::Objects3D::Object3D> object3D = in_object3d.read();
 	Mat modelPoints(object3D->getModelPoints());
 	Mat imagePoints(object3D->getImagePoints());
@@ -95,7 +95,7 @@ void CvSolvePnP_Processor::onNewObject3D()
 		hm.elements[i][3] = tvec(i, 0);
 		ss << hm.elements[i][3] << "\n";
 	}
-	LOG(DEBUG) << "HomogMatrix:\n" << ss.str() << endl;
+	LOG(LDEBUG) << "HomogMatrix:\n" << ss.str() << endl;
 
 	object3D->setPosition(hm);
 	out_object3d.write(*object3D);

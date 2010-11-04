@@ -8,6 +8,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 add_library(Mrrocpp SHARED ${files})
-target_link_libraries(Mrrocpp ${DisCODe_LIBRARIES})
+target_link_libraries(Mrrocpp ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
 INSTALL_PROXY(Mrrocpp)

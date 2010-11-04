@@ -157,11 +157,11 @@ public:
 				throw Common::DisCODeException(std::string("Can't load ret_panel from library: ") + lib.error());
 
 			// Component initialized properly.
-			LOG(INFO) << "ComponentFactory: Dynamic library " << filename_ << " containing " << name
+			LOG(LINFO) << "ComponentFactory: Dynamic library " << filename_ << " containing " << name
 					<< " component was properly loaded.\n";
 			return true;
 		} catch (Common::DisCODeException& ex) {
-			LOG(INFO) << "ComponentFactory: " << ex.what() << "\n";
+			LOG(LINFO) << "ComponentFactory: " << ex.what() << "\n";
 		}
 		return false;
 	}

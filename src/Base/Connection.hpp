@@ -40,7 +40,7 @@ public:
 	}
 
 	void addListener(DataStreamInterface * listener) {
-		LOG(INFO) << "Connection " << name << ": added new listener: " << listener->name();
+		LOG(LINFO) << "Connection " << name << ": added new listener: " << listener->name();
 		listeners.push_back(listener);
 	}
 

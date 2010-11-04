@@ -44,7 +44,7 @@ bool Subtask::finish()
 {
 	bool ret = true;
 	for (comp_it it = components.begin(); it != components.end(); ++it) {
-		LOG(TRACE) << "Finishing " << (*it)->name();
+		LOG(LTRACE) << "Finishing " << (*it)->name();
 		if (! (*it)->finish()) ret = false;
 	}
 	return ret;

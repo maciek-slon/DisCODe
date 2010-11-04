@@ -47,9 +47,9 @@ bool CvFindChessboardCorners_Processor::onInit()
 	chessboardFound = registerEvent("chessboardFound");
 	chessboardNotFound = registerEvent("chessboardNotFound");
 
-	LOG(INFO) << "CvFindChessboardCorners_Processor: width: "<< props.patternSize.width << "\n";
-	LOG(INFO) << "CvFindChessboardCorners_Processor: height: "<< props.patternSize.height << "\n";
-	LOG(INFO) << "CvFindChessboardCorners_Processor: squareSize: "<< props.squareSize << "\n";
+	LOG(LINFO) << "CvFindChessboardCorners_Processor: width: "<< props.patternSize.width << "\n";
+	LOG(LINFO) << "CvFindChessboardCorners_Processor: height: "<< props.patternSize.height << "\n";
+	LOG(LINFO) << "CvFindChessboardCorners_Processor: squareSize: "<< props.squareSize << "\n";
 
 	chessboard = boost::shared_ptr<Chessboard>(new Chessboard(props.patternSize, props.squareSize));
 
@@ -62,7 +62,7 @@ bool CvFindChessboardCorners_Processor::onInit()
 
 	chessboard->setModelPoints(modelPoints);
 
-	LOG(TRACE) << "component initialized\n";
+	LOG(LTRACE) << "component initialized\n";
 	return true;
 }
 
@@ -78,7 +78,7 @@ bool CvFindChessboardCorners_Processor::onStep()
 
 void CvFindChessboardCorners_Processor::onNewImage()
 {
-	LOG(TRACE) << "void CvFindChessboardCorners_Processor::onNewImage() begin\n";
+	LOG(LTRACE) << "void CvFindChessboardCorners_Processor::onNewImage() begin\n";
 	try{
 		Mat image = in_img.read();
 
@@ -86,10 +86,10 @@ void CvFindChessboardCorners_Processor::onNewImage()
 
 		bool found = findChessboardCorners(image, props.patternSize, corners, findChessboardCornersFlags);
 
-		LOG(INFO) << "findChessboardCorners() execution time: "<< timer.elapsed() << " s\n";
+		LOG(LINFO) << "findChessboardCorners() execution time: "<< timer.elapsed() << " s\n";
 
 		if(found){
-			LOG(TRACE) << "chessboard found\n";
+			LOG(LTRACE) << "chessboard found\n";
 
 			//cornerSubPix(image, corners, Size(5, 5), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 50, 1e-3));
 
@@ -98,14 +98,14 @@ void CvFindChessboardCorners_Processor::onNewImage()
 
 			chessboardFound->raise();
 		} else {
-			LOG(TRACE) << "chessboard not found\n";
+			LOG(LTRACE) << "chessboard not found\n";
 
 			chessboardNotFound->raise();
 		}
 	} catch (const Exception& e) {
-		LOG(ERROR) << e.what() << "\n";
+		LOG(LERROR) << e.what() << "\n";
 	}
-	LOG(TRACE) << "void CvFindChessboardCorners_Processor::onNewImage() end\n";
+	LOG(LTRACE) << "void CvFindChessboardCorners_Processor::onNewImage() end\n";
 }
 
 } // namespace CvFindChessboardCorners {

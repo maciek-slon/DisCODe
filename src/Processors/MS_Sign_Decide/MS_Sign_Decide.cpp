@@ -21,18 +21,18 @@ namespace MS_Sign {
 
 MS_Sign_Decide::MS_Sign_Decide(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello MS_Sign_Decide\n";
+	LOG(LTRACE) << "Hello MS_Sign_Decide\n";
 	blobs_ready = hue_ready = false;
 }
 
 MS_Sign_Decide::~MS_Sign_Decide()
 {
-	LOG(TRACE) << "Good bye MS_Sign_Decide\n";
+	LOG(LTRACE) << "Good bye MS_Sign_Decide\n";
 }
 
 bool MS_Sign_Decide::onInit()
 {
-	LOG(TRACE) << "MS_Sign_Decide::initialize\n";
+	LOG(LTRACE) << "MS_Sign_Decide::initialize\n";
 
 	h_onNewImage.setup(this, &MS_Sign_Decide::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -52,14 +52,14 @@ bool MS_Sign_Decide::onInit()
 
 bool MS_Sign_Decide::onFinish()
 {
-	LOG(TRACE) << "MS_Sign_Decide::finish\n";
+	LOG(LTRACE) << "MS_Sign_Decide::finish\n";
 
 	return true;
 }
 
 bool MS_Sign_Decide::onStep()
 {
-	LOG(TRACE) << "MS_Sign_Decide::step\n";
+	LOG(LTRACE) << "MS_Sign_Decide::step\n";
 
 	blobs_ready = hue_ready = false;
 
@@ -132,7 +132,7 @@ bool MS_Sign_Decide::onStep()
 
 		return true;
 	} catch (...) {
-		LOG(ERROR) << "MS_Sign_Decide::onNewImage failed\n";
+		LOG(LERROR) << "MS_Sign_Decide::onNewImage failed\n";
 		return false;
 	}
 }
@@ -149,7 +149,7 @@ bool MS_Sign_Decide::onStart()
 
 void MS_Sign_Decide::onNewImage()
 {
-	LOG(TRACE) << "MS_Sign_Decide::onNewImage\n";
+	LOG(LTRACE) << "MS_Sign_Decide::onNewImage\n";
 
 	hue_ready = true;
 	hue_img = in_hue.read();
@@ -160,7 +160,7 @@ void MS_Sign_Decide::onNewImage()
 
 void MS_Sign_Decide::onNewBlobs()
 {
-	LOG(TRACE) << "MS_Sign_Decide::onNewBlobs\n";
+	LOG(LTRACE) << "MS_Sign_Decide::onNewBlobs\n";
 
 	blobs_ready = true;
 	blobs = in_blobs.read();

@@ -19,17 +19,17 @@ namespace MS_Sign {
 
 MS_Sign_LUT::MS_Sign_LUT(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello MS_Sign_LUT\n";
+	LOG(LTRACE) << "Hello MS_Sign_LUT\n";
 }
 
 MS_Sign_LUT::~MS_Sign_LUT()
 {
-	LOG(TRACE) << "Good bye MS_Sign_LUT\n";
+	LOG(LTRACE) << "Good bye MS_Sign_LUT\n";
 }
 
 bool MS_Sign_LUT::onInit()
 {
-	LOG(TRACE) << "MS_Sign_LUT::initialize\n";
+	LOG(LTRACE) << "MS_Sign_LUT::initialize\n";
 
 	h_onNewImage.setup(this, &MS_Sign_LUT::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -46,14 +46,14 @@ bool MS_Sign_LUT::onInit()
 
 bool MS_Sign_LUT::onFinish()
 {
-	LOG(TRACE) << "MS_Sign_LUT::finish\n";
+	LOG(LTRACE) << "MS_Sign_LUT::finish\n";
 
 	return true;
 }
 
 bool MS_Sign_LUT::onStep()
 {
-	LOG(TRACE) << "MS_Sign_LUT::step\n";
+	LOG(LTRACE) << "MS_Sign_LUT::step\n";
 	return true;
 }
 
@@ -69,7 +69,7 @@ bool MS_Sign_LUT::onStart()
 
 void MS_Sign_LUT::onNewImage()
 {
-	LOG(TRACE) << "MS_Sign_LUT::onNewImage\n";
+	LOG(LTRACE) << "MS_Sign_LUT::onNewImage\n";
 	try {
 		cv::Mat hsv_img = in_img.read();
 
@@ -148,15 +148,15 @@ void MS_Sign_LUT::onNewImage()
 		newImage->raise();
 	}
 	catch (Common::DisCODeException& ex) {
-		LOG(ERROR) << ex.what() << "\n";
+		LOG(LERROR) << ex.what() << "\n";
 		ex.printStackTrace();
 		exit(EXIT_FAILURE);
 	}
 	catch (const char * ex) {
-		LOG(ERROR) << ex;
+		LOG(LERROR) << ex;
 	}
 	catch (...) {
-		LOG(ERROR) << "MS_Sign_LUT::onNewImage failed\n";
+		LOG(LERROR) << "MS_Sign_LUT::onNewImage failed\n";
 	}
 }
 

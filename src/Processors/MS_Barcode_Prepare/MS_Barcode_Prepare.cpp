@@ -18,18 +18,18 @@ namespace MS_Barcode {
 
 MS_Barcode_Prepare::MS_Barcode_Prepare(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello MS_Barcode_Prepare\n";
+	LOG(LTRACE) << "Hello MS_Barcode_Prepare\n";
 	count = 0;
 }
 
 MS_Barcode_Prepare::~MS_Barcode_Prepare()
 {
-	LOG(TRACE) << "Good bye MS_Barcode_Prepare\n";
+	LOG(LTRACE) << "Good bye MS_Barcode_Prepare\n";
 }
 
 bool MS_Barcode_Prepare::onInit()
 {
-	LOG(TRACE) << "MS_Barcode_Prepare::initialize\n";
+	LOG(LTRACE) << "MS_Barcode_Prepare::initialize\n";
 
 	h_onNewImage1.setup(this, &MS_Barcode_Prepare::onNewImage1);
 	registerHandler("onNewImage1", &h_onNewImage1);
@@ -57,14 +57,14 @@ bool MS_Barcode_Prepare::onInit()
 
 bool MS_Barcode_Prepare::onFinish()
 {
-	LOG(TRACE) << "MS_Barcode_Prepare::finish\n";
+	LOG(LTRACE) << "MS_Barcode_Prepare::finish\n";
 
 	return true;
 }
 
 bool MS_Barcode_Prepare::onStep()
 {
-	LOG(TRACE) << "MS_Barcode_Prepare::step\n";
+	LOG(LTRACE) << "MS_Barcode_Prepare::step\n";
 
 	count = 0;
 
@@ -89,7 +89,7 @@ bool MS_Barcode_Prepare::onStart()
 
 void MS_Barcode_Prepare::onNewImage1()
 {
-	LOG(TRACE) << "MS_Barcode_Prepare::onNewImage1\n";
+	LOG(LTRACE) << "MS_Barcode_Prepare::onNewImage1\n";
 
 	cv::Mat img;
 	try {
@@ -110,7 +110,7 @@ void MS_Barcode_Prepare::onNewImage1()
 
 void MS_Barcode_Prepare::onNewImage2()
 {
-	LOG(TRACE) << "MS_Barcode_Prepare::onNewImage2\n";
+	LOG(LTRACE) << "MS_Barcode_Prepare::onNewImage2\n";
 
 	cv::Mat img;
 	try {
@@ -131,7 +131,7 @@ void MS_Barcode_Prepare::onNewImage2()
 
 void MS_Barcode_Prepare::onNewImage3()
 {
-	LOG(TRACE) << "MS_Barcode_Prepare::onNewImage3\n";
+	LOG(LTRACE) << "MS_Barcode_Prepare::onNewImage3\n";
 
 	cv::Mat img;
 	try {
@@ -152,7 +152,7 @@ void MS_Barcode_Prepare::onNewImage3()
 
 void MS_Barcode_Prepare::onNewImage4()
 {
-	LOG(TRACE) << "MS_Barcode_Prepare::onNewImage4\n";
+	LOG(LTRACE) << "MS_Barcode_Prepare::onNewImage4\n";
 
 	cv::Mat img;
 	try {

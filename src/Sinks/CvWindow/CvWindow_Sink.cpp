@@ -17,15 +17,15 @@ namespace Sinks {
 namespace CvWindow {
 
 CvWindow_Sink::CvWindow_Sink(const std::string & name) : Base::Component(name) {
-	LOG(TRACE)<<"Hello CvWindow_Sink\n";
+	LOG(LTRACE)<<"Hello CvWindow_Sink\n";
 }
 
 CvWindow_Sink::~CvWindow_Sink() {
-	LOG(TRACE)<<"Good bye CvWindow_Sink\n";
+	LOG(LTRACE)<<"Good bye CvWindow_Sink\n";
 }
 
 bool CvWindow_Sink::onInit() {
-	LOG(TRACE) << "CvWindow_Sink::initialize\n";
+	LOG(LTRACE) << "CvWindow_Sink::initialize\n";
 
 	h_onNewImage.setup(this, &CvWindow_Sink::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -38,17 +38,17 @@ bool CvWindow_Sink::onInit() {
 }
 
 bool CvWindow_Sink::onFinish() {
-	LOG(TRACE) << "CvWindow_Sink::finish\n";
+	LOG(LTRACE) << "CvWindow_Sink::finish\n";
 
 	return true;
 }
 
 bool CvWindow_Sink::onStep()
 {
-	LOG(TRACE)<<"CvWindow_Sink::step\n";
+	LOG(LTRACE)<<"CvWindow_Sink::step\n";
 
 	if (img.empty()) {
-		LOG(WARNING) << name() << ": no image to show";
+		LOG(LWARNING) << name() << ": no image to show";
 		return true;
 	}
 
@@ -59,7 +59,7 @@ bool CvWindow_Sink::onStep()
 		waitKey( 10 );
 	}
 	catch(...) {
-		LOG(ERROR) << "CvWindow::onNewImage failed\n";
+		LOG(LERROR) << "CvWindow::onNewImage failed\n";
 	}
 	return true;
 }
@@ -75,7 +75,7 @@ bool CvWindow_Sink::onStart()
 }
 
 void CvWindow_Sink::onNewImage() {
-	LOG(TRACE)<<"CvWindow_Sink::onNewImage\n";
+	LOG(LTRACE)<<"CvWindow_Sink::onNewImage\n";
 
 	try {
 		img = in_img.read().clone();
@@ -93,7 +93,7 @@ void CvWindow_Sink::onNewImage() {
 		onStep();
 	}
 	catch(...) {
-		LOG(ERROR) << "CvWindow::onNewImage failed\n";
+		LOG(LERROR) << "CvWindow::onNewImage failed\n";
 	}
 }
 

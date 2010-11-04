@@ -50,7 +50,7 @@ public:
 	 */
 	ComponentManager()
 	{
-		LOG(TRACE) << "ComponentManager: Hello private \n";
+		LOG(LTRACE) << "ComponentManager: Hello private \n";
 	}
 
 	/*!
@@ -58,12 +58,12 @@ public:
 	 */
 	~ComponentManager()
 	{
-		LOG(TRACE) << "ComponentManager: Goodbye public\n";
+		LOG(LTRACE) << "ComponentManager: Goodbye public\n";
 	}
 
 	void release() {
 		BOOST_FOREACH(comp_pair comp, components) {
-			LOG(INFO) << "Removing component: " << comp.first << " (ptr=" << comp.second << ")";
+			LOG(LINFO) << "Removing component: " << comp.first << " (ptr=" << comp.second << ")";
 			delete comp.second;
 		}
 	}
@@ -79,7 +79,7 @@ public:
 
 		// Check number of so's to import.
 		if (files.empty()) {
-			LOG(WARNING) << "ComponentManager: There are no dynamic libraries in the current directory.\n";
+			LOG(LWARNING) << "ComponentManager: There are no dynamic libraries in the current directory.\n";
 			return;
 		}
 
@@ -100,7 +100,7 @@ public:
 		}//: FOREACH
 
 		// Check number of successfully loaded components.
-		LOG(NOTICE) << "Found " << component_factories.size() << " components\n";
+		LOG(LNOTICE) << "Found " << component_factories.size() << " components\n";
 	}
 
 	/*!
@@ -118,17 +118,17 @@ public:
 	 */
 	Base::Component* createComponent(const std::string & name, const std::string & type) {
 		if (components.count(name) > 0) {
-			LOG(WARNING) << "Module " << name << " already created. Returning previous one.\n";
+			LOG(LWARNING) << "Module " << name << " already created. Returning previous one.\n";
 			return components[name];
 		}
 
 		if (component_factories.count(type) < 1) {
-			LOG(ERROR) << "Module type " << type << " not found!\n";
+			LOG(LERROR) << "Module type " << type << " not found!\n";
 			throw Common::DisCODeException("createComponent");
 		}
 
 		components[name] = component_factories[type].create(name);
-		LOG(INFO) << name << " (" << type << ") component created\n";
+		LOG(LINFO) << name << " (" << type << ") component created\n";
 		return components[name];
 	}
 
@@ -139,7 +139,7 @@ public:
 	 */
 	Base::Component * getComponent(const std::string & name) {
 		if (components.count(name) < 1) {
-			LOG(ERROR) << "Module " << name << " can't be found!\n";
+			LOG(LERROR) << "Module " << name << " can't be found!\n";
 			throw Common::DisCODeException("getComponent");
 		}
 
@@ -158,7 +158,7 @@ protected:
 		std::string regexp = "\\w*.";
 		regexp += LIB_EXT;
 
-		LOG(TRACE) << "LIB_EXT = " LIB_EXT << "\n";
+		LOG(LTRACE) << "LIB_EXT = " LIB_EXT << "\n";
 
 		files = Utils::searchFiles(dir_, regexp);
 	}

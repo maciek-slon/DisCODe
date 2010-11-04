@@ -36,12 +36,12 @@ bool Component::initialize() {
 	}
 
 	if (state == Ready) {
-		LOG(WARNING) << name_ << " already initialized.\n";
+		LOG(LWARNING) << name_ << " already initialized.\n";
 		return true;
 	}
 
 	if (state == Running) {
-		LOG(WARNING) << name_ << " already initialized and running.\n";
+		LOG(LWARNING) << name_ << " already initialized and running.\n";
 		return true;
 	}
 
@@ -59,12 +59,12 @@ bool Component::start() {
 	}
 
 	if (state == Running) {
-		LOG(WARNING) << name_ << " already running.\n";
+		LOG(LWARNING) << name_ << " already running.\n";
 		return true;
 	}
 
 	if (state == Unready) {
-		LOG(WARNING) << name_ << " is not ready to run.\n";
+		LOG(LWARNING) << name_ << " is not ready to run.\n";
 		return false;
 	}
 
@@ -82,12 +82,12 @@ bool Component::stop() {
 	}
 
 	if (state == Ready) {
-		LOG(WARNING) << name_ << " already stopped.\n";
+		LOG(LWARNING) << name_ << " already stopped.\n";
 		return true;
 	}
 
 	if (state == Unready) {
-		LOG(WARNING) << name_ << " is not initialized.\n";
+		LOG(LWARNING) << name_ << " is not initialized.\n";
 		return false;
 	}
 
@@ -105,16 +105,16 @@ bool Component::finish() {
 	}
 
 	if (state == Unready) {
-		LOG(WARNING) << name_ << " is already finished.\n";
+		LOG(LWARNING) << name_ << " is already finished.\n";
 		return true;
 	}
 
 	if (state == Running) {
-		LOG(WARNING) << name_ << " still running. Trying to stop...\n";
+		LOG(LWARNING) << name_ << " still running. Trying to stop...\n";
 		if (stop())
-			LOG(WARNING) << name_ << " stopped. Finishing...\n";
+			LOG(LWARNING) << name_ << " stopped. Finishing...\n";
 		else
-			LOG(WARNING) << name_ << " didn't stop. Finishing anyway...\n";
+			LOG(LWARNING) << name_ << " didn't stop. Finishing anyway...\n";
 
 		onFinish();
 
@@ -131,7 +131,7 @@ double Component::step() {
 		onStep();
 		return timer.elapsed();
 	} else {
-		LOG(WARNING) << name_ << " is not running. Step can't be done.\n";
+		LOG(LWARNING) << name_ << " is not running. Step can't be done.\n";
 		return 0;
 	}
 
@@ -139,9 +139,9 @@ double Component::step() {
 }
 
 void Component::printEvents() {
-	LOG(INFO) << "Registered events:\n";
+	LOG(LINFO) << "Registered events:\n";
 	BOOST_FOREACH(EventPair event, events) {
-		LOG(INFO) << "\t" << event.first << "\n";
+		LOG(LINFO) << "\t" << event.first << "\n";
 	}
 }
 
@@ -154,9 +154,9 @@ Event * Component::getEvent(const std::string& name) {
 }
 
 void Component::printHandlers() {
-	LOG(INFO) << "Registered handlers:\n";
+	LOG(LINFO) << "Registered handlers:\n";
 	BOOST_FOREACH(HandlerPair handler, handlers) {
-		LOG(INFO) << "\t" << handler.first << "\n";
+		LOG(LINFO) << "\t" << handler.first << "\n";
 	}
 }
 
@@ -169,9 +169,9 @@ EventHandlerInterface * Component::getHandler(const std::string& name) {
 }
 
 void Component::printStreams() {
-	LOG(INFO) << "Registered data streams:\n";
+	LOG(LINFO) << "Registered data streams:\n";
 	BOOST_FOREACH(StreamPair stream, streams) {
-		LOG(INFO) << "\t" << stream.first << "\n";
+		LOG(LINFO) << "\t" << stream.first << "\n";
 	}
 }
 

@@ -11,15 +11,15 @@ namespace Sources {
 namespace Keyboard {
 
 Keyboard_Source::Keyboard_Source(const std::string & name) : Base::Component(name) {
-	LOG(TRACE) << "Keyboard_Source::Keyboard_Source()\n";
+	LOG(LTRACE) << "Keyboard_Source::Keyboard_Source()\n";
 }
 
 Keyboard_Source::~Keyboard_Source() {
-	LOG(TRACE) << "Keyboard_Source::~Keyboard_Source()\n";
+	LOG(LTRACE) << "Keyboard_Source::~Keyboard_Source()\n";
 }
 
 bool Keyboard_Source::onInit() {
-	LOG(TRACE) << "Keyboard_Source::initialize()\n";
+	LOG(LTRACE) << "Keyboard_Source::initialize()\n";
 
 	std::string evname;
 
@@ -28,7 +28,7 @@ bool Keyboard_Source::onInit() {
 				evname = props.keys[i];
 				evname += "_Pressed";
 				key_events[props.keys[i]] = registerEvent(evname);
-				LOG(TRACE) << "Event " << evname << " created";
+				LOG(LTRACE) << "Event " << evname << " created";
 		}
 	}
 
@@ -36,7 +36,7 @@ bool Keyboard_Source::onInit() {
 }
 
 bool Keyboard_Source::onFinish() {
-	LOG(TRACE) << "Keyboard_Source::finish()\n";
+	LOG(LTRACE) << "Keyboard_Source::finish()\n";
 
 	return true;
 }
@@ -47,13 +47,13 @@ bool Keyboard_Source::onStep() {
 
 	for (int i = 0; i < buf.length(); ++i) {
 		if (key_events.count(buf[i]) > 0) {
-				LOG(TRACE) << "Raising event from key " << buf[i];
+				LOG(LTRACE) << "Raising event from key " << buf[i];
 				key_events[buf[i]]->raise();
 		}
 	}
 
 
-	LOG(TRACE) << "Keyboard_Source::step() end\n";
+	LOG(LTRACE) << "Keyboard_Source::step() end\n";
 	return true;
 }
 
