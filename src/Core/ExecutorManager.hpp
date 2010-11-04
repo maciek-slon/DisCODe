@@ -10,6 +10,9 @@
 #define EXECUTORMANAGER_HPP_
 
 #include "Executor.hpp"
+#include "ContinuousExecutor.hpp"
+#include "PassiveExecutor.hpp"
+#include "PeriodicExecutor.hpp"
 #include "Logger.hpp"
 #include "Utils.hpp"
 

@@ -70,6 +70,10 @@ public:
 		boost::this_thread::yield();
 	}
 
+	void interrupt() {
+		thread.interrupt();
+	}
+
 	/*!
 	 * Set thread priority
 	 * \param priority new thread priority
