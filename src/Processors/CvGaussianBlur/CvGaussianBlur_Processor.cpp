@@ -16,17 +16,17 @@ namespace CvGaussianBlur {
 
 CvGaussianBlur_Processor::CvGaussianBlur_Processor(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello CvGaussianBlur_Processor\n";
+	LOG(LTRACE) << "Hello CvGaussianBlur_Processor\n";
 }
 
 CvGaussianBlur_Processor::~CvGaussianBlur_Processor()
 {
-	LOG(TRACE) << "Good bye CvGaussianBlur_Processor\n";
+	LOG(LTRACE) << "Good bye CvGaussianBlur_Processor\n";
 }
 
 bool CvGaussianBlur_Processor::onInit()
 {
-	LOG(TRACE) << "CvGaussianBlur_Processor::initialize\n";
+	LOG(LTRACE) << "CvGaussianBlur_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &CvGaussianBlur_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -42,14 +42,14 @@ bool CvGaussianBlur_Processor::onInit()
 
 bool CvGaussianBlur_Processor::onFinish()
 {
-	LOG(TRACE) << "CvGaussianBlur_Processor::finish\n";
+	LOG(LTRACE) << "CvGaussianBlur_Processor::finish\n";
 
 	return true;
 }
 
 bool CvGaussianBlur_Processor::onStep()
 {
-	LOG(TRACE) << "CvGaussianBlur_Processor::step\n";
+	LOG(LTRACE) << "CvGaussianBlur_Processor::step\n";
 	return true;
 }
 
@@ -65,7 +65,7 @@ bool CvGaussianBlur_Processor::onStart()
 
 void CvGaussianBlur_Processor::onNewImage()
 {
-	LOG(TRACE) << "CvGaussianBlur_Processor::onNewImage\n";
+	LOG(LTRACE) << "CvGaussianBlur_Processor::onNewImage\n";
 	try {
 		cv::Mat img = in_img.read();
 		//cv::Mat out = img.clone();
@@ -73,7 +73,7 @@ void CvGaussianBlur_Processor::onNewImage()
 		out_img.write(img);
 		newImage->raise();
 	} catch (...) {
-		LOG(ERROR) << "CvGaussianBlur_Processor::onNewImage failed\n";
+		LOG(LERROR) << "CvGaussianBlur_Processor::onNewImage failed\n";
 	}
 }
 

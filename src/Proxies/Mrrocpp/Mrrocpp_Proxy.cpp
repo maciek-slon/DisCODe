@@ -16,17 +16,17 @@ namespace Mrrocpp {
 Mrrocpp_Proxy::Mrrocpp_Proxy(const std::string & name) :
 	Base::Component(name), sample(0xAA, 0xAA, "qwer", "aaa"), clientConnected(false)
 {
-	LOG(TRACE) << "Mrrocpp_Proxy::Mrrocpp_Proxy\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::Mrrocpp_Proxy\n";
 }
 
 Mrrocpp_Proxy::~Mrrocpp_Proxy()
 {
-	LOG(TRACE) << "Mrrocpp_Proxy::~Mrrocpp_Proxy\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::~Mrrocpp_Proxy\n";
 }
 
 bool Mrrocpp_Proxy::onStart()
 {
-	LOG(TRACE) << "Mrrocpp_Proxy::onStart\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onStart\n";
 	return true;
 }
 
@@ -50,13 +50,13 @@ bool Mrrocpp_Proxy::onInit()
 
 bool Mrrocpp_Proxy::onStop()
 {
-	LOG(TRACE) << "Mrrocpp_Proxy::onStop\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onStop\n";
 	return true;
 }
 
 bool Mrrocpp_Proxy::onFinish()
 {
-	LOG(TRACE) << "Mrrocpp_Proxy::onFinish\n";
+	LOG(LFATAL)<<"Mrrocpp_Proxy::onFinish\n";
 	return true;
 }
 
@@ -75,7 +75,6 @@ bool Mrrocpp_Proxy::onStep()
 		clientSocket = serverSocket.acceptConnection();
 		LOG(FATAL) << "clientConnected!!!!\n";
 	}
-
 	return true;
 }
 

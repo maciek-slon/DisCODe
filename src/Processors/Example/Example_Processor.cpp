@@ -20,15 +20,15 @@ namespace Processors {
 namespace Example {
 
 Example_Processor::Example_Processor(const std::string & name) : Base::Component(name) {
-	LOG(TRACE)<<"Hello Example_Processor\n";
+	LOG(LTRACE)<<"Hello Example_Processor\n";
 }
 
 Example_Processor::~Example_Processor() {
-	LOG(TRACE)<<"Good bye Example_Processor\n";
+	LOG(LTRACE)<<"Good bye Example_Processor\n";
 }
 
 bool Example_Processor::onInit() {
-	LOG(TRACE) << "Example_Processor::initialize\n";
+	LOG(LTRACE) << "Example_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &Example_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -39,34 +39,34 @@ bool Example_Processor::onInit() {
 }
 
 bool Example_Processor::onFinish() {
-	LOG(TRACE) << "Example_Processor::finish\n";
+	LOG(LTRACE) << "Example_Processor::finish\n";
 
 	return true;
 }
 
 bool Example_Processor::onStep()
 {
-	LOG(TRACE)<<"Example_Processor::step\n";
+	LOG(LTRACE)<<"Example_Processor::step\n";
 	return true;
 }
 
 bool Example_Processor::onStop()
 {
-	LOG(TRACE)<<"Example_Processor::stop\n";
+	LOG(LTRACE)<<"Example_Processor::stop\n";
 	return true;
 }
 
 bool Example_Processor::onStart()
 {
-	LOG(TRACE)<<"Example_Processor::start\n";
+	LOG(LTRACE)<<"Example_Processor::start\n";
 	return true;
 }
 
 void Example_Processor::onNewImage() {
-	LOG(TRACE) << "Example_Processor::onNewImage() called!\n";
+	LOG(LTRACE) << "Example_Processor::onNewImage() called!\n";
 	int del = in_delay.read();
 	boost::this_thread::sleep(boost::posix_time::milliseconds(del));
-	LOG(TRACE) << "Example_Processor::onNewImage() handler was " << del << " mseconds long...\n";
+	LOG(LTRACE) << "Example_Processor::onNewImage() handler was " << del << " mseconds long...\n";
 }
 
 

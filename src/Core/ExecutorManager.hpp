@@ -10,6 +10,9 @@
 #define EXECUTORMANAGER_HPP_
 
 #include "Executor.hpp"
+#include "ContinuousExecutor.hpp"
+#include "PassiveExecutor.hpp"
+#include "PeriodicExecutor.hpp"
 #include "Logger.hpp"
 #include "Utils.hpp"
 
@@ -43,7 +46,7 @@ public:
 
 	Executor * createExecutor(const std::string & name, const std::string & type) {
 		if (executors.count(name) > 0) {
-			LOG(WARNING) << "Executor " << name << " already created. Returning previous one.\n";
+			LOG(LWARNING) << "Executor " << name << " already created. Returning previous one.\n";
 			return executors[name];
 		}
 
@@ -55,8 +58,8 @@ public:
 		} else if (type == "periodic") {
 			ex = new PeriodicExecutor(name);
 		} else {
-			LOG(ERROR) << "Executor type " << type << " not allowed!\n";
-			LOG(NOTICE) << "Check executor type for " << name;
+			LOG(LERROR) << "Executor type " << type << " not allowed!\n";
+			LOG(LNOTICE) << "Check executor type for " << name;
 
 			int id = -1, val = 100000;
 			for (size_t i = 0; i < types.size(); ++i) {
@@ -67,19 +70,19 @@ public:
 				}
 			}
 
-			LOG(NOTICE) << "Did you mean " << types[id] << " type?";
+			LOG(LNOTICE) << "Did you mean " << types[id] << " type?";
 			throw Common::DisCODeException("createExecutor");
 		}
 
 		executors[name] = ex;
-		LOG(INFO) << name << " (" << type << ") executor created.\n";
+		LOG(LINFO) << name << " (" << type << ") executor created.\n";
 
 		return ex;
 	}
 
 	Executor * getExecutor(const std::string & name) {
 		if (executors.count(name) < 1) {
-			LOG(ERROR) << "Executor " << name << " can't be found!";
+			LOG(LERROR) << "Executor " << name << " can't be found!";
 			throw Common::DisCODeException("getExecutor");
 		}
 

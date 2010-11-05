@@ -74,14 +74,14 @@ struct CvFindChessboardCornersProps: public Base::Props
 	float squareSize;
 	void load(const ptree & pt)
 	{
-		LOG(TRACE) << "CvFindChessboardCornersProps::load()\n";
+		LOG(LTRACE) << "CvFindChessboardCornersProps::load()\n";
 		patternSize.width = pt.get<int>("width");
 		patternSize.height = pt.get<int>("height");
 		squareSize = pt.get<float>("squareSize");
 	}
 	void save(ptree & pt)
 	{
-		LOG(TRACE) << "CvFindChessboardCornersProps::save()\n";
+		LOG(LTRACE) << "CvFindChessboardCornersProps::save()\n";
 		pt.put("width", patternSize.width);
 		pt.put("height", patternSize.height);
 		pt.put("squareSize", squareSize);

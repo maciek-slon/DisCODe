@@ -16,17 +16,17 @@ namespace CvMorphology {
 
 CvMorphology_Processor::CvMorphology_Processor(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello CvMorphology_Processor\n";
+	LOG(LTRACE) << "Hello CvMorphology_Processor\n";
 }
 
 CvMorphology_Processor::~CvMorphology_Processor()
 {
-	LOG(TRACE) << "Good bye CvMorphology_Processor\n";
+	LOG(LTRACE) << "Good bye CvMorphology_Processor\n";
 }
 
 bool CvMorphology_Processor::onInit()
 {
-	LOG(TRACE) << "CvMorphology_Processor::initialize\n";
+	LOG(LTRACE) << "CvMorphology_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &CvMorphology_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -42,14 +42,14 @@ bool CvMorphology_Processor::onInit()
 
 bool CvMorphology_Processor::onFinish()
 {
-	LOG(TRACE) << "CvMorphology_Processor::finish\n";
+	LOG(LTRACE) << "CvMorphology_Processor::finish\n";
 
 	return true;
 }
 
 bool CvMorphology_Processor::onStep()
 {
-	LOG(TRACE) << "CvMorphology_Processor::step\n";
+	LOG(LTRACE) << "CvMorphology_Processor::step\n";
 	return true;
 }
 
@@ -65,7 +65,7 @@ bool CvMorphology_Processor::onStart()
 
 void CvMorphology_Processor::onNewImage()
 {
-	LOG(TRACE) << "CvMorphology_Processor::onNewImage\n";
+	LOG(LTRACE) << "CvMorphology_Processor::onNewImage\n";
 	try {
 		cv::Mat img = in_img.read();
 		//cv::Mat out = img.clone();
@@ -73,7 +73,7 @@ void CvMorphology_Processor::onNewImage()
 		out_img.write(img);
 		newImage->raise();
 	} catch (...) {
-		LOG(ERROR) << "CvMorphology_Processor::onNewImage failed\n";
+		LOG(LERROR) << "CvMorphology_Processor::onNewImage failed\n";
 	}
 }
 

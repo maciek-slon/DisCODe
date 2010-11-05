@@ -20,18 +20,18 @@ namespace Processors {
 namespace ExecTimer {
 
 ExecTimer::ExecTimer(const std::string & name) : Base::Component(name) {
-	LOG(TRACE)<<"Hello ExecTimer\n";
+	LOG(LTRACE)<<"Hello ExecTimer\n";
 
 	loops = 0;
 	total = 0.0;
 }
 
 ExecTimer::~ExecTimer() {
-	LOG(TRACE)<<"Good bye ExecTimer\n";
+	LOG(LTRACE)<<"Good bye ExecTimer\n";
 }
 
 bool ExecTimer::onInit() {
-	LOG(TRACE) << "ExecTimer::initialize\n";
+	LOG(LTRACE) << "ExecTimer::initialize\n";
 
 	h_onStartExec.setup(this, &ExecTimer::onStartExec);
 	registerHandler("onStartExec", &h_onStartExec);
@@ -46,11 +46,11 @@ bool ExecTimer::onInit() {
 }
 
 bool ExecTimer::onFinish() {
-	LOG(TRACE) << "ExecTimer::finish\n";
+	LOG(LTRACE) << "ExecTimer::finish\n";
 
 	double spl = total / loops;
 	double lps = 1.0 / spl;
-	LOG(NOTICE) << "ExecTimer " << name() << ": " << loops << " in " << total << "s. ("
+	LOG(LNOTICE) << "ExecTimer " << name() << ": " << loops << " in " << total << "s. ("
 			<< spl << " spl = " << lps << " lps)";
 
 	return true;
@@ -58,19 +58,19 @@ bool ExecTimer::onFinish() {
 
 bool ExecTimer::onStep()
 {
-	LOG(TRACE)<<"ExecTimer::step\n";
+	LOG(LTRACE)<<"ExecTimer::step\n";
 	return true;
 }
 
 bool ExecTimer::onStop()
 {
-	LOG(TRACE)<<"ExecTimer::stop\n";
+	LOG(LTRACE)<<"ExecTimer::stop\n";
 	return true;
 }
 
 bool ExecTimer::onStart()
 {
-	LOG(TRACE)<<"ExecTimer::start\n";
+	LOG(LTRACE)<<"ExecTimer::start\n";
 	return true;
 }
 

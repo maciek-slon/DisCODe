@@ -16,17 +16,17 @@ namespace CvPixelOperator {
 
 CvPixelOperator_Processor::CvPixelOperator_Processor(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello CvPixelOperator_Processor\n";
+	LOG(LTRACE) << "Hello CvPixelOperator_Processor\n";
 }
 
 CvPixelOperator_Processor::~CvPixelOperator_Processor()
 {
-	LOG(TRACE) << "Good bye CvPixelOperator_Processor\n";
+	LOG(LTRACE) << "Good bye CvPixelOperator_Processor\n";
 }
 
 bool CvPixelOperator_Processor::onInit()
 {
-	LOG(TRACE) << "CvPixelOperator_Processor::initialize\n";
+	LOG(LTRACE) << "CvPixelOperator_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &CvPixelOperator_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -42,14 +42,14 @@ bool CvPixelOperator_Processor::onInit()
 
 bool CvPixelOperator_Processor::onFinish()
 {
-	LOG(TRACE) << "CvPixelOperator_Processor::finish\n";
+	LOG(LTRACE) << "CvPixelOperator_Processor::finish\n";
 
 	return true;
 }
 
 bool CvPixelOperator_Processor::onStep()
 {
-	LOG(TRACE) << "CvPixelOperator_Processor::step\n";
+	LOG(LTRACE) << "CvPixelOperator_Processor::step\n";
 	return true;
 }
 
@@ -65,15 +65,37 @@ bool CvPixelOperator_Processor::onStart()
 
 void CvPixelOperator_Processor::onNewImage()
 {
-	LOG(TRACE) << "CvPixelOperator_Processor::onNewImage\n";
+	LOG(LTRACE) << "CvPixelOperator_Processor::onNewImage\n";
 	try {
-		cv::Mat img = in_img.read();
+		img = in_img.read();
+
+		cv::Size size = img.size();
+
+		std::cout << size.width << "x" << size.height << "\n";
+		// Check the arrays for continuity and, if this is the case,
+		// treat the arrays as 1D vectors
+		if (img.isContinuous()) {
+			size.width *= size.height * img.channels();
+			size.height = 1;
+		}
+
+		for (int i = 0; i < size.height; i++) {
+			// when the arrays are continuous,
+			// the outer loop is executed only once
+			// if not - it's executed for each row
+			uchar* img_p = img.ptr <uchar> (i);
+
+			int j;
+			for (j = 0; j < size.width; ++j) {
+				img_p[j] = (*props.op)(img_p[j]);
+			}
+		}
 
 		out_img.write(img);
 
 		newImage->raise();
 	} catch (...) {
-		LOG(ERROR) << "CvPixelOperator_Processor::onNewImage failed\n";
+		LOG(LERROR) << "CvPixelOperator_Processor::onNewImage failed\n";
 	}
 }
 

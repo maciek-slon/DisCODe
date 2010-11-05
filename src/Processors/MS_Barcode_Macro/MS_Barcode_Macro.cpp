@@ -18,17 +18,17 @@ namespace MS_Barcode {
 
 MS_Barcode_Macro::MS_Barcode_Macro(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello MS_Barcode_Macro\n";
+	LOG(LTRACE) << "Hello MS_Barcode_Macro\n";
 }
 
 MS_Barcode_Macro::~MS_Barcode_Macro()
 {
-	LOG(TRACE) << "Good bye MS_Barcode_Macro\n";
+	LOG(LTRACE) << "Good bye MS_Barcode_Macro\n";
 }
 
 bool MS_Barcode_Macro::onInit()
 {
-	LOG(TRACE) << "MS_Barcode_Macro::initialize\n";
+	LOG(LTRACE) << "MS_Barcode_Macro::initialize\n";
 
 	h_onNewImage.setup(this, &MS_Barcode_Macro::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -50,14 +50,14 @@ bool MS_Barcode_Macro::onInit()
 
 bool MS_Barcode_Macro::onFinish()
 {
-	LOG(TRACE) << "MS_Barcode_Macro::finish\n";
+	LOG(LTRACE) << "MS_Barcode_Macro::finish\n";
 
 	return true;
 }
 
 bool MS_Barcode_Macro::onStep()
 {
-	LOG(TRACE) << "MS_Barcode_Macro::step\n";
+	LOG(LTRACE) << "MS_Barcode_Macro::step\n";
 
 	return true;
 }
@@ -74,7 +74,7 @@ bool MS_Barcode_Macro::onStart()
 
 void MS_Barcode_Macro::onNewImage()
 {
-	LOG(TRACE) << "MS_Barcode_Macro::onNewImage\n";
+	LOG(LTRACE) << "MS_Barcode_Macro::onNewImage\n";
 
 	cv::Mat img;
 

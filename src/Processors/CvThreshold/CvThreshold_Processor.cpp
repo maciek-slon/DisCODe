@@ -16,17 +16,17 @@ namespace CvThreshold {
 
 CvThreshold_Processor::CvThreshold_Processor(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello CvThreshold_Processor\n";
+	LOG(LTRACE) << "Hello CvThreshold_Processor\n";
 }
 
 CvThreshold_Processor::~CvThreshold_Processor()
 {
-	LOG(TRACE) << "Good bye CvThreshold_Processor\n";
+	LOG(LTRACE) << "Good bye CvThreshold_Processor\n";
 }
 
 bool CvThreshold_Processor::onInit()
 {
-	LOG(TRACE) << "CvThreshold_Processor::initialize\n";
+	LOG(LTRACE) << "CvThreshold_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &CvThreshold_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -42,14 +42,14 @@ bool CvThreshold_Processor::onInit()
 
 bool CvThreshold_Processor::onFinish()
 {
-	LOG(TRACE) << "CvThreshold_Processor::finish\n";
+	LOG(LTRACE) << "CvThreshold_Processor::finish\n";
 
 	return true;
 }
 
 bool CvThreshold_Processor::onStep()
 {
-	LOG(TRACE) << "CvThreshold_Processor::step\n";
+	LOG(LTRACE) << "CvThreshold_Processor::step\n";
 	return true;
 }
 
@@ -65,16 +65,16 @@ bool CvThreshold_Processor::onStart()
 
 void CvThreshold_Processor::onNewImage()
 {
-	LOG(TRACE) << "CvThreshold_Processor::onNewImage\n";
+	LOG(LTRACE) << "CvThreshold_Processor::onNewImage\n";
 	try {
 		cv::Mat img = in_img.read();
 		cv::Mat out = img.clone();
-		LOG(TRACE) << "Threshold " << props.thresh;
+		LOG(LTRACE) << "Threshold " << props.thresh;
 		cv::threshold(img, out, props.thresh, props.maxval, props.type);
 		out_img.write(out);
 		newImage->raise();
 	} catch (...) {
-		LOG(ERROR) << "CvThreshold::onNewImage failed\n";
+		LOG(LERROR) << "CvThreshold::onNewImage failed\n";
 	}
 }
 

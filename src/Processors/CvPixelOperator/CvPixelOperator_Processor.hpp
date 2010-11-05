@@ -23,6 +23,62 @@
 
 #include <sstream>
 
+
+
+/**
+ * \defgroup CvPixelOperator CvPixelOperator
+ * \ingroup Processors
+ *
+ * \brief Per pixel operations on image.
+ *
+ * This processor allows to do bitwise operations with constant,
+ * non-linear functions etc.
+ *
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamin{in_img,cv::Mat}
+ * Input image
+ * \streamout{out_img,cv::Mat}
+ * Output image
+ *
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * New image is ready
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onNewImage}
+ * New image arrived
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{operator,string,"unit"}
+ * Operator to be used. Possible values (with corresponding settings) are listed below.
+ *
+ * \par Possible operators:
+ *
+ * - \b unit - identity operator: \f$ val_{out} = val_{in} \f$
+ * - \b tanh - hiperbolic tangent \f$ val_{out} = tanh(\sigma \cdot (val_{in}-mean)) \f$
+ * \prop{sigma,double,0.1}
+ * \prop{mean,double,0.0}
+ * - \b and - bitwise conjunction \f$ val_{out} = val_{in} \wedge mask \f$
+ * \prop{mask,int,0xFF}
+ * - \b or - bitwise alternative  \f$ val_{out} = val_{in} \vee mask \f$
+ * \prop{mask,int,0xFF}
+ *
+ * @{
+ *
+ * @}
+ */
+
+
+
 namespace Processors {
 namespace CvPixelOperator {
 
@@ -33,15 +89,14 @@ using namespace cv;
  */
 struct Props: public Base::Props
 {
-	PixelOperator<double> * op;
-	ptree tmp;
+	PixelOperator<uint8_t> * op;
+	std::string type;
 
 	void load(const ptree & pt)
 	{
-		op = str2operator<double>(pt.get("operator", "unit"));
-
-		tmp = pt.get_child("attr");
-
+		op = str2operator<uint8_t>(pt.get("operator", "unit"));
+		if (op)
+			op->load(pt);
 	}
 
 	/*!
@@ -55,7 +110,7 @@ struct Props: public Base::Props
 		op = NULL;
 	}
 
-	~Props() {
+	virtual ~Props() {
 		delete op;
 	}
 
@@ -63,7 +118,13 @@ private:
 	template<typename T>
 	PixelOperator<T> * str2operator(const std::string & name) {
 		if (name == "tanh")
-			return new TanhOperator<double>;
+			return new TanhOperator<uint8_t>;
+		if (name == "and")
+			return new AndOperator<uint8_t>;
+		if (name == "or")
+			return new OrOperator<uint8_t>;
+		if (name == "unit")
+			return new UnitOperator<uint8_t>;
 
 		return NULL;
 	}
@@ -142,6 +203,8 @@ protected:
 
 	/// Threshold properties
 	Props props;
+
+	cv::Mat img;
 
 };
 

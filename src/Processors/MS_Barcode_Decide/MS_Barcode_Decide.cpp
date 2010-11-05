@@ -18,18 +18,18 @@ namespace MS_Barcode {
 
 MS_Barcode_Decide::MS_Barcode_Decide(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello MS_Barcode_Decide\n";
+	LOG(LTRACE) << "Hello MS_Barcode_Decide\n";
 	blobs_ready = hue_ready = false;
 }
 
 MS_Barcode_Decide::~MS_Barcode_Decide()
 {
-	LOG(TRACE) << "Good bye MS_Barcode_Decide\n";
+	LOG(LTRACE) << "Good bye MS_Barcode_Decide\n";
 }
 
 bool MS_Barcode_Decide::onInit()
 {
-	LOG(TRACE) << "MS_Barcode_Decide::initialize\n";
+	LOG(LTRACE) << "MS_Barcode_Decide::initialize\n";
 
 	h_onNewImage.setup(this, &MS_Barcode_Decide::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -49,7 +49,7 @@ bool MS_Barcode_Decide::onInit()
 
 bool MS_Barcode_Decide::onFinish()
 {
-	LOG(TRACE) << "MS_Barcode_Decide::finish\n";
+	LOG(LTRACE) << "MS_Barcode_Decide::finish\n";
 
 	return true;
 }
@@ -87,7 +87,7 @@ bool MS_Barcode_Decide::onStep()
 
 		return true;
 	} catch (...) {
-		LOG(ERROR) << "MS_Sign_Decide::onNewImage failed\n";
+		LOG(LERROR) << "MS_Sign_Decide::onNewImage failed\n";
 		return false;
 	}
 }
@@ -104,7 +104,7 @@ bool MS_Barcode_Decide::onStart()
 
 void MS_Barcode_Decide::onNewImage()
 {
-	LOG(TRACE) << "v::onNewImage\n";
+	LOG(LTRACE) << "v::onNewImage\n";
 
 	hue_ready = true;
 	hue_img = in_hue.read();
@@ -115,7 +115,7 @@ void MS_Barcode_Decide::onNewImage()
 
 void MS_Barcode_Decide::onNewBlobs()
 {
-	LOG(TRACE) << "MS_Barcode_Decide::onNewBlobs\n";
+	LOG(LTRACE) << "MS_Barcode_Decide::onNewBlobs\n";
 
 	blobs_ready = true;
 	blobs = in_blobs.read();

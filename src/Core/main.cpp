@@ -167,25 +167,25 @@ int main(int argc, char* argv[])
 		read_xml(config_name, conf);
 	}
 	catch(xml_parser_error&) {
-		LOG(WARNING) << "Configuration file " << config_name + " not found.";
-		LOG(NOTICE) << "Quick fixes:";
-		LOG(NOTICE) << "   specify config file name with -C switch";
-		LOG(NOTICE) << "   create default configuration using -D switch";
+		LOG(LWARNING) << "Configuration file " << config_name + " not found.";
+		LOG(LNOTICE) << "Quick fixes:";
+		LOG(LNOTICE) << "   specify config file name with -C switch";
+		LOG(LNOTICE) << "   create default configuration using -D switch";
 	}
 
 	if (!vm.count("task")) {
 		if (!conf.get_optional<std::string>("DisCODe.task")) {
-			LOG(ERROR) << "No task specified!";
-			LOG(NOTICE) << "Quick fixes:";
-			LOG(NOTICE) << "   specify task name using -T switch";
-			LOG(NOTICE) << "   set default task name in config file";
+			LOG(LERROR) << "No task specified!";
+			LOG(LNOTICE) << "Quick fixes:";
+			LOG(LNOTICE) << "   specify task name using -T switch";
+			LOG(LNOTICE) << "   set default task name in config file";
 			exit(EXIT_FAILURE);
 		} else {
 			task_name = conf.get<std::string>("DisCODe.task");
-			LOG(INFO) << "Task: " << task_name << " from configuration file\n";
+			LOG(LINFO) << "Task: " << task_name << " from configuration file\n";
 		}
 	} else {
-		LOG(INFO) << "Task: " << task_name << " from command line\n";
+		LOG(LINFO) << "Task: " << task_name << " from command line\n";
 	}
 
 	std::vector<std::pair<std::string, std::string> > overrides;
@@ -193,7 +193,7 @@ int main(int argc, char* argv[])
 		std::vector<std::string> strs;
 		boost::split(strs, task_overrides[i], boost::is_any_of("="));
 		if (strs.size() == 1) {
-			LOG(WARNING) << strs[0] << "have no assigned value";
+			LOG(LWARNING) << strs[0] << "have no assigned value";
 		} else {
 			overrides.push_back(std::make_pair(strs[0], strs[1]));
 		}
@@ -219,7 +219,7 @@ int main(int argc, char* argv[])
 
 		task = configurator.loadConfiguration(task_name, overrides);
 		if (!task.start()) {
-			LOG(FATAL) << "Task::start() returned false\n";
+			LOG(LFATAL) << "Task::start() returned false\n";
 			running = false;
 		}
 
@@ -245,20 +245,20 @@ int main(int argc, char* argv[])
 	// =========================================================================
 
 	catch (Common::DisCODeException& ex) {
-		LOG(FATAL) << ex.what() << "\n";
+		LOG(LFATAL) << ex.what() << "\n";
 		ex.printStackTrace();
 		exit(EXIT_FAILURE);
 	}
 	catch (exception& ex) {
-		LOG(FATAL) << ex.what() << "\n";
+		LOG(LFATAL) << ex.what() << "\n";
 		exit(EXIT_FAILURE);
 	}
 	catch (const char * ex) {
-		LOG(FATAL) << ex << "\n";
+		LOG(LFATAL) << ex << "\n";
 		exit(EXIT_FAILURE);
 	}
 	catch (...) {
-		LOG(FATAL) << "Unknown exception.\n";
+		LOG(LFATAL) << "Unknown exception.\n";
 		exit(EXIT_FAILURE);
 	}//: catch
 }

@@ -40,7 +40,7 @@ bool CameraUniCap_Source::onInit() {
 
 	unicap_status_t status = STATUS_SUCCESS;
 
-	LOG(INFO) << "CameraUniCap_Source::initialize()\n";
+	LOG(LINFO) << "CameraUniCap_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
 	registerStream("out_img", &out_img);
@@ -51,7 +51,7 @@ bool CameraUniCap_Source::onInit() {
 	for (dev_count = 0; SUCCESS(status) && (dev_count < MAX_DEVICES); dev_count++) {
 		status = unicap_enumerate_devices(NULL, &devices[dev_count], dev_count); // (1)
 		if (SUCCESS(status))
-			LOG(INFO) << dev_count << " : "
+			LOG(LINFO) << dev_count << " : "
 					<< devices[dev_count].identifier << '\n';
 		else
 			break;
@@ -60,14 +60,14 @@ bool CameraUniCap_Source::onInit() {
 	for (int i = 0; i < dev_count; i++) {
 		if (props.device == devices[i].device) {
 			device = devices[i];
-			LOG(INFO) << "device found\n";
+			LOG(LINFO) << "device found\n";
 			device_found = true;
 			break;
 		}
 	}
 
 	if (!device_found) {
-		LOG(ERROR) << "Device not found: " << props.device << '\n';
+		LOG(LERROR) << "Device not found: " << props.device << '\n';
 		throw(Common::DisCODeException("Failed to open device"));
 	}
 
@@ -75,7 +75,7 @@ bool CameraUniCap_Source::onInit() {
 	 Acquire a handle to this device
 	 */
 	if (!SUCCESS(unicap_open(&handle, &device))) {
-		LOG(ERROR) << "Failed to open device: " << device.identifier
+		LOG(LERROR) << "Failed to open device: " << device.identifier
 				<< '\n';
 		throw(Common::DisCODeException("Failed to open device"));
 	}
@@ -89,7 +89,7 @@ bool CameraUniCap_Source::onInit() {
 		status = unicap_enumerate_formats(handle, NULL, &formats[format_count],
 				format_count);
 		if (SUCCESS(status)) {
-			LOG(INFO) << format_count << ": "
+			LOG(LINFO) << format_count << ": "
 					<< formats[format_count].identifier << '\n';
 		} else {
 			break;
@@ -99,7 +99,7 @@ bool CameraUniCap_Source::onInit() {
 	for (int i = 0; i < format_count; i++) {
 		if (props.format == (char*) &formats[i].fourcc) {
 			format = formats[i];
-			LOG(INFO) << "format found\n";
+			LOG(LINFO) << "format found\n";
 			break;
 		}
 	}
@@ -108,7 +108,7 @@ bool CameraUniCap_Source::onInit() {
 		if ((props.width == format.sizes[i].width) && (props.height
 				== format.sizes[i].height)) {
 			format.size = format.sizes[i];
-			LOG(INFO) << "size found\n";
+			LOG(LINFO) << "size found\n";
 			break;
 		}
 	}
@@ -119,7 +119,7 @@ bool CameraUniCap_Source::onInit() {
 	 Set this video format
 	 */
 	if (!SUCCESS(unicap_set_format(handle, &format))) {
-		LOG(ERROR) << "Failed to set video format\n";
+		LOG(LERROR) << "Failed to set video format\n";
 
 	}
 
@@ -132,7 +132,7 @@ bool CameraUniCap_Source::onInit() {
 		if (SUCCESS(status)) {
 			unicap_get_property(handle, &properties[property_count]);
 			if (properties[property_count].type == UNICAP_PROPERTY_TYPE_RANGE)
-				LOG(INFO) << "Property "
+				LOG(LINFO) << "Property "
 						<< properties[property_count].identifier
 						<< ": Current = " << properties[property_count].value
 						<< ", Range = ["
@@ -146,7 +146,7 @@ bool CameraUniCap_Source::onInit() {
 							* properties[property_count].range.max;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
-					LOG(WARNING) << "Property "
+					LOG(LWARNING) << "Property "
 							<< properties[property_count].identifier
 							<< " out of range \n";
 				}
@@ -157,7 +157,7 @@ bool CameraUniCap_Source::onInit() {
 							* properties[property_count].range.max;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
-					LOG(WARNING) << "Property "
+					LOG(LWARNING) << "Property "
 							<< properties[property_count].identifier
 							<< " out of range \n";
 				}
@@ -168,7 +168,7 @@ bool CameraUniCap_Source::onInit() {
 							* properties[property_count].range.max;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
-					LOG(WARNING) << "Property "
+					LOG(LWARNING) << "Property "
 							<< properties[property_count].identifier
 							<< " out of range \n";
 				}
@@ -179,7 +179,7 @@ bool CameraUniCap_Source::onInit() {
 							* properties[property_count].range.max;
 					unicap_set_property(handle, &properties[property_count]);
 				} else {
-					LOG(WARNING) << "Property "
+					LOG(LWARNING) << "Property "
 							<< properties[property_count].identifier
 							<< " out of range \n";
 				}
@@ -187,10 +187,10 @@ bool CameraUniCap_Source::onInit() {
 
 			if (std::string("video source")
 					== properties[property_count].identifier) {
-				LOG(INFO) << "video sources : \n";
+				LOG(LINFO) << "video sources : \n";
 				for (int i = 0; i
 						< properties[property_count].menu.menu_item_count; i++) {
-					LOG(INFO) << i << " : "
+					LOG(LINFO) << i << " : "
 							<< properties[property_count].menu.menu_items[i]
 							<< '\n';
 					if (props.input
@@ -202,10 +202,10 @@ bool CameraUniCap_Source::onInit() {
 				}
 			} else if (std::string("video norm")
 					== properties[property_count].identifier) {
-				LOG(INFO) << "video norms : \n";
+				LOG(LINFO) << "video norms : \n";
 				for (int i = 0; i
 						< properties[property_count].menu.menu_item_count; i++) {
-					LOG(INFO) << i << " : "
+					LOG(LINFO) << i << " : "
 							<< properties[property_count].menu.menu_items[i]
 							<< '\n';
 					if (props.norm
@@ -228,7 +228,7 @@ bool CameraUniCap_Source::onInit() {
 }
 
 bool CameraUniCap_Source::onFinish() {
-	LOG(INFO) << "CameraUniCap_Source::finish()\n";
+	LOG(LINFO) << "CameraUniCap_Source::finish()\n";
 
 	/*
 	 Close the device
@@ -236,7 +236,7 @@ bool CameraUniCap_Source::onFinish() {
 	 This invalidates the handle
 	 */
 	if (!SUCCESS(unicap_close(handle))) {
-		LOG(ERROR) << "Failed to close the device: " << device.identifier
+		LOG(LERROR) << "Failed to close the device: " << device.identifier
 				<< '\n';
 	}
 
@@ -249,24 +249,24 @@ bool CameraUniCap_Source::onStep() {
 }
 
 bool CameraUniCap_Source::onStart() {
-	LOG(INFO) << "CameraUniCap_Source::start()\n";
+	LOG(LINFO) << "CameraUniCap_Source::start()\n";
 	/*
 	 Start the capture process on the device
 	 */
 	if (!SUCCESS(unicap_start_capture(handle))) {
-		LOG(ERROR) << "Failed to start capture on device: "	<< device.identifier << '\n';
+		LOG(LERROR) << "Failed to start capture on device: "	<< device.identifier << '\n';
 		return false;
 	}
 	return true;
 }
 
 bool CameraUniCap_Source::onStop() {
-	LOG(INFO) << "CameraUniCap_Source::stop()\n";
+	LOG(LINFO) << "CameraUniCap_Source::stop()\n";
 	/*
 	 Stop the device
 	 */
 	if (!SUCCESS(unicap_stop_capture(handle))) {
-		LOG(ERROR) << "Failed to stop capture on device: " << device.identifier << "\n";
+		LOG(LERROR) << "Failed to stop capture on device: " << device.identifier << "\n";
 		return false;
 	}
 
@@ -285,7 +285,7 @@ void CameraUniCap_Source::new_frame_cb(unicap_event_t event,
 									== (char*) &((CameraUniCap_Source*) (usr_data))->format.fourcc) ? CV_8UC1
 									: CV_8UC3, (void *) buffer->data).clone();
 
-	LOG(TRACE) << "Got new frame\n";
+	LOG(LTRACE) << "Got new frame\n";
 
 	((CameraUniCap_Source*) (usr_data))->out_img.write(frame);
 	((CameraUniCap_Source*) (usr_data))->newImage->raise();

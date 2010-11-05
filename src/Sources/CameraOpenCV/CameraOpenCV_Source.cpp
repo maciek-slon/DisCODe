@@ -14,16 +14,16 @@ namespace Sources {
 namespace CameraOpenCV {
 
 CameraOpenCV_Source::CameraOpenCV_Source(const std::string & name) : Base::Component(name) {
-	LOG(TRACE) << "CameraOpenCV_Source::CameraOpenCV_Source()\n";
+	LOG(LTRACE) << "CameraOpenCV_Source::CameraOpenCV_Source()\n";
 	trig = true;
 }
 
 CameraOpenCV_Source::~CameraOpenCV_Source() {
-	LOG(TRACE) << "CameraOpenCV_Source::~CameraOpenCV_Source()\n";
+	LOG(LTRACE) << "CameraOpenCV_Source::~CameraOpenCV_Source()\n";
 }
 
 bool CameraOpenCV_Source::onInit() {
-	LOG(TRACE) << "CameraOpenCV_Source::initialize()\n";
+	LOG(LTRACE) << "CameraOpenCV_Source::initialize()\n";
 	newImage = registerEvent("newImage");
 
 
@@ -37,16 +37,16 @@ bool CameraOpenCV_Source::onInit() {
 	cap.open(0);
 
 	if (cap.isOpened())
-		LOG(TRACE) << "CameraOpenCV: device opened\n";
+		LOG(LTRACE) << "CameraOpenCV: device opened\n";
 	else
-		LOG(WARNING) << "CameraOpenCV: device NOT opened!\n";
+		LOG(LWARNING) << "CameraOpenCV: device NOT opened!\n";
 
 	return cap.isOpened();
 }
 
 
 bool CameraOpenCV_Source::onFinish() {
-	LOG(TRACE) << "CameraOpenCV_Source::finish()\n";
+	LOG(LTRACE) << "CameraOpenCV_Source::finish()\n";
 	cap.release();
 
 	return !cap.isOpened();
@@ -64,7 +64,7 @@ bool CameraOpenCV_Source::onStep() {
 		return false;
 	}
 
-	LOG(TRACE) << "CameraOpenCV: got frame!\n";
+	LOG(LTRACE) << "CameraOpenCV: got frame!\n";
 
 	out_img.write(frame);
 

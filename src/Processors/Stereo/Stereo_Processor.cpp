@@ -17,17 +17,17 @@ namespace Stereo {
 Stero_Processor::Stero_Processor(const std::string & name) :
 	Base::Component(name)
 {
-	LOG(TRACE) << "Hello CvFilter2D_Processor\n";
+	LOG(LTRACE) << "Hello CvFilter2D_Processor\n";
 }
 
 Stero_Processor::~Stero_Processor()
 {
-	LOG(TRACE) << "Good bye CvFilter2D_Processor\n";
+	LOG(LTRACE) << "Good bye CvFilter2D_Processor\n";
 }
 
 bool Stero_Processor::onInit()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::initialize\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::initialize\n";
 
 	l = r = false;
 
@@ -106,14 +106,14 @@ bool Stero_Processor::onInit()
 
 bool Stero_Processor::onFinish()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::finish\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::finish\n";
 
 	return true;
 }
 
 bool Stero_Processor::onStep()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::step\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::step\n";
 	return true;
 }
 
@@ -129,7 +129,7 @@ bool Stero_Processor::onStart()
 
 void Stero_Processor::onNewImage_l()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::onNewImage_l\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::onNewImage_l\n";
 	try {
 		cv::Mat leftr = in_img_l.read();
 		cv::remap(leftr, left, map11, map12, cv::INTER_LINEAR);
@@ -148,13 +148,13 @@ void Stero_Processor::onNewImage_l()
 		//l = r = false;
 		//}
 	} catch (...) {
-		LOG(ERROR) << "CvFilter2D_Processor::onNewImage_l failed\n";
+		LOG(LERROR) << "CvFilter2D_Processor::onNewImage_l failed\n";
 	}
 }
 
 void Stero_Processor::onNewImage_r()
 {
-	LOG(TRACE) << "CvFilter2D_Processor::onNewImage_r\n";
+	LOG(LTRACE) << "CvFilter2D_Processor::onNewImage_r\n";
 	try {
 		cv::Mat rightr = in_img_r.read();
 		cv::remap(rightr, right, map21, map22, cv::INTER_LINEAR);
@@ -174,7 +174,7 @@ void Stero_Processor::onNewImage_r()
 			l = r = false;
 		}
 	} catch (...) {
-		LOG(ERROR) << "CvFilter2D_Processor::onNewImage_r failed\n";
+		LOG(LERROR) << "CvFilter2D_Processor::onNewImage_r failed\n";
 	}
 }
 

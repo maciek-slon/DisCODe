@@ -35,20 +35,20 @@ bool CameraV4L_Source::onInit() {
 
 	registerStream("out_img", &out_img);
 
-	LOG(INFO) << "Trying possible libraries...\n";
+	LOG(LINFO) << "Trying possible libraries...\n";
 	int whichCam = tryLib(props.device, props.io);
-	LOG(INFO) << "device: " << props.device << " | tryLib=" << whichCam << "\n";
+	LOG(LINFO) << "device: " << props.device << " | tryLib=" << whichCam << "\n";
 	switch (whichCam)
 	{
 		case 0:
 			cam = NULL;
 			break;
 		case 1:
-			LOG(INFO) << "Using V4L\n";
+			LOG(LINFO) << "Using V4L\n";
 			cam = new V4L();
 			break;
 		case 2:
-			LOG(INFO) << "Using V4L2\n";
+			LOG(LINFO) << "Using V4L2\n";
 			cam = new V4L2();
 			break;
 		default:

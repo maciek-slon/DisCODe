@@ -16,17 +16,17 @@ namespace CvColorConv {
 
 CvColorConv_Processor::CvColorConv_Processor(const std::string & name) : Base::Component(name)
 {
-	LOG(TRACE) << "Hello CvThreshold_Processor\n";
+	LOG(LTRACE) << "Hello CvThreshold_Processor\n";
 }
 
 CvColorConv_Processor::~CvColorConv_Processor()
 {
-	LOG(TRACE) << "Good bye CvThreshold_Processor\n";
+	LOG(LTRACE) << "Good bye CvThreshold_Processor\n";
 }
 
 bool CvColorConv_Processor::onInit()
 {
-	LOG(TRACE) << "CvThreshold_Processor::initialize\n";
+	LOG(LTRACE) << "CvThreshold_Processor::initialize\n";
 
 	h_onNewImage.setup(this, &CvColorConv_Processor::onNewImage);
 	registerHandler("onNewImage", &h_onNewImage);
@@ -42,14 +42,14 @@ bool CvColorConv_Processor::onInit()
 
 bool CvColorConv_Processor::onFinish()
 {
-	LOG(TRACE) << "CvThreshold_Processor::finish\n";
+	LOG(LTRACE) << "CvThreshold_Processor::finish\n";
 
 	return true;
 }
 
 bool CvColorConv_Processor::onStep()
 {
-	LOG(TRACE) << "CvThreshold_Processor::step\n";
+	LOG(LTRACE) << "CvThreshold_Processor::step\n";
 	return true;
 }
 
@@ -65,15 +65,14 @@ bool CvColorConv_Processor::onStart()
 
 void CvColorConv_Processor::onNewImage()
 {
-	LOG(TRACE) << "CvThreshold_Processor::onNewImage\n";
+	LOG(LTRACE) << "CvThreshold_Processor::onNewImage\n";
 	try {
-		cv::Mat img = in_img.read();
-		cv::Mat out;
+		img = in_img.read();
 		cvtColor(img, out, props.type);
-		out_img.write(out.clone());
+		out_img.write(out);
 		newImage->raise();
 	} catch (...) {
-		LOG(ERROR) << "CvThreshold::onNewImage failed\n";
+		LOG(LERROR) << "CvThreshold::onNewImage failed\n";
 	}
 }
 
