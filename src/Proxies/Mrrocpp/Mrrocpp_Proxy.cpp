@@ -32,7 +32,7 @@ bool Mrrocpp_Proxy::onStart()
 
 bool Mrrocpp_Proxy::onInit()
 {
-	LOG(TRACE) << "Mrrocpp_Proxy::onInit\n";
+	LOG(LTRACE) << "Mrrocpp_Proxy::onInit\n";
 
 	h_onNewMsgToSend.setup(this, &Mrrocpp_Proxy::onNewMsgToSend);
 	registerHandler("onNewMsgToSend", &h_onNewMsgToSend);
@@ -62,18 +62,19 @@ bool Mrrocpp_Proxy::onFinish()
 
 bool Mrrocpp_Proxy::onStep()
 {
-	LOG(FATAL) << "Mrrocpp_Proxy::onStep\n";
+	LOG(LFATAL) << "Mrrocpp_Proxy::onStep\n";
 
 	if (!serverSocket.isDataAvailable()) {
-		LOG(TRACE) << "if (!serverSocket.isDataAvailable()) {\n";
+		LOG(LTRACE) << "if (!serverSocket.isDataAvailable()) {\n";
 		return true;
 	}
 	if(clientConnected){
-		LOG(FATAL) << "if(clientConnected){\n";
+		LOG(LFATAL) << "if(clientConnected){\n";
 	} else {
-		LOG(FATAL) << "if(!clientConnected){\n";
+		LOG(LFATAL) << "if(!clientConnected){\n";
 		clientSocket = serverSocket.acceptConnection();
-		LOG(FATAL) << "clientConnected!!!!\n";
+		clientConnected = true;
+		LOG(LFATAL) << "clientConnected!!!!\n";
 	}
 	return true;
 }
@@ -81,7 +82,7 @@ bool Mrrocpp_Proxy::onStep()
 void Mrrocpp_Proxy::onNewMsgToSend()
 {
 	msgToSend.read();
-	LOG(TRACE) << "Mrrocpp_Proxy::onNewMsgToSend\n";
+	LOG(LTRACE) << "Mrrocpp_Proxy::onNewMsgToSend\n";
 }
 
 Base::Props * Mrrocpp_Proxy::getProperties()

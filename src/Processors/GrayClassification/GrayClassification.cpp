@@ -18,17 +18,17 @@ using namespace cv;
 GrayClassification_Processor::GrayClassification_Processor(const std::string & name) :
 	Base::Component(name)
 {
-	LOG(TRACE) << "Hello GrayClassification_Processor\n";
+	LOG(LTRACE) << "Hello GrayClassification_Processor\n";
 }
 
 GrayClassification_Processor::~GrayClassification_Processor()
 {
-	LOG(TRACE) << "Good bye GrayClassification_Processor\n";
+	LOG(LTRACE) << "Good bye GrayClassification_Processor\n";
 }
 
 bool GrayClassification_Processor::onInit()
 {
-	LOG(TRACE) << "GrayClassification_Processor::initialize\n";
+	LOG(LTRACE) << "GrayClassification_Processor::initialize\n";
 
 	// Register data streams, events and event handlers HERE!
 	h_onNewImage.setup(this, &GrayClassification_Processor::onNewImage);
@@ -45,14 +45,14 @@ bool GrayClassification_Processor::onInit()
 
 bool GrayClassification_Processor::onFinish()
 {
-	LOG(TRACE) << "GrayClassification_Processor::finish\n";
+	LOG(LTRACE) << "GrayClassification_Processor::finish\n";
 
 	return true;
 }
 
 bool GrayClassification_Processor::onStep()
 {
-	LOG(TRACE) << "GrayClassification_Processor::step\n";
+	LOG(LTRACE) << "GrayClassification_Processor::step\n";
 	return true;
 }
 
@@ -68,7 +68,7 @@ bool GrayClassification_Processor::onStart()
 
 void GrayClassification_Processor::onNewImage()
 {
-	LOG(TRACE) << "GrayClassification_Processor::onNewImage\n";
+	LOG(LTRACE) << "GrayClassification_Processor::onNewImage\n";
 	Mat img = in_img.read();
 
 	line(img, Point(0, 0), Point(100, 100), CV_RGB(255, 0, 0), 4);
