@@ -1,0 +1,8 @@
+/*!
+\page didactics_tutorial_discode Introduction to DisCODe 
+
+\section dtd_1h Write edge detection processing stream.
+ - Stream should consist of the following steps: mean -> split -> canny -> merge of 3 edge images
+ - Find the "best" merge method.
+ 
+*/

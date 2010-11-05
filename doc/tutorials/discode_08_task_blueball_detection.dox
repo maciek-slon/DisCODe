@@ -1,0 +1,10 @@
+/*!
+\page didactics_tutorial_discode Introduction to DisCODe 
+
+\section dtd_1g Detect the blue ball
+Create a processing stream which will threshold image in order to find only blue segments. Write your own component responsible for thresholding.
+\note Utilize the cvSplit component.
+
+
+
+*/

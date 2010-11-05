@@ -1,0 +1,39 @@
+/*!
+\mainpage DisCODe
+
+This project contains sources of DisCODe - a framework facilitating the development of sensor data processing algorithms.
+DisCODE is written mostly in C++ (in an objective manner) and composing of a components library with patterns for their usage.
+Those patterns impose general implementation method diverse, multistage data processing algorithms.
+
+It was important to develop mechanisms which will simplify the process of processing streams (algorithms) creation, enable switching between 
+different tasks during the application work and, moreover, will offer clear method of their parts (components) separation. 
+In order to create a general management mechanism dealing with any number of components, each of them is encapsulated in a separate
+dynamic library - SO (Shared Object) in case of the Linux OS and DLL (Dynamic Linked Library) in case of Windows OS.
+
+\b Components are divided into four classes:
+ - <em>sources</em> - components responsible for gathering sensor data,
+ - <em>data processors</em> - implementing one of the processing steps (algorithm parts),
+ - <em>sinks</em> - final processing nodes, responsible for gathering processed data for e.g. their presentation on screen or saving to files.   
+ - <em>proxies</em> - components responsible for communication with other processes/systems.
+
+The approach required <b>loose coupling</b> between components, thus component-independent communication mechanisms had to be developed. 
+Two types of mechanisms were created:
+ - <em>data streams</em> - for passing sensorical data between components,
+ - <em>events</em> - for passing commands between components, which can result in change of the method of their work, etc.
+ 
+The component-oriented approach imposed also creation of \b utilities responsible for components load and management. 
+Besides, diverse execution methods of processing streams were created, called executors, enabling users to execute the same components in different way.
+
+Currently DisCODe focuses on computer vision application, thus contains components related mostly to the computer vision area, but there are also plans for creation of components useful for speech recognition. 
+
+Besides there is some work done in order to utilize the results of DisCODe-based application in robotics - as a tool for aggregation of sensor data to the form useful in control.
+
+\lightrule
+
+This software was developed at : <a href="http://robotyka.ia.pw.edu.pl/twiki/bin/view/Main">Robot Control and Pattern Recognition Group</a> : <a href="http://www.ia.pw.edu.pl">Institute of Control and Computation Engineering</a> : <a href="http://www.pw.edu.pl">Warsaw University of Technology</a> : Poland
+
+Main authors:
+- Tomasz Kornuta
+- Maciej Stefanczyk
+
+*/

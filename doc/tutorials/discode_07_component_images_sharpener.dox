@@ -1,0 +1,25 @@
+/*!
+\page discode_07_component_images_sharpener Create a simple component
+ 
+\section ts_objectives Tutorial objectives
+The goal is to create a component responsible for sharpening of the images.
+
+\section ts_structure Task structure
+The structure of the ImageSharpener task is shown below.
+
+\htmlonly
+<img src="images/ImageSharpener.png" style="margin: 5px; width: 700px;" alt="ImageSharpener"/>
+\endhtmlonly
+
+\section ts_file Task file
+For more task file details please refer to previous tutorials.
+
+Utilize the standard Laplacian 3-by-3 kernel shown below.
+\code
+-1 -1 -1
+-1  8 -1
+-1 -1 -1
+\endcode
+\note Utilize the create.sh script for generation of the new component shell. 
+
+*/

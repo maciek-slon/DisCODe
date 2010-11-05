@@ -1,0 +1,80 @@
+/*!
+\page discode_04_sequencereader Create a new task 
+
+\section ts_objectives Tutorial objectives
+Create a task responsible for loading sequence of images from files.
+
+\section ts_command Command
+From the <b>bin</b> directory execute the following command.
+\cons
+./discode -T ../Tasks/SequenceViewer.xml
+\endcons
+
+\section ts_structure Task structure
+The structure of the SequenceViewer task is shown below.
+
+\htmlonly
+<img src="images/SequenceViewer.png" style="margin: 5px; width: 400px;" alt="SequenceViewer"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+
+\section ts_file Task file
+Create a new SequenceViewer.xml file on the base of the existing MovieViewer.xml.
+Modify required parts:
+- Replace the <b>Mov1</b> component with the <b>Seq1</b> component. 
+\code
+	<Components>
+		...
+		<Seq1 type="Sequence" thread="Exec1" group="s1">
+			<directory>/home/discode/public_html/datasets/opencv_classics/</directory>
+		</Seq1>
+		...
+\endcode
+
+- Set the main thread component to <b>Seq1</b>. 
+\code
+	<Executors>
+		...
+		<Exec1 type="continuous">
+			<main_component>Seq1</main_component>
+		</Exec1>
+		...
+\endcode
+
+- Connect events. 
+\code
+	<Events>
+		...
+		<Event source="Seq1.newImage" destination="Wnd1.onNewImage"/>
+		...
+\endcode
+
+- Assign data streams. 
+\code
+	<DataStreams>
+		...
+		<Seq1>
+			<out_img type="out" group="Con1"/>
+		</Seq1>
+		<Wnd1>
+			<in_img  type="in" group="Con1"/>
+		</Wnd1>
+		...
+\endcode
+
+\section ts_result Result
+A sequence of images  will be displayed image after image.
+
+\note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
+
+\section ts_sections Related sections
+\see \ref manuals_tasks : Description of tasks
+\see \ref manuals_components : Description of components
+\see \ref manuals_executors : Description of executors
+\see \ref Sequence : Source responsible for loading image sequence from files.
+\see \ref CvWindow : Sink responsible for displaying images
+
+\prevnext{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
+
+*/

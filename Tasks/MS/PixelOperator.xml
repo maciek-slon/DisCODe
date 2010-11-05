@@ -5,6 +5,15 @@
 		<Source type="CameraOpenCV" thread="Thread1" group="s1">
 		</Source>
 
+		<Col type="CvColorConv" thread="Thread1" group="s1">
+			<type>BGR2GRAY</type>
+		</Col>
+
+		<Op type="CvPixelOperator" thread="Thread1" group="s1">
+			<operator>and</operator>
+			<mask>192</mask>
+		</Op>
+
 		<Window type="CvWindow" thread="Thread1" group="s1">
 			<title>Preview</title>	
 		</Window>
@@ -19,7 +28,9 @@
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Source.newImage" destination="Window.onNewImage"/>
+		<Event source="Source.newImage" destination="Col.onNewImage"/>
+		<Event source="Col.newImage" destination="Op.onNewImage"/>
+		<Event source="Op.newImage" destination="Window.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -28,8 +39,18 @@
 			<out_img type="out" group="Con"/>
 		</Source>
 
-		<Window>
+		<Col>
 			<in_img type="in" group="Con"/>
+			<out_img type="out" group="Con2"/>
+		</Col>
+
+		<Op>
+			<in_img type="in" group="Con2"/>
+			<out_img type="out" group="Con3"/>
+		</Op>
+
+		<Window>
+			<in_img type="in" group="Con3"/>
 		</Window>
 	</DataStreams>
 

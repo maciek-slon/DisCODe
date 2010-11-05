@@ -1,0 +1,34 @@
+/*!
+
+\page windows Windows
+
+\section windows_requirements Requirements
+
+For list of required libraries and software, see \ref system_requirements "this" section.
+You can either install everything manually, or you can grab ready-made package with everything
+included <a href="#">here</a>. Simply unzip it anywhere and you are ready to go (start your work
+by executing env.bat script from where you unpacked it).
+
+Now, you have to choose your way with DisCODe. You can participate in it's development, you can
+grab sources and compile it from scratch without participating, or you can just grab precompiled
+binary packages along with SDK and example tasks.
+
+\section windows_build Building from scratch
+
+\section windows_precompiled Precompiled binary package
+
+\subsection windows_precompiled_get Installation
+
+You will need installer package, which is available <a href="#">hera</a>. Instal it anywhere
+you want, but it's strongly recomended, if you are using ready-made package mentioned before,
+that installation directory is in place where you unpacked those tools.
+
+
+\subsection windows_precompiled_use Creating component
+
+\note If you are using tools package from first section, you need to run all commands from
+within env.bat script.
+
+
+
+*/
