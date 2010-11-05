@@ -103,22 +103,28 @@ public:
     LOAD_A_TYPE(char, xdr_char)
     LOAD_A_TYPE(double, xdr_double)
 	LOAD_A_TYPE(float, xdr_float)
+//	LOAD_A_TYPE(int, xdr_int)
+//	LOAD_A_TYPE(long, xdr_long)
+//	LOAD_A_TYPE(short, xdr_short)
+	LOAD_A_TYPE(unsigned char, xdr_u_char)
+//	LOAD_A_TYPE(unsigned int, xdr_u_int)
+//	LOAD_A_TYPE(unsigned long, xdr_u_long)
+//	LOAD_A_TYPE(unsigned short, xdr_u_short)
+
+#if defined(__QNXNTO__) || (defined(__APPLE__) && defined(__MACH__))
 	LOAD_A_TYPE(int, xdr_int)
 	LOAD_A_TYPE(long, xdr_long)
 	LOAD_A_TYPE(short, xdr_short)
-	LOAD_A_TYPE(unsigned char, xdr_u_char)
 	LOAD_A_TYPE(unsigned int, xdr_u_int)
 	LOAD_A_TYPE(unsigned long, xdr_u_long)
 	LOAD_A_TYPE(unsigned short, xdr_u_short)
-
-//	LOAD_A_TYPE(int16_t, xdr_int16_t)
-//	LOAD_A_TYPE(uint16_t, xdr_u_int16_t)
-//	LOAD_A_TYPE(int32_t, xdr_int32_t)
-//	LOAD_A_TYPE(uint32_t, xdr_u_int32_t)
-	LOAD_A_TYPE(int64_t, xdr_int64_t)
-#if defined(__QNXNTO__) || (defined(__APPLE__) && defined(__MACH__))
 	LOAD_A_TYPE(uint64_t, xdr_u_int64_t)
 #else
+	LOAD_A_TYPE(int16_t, xdr_int16_t)
+	LOAD_A_TYPE(int32_t, xdr_int32_t)
+	LOAD_A_TYPE(int64_t, xdr_int64_t)
+	LOAD_A_TYPE(uint16_t, xdr_uint16_t)
+	LOAD_A_TYPE(uint32_t, xdr_uint32_t)
 	LOAD_A_TYPE(uint64_t, xdr_uint64_t)
 #endif
 
@@ -144,6 +150,11 @@ public:
     	std::memcpy(buffer, _buffer, _buffer_size);
         xdrmem_create(&xdrs, buffer, sizeof(buffer), XDR_DECODE);
     }
+
+    xdr_iarchive()
+	{
+		xdrmem_create(&xdrs, buffer, sizeof(buffer), XDR_DECODE);
+	}
 
     /**
      * Destructor
@@ -264,6 +275,26 @@ public:
     std::size_t getArchiveSize(void) const {
     	return ((std::size_t) xdr_getpos(&xdrs));
     }
+
+    void set_buffer(const char * _buffer, std::size_t _buffer_size)
+    {
+		assert(_buffer_size <= size);
+		std::memcpy(buffer, _buffer, _buffer_size);
+		if( !xdr_setpos(&xdrs, 0) ){
+			THROW_LOAD_EXCEPTION;
+		}
+    }
+
+    char *get_buffer(){
+    	return buffer;
+    }
+
+    void clear_buffer()
+	{
+		if( !xdr_setpos(&xdrs, 0) ){
+			THROW_LOAD_EXCEPTION;
+		}
+	}
 };
 
 // required by export
