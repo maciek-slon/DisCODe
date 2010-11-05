@@ -1,5 +1,7 @@
 /*!
 \page camera_calibration_02_calibration Perform the calibration computations
+
+\prevnext_top{camera_calibration_01_findchessboard, camera_calibration_03_undistortion}
  
 \section ts_objectives Tutorial objectives
 The aim is to create a task responsible for computation of the calibration parameters (camera intrinsics and distortion vector).
@@ -45,5 +47,5 @@ Calibration parameters will be computed.
 \see \ref manuals_events : Description of events
 
 
-\prevnext{camera_calibration_01_findchessboard, camera_calibration_03_undistortion}
+\prevnext_bottom{camera_calibration_01_findchessboard, camera_calibration_03_undistortion}
 */

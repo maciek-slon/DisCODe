@@ -1,6 +1,8 @@
 /*!
 \page camera_calibration_01_findchessboard Localize the calibration pattern
 
+\next_top{camera_calibration_02_calibration}
+
 \section ts_objectives Tutorial objectives
 The goal of this tutorial is to create a task responsible for chessboard localization.
 
@@ -38,5 +40,5 @@ In result a calibration a sequence of images will be displayed - with located co
 \see A <a href="http://www.youtube.com/watch?v=DrXIQfQHFv0">movie</a> presenting the OpenCV-based chessboard localization.
 \see \ref manuals_components : Description of components
 
-\next{camera_calibration_02_calibration}
+\next_bottom{camera_calibration_02_calibration}
 */

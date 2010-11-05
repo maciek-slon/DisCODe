@@ -1,6 +1,8 @@
 /*!
 \page discode_04_sequencereader Create a new task 
 
+\prevnext_top{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
+
 \section ts_objectives Tutorial objectives
 Create a task responsible for loading sequence of images from files.
 
@@ -75,6 +77,6 @@ A sequence of images  will be displayed image after image.
 \see \ref Sequence : Source responsible for loading image sequence from files.
 \see \ref CvWindow : Sink responsible for displaying images
 
-\prevnext{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
+\prevnext_bottom{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
 
 */
