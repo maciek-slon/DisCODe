@@ -75,11 +75,12 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Components"));
-			loadComponents(tmp_node, task);
 		}
-		catch(ptree_bad_path&) {
+		catch(const ptree_bad_path& ex) {
 			LOG(LFATAL) << "No Components branch in configuration file!\n";
 		}
+
+		loadComponents(tmp_node, task);
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Events"));
@@ -153,8 +154,17 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 			}
 		}
 
-		if (kern->getProperties())
-			kern->getProperties()->load(tmp);
+		if (kern->getProperties()) {
+			try {
+				kern->getProperties()->load(tmp);
+			}
+			catch(const ptree_bad_path& ex) {
+				LOG(LERROR) << name << ": " << ex.what();
+				LOG(LNOTICE) << "Set this property in config file!";
+
+				throw Common::DisCODeException(name + ": failed to load component");
+			}
+		}
 
 		kern->initialize();
 
