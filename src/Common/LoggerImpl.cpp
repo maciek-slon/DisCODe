@@ -10,6 +10,8 @@
 #include <cstdio>
 #include <cctype>
 
+#include <boost/foreach.hpp>
+
 namespace Utils {
 namespace Logger {
 
@@ -19,11 +21,11 @@ Logger::~Logger() {
 }
 
 Logger & Logger::log(const std::string & file, int line, Severity sev, const std::string & msg) {
-	for (size_t i = 0; i < outputs.size(); ++i) {
-		if (sev < outputs[i].getLvl())
+	BOOST_FOREACH(LoggerOutput & output, outputs) {
+		if (sev < output.getLvl())
 			continue;
 
-		outputs[i].print(msg, sev, file, line);
+		output.print(msg, sev, file, line);
 	}
 
 	sum[sev]++;
