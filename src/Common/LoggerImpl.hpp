@@ -73,7 +73,7 @@ public:
 	 * or specialize this method.
 	 */
 	template <class T>
-	void print(const T & data)
+	void print(const T & data) const
 	{
 		std::cout << data;
 	}
@@ -97,7 +97,7 @@ public:
 	/*!
 	 * Print out summary (number of warnings, errors etc).
 	 */
-	void summary()
+	void summary() const
 	{
 		std::cout << sum[Trace] << " traces\n" << sum[Debug] << " debugs\n" << sum[Info] << " informations\n"
 				<< sum[Notice] << " notices\n" << sum[Warning] << " warnings\n" << sum[Error] << " errors\n"
