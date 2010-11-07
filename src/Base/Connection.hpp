@@ -47,7 +47,7 @@ public:
 protected:
 
 private:
-	std::string name;
+	const std::string name;
 
 	std::vector<DataStreamInterface *> listeners;
 };

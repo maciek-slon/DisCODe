@@ -28,7 +28,7 @@ public:
 		dsOut
 	};
 
-    DataStreamInterface(std::string n="name") : conn(NULL), name_(n) {};
+    DataStreamInterface(const std::string n="name") : conn(NULL), name_(n) {};
 
     virtual ~DataStreamInterface() {
 
@@ -59,7 +59,7 @@ protected:
     Connection * conn;
 
 private:
-    std::string name_;
+    const std::string name_;
 
 };
 

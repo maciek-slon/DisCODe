@@ -10,7 +10,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <vector>
+
+#include <boost/ptr_container/ptr_vector.hpp>
 
 #include "LoggerAux.hpp"
 #include "LoggerOutput.hpp"
@@ -72,7 +73,7 @@ public:
 	 * or specialize this method.
 	 */
 	template <class T>
-	void print(const T & data)
+	void print(const T & data) const
 	{
 		std::cout << data;
 	}
@@ -96,7 +97,7 @@ public:
 	/*!
 	 * Print out summary (number of warnings, errors etc).
 	 */
-	void summary()
+	void summary() const
 	{
 		std::cout << sum[Trace] << " traces\n" << sum[Debug] << " debugs\n" << sum[Info] << " informations\n"
 				<< sum[Notice] << " notices\n" << sum[Warning] << " warnings\n" << sum[Error] << " errors\n"
@@ -129,7 +130,7 @@ protected:
 	/// level of actually printed message
 	int curr_lvl;
 
-	std::vector<LoggerOutput *> outputs;
+	boost::ptr_vector<LoggerOutput> outputs;
 
 	static Logger * inst;
 };

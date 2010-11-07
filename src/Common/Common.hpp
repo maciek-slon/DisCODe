@@ -12,5 +12,5 @@
  * \author tkornuta
  */
 
-#include "FraDIAException.hpp"
+#include "DisCODeException.hpp"
 #include "Panel_Empty.hpp"

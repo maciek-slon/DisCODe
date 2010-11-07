@@ -41,7 +41,7 @@ namespace DataStreamBuffer {
 template <class T>
 class Queue {
 public:
-	bool empty() {
+	bool empty() const {
 		return buffer.empty();
 	}
 
@@ -92,7 +92,7 @@ public:
 		fresh = false;
 	}
 
-	bool empty() {
+	bool empty() const {
 		return !fresh;
 	}
 

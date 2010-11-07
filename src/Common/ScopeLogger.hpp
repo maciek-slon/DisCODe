@@ -7,6 +7,8 @@
 #ifndef SCOPELOGGER_HPP_
 #define SCOPELOGGER_HPP_
 
+#include <string>
+
 #include "LoggerImpl.hpp"
 
 namespace Utils {
@@ -19,7 +21,7 @@ namespace Logger {
 class ScopeLogger
 {
 public:
-	ScopeLogger(Logger & p, const char * f, int l, Severity s) : parent(p), file(f), line(l), sev(s) {
+	ScopeLogger(Logger & p, const std::string & f, int l, Severity s) : parent(p), file(f), line(l), sev(s) {
 
 	}
 
@@ -47,7 +49,7 @@ private:
 	Logger & parent;
 
 	///
-	std::string file;
+	const std::string file;
 
 	///
 	int line;
