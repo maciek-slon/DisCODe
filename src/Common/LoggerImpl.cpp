@@ -15,17 +15,14 @@ namespace Logger {
 Logger* Logger::inst = NULL;
 
 Logger::~Logger() {
-	for (size_t i = 0; i < outputs.size(); ++i) {
-		delete outputs[i];
-	}
 }
 
 Logger & Logger::log(const std::string & file, int line, Severity sev, const std::string & msg) {
 	for (size_t i = 0; i < outputs.size(); ++i) {
-		if (sev < outputs[i]->getLvl())
+		if (sev < outputs[i].getLvl())
 			continue;
 
-		outputs[i]->print(msg, sev, file, line);
+		outputs[i].print(msg, sev, file, line);
 	}
 
 	sum[sev]++;

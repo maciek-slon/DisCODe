@@ -10,7 +10,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <vector>
+
+#include <boost/ptr_container/ptr_vector.hpp>
 
 #include "LoggerAux.hpp"
 #include "LoggerOutput.hpp"
@@ -129,7 +130,7 @@ protected:
 	/// level of actually printed message
 	int curr_lvl;
 
-	std::vector<LoggerOutput *> outputs;
+	boost::ptr_vector<LoggerOutput> outputs;
 
 	static Logger * inst;
 };
