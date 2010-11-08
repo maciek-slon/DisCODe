@@ -8,6 +8,8 @@
 #ifndef HANDLER_HPP_
 #define HANDLER_HPP_
 
+#include "Mrrocpp_Proxy.hpp"
+
 namespace Proxies {
 
 namespace Mrrocpp {
