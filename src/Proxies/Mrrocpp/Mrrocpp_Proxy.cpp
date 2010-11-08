@@ -139,6 +139,7 @@ void Mrrocpp_Proxy::sendBuffersToMrrocpp()
 
 	reading_message_header rmh;
 	rmh.data_size = oarchive->getArchiveSize();
+	rmh.is_rpc_call = true;
 
 	*header_oarchive << rmh;
 
