@@ -1,6 +1,8 @@
 /*!
 \page discode_03_moviereader_changeparameter Override task parameter from the command line 
 
+\prevnext_top{discode_02_moviereader,discode_04_sequencereader}
+
 \section ts_objectives Tutorial objectives
 Use the -S option in the command line in order to override the default value of parameter.
 
@@ -59,6 +61,6 @@ A different movie will be displayed.
 \see \ref discode_01_parameters : Explanations of inline parameters
 \see \ref Movie : Source responsible for loading frames from movie
 
-\prevnext{discode_02_moviereader,discode_04_sequencereader}
+\prevnext_bottom{discode_02_moviereader,discode_04_sequencereader}
 
 */

@@ -8,6 +8,9 @@
 #include "LoggerImpl.hpp"
 
 #include <cstdio>
+#include <cctype>
+
+#include <boost/foreach.hpp>
 
 namespace Utils {
 namespace Logger {
@@ -15,17 +18,14 @@ namespace Logger {
 Logger* Logger::inst = NULL;
 
 Logger::~Logger() {
-	for (size_t i = 0; i < outputs.size(); ++i) {
-		delete outputs[i];
-	}
 }
 
 Logger & Logger::log(const std::string & file, int line, Severity sev, const std::string & msg) {
-	for (size_t i = 0; i < outputs.size(); ++i) {
-		if (sev < outputs[i]->getLvl())
+	BOOST_FOREACH(LoggerOutput & output, outputs) {
+		if (sev < output.getLvl())
 			continue;
 
-		outputs[i]->print(msg, sev, file, line);
+		output.print(msg, sev, file, line);
 	}
 
 	sum[sev]++;
@@ -34,10 +34,7 @@ Logger & Logger::log(const std::string & file, int line, Severity sev, const std
 }
 
 static char char2dump(char ch) {
-	if (ch >= 32 && ch <= 127)
-		return ch;
-	else
-		return '.';
+	return (std::isprint(ch) ? ch : '.');
 }
 
 void Logger::dump(Severity sev, const std::string & msg, void * data, int length) {

@@ -188,11 +188,11 @@ Props * Component::getProperties() {
 	return NULL;
 }
 
-bool Component::running() {
+bool Component::running() const {
 	return state == Running;
 }
 
-bool Component::initialized() {
+bool Component::initialized() const {
 	return state == Ready;
 }
 

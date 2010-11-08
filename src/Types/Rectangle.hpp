@@ -30,7 +30,7 @@ public:
 	}
 
 private:
-	cv::Point p1, p2;
+	const cv::Point p1, p2;
 };
 
 } //: namespace Types

@@ -1,6 +1,8 @@
 /*!
 \page discode_05_trigerred_sequencereader Expand task by a new component
 
+\prevnext_top{discode_04_sequencereader, discode_06_refreshedtriggered_sequencereader}
+
 \section ts_objectives Tutorial objectives
 Modify the SequenceViewer.xml (task responsible for loading sequence of images from files and
 displaying them one-by-one) by adding the Keyboard component in order to gain the possibility 
@@ -69,5 +71,6 @@ to enter the 't' (must be followed by <enter>) to load and display another.
 \see \ref manuals_executors : Description of executors
 \see \ref Keyboard : Source responsible for raising events related to keystrokes   
 
-\prevnext{discode_04_sequencereader, discode_06_refreshedtriggered_sequencereader}
+\prevnext_bottom{discode_04_sequencereader, discode_06_refreshedtriggered_sequencereader}
+
 */
