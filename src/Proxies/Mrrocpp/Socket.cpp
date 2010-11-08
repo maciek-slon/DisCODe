@@ -74,7 +74,7 @@ boost::shared_ptr <Proxies::Mrrocpp::Socket> Socket::acceptConnection()
 	if (acceptedFd < 0) {
 		throw runtime_error("accept() failed: " + string(strerror(errno)));
 	}
-	s = boost::shared_ptr <Socket> (new Socket());
+	s = boost::shared_ptr <Socket>(new Socket());
 	s->fd = acceptedFd;
 
 	return s;
@@ -115,6 +115,38 @@ void Socket::closeSocket()
 int Socket::getFd()
 {
 	return fd;
+}
+
+void Socket::writev2(const void *buf1, size_t buf1Size, const void *buf2, size_t buf2Size)
+{
+	struct iovec iov[2];
+	ssize_t nwritten;
+
+	iov[0].iov_base = (void*) buf1;
+	iov[0].iov_len = buf1Size;
+	iov[1].iov_base = (void*) buf2;
+	iov[1].iov_len = buf2Size;
+
+	nwritten = writev(fd, iov, 2);
+	if (nwritten == -1) {
+		throw runtime_error("Socket::writev2() nwritten == -1");
+	}
+	if (nwritten != buf1Size + buf2Size) {
+		throw runtime_error("Socket::writev2() nwritten != buf1Size + buf2Size");
+	}
+}
+
+void Socket::read(void *buf, size_t bufSize)
+{
+	int r;
+
+	r = ::read(fd, buf, bufSize);
+	if(r == -1){
+		throw runtime_error("Socket::read: r == -1");
+	}
+	if(r != bufSize){
+		throw runtime_error("Socket::read: r != bufSize");
+	}
 }
 
 } // namespace Mrrocpp {

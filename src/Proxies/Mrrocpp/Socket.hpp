@@ -52,6 +52,10 @@ public:
 
 	int getFd();
 
+	void writev2(const void *buf1, size_t buf1Size, const void *buf2, size_t buf2Size);
+
+	void read(void *buf, size_t bufSize);
+
 private:
 	/** Socket file descriptor. */
 	int fd;

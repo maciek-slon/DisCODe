@@ -10,6 +10,7 @@
 #define MRROCPP_PROXY_HPP_
 
 #include <cv.h>
+#include <boost/shared_ptr.hpp>
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -18,15 +19,18 @@
 #include "xdr/xdr_oarchive.hpp"
 #include "xdr/xdr_iarchive.hpp"
 #include "Socket.hpp"
+#include "headers.h"
 
 namespace Proxies {
 namespace Mrrocpp {
 
 using namespace cv;
 
-struct Mrrocpp_ProxyProps : public Base::Props
+struct Mrrocpp_ProxyProps: public Base::Props
 {
 	int port;
+
+	bool rpcMode;
 	/*!
 	 * Load settings
 	 *
@@ -35,6 +39,7 @@ struct Mrrocpp_ProxyProps : public Base::Props
 	virtual void load(const ptree & pt)
 	{
 		port = pt.get <int> ("port");
+		rpcMode = pt.get <bool> ("rpcMode");
 	}
 
 	/*!
@@ -45,6 +50,7 @@ struct Mrrocpp_ProxyProps : public Base::Props
 	virtual void save(ptree & pt)
 	{
 		pt.put("port", port);
+		pt.put("rpcMode", rpcMode);
 	}
 };
 
@@ -56,12 +62,13 @@ struct Mrrocpp_ProxyProps : public Base::Props
  *
  * }@
  */
-class Mrrocpp_Proxy : public Base::Component
+class Mrrocpp_Proxy: public Base::Component
 {
 public:
 	Mrrocpp_Proxy(const std::string & name = "");
 	virtual ~Mrrocpp_Proxy();
 	virtual Base::Props * getProperties();
+
 protected:
 	virtual bool onStart();
 
@@ -95,6 +102,15 @@ private:
 	Base::Event *newMsgReceived;
 	Base::DataStreamIn <xdr_oarchive <> > msgToSend;
 	Base::DataStreamOut <xdr_iarchive <> > msgReceived;
+
+	boost::shared_ptr <xdr_iarchive <> > header_iarchive;
+	boost::shared_ptr <xdr_iarchive <> > iarchive;
+	boost::shared_ptr <xdr_oarchive <> > header_oarchive;
+	boost::shared_ptr <xdr_oarchive <> > oarchive;
+
+	void receiveBuffersFromMrrocpp();
+	void sendBuffersToMrrocpp();
+
 	SampleClass sample;
 
 	Socket serverSocket;
@@ -103,6 +119,12 @@ private:
 	Mrrocpp_ProxyProps props;
 
 	bool clientConnected;
+	bool msgSet;
+	bool getReadingReceived;
+
+	void sendMsg();
+
+	size_t initiate_message_header_size;
 };
 
 } // namespace Mrrocpp {
