@@ -15,6 +15,8 @@
 #include "Props.hpp"
 #include "Logger.hpp"
 
+#include "EventHandler2.hpp"
+
 #include <cv.h>
 #include <highgui.h>
 
@@ -94,12 +96,14 @@ using namespace cv;
 struct WndProps : public Base::Props {
 
 	std::string title;
+	int count;
 
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt) {
 		title = pt.get("title", "video");
+		count = pt.get("count", 1);
 	}
 
 	/*!
@@ -107,6 +111,7 @@ struct WndProps : public Base::Props {
 	 */
 	void save(ptree & pt) {
 		pt.put("title", title);
+		pt.put("count", count);
 	}
 };
 
@@ -166,23 +171,29 @@ protected:
 	 */
 	void onNewImage();
 
-	/// Event handler.
-	Base::EventHandler<CvWindow_Sink> h_onNewImage;
+	/*!
+	 * Event handler function.
+	 */
+	void onNewImageN(int n);
+
+	/// Event handlers
+	std::vector< Base::EventHandler2* > handlers;
 
 
 	/// Image to be drawn
-	Base::DataStreamIn<Mat> in_img;
+	std::vector< Base::DataStreamIn<Mat> *> in_img;
 
 	/// Additional data to draw
-	Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest> in_draw;
+	std::vector< Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest> *> in_draw;
 
 	/// Window properties
 	WndProps props;
 
 	/// Image to be drawn.
-	cv::Mat img;
+	std::vector< cv::Mat > img;
 
-	boost::shared_ptr<Types::Drawable> to_draw;
+	std::vector< boost::shared_ptr<Types::Drawable> > to_draw;
+
 };
 
 }//: namespace CvWindow
