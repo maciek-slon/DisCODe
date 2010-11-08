@@ -11,7 +11,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../../include)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../../include/Base)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../../include/Common)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/../../include/Types)
-LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/../../lib)
+LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/../../bin)
 
 # =[ Search for required libraries]======================================
 
