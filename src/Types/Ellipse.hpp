@@ -40,7 +40,7 @@ public:
 	}
 
 private:
-	cv::RotatedRect rect_;
+	const cv::RotatedRect rect_;
 };
 
 } //: namespace Types
