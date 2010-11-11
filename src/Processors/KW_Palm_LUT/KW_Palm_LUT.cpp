@@ -76,8 +76,7 @@ void KW_Palm_LUT::onNewImage()
 		cv::Mat hsv_img = in_img.read();	//czytam obrazem w zejścia
 
 		cv::Size size = hsv_img.size();		//rozmiar obrazka
-
-		cout << "Dupa\n";
+;
 		hue_img.create(size, CV_8UC1);	//8bitów, 0-255, 1 kanał
 		saturation_img.create(size, CV_8UC1);
 		value_img.create(size, CV_8UC1);
@@ -138,7 +137,7 @@ void KW_Palm_LUT::onNewImage()
 		out_segments.write(segments_img);
 
 		newImage->raise();
-		cout << "Dupa\n";
+
 
 	}
 	catch (Common::DisCODeException& ex) {

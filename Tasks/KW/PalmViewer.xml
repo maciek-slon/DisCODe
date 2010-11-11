@@ -4,8 +4,8 @@
 	<Components>
 
 		<Seq1 type="Sequence" thread="Exec1" group="s1">
-			<directory>/home/kasia/Pulpit/fotoINZ/</directory> 
-			<pattern>.*\.jpg</pattern>
+			<directory>/home/kasia/Pulpit/fotoINZ/1/</directory> 
+			<pattern>.*\.JPG</pattern>
 		</Seq1>
 		
 		<ColorConv type="CvColorConv" thread="Exec1" group="s1">
