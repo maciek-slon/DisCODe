@@ -13,6 +13,8 @@
 
 #include <boost/ptr_container/ptr_vector.hpp>
 
+#include <Singleton.hpp>
+
 #include "LoggerAux.hpp"
 #include "LoggerOutput.hpp"
 
@@ -21,7 +23,7 @@
     #define  MYLIB_EXPORT __declspec(dllexport)
   #else
     #define  MYLIB_EXPORT __declspec(dllimport)
-  #endif /* MyLibrary_EXPORTS */
+  #endif /* defined(COMPILING_DLL) */
 #else /* defined (_WIN32) */
  #define MYLIB_EXPORT
 #endif
@@ -35,8 +37,12 @@ namespace Logger {
  *
  * Example usage of this class is available in \ref using_logger.
  */
-class MYLIB_EXPORT Logger
+class MYLIB_EXPORT Logger: public Base::Singleton <Logger>
 {
+	/*!
+	 * Singleton class must be a friend, because only it can call protected constructor.
+	 */
+	friend class Base::Singleton <Logger>;
 public:
 
 	virtual ~Logger();
@@ -47,13 +53,13 @@ public:
 	 */
 	Logger & log(const std::string & file, int line, Severity sev, const std::string & msg);
 
-	static Logger& instance() {
+	/*static Logger& instance() {
 		if (!inst) {
 			inst = new Logger;
 		}
 
 		return *inst;
-	}
+	}*/
 
 	/*!
 	 * Template stream operator used for printing any type of data.
@@ -132,7 +138,7 @@ protected:
 
 	boost::ptr_vector<LoggerOutput> outputs;
 
-	static Logger * inst;
+	//static Logger * inst;
 };
 
 }

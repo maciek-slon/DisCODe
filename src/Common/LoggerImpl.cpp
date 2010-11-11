@@ -15,7 +15,7 @@
 namespace Utils {
 namespace Logger {
 
-Logger* Logger::inst = NULL;
+//Logger* Logger::inst = NULL;
 
 Logger::~Logger() {
 }
