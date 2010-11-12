@@ -1,5 +1,5 @@
 /*!
-\page discode_02_moviereader Run a simple task 
+\page discode_02_moviereader Run a simple task
 
 \prevnext_top{discode_01_parameters,discode_03_moviereader_changeparameter}
 
@@ -8,9 +8,7 @@ Load a task responsible for loading movie from files.
 
 \section ts_command Command
 From the <b>bin</b> directory execute the following command.
-\cons
-./discode -T ../Tasks/MovieViewer.xml
-\endcons
+\lin_win_command{./discode -T ../Tasks/MovieViewer.xml, discode -T ..\\Tasks\\MovieViewer.xml}
 
 \section ts_structure Task structure
 The structure of the MovieViewer task is shown below.
@@ -19,7 +17,7 @@ The structure of the MovieViewer task is shown below.
 <img src="images/MovieViewer.png" style="margin: 5px; width: 400px;" alt="MovieViewer"/>
 \endhtmlonly
 
-\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
 \section ts_result Result
 A movie will be displayed frame by frame.

@@ -1,5 +1,5 @@
 /*!
-\page discode_03_moviereader_changeparameter Override task parameter from the command line 
+\page discode_03_moviereader_changeparameter Override task parameter from the command line
 
 \prevnext_top{discode_02_moviereader,discode_04_sequencereader}
 
@@ -7,12 +7,10 @@
 Use the -S option in the command line in order to override the default value of parameter.
 
 \section ts_command Command
-\cons
-./discode -T ../Tasks/MovieViewer.xml -SComponents.Mov1.filename=/home/discode/public_html/datasets/movies_sign/Sign_2_HD.avi
-\endcons
+\lin_win_command{./discode -T ../Tasks/MovieViewer.xml -SComponents.Mov1.filename=/home/discode/public_html/datasets/movies_sign/Sign_2_HD.avi, discode -T ..\\Tasks\\MovieViewer.xml -SComponents.Mov1.filename=<movies_dir>\\Sign_2_HD.avi}
 
 \section ts_file Task file
-The file containing the MovieViewer task is listed below. 
+The file containing the MovieViewer task is listed below.
 \code
 <?xml version="1.0" encoding="utf-8"?>
 <Task>
