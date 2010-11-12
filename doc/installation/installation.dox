@@ -20,7 +20,7 @@ Select your operating system:
 \htmlonly
 </td>
 <td>
-Provides instructions on how to install the DisCODe SDK on machine controlled by the Ubuntu system.
+Provides instructions regarding the method of the DisCODe SDK installation on machine controlled by the Ubuntu OS.
 </td>
 </tr>
 <tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
@@ -29,10 +29,38 @@ Provides instructions on how to install the DisCODe SDK on machine controlled by
 \htmlonly
 </td>
 <td>
-Provides instructions on how to install the DisCODe SDK under the Windows (32bit).
+Provides instructions regarding the method of the DisCODe SDK installation under the Windows OS (32bit).
 </td></tr>
 </table>
 \endhtmlonly
+
+\section sdk_component Utilization of DisCODe SDKs
+There are tools prepared that facilitate the creation of new components and generation of Makefiles required for their compilation.
+
+Select your operating system:
+\htmlonly
+<table style="border: 0px; margin-left: 40px;">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref ubuntu_sdk_new_comp (supported)
+\htmlonly
+</td>
+<td>
+Describes how to utilize the SDK in order to create and compile new component under Ubuntu OS.
+</td>
+</tr>
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref win_sdk_new_comp (supported)
+\htmlonly
+</td>
+<td>
+Describes how to utilize the SDK in order to create and compile new component under Windows OS (32bit).
+</td></tr>
+</table>
+\endhtmlonly
+
+
 
 \section stepsbystep The DisCODe source
 The DisCODe source contains the code sources (core, components, utilities) and enables you to compile the whole project on your own.
@@ -46,7 +74,7 @@ Select your operating system:
 \htmlonly
 </td>
 <td>
-Provides detailed step by step instructions how to download, build and run DisCODe on Ubuntu.
+Provides detailed step by step instructions how to download, build and run DisCODe on Ubuntu OS.
 </td>
 </tr>
 <tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
@@ -55,7 +83,7 @@ Provides detailed step by step instructions how to download, build and run DisCO
 \htmlonly
 </td>
 <td>
-Provides detailed step by step instructions how to download, build and run DisCODe on Windows.
+Provides detailed step by step instructions how to download, build and run DisCODe on Windows OS.
 </td></tr>
 </table>
 \endhtmlonly

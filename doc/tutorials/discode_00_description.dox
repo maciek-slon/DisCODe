@@ -7,7 +7,7 @@
 Contains small description of the problem.
 
 \section ts_command Command
-Shell command. 
+\lin_win_command{Linux shell command, DisCODe environment command}
 
 \section ts_structure Task structure
 Describes the image of the task structure.
@@ -18,10 +18,10 @@ Elements of diagrams representing the task structure are explained below.
 <img src="images/Legend.png" style="margin: 5px; width: 500px;" alt="Legend"/>
 \endhtmlonly
 
-\note For more informations regarding the diagram elements please refer to the manuals.   
+\note For more informations regarding the diagram elements please refer to the manuals.
 
 \section ts_hints Hints
-List of useful hints related to given problem. 
+List of useful hints related to given problem.
 
 \section ts_file Task file
 Contains the description of the task file (XML).

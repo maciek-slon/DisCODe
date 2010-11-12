@@ -2,7 +2,7 @@
 \page discode_07_component_images_blurer Create a simple component
 
 \prevnext_top{discode_06_refreshedtriggered_sequencereader, discode_08_component_properties}
- 
+
 \section ts_objectives Tutorial objectives
 The goal is to create a component responsible for bluring of the images.
 
@@ -15,7 +15,7 @@ Utilize the standard mean filter with 3-by-3 kernel shown below.
 </TABLE>
 \endhtmlonly
 
-Instead of implementing the blue operation on your own please use the <a href="http://opencv.willowgarage.com/documentation/cpp/image_filtering.html?highlight=blur#blur">cv::blur</a> function from the OpenCV.  
+Instead of implementing the blue operation on your own please use the <a href="http://opencv.willowgarage.com/documentation/cpp/image_filtering.html?highlight=blur#blur">cv::blur</a> function from the OpenCV.
 
 \section ts_structure Task structure
 The structure of the ImageBlurer task is shown below.
@@ -23,25 +23,35 @@ The structure of the ImageBlurer task is shown below.
 <img src="images/ImageBlurer.png" style="margin: 5px; width: 500px;" alt="ImageBlurer"/>
 \endhtmlonly
 
-\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
 \section ts_component_blur The ImageBlurer component
+\subsection component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile.
+Select your operating system:
+\htmlonly
+<table style="border: 0px;">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref ubuntu_sdk_new_comp
+\htmlonly
+</td>
+<td>
+Describes how to utilize the SDK in order to create and compile new component under Ubuntu OS.
+</td>
+</tr>
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref win_sdk_new_comp
+\htmlonly
+</td>
+<td>
+Describes how to utilize the SDK in order to create and compile new component under Windows OS (32bit).
+</td></tr>
+</table>
+\endhtmlonly
 
-\subsection component_gen_shell Generate code "shell"
-Utilize the create.sh script for generation of the new component shell. 
-\cons
-./create.sh ImageBlurer
-\endcons
 
-\note The script is located in the <b>Component</b> directory.
-
-\subsection component_gen_makefile Generate makefile for created component
-\cons
-cd ImageBlurer
-cmake .
-\endcons
-
-\subsection component_cmake_edit Add OpenCV library to list of linked libraries. 
+\subsection component_cmake_edit Add OpenCV library to list of linked libraries.
 Edit the <b>CMakeLists.txt</b> file in order to uncomment the OpenCV library dependency.
 \code
 ...
@@ -51,23 +61,9 @@ SET(LIBS ${OpenCV_LIBS} ${OpenCV_LIBRARIES} ${LIBS} )
 \endcode
 \note To uncomment given line remove the # character from the front.
 
-
-\subsection component_make Compile the component
-From now on you can compile your component by calling the <b>make</b> command. 
-\cons
-make
-\endcons
-
-\subsection component_install Copy the component to bin directory
-After the component is compiled you can copy it to binaries.
-\cons
-cp libImageBlurer.so ../../bin/
-\endcons
-\note Perform those two steps after your component will be finished.
- 
-\subsection blurer_hpp_edit Edit the header file ImageBlurer.hpp   
+\subsection blurer_hpp_edit Edit the header file ImageBlurer.hpp
 Edit the component header and perform changes listed below.
- 
+
  - Add required OpenCV headers after the existing ones.
 \code
 ...
@@ -93,7 +89,7 @@ using namespace cv;
 	...
 \endcode
 
- - Add event handler (when a new image will arrived) and event (raised when image the image processing will be done). 
+ - Add event handler (when a new image will arrived) and event (raised when image the image processing will be done).
 \code
 	...
 	/*!
@@ -109,9 +105,9 @@ using namespace cv;
 	...
 \endcode
 
-\subsection blurer_cpp_edit Edit the source file ImageBlurer.cpp   
+\subsection blurer_cpp_edit Edit the source file ImageBlurer.cpp
 Edit the component source and perform changes listed below.
- 
+
  - In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
 \code
 	...
@@ -192,7 +188,7 @@ Create a new ImageBlurer.xml file on the base of the  RefreshedTriggeredSequence
 
 \section ts_result Result
 A sequence of blurred images  will be displayed.
-\note Compare the results with original images <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> 
+\note Compare the results with original images <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>
 
 \section ts_sections Related sections
 \see \ref manuals_components : Description of components

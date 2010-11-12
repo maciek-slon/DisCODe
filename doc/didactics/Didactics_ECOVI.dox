@@ -1,39 +1,26 @@
 /*!
 \page didactics_ecovi ECOVI - Computer Vision
 
-\section Download
+\section ecovi_discode_installation Install the DisCODe
+Please refer to the \ref installation.
 
-\subsection discode_sh The DisCODe SDK install script
-The latest SDK prepared for machines working under the control of the GENTOO network Linux (Segomo Server) 
-can be downloaded from <a href="http://segomo.elka.pw.edu.pl/~discode/DisCODe-1.0.0-Linux.sh">here</a>.
-
-After successful download please display script parameters.
-
-\cons
-cd bin 
-./DisCODe-1.0.0-Linux.sh --help
-\endcons
-
-Execute the script to install the SDK.
-\note Utilize the <b>--prefix</b> to set the directory in which SDK will be installed.
-
-\subsection discode_datasets The Datasets
+\subsection ecovi_discode_datasets The Datasets
 Datasets can be downloaded, as well as used externally.
 
 Movies:
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a> - Movies containing road signs. 
+ - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a> - Movies containing road signs.
 
 Images:
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> - images used commonly in computer vision (Lena, etc.). 
+ - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> - images used commonly in computer vision (Lena, etc.).
  - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a> - some other images from the OpenCV examples.
 
 Calibration:
  - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a> - chessboard pictures from the OpenCV examples.
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a> - chessboard pictures taken with the use camera from the Robotics Lab.  
+ - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a> - chessboard pictures taken with the use camera from the Robotics Lab.
 
 
-\section decovi_t0 Tutorial 0: Introduction to DisCODe
-
+\section ecovi_t0 Tutorial 0: Introduction to DisCODe
+\beginlinklist
 - \ref discode_00_description
 - \ref discode_01_parameters
 - \ref discode_02_moviereader
@@ -42,19 +29,19 @@ Calibration:
 - \ref discode_05_trigerred_sequencereader
 - \ref discode_06_refreshedtriggered_sequencereader
 - \ref discode_07_component_images_blurer
+- \ref discode_08_component_properties
+\endlinklist
 
-
-\subsection discode_tut0 Additional files
+\subsection ecovi_t0_files Additional files
  - <a href="/home/discode/public_html/TriggeredSequenceViewer.xml">TriggeredSequenceViewer.xml</a> - Task file related to the 5th part of tutorial.
 
 
-\section decovi_t1 Tutorial 1: Camera calibration 
+\section ecovi_t1 Tutorial 1: Camera calibration
 
+\beginlinklist
  - \ref camera_calibration_01_findchessboard
- - \ref camera_calibration_02_calibration 
+ - \ref camera_calibration_02_calibration
  - \ref camera_calibration_03_undistortion
+\endlinklist
+
 */
-
-//\subsection discode_tut0 Additional files
-// - <a href="/home/discode/public_html/TriggeredSequenceViewer.xml">TriggeredSequenceViewer.xml</a> - Task file related to the 5th part of the tutorial.
-
