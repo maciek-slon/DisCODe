@@ -73,7 +73,7 @@ void KW_Palm_LUT::onNewImage()
 {
 	LOG(LTRACE) << "KW_Palm_LUT::onNewImage\n";
 	try {
-		cv::Mat hsv_img = in_img.read();	//czytam obrazem w zejścia
+		cv::Mat hsv_img = in_img.read();	//czytam obraz z wejścia
 
 		cv::Size size = hsv_img.size();		//rozmiar obrazka
 ;
