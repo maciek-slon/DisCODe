@@ -4,3 +4,4 @@ gdb/
 .project
 .cproject
 .settings
+*~
