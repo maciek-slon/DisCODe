@@ -31,21 +31,15 @@ bool KW_Cov::onInit()
 {
 	LOG(LTRACE) << "KW_Cov::initialize\n";
 
-	h_onNewImage1.setup(this, &KW_Cov::onNewImage1);
-	registerHandler("onNewImage1", &h_onNewImage1);
+	h_onNewImage.setup(this, &KW_Cov::onNewImage);
+	registerHandler("onNewImage", &h_onNewImage);
 
-	h_onNewImage2.setup(this, &KW_Cov::onNewImage2);
-	registerHandler("onNewImage2", &h_onNewImage2);
+	h_calculate.setup(this, &KW_Cov::calculate);
+	registerHandler("calculate", &h_calculate);
 
-	registerStream("in_img1", &in_img1);
-	registerStream("in_img2", &in_img2);
+	registerStream("in_img", &in_img);
 
-	newImage = registerEvent("newImage");
-
-	registerStream("out_hue", &out_hue);
-	registerStream("out_saturation", &out_saturation);
-	registerStream("out_value", &out_value);
-	registerStream("out_segments", &out_segments);
+	calculated = false;
 
 	return true;
 }
@@ -73,93 +67,81 @@ bool KW_Cov::onStart()
 	return true;
 }
 
-void KW_Cov::onNewImage1()
+void KW_Cov::onNewImage()
 {
-	LOG(LTRACE) << "KW_Cov::onNewImage1\n";
+	LOG(LTRACE) << "KW_Cov::onNewImage\n";
+
 	try {
-		cv::Mat hsv_img = in_img1.read();	//czytam obraz z wejścia
-
-		cv::Size size = hsv_img.size();		//rozmiar obrazka
-;
-		hue_img.create(size, CV_8UC1);	//8bitów, 0-255, 1 kanał
-		saturation_img.create(size, CV_8UC1);
-		value_img.create(size, CV_8UC1);
-		segments_img.create(size, CV_8UC1);
-
-		
+		cv::Mat img = in_img.read();
+		cv::Size size = img.size();
 
 		// Check the arrays for continuity and, if this is the case,
 		// treat the arrays as 1D vectors
-		if (hsv_img.isContinuous() && segments_img.isContinuous() && value_img.isContinuous() && hue_img.isContinuous() && saturation_img.isContinuous()) {
+		if (img.isContinuous()) {
 			size.width *= size.height;
 			size.height = 1;
 		}
-		size.width *= 3;
+		size.width *= img.channels();
+
+		float val;
 
 		for (int i = 0; i < size.height; i++) {
 			// when the arrays are continuous,
 			// the outer loop is executed only once
 			// if not - it's executed for each row
 
-			// get pointer to beggining of i-th row of input hsv image
-			const uchar* hsv_p = hsv_img.ptr <uchar> (i);
-			// get pointer to beggining of i-th row of output hue image
-			uchar* hue_p = hue_img.ptr <uchar> (i);
-			// get pointer to beggining of i-th row of output saturation image
-			uchar* sat_p = saturation_img.ptr <uchar> (i);
-			// get pointer to beggining of i-th row of output value image
-			uchar* val_p = value_img.ptr <uchar> (i);
-			// get pointer to beggining of i-th row of output vsegment image
-			uchar* seg_p = segments_img.ptr <uchar> (i);
+			// get pointer to beggining of i-th row of input image
+			const uchar* c_p = img.ptr <uchar> (i);
 
-			
-
-			int j, k = 0;
-			for (j = 0; j < size.width; j += 3)
+			for (int j = 0; j < size.width; j += 3)
 			{
-				hue_p[k] = hsv_p[j];
-				sat_p[k] = hsv_p[j + 1];
-				val_p[k] = hsv_p[j + 2];
-				//seg_p[k] = hsv_p[j + 2];
+				for (int cc = 0; cc < props.channels; ++cc) {
 
-				seg_p[k] = 0;
-				if ((hue_p[k] > H(0)) && (hue_p[k] < H(50)))
-				{
-					if((sat_p[k] > 23) && (sat_p[k] < 68))
-					{
-						seg_p[k] = 255;
-					}
+					val = c_p[j+cc];
+
+					if (props.normalize)
+						val /= 255;
+
+					c[cc].push_back(val);
 				}
-
-				++k;
 			}
 		}
-
-		out_hue.write(hue_img);
-		out_saturation.write(saturation_img);
-		out_value.write(value_img);
-		out_segments.write(segments_img);
-
-		newImage->raise();
-
-
-	}
-	catch (Common::DisCODeException& ex) {
-		LOG(LERROR) << ex.what() << "\n";
-		ex.printStackTrace();
-		exit(EXIT_FAILURE);
-	}
-	catch (const char * ex) {
-		LOG(LERROR) << ex;
 	}
 	catch (...) {
-		LOG(LERROR) << "KW_Cov::onNewImage failed\n";
+		LOG(LERROR) << "Cos sie walło.";
 	}
 }
 
-void KW_Cov::onNewImage2()
+void KW_Cov::calculate()
 {
-	LOG(LTRACE) << "KW_Cov::onNewImage1\n";
+	if (calculated)
+		return;
+
+	LOG(LTRACE) << "KW_Cov::calculate";
+	for (int cc = 0; cc < props.channels; ++cc)
+		LOG(LTRACE) << c[cc].size();
+
+	cv::Mat samples(props.channels, c[0].size(), CV_32FC1);
+
+	for (int cc = 0; cc < props.channels; ++cc) {
+		float* c_p = samples.ptr <float> (cc);
+		for (size_t j = 0; j < c[cc].size(); j++)
+			c_p[j] = c[cc][j];
+	}
+
+
+	cv::Mat covar, mean;
+
+	cv::calcCovarMatrix(samples, covar, mean, CV_COVAR_NORMAL | CV_COVAR_COLS | CV_COVAR_SCALE);
+
+	for (int i = 0; i < mean.size().height; ++i)
+		LOG(LTRACE) << "Mean[" << i << "] = " << mean.at<double>(i, 0);
+
+	for (int i = 0; i < covar.size().height; ++i)
+		for (int j = 0; j < covar.size().width; ++j)
+			LOG(LTRACE) << "Covar[" << i << "," << j << "] = " << covar.at<double>(i, j);
+
+	calculated = true;
 }
 
 }//: namespace KW_Cov_

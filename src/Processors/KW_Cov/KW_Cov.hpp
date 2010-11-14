@@ -1,8 +1,6 @@
 /*!
- * \file KW_Palm_LUT.hpp
+ * \file
  * \brief
- * \author kwasak
- * \date 2010-11-05
  */
 
 #ifndef KW_COV_HPP_
@@ -27,11 +25,21 @@ using namespace cv;
  */
 struct Props: public Base::Props
 {
+	int channels;
+	bool normalize;
+
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
+		channels = pt.get("channels", 3);
+		if (channels < 1)
+			channels = 1;
+		if (channels > 3)
+			channels = 3;
+
+		normalize = pt.get("normalize", true);
 	}
 
 	/*!
@@ -98,46 +106,36 @@ protected:
 	/*!
 	 * Event handler function.
 	 */
-	void onNewImage1();
-	void onNewImage2();
+	void onNewImage();
 
 	/// Event handler.
 	/// New image is waiting
-	Base::EventHandler <KW_Cov> h_onNewImage1;
-	Base::EventHandler <KW_Cov> h_onNewImage2;
+	Base::EventHandler <KW_Cov> h_onNewImage;
+
+
+	/*!
+	 * Event handler function.
+	 */
+	void calculate();
+
+	/// Event handler.
+	/// New image is waiting
+	Base::EventHandler <KW_Cov> h_calculate;
+
+
+
 
 	/// Input image
-	//	Base::DataStreamIn <Mat> in_img;
+	Base::DataStreamIn <Mat> in_img;
 
-	/// Input images
-	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest > in_img1;
-	Base::DataStreamIn < cv::Mat, Base::DataStreamBuffer::Newest > in_img2;
-
-
-	/// Event raised, when image is processed
-	Base::Event * newImage;
-
-
-	/// Output data stream - hue part with continous red
-	Base::DataStreamOut <Mat> out_hue;
-
-	/// Output data stream - saturation
-	Base::DataStreamOut <Mat> out_saturation;
-
-	/// Output data stream - value
-	Base::DataStreamOut <Mat> out_value;	
-
-	/// Output data stream - segments
-	Base::DataStreamOut <Mat> out_segments;
 
 	/// Properties
 	Props props;
 
 private:
-	cv::Mat hue_img;
-	cv::Mat saturation_img;
-	cv::Mat value_img;
-	cv::Mat segments_img;
+	std::vector<float> c[3];
+
+	bool calculated;
 };
 
 }//: namespace KW_Cov_
