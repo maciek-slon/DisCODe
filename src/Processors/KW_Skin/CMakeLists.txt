@@ -8,7 +8,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
-ADD_LIBRARY(MS_Barcode_Macro SHARED ${files})
-TARGET_LINK_LIBRARIES(MS_Barcode_Macro ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
+ADD_LIBRARY(KW_Skin SHARED ${files})
+TARGET_LINK_LIBRARIES(KW_Skin ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
-INSTALL_PROCESSOR(MS_Barcode_Macro)
+INSTALL_PROCESSOR(KW_Skin)
