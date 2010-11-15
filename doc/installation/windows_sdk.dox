@@ -1,5 +1,8 @@
 /*!
 \page windows_sdk_installation Windows SDK
+
+\up_top{installation}
+
 There are two elements that must be installed:
 - the DisCODe developement environment, containing tools and libraries required during the component developement and compilation,
 - the DisCODe SDK for Windows.
@@ -21,6 +24,8 @@ suggested to install the SDK near (or inside) the <i>env_dest_path</i> directory
 
 
 \page win_sdk_new_comp New Component in SDK
+
+\up_top{installation}
 
 \section win_dis_evn_run Run the DisCODe environment
 - Enter the <i>env_dest_path</i> and run the <b>env.bat</b> script.
@@ -84,5 +89,6 @@ make
 copy libTestComponent.dll ..\..\\bin
 \endcons
 
+\up_bottom{installation}
 
 */

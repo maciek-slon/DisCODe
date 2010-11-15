@@ -1,6 +1,7 @@
 /*!
-
 \page ubuntu Ubuntu 10.10
+
+\up_top{installation}
 
 Those instructions were tested under Ubuntu 10.10, but should work in older
 releases as well. All commands are to be typed in terminal window.

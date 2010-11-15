@@ -1,7 +1,7 @@
 /*!
 \page manuals_executors Executors - task 'engines'
 
-\up_prevnext_top{manuals, manuals_events}
+\up_prev_top{manuals, manuals_events}
 
 \section executors_desc Introduction
 The \link Core::Executor Executors\endlink are responsible for activation of components of given processing stream.

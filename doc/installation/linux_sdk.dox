@@ -1,6 +1,8 @@
 /*!
 \page linux_sdk_new_comp New Component in SDK
 
+\up_top{installation}
+
 \section gentoo_sdk_comp_gen Generate new component
 The <b>create.sh</b> can be used for generation of the empty shell of the new component (divided in to hpp and cpp files).
 - Enter the Component directory:

@@ -1,7 +1,7 @@
 /*!
 \page discode_03_moviereader_changeparameter Override task parameter from the command line
 
-\up_prevnext_top{discode_02_moviereader,discode_04_sequencereader}
+\up_prevnext_top{discode_tutorials, discode_02_moviereader,discode_04_sequencereader}
 
 \section ts_objectives Tutorial objectives
 Use the -S option in the command line in order to override the default value of parameter.
