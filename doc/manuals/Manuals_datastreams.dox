@@ -1,21 +1,22 @@
 /*!
 \page manuals_datastreams DataStreams - mechanism for passing data between components
-<center> [\ref manuals] </center> 
+
+\up_prevnext_top{manuals, manuals_tasks, manuals_events}
 
 DataStreams enable loose coupling of the components.
-Every component at start can create any number of dataports - both inputs and outputs. 
+Every component at start can create any number of dataports - both inputs and outputs.
 
 
 <img src="images/class_connection.png" style="margin: 5px;" alt="DataStreams"/>
 
 It is based on the <b>pipes and filters</b> design pattern (more can be found <a href="http://msdn.microsoft.com/en-us/library/ff647419.aspx">here</a>).
-For every output datastream there can be multiple input datastreams attached. 
-Single communication channel, connecting every output-input pair, is called a <b>Connection</b>.    
+For every output datastream there can be multiple input datastreams attached.
+Single communication channel, connecting every output-input pair, is called a <b>Connection</b>.
 
 There are three different connection <b>Policies</b>:
  - Queue - A FIFO queue, which means that all items are stored in queue, so that none of them is missed during processing.
  - Newest - Only the newest data is remembered, when data comes before reading previous one, older item is lost.
  - Oldest - Only the oldest data is remembered, when data comes before reading previous one, newer item is lost.
 
-\prevnext{manuals_tasks,manuals_events}
+\up_prevnext_bottom{manuals, manuals_tasks, manuals_events}
 */

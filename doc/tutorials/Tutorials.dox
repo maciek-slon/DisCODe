@@ -4,17 +4,13 @@
 
 \beginlinklist
 
-\section dev_components Introduction to DisCODe
-- \ref discode_00_description
-- \ref discode_01_parameters
-- \ref discode_02_moviereader
-- \ref discode_03_moviereader_changeparameter
-- \ref discode_04_sequencereader
-- \ref discode_05_trigerred_sequencereader
-- \ref discode_06_refreshedtriggered_sequencereader
-- \ref discode_07_component_images_blurer
+- \ref discode_tutorials [Beginner level]\n
+The tutorial contains a step-by-step introduction to DisCODe.
 
-\section using_utils Utility library usage
+- \ref camera_calibration_tutorials [Intermediate level]\n
+The tutorial contains tutorials regarding the problem of camera calibration.
+
+\section using_utils Utilities
 - \ref using_logger\n
   Tired of printf'ing and commenting out old debugs?
 

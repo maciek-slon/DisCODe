@@ -19,15 +19,17 @@ if(DOXYGEN_EXECUTABLE)
     # non-empty directory already exists.)
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/doc/html)
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/doc/html/images)
-    
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/doc/html/logos)
+
     CONFIGURE_FILE(DisCODe.Doxyfile.in ${CMAKE_BINARY_DIR}/DisCODe.Doxyfile @ONLY)
-    
+
     ADD_CUSTOM_TARGET(
         doc
         COMMAND ${DOXYGEN_EXECUTABLE} DisCODe.Doxyfile
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc/search.js ${HTML_OUTPUT_DIR}/search/search.js
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/doc/search.css ${HTML_OUTPUT_DIR}/search/search.css
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/doc/images ${HTML_OUTPUT_DIR}/images
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/doc/logos ${HTML_OUTPUT_DIR}/logos
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         DEPENDS ${CMAKE_SOURCE_DIR}/doc/DisCODe.Doxyfile.in
     )

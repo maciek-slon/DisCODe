@@ -1,20 +1,7 @@
 /*!
-\page ubuntu_sdk_installation Ubuntu SDK
+\page linux_sdk_new_comp New Component in SDK
 
-\section win_dis_The DisCODe SDK
-- The latest SDK prepared for machines working under the control of the Ubuntu network Linux (Segomo Server)
-can be downloaded from: <a href="https://segomo.elka.pw.edu.pl/~discode/DisCODe-1.0.0-Linux.sh">DisCODe-1.0.0-Linux.sh</a>.
-
-- Run the SDK installator. Read and accept the license agreement.
-\cons
-./DisCODe-1.0.0-Linux.sh
-\endcons
-
-\note The <b>--prefix</b> parameter can be utilized to set the target directory in which SDK will be installed.
-
-\page ubuntu_sdk_new_comp New Component in SDK
-
-\section ubuntu_sdk_comp_gen Generate new component
+\section gentoo_sdk_comp_gen Generate new component
 The <b>create.sh</b> can be used for generation of the empty shell of the new component (divided in to hpp and cpp files).
 - Enter the Component directory:
 \cons
@@ -30,7 +17,7 @@ cd <i>sdk_dest_path</i>\\Component
 
 A directory <i>TestComponent</i> with adequte hpp, cpp and CMakeList.txt files will be created.
 
-\section win_sdk_comp_cmake Generate the Makefile for Component
+\section linux_sdk_comp_cmake Generate the Makefile for Component
 - Enter the <i>TestComponent</i> directory and run the <b>cmake</b>.
 \cons
 cmake .
@@ -38,7 +25,7 @@ cmake .
 
 Adequate Makefile (with required files) will be generated.
 
-\section ubuntu_sdk_comp_make Compile and install the component
+\section linux_sdk_comp_make Compile and install the component
 - Run makefile (from the environment)
 \cons
 make

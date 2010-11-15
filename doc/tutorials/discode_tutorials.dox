@@ -1,0 +1,40 @@
+/*!
+\page discode_tutorials The introduction to DisCODe
+<div class="center">[Beginner level]</div>
+\next_top{camera_calibration_tutorials}
+
+The tutorial contains a step-by-step introduction to DisCODe.
+
+\beginlinklist
+- \ref discode_00_description\n
+Describes common sections, from which every tutorial is built.
+
+- \ref discode_01_parameters\n
+Explains parameters passed to DisCODe.
+
+- \ref discode_02_moviereader\n
+The goal of this tutorial is to load a task responsible for loading movie from files and displaying them on screen.
+
+- \ref discode_03_moviereader_changeparameter\n
+The tutorial explains how to override from the command line the value of parameter loaded from the task configuration file.
+
+- \ref discode_04_sequencereader\n
+Describes how to create a new task - in this case responsible for loading sequence of images from files.
+
+- \ref discode_05_trigerred_sequencereader\n
+The tutorial explains how to expand task by another, existing component.
+
+- \ref discode_06_refreshedtriggered_sequencereader\n
+The tutorial goal is to move a component to a separate executor - in order to achieve better refresh rate of displayed images.
+
+- \ref discode_07_component_images_blurer\n
+The goal is to create a component responsible for bluring of the images.
+
+- \ref discode_08_component_properties\n
+The goal is to add properties to component, which can be set in the configuration file.
+
+\endlinklist
+
+\next_bottom{camera_calibration_tutorials}
+
+*/

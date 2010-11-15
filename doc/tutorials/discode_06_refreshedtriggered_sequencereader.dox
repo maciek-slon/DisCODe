@@ -1,8 +1,8 @@
 /*!
 \page discode_06_refreshedtriggered_sequencereader Move one of the components to another thread
 
-\prevnext_top{discode_05_trigerred_sequencereader,discode_07_component_images_blurer}
- 
+\up_prevnext_top{discode_tutorials, discode_05_trigerred_sequencereader,discode_07_component_images_blurer}
+
 \section ts_objectives Tutorial objectives
 Modify the TriggeredSequenceViewer.xml in order to add the displayed image refreshment.
 
@@ -13,12 +13,12 @@ The structure of the RefreshedTriggeredSequenceViewer task is shown below.
 <img src="images/RefreshedTriggeredSequenceViewer.png" style="margin: 5px; width: 500px;" alt="RefreshedTriggeredSequenceViewer"/>
 \endhtmlonly
 
-\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
 \section ts_file Task file
 Create a new RefreshedTriggeredSequenceViewer.xml file on the base of the previously created TriggeredSequenceViewer.xml.
 Modify required parts:
-- Move the <b>Wnd1</b> component to a separate <b>Exec3</b> executor.  
+- Move the <b>Wnd1</b> component to a separate <b>Exec3</b> executor.
 \code
 	<Components>
 		...
@@ -28,7 +28,7 @@ Modify required parts:
 		...
 \endcode
 
-- Create another executor and set the main thread component to <b>Wnd1</b>. 
+- Create another executor and set the main thread component to <b>Wnd1</b>.
 \code
 	<Executors>
 		...
@@ -38,11 +38,11 @@ Modify required parts:
 		</Exec3>
 		...
 \endcode
-\note Note that the new executor is "periodic", thus require an additional parameter (interval, in seconds) to be set. 
+\note Note that the new executor is "periodic", thus require an additional parameter (interval, in seconds) to be set.
 
 \section ts_result Result
-A sequence of images  will be displayed. After an image is shown application will wait for user 
-to enter the 't' (must be followed by <enter>) to load and display another. Besides the displayed 
+A sequence of images  will be displayed. After an image is shown application will wait for user
+to enter the 't' (must be followed by <enter>) to load and display another. Besides the displayed
 images will be refreshed every 0.2s.
 
 \section ts_sections Related sections
@@ -51,5 +51,5 @@ images will be refreshed every 0.2s.
 \see \ref Core::PeriodicExecutor : Periodic executor
 \see \ref CvWindow : Sink responsible for displaying images
 
-\prevnext_bottom{discode_05_trigerred_sequencereader,discode_07_component_images_blurer}
+\up_prevnext_bottom{discode_tutorials, discode_05_trigerred_sequencereader,discode_07_component_images_blurer}
 */

@@ -1,7 +1,7 @@
 /*!
 \page discode_07_component_images_blurer Create a simple component
 
-\prevnext_top{discode_06_refreshedtriggered_sequencereader, discode_08_component_properties}
+\up_prevnext_top{discode_tutorials, discode_06_refreshedtriggered_sequencereader, discode_08_component_properties}
 
 \section ts_objectives Tutorial objectives
 The goal is to create a component responsible for bluring of the images.
@@ -30,16 +30,16 @@ The structure of the ImageBlurer task is shown below.
 Select your operating system:
 \htmlonly
 <table style="border: 0px;">
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/linux_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
-\ref ubuntu_sdk_new_comp
+\ref linux_sdk_new_comp
 \htmlonly
 </td>
 <td>
 Describes how to utilize the SDK in order to create and compile new component under Ubuntu OS.
 </td>
 </tr>
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
 \ref win_sdk_new_comp
 \htmlonly
@@ -196,5 +196,5 @@ A sequence of blurred images  will be displayed.
 \see \ref manuals_events : Description of events
 
 
-\prevnext_bottom{discode_06_refreshedtriggered_sequencereader, discode_08_component_properties}
+\up_prevnext_bottom{discode_tutorials, discode_06_refreshedtriggered_sequencereader, discode_08_component_properties}
 */

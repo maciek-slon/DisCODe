@@ -14,16 +14,16 @@ The Software Developement Kit (SDK) consists of four directories required for Di
 Select your operating system:
 \htmlonly
 <table style="border: 0px; margin-left: 40px;">
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/gentoo_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
-\ref ubuntu_sdk_installation (supported)
+\ref gentoo_sdk_installation (supported)
 \htmlonly
 </td>
 <td>
-Provides instructions regarding the method of the DisCODe SDK installation on machine controlled by the Ubuntu OS.
+Provides instructions regarding the method of the DisCODe SDK installation on machines controlled by the Gentoo OS (Segomo Server).
 </td>
 </tr>
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
 \ref windows_sdk_installation (supported)
 \htmlonly
@@ -40,16 +40,16 @@ There are tools prepared that facilitate the creation of new components and gene
 Select your operating system:
 \htmlonly
 <table style="border: 0px; margin-left: 40px;">
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/linux_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
-\ref ubuntu_sdk_new_comp (supported)
+\ref linux_sdk_new_comp (supported)
 \htmlonly
 </td>
 <td>
-Describes how to utilize the SDK in order to create and compile new component under Ubuntu OS.
+Describes how to utilize the SDK in order to create and compile new component under OS from the Linux family.
 </td>
 </tr>
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
 \ref win_sdk_new_comp (supported)
 \htmlonly
@@ -68,7 +68,7 @@ The DisCODe source contains the code sources (core, components, utilities) and e
 Select your operating system:
 \htmlonly
 <table style="border: 0px; margin-left: 40px;">
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/ubuntu_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
 \ref ubuntu (supported)
 \htmlonly
@@ -77,7 +77,7 @@ Select your operating system:
 Provides detailed step by step instructions how to download, build and run DisCODe on Ubuntu OS.
 </td>
 </tr>
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
 \ref windows (supported)
 \htmlonly

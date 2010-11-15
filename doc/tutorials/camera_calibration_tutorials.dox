@@ -1,0 +1,22 @@
+/*!
+\page camera_calibration_tutorials Camera calibration
+<div class="center">[Intermediate level]</div>
+\prev_top{discode_tutorials}
+
+The tutorial contains tutorials regarding the problem of camera calibration.
+
+\beginlinklist
+- \ref camera_calibration_01_findchessboard\n
+The goal of this tutorial is to create a task responsible for chessboard localization.
+
+- \ref camera_calibration_02_calibration\n
+The aim is to create a task responsible for computation of the calibration parameters (camera intrinsics and distortion vector).
+
+- \ref camera_calibration_03_undistortion\n
+The goal is to display a calibration sequence after performing the undistortion operation with the use of calibration parameters computed in the previous tutorial.
+
+\endlinklist
+
+\prev_bottom{discode_tutorials}
+
+*/

@@ -1,15 +1,16 @@
 /*!
 \page manuals_components Components - definition, types, states
-<center> [\ref manuals] </center> 
+
+\up_prevnext_top{manuals, manuals_tasks, manuals_datastreams}
 
 \section components_desc Introduction
 
-The goal of a perceptual task is to aggregate sensory data and extract useful information - useful for example from the point of view of a robotic control system, 
-as well as useful for a human, solving some perception-related problem.     
+The goal of a perceptual task is to aggregate sensory data and extract useful information - useful for example from the point of view of a robotic control system,
+as well as useful for a human, solving some perception-related problem.
 
-It is obvious that in infinite number of diverse perception (e.g. vision or speech recognition) tasks the same elements can be found, thus the 
+It is obvious that in infinite number of diverse perception (e.g. vision or speech recognition) tasks the same elements can be found, thus the
 division of the processing stream into small and lightweight blocks is required, in order to raise their reusability.
-   
+
 According to the definition, a component is a software package, a web service, or a module that encapsulates a set of related functions (or data).
 
 \section components_class Class diagram
@@ -20,18 +21,18 @@ The \link Base::Component Component\endlink class diagram presents the component
  - \link Base::DataStreamInterface DataStreamInt\endlink  is a class representing interfaces through which data processed can be passed (in as well as out),
  - \link Base::EventHandlerInterface EventHandlerInt\endlink  can be utilized for retrieving commands from other parts of the system (in order to change its working mode, parameters used in algorithm etc.),
  - \link Base::Event Event\endlink  can be used to push command to other components.
- 
-\note Interfaces are created and linked dynamically during the load of given task.    
+
+\note Interfaces are created and linked dynamically during the load of given task.
 
 \section components_structure Component structure
-The structure of an exemplary component is shown below. 
+The structure of an exemplary component is shown below.
 
 \htmlonly
 <img src="images/Component.png" style="margin: 5px; width: 350px;" alt="Component structure"/>
 \endhtmlonly
 
 The square blocks are related to the data streams (data flow). The round blocks are related to events (command flow).
-\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
 \section components_states Component states
 <img src="images/component_state.png" style="margin: 5px;" alt="Component state"/>
@@ -39,15 +40,15 @@ The square blocks are related to the data streams (data flow). The round blocks 
 There are three main states of the component:
  - Unready - Component was loaded from the external library, however it wasn't initialized yet,
  - Ready - Component was initialized and it is ready to use,
- - Running - Component is in the working mode - it can receive and send both data, as well as emit and handle events.  
- 
+ - Running - Component is in the working mode - it can receive and send both data, as well as emit and handle events.
+
 \section components_types Component types
 
-Component are divided into four main types: 
- - \link Sources Source\endlink  - Component responsible for retrieving data from external devices (such as cameras or microphones) or files. Typically a source deliver one output datastream.  
+Component are divided into four main types:
+ - \link Sources Source\endlink  - Component responsible for retrieving data from external devices (such as cameras or microphones) or files. Typically a source deliver one output datastream.
  - \link Processors Processor\endlink - Component that process data retrieved from other components (through input datastreams) and passes processed data to others (through output datastreams).
- - \link Sinks Sink\endlink - Component basing on only one input datastream. Sinks can be utilized for saving processed data to files (single images, their sequences or movies) or displaying results on screen.      
- - \link Proxies Proxy\endlink  - Utilized for communication with external applications, e.g. robotic control systems, such as MRROC++ or OROCOS, that can utilized received information in control. 
+ - \link Sinks Sink\endlink - Component basing on only one input datastream. Sinks can be utilized for saving processed data to files (single images, their sequences or movies) or displaying results on screen.
+ - \link Proxies Proxy\endlink  - Utilized for communication with external applications, e.g. robotic control systems, such as MRROC++ or OROCOS, that can utilized received information in control.
 
-\prevnext{manuals_tasks,manuals_datastreams}
+\up_prevnext_bottom{manuals, manuals_tasks, manuals_datastreams}
 */

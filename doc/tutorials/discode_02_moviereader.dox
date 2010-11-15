@@ -1,7 +1,7 @@
 /*!
 \page discode_02_moviereader Run a simple task
 
-\prevnext_top{discode_01_parameters,discode_03_moviereader_changeparameter}
+\up_prevnext_top{discode_tutorials, discode_01_parameters,discode_03_moviereader_changeparameter}
 
 \section ts_objectives Tutorial objectives
 Load a task responsible for loading movie from files.
@@ -30,5 +30,5 @@ A movie will be displayed frame by frame.
 \see \ref Movie : Source responsible for loading frames from movie
 \see \ref CvWindow : Sink responsible for displaying images
 
-\prevnext_bottom{discode_01_parameters,discode_03_moviereader_changeparameter}
+\up_prevnext_bottom{discode_tutorials, discode_01_parameters,discode_03_moviereader_changeparameter}
 */

@@ -1,19 +1,20 @@
 /*!
 \page manuals_events Events - mechanisms for control of the flow
-<center> [\ref manuals] </center> 
+
+\up_prevnext_top{manuals, manuals_datastreams, manuals_executors}
 
 Events, as well as DataStreams, enable loose coupling of the components.
-However, their purpose is totally different - they are supposed to control the processing flow. 
+However, their purpose is totally different - they are supposed to control the processing flow.
 
-Events are used as triggers - for example they should inform given component that new data arrived to its dataport. 
-In that case the component should check it state and react accordingly, e.g. if all input datastreams are ready it 
-should perform the processing.  
+Events are used as triggers - for example they should inform given component that new data arrived to its dataport.
+In that case the component should check it state and react accordingly, e.g. if all input datastreams are ready it
+should perform the processing.
 
 <img src="images/class_event.png" style="margin: 5px;" alt="Events"/>
 
 User defines events, that can be raised by given component, as well as event handlers, in the configuration file.
-During the application start all events that match event handlers are connected (pairs of sources-destinations) - a many-to-many relation.  
+During the application start all events that match event handlers are connected (pairs of sources-destinations) - a many-to-many relation.
 
 
-\prevnext{manuals_datastreams,manuals_executors}
+\up_prevnext_bottom{manuals, manuals_datastreams, manuals_executors}
 */
