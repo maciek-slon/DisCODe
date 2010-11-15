@@ -7,7 +7,7 @@
 The <b>create.sh</b> can be used for generation of the empty shell of the new component (divided in to hpp and cpp files).
 - Enter the Component directory:
 \cons
-cd <i>sdk_dest_path</i>\\Component
+cd <i>sdk_dest_path</i>/Component
 \endcons
 
 \note The <i>sdk_dest_path</i> is a directory where the DisCODe SDK was installed.
@@ -26,6 +26,8 @@ cmake .
 \endcons
 
 Adequate Makefile (with required files) will be generated.
+
+\note CMake enables also the out-of-source build. For more please refer \link http://www.openscenegraph.org/projects/osg/wiki/Build/CMake here\endlink.
 
 \section linux_sdk_comp_make Compile and install the component
 - Run makefile (from the environment)
