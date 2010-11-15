@@ -7,14 +7,17 @@ Introduction
 This project contains sources of DisCODe - a framework facilitating the development of sensorical data processing algorithms. DisCODE is written mostly in C++ (in an objective manner) and composing of a components library with patterns for their usage. Those patterns impose general implementation method diverse, multistage data processing algorithms.
 
 This software was developed at:
+
 * Robot Control and Pattern Recognition Group
 * Institute of Control and Computation Engineering
 * Warsaw University of Technology, Poland
 
 This software is distributed under license:
+
 * MIT license
 
 Main authors:
+
 * Tomasz Kornuta
 * Maciej Stefanczyk
   
