@@ -36,7 +36,10 @@ Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotic
 The tutorial contains a step-by-step introduction to DisCODe.
 
 - Tutorial 1: \ref camera_calibration_tutorials [Intermediate level]\n
-The tutorial contains tutorials regarding the problem of camera calibration.
+The tutorial regards the problem of camera calibration.
+
+- Tutorial 2: \ref feature_extraction_tutorials [Intermediate level]\n
+The tutorial focuses on the extraction of features from images.
 
 \endlinklist
 
