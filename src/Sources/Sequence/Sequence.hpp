@@ -39,6 +39,8 @@
  *
  * \event{newImage}
  * New image is ready
+ * \event{endOfSequence}
+ * Sequence has ended
  *
  *
  * \par Event handlers:
@@ -156,6 +158,9 @@ protected:
 
 	/// Event signaling that new image was retrieved.
 	Base::Event * newImage;
+
+	/// Sequence has ended
+	Base::Event * endOfSequence;
 
 	/// Output data stream
 	Base::DataStreamOut<cv::Mat> out_img;

@@ -215,7 +215,7 @@ ALIASES                = "linkimage{2}=<div class=\"linkimage\">\image html \1 \
                          "lightrule=\htmlonly <hr style=\"color: #cccccc; background-color: #cccccc;height:1px;border:none;\"/>\endhtmlonly" \
                          "beginlinklist=\htmlonly <div class=\"linklist\">\endhtmlonly" \
                          "endlinklist=\htmlonly </div>\endhtmlonly" \
-                         "lin_win_command{2}=\htmlonly <table style=\"border: 0px; margin-left: 20px;\"><tr><td style=\"padding: 4px 0; width: 30px; text-align: center; vertical-align: middle;\"><img src=\"logos/linux_logo.png\" style=\"width: 20px;\"></td><td>\endhtmlonly \cons \1 \endcons \htmlonly </td> </tr> <tr><td style=\"padding: 4px 0; width: 30px; text-align: center; vertical-align: middle;\"><img src=\"logos/windows_logo.png\" style=\"width: 20px;\"></td><td> \endhtmlonly \cons \2 \endcons \htmlonly </td></tr> </table> \endhtmlonly" \
+			                  "lin_win_command{2}=\htmlonly <table style=\"border: 0px; margin-left: 20px; width: 720px\"><tr><td style=\"padding: 4px 0; width: 30px; text-align: center; vertical-align: middle;\"><img src=\"images/UbuntuLogo.png\" style=\"width: 20px;\"></td><td style=\"width: 690px\"><pre class=\"console\" style=\"width: 670px\">\endhtmlonly \1 \htmlonly</pre></td> </tr> <tr><td style=\"padding: 4px 0; width: 30px; text-align: center; vertical-align: middle;\"><img src=\"images/WindowsLogo.jpg\" style=\"width: 20px;\"></td><td><pre class=\"console\" style=\"width: 670px\">\endhtmlonly \2 \htmlonly</pre></td></tr> </table> \endhtmlonly" \
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C
 # sources only. Doxygen will then generate output that is more tailored for C.

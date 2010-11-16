@@ -33,6 +33,7 @@ bool Sequence::onInit() {
 	registerHandler("onTrigger", &h_onTrigger);
 
 	newImage = registerEvent("newImage");
+	endOfSequence = registerEvent("endOfSequence");
 
 	registerStream("out_img", &out_img);
 
@@ -60,6 +61,7 @@ bool Sequence::onStep() {
 
 	if (frame >= files.size()) {
 		LOG(LINFO) << name() << ": end of sequence\n";
+		endOfSequence->raise();
 		return false;
 	}
 
