@@ -9,14 +9,13 @@
 
 #include <string>
 #include <exception>
+#include <iostream>
 
 #if defined(WIN32)
 #else
 #	include <execinfo.h>
-#	include <signal.h>
+#	include <stdlib.h>
 #endif
-
-#include <iostream>
 
 namespace Common
 {

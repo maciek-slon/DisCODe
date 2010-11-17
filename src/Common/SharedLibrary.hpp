@@ -90,7 +90,7 @@ public:
 	 * Check if library is loaded
 	 * \return true if library is loaded, false otherwise
 	 */
-	bool loaded() {
+	bool loaded() const {
 		return (handle != 0);
 	}
 

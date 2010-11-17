@@ -75,13 +75,11 @@ public:
 		paused = false;
 		if (!running)
 			start();
-
 	}
 
 	void pause() {
 		paused = true;
 	}
-
 
 	/*!
 	 * Finish main Executor loop thus ending associated thread.

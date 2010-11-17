@@ -23,7 +23,7 @@ bool Keyboard_Source::onInit() {
 
 	std::string evname;
 
-	for (int i = 0; i < props.keys.length(); ++i) {
+	for (std::size_t i = 0; i < props.keys.length(); ++i) {
 		if (key_events.count(props.keys[i]) < 1) {
 				evname = props.keys[i];
 				evname += "_Pressed";
@@ -45,7 +45,7 @@ bool Keyboard_Source::onStep() {
 	std::string buf;
 	std::cin >> buf;
 
-	for (int i = 0; i < buf.length(); ++i) {
+	for (std::size_t i = 0; i < buf.length(); ++i) {
 		if (key_events.count(buf[i]) > 0) {
 				LOG(LTRACE) << "Raising event from key " << buf[i];
 				key_events[buf[i]]->raise();

@@ -56,7 +56,7 @@ public:
 		return true;
 	}
 private:
-	cv::Size size;
+	const cv::Size size;
 };
 
 } // namespace Types {

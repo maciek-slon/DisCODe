@@ -24,10 +24,10 @@ public:
 	{
 	}
 	Chessboard(const Chessboard& o) :
-		Object3D(o)
+		Object3D(o),
+		patternSize(o.patternSize),
+		squareSize(o.squareSize)
 	{
-		patternSize = o.patternSize;
-		squareSize = o.squareSize;
 	}
 
 	virtual ~Chessboard()
@@ -45,8 +45,8 @@ public:
 		cv::drawChessboardCorners(image, patternSize, ip, true);
 	}
 private:
-	cv::Size patternSize;
-	float squareSize;
+	const cv::Size patternSize;
+	const float squareSize;
 };
 
 }

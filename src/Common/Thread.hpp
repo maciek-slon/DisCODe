@@ -83,7 +83,7 @@ public:
 	/**
 	 * Kill thread
 	 */
-	 bool kill();
+	bool kill();
 
 	/*!
 	 * Suspends the calling thread until the specified time in milliseconds has been reached.

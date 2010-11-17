@@ -35,13 +35,13 @@ public:
 	 * \param file name of file, from which log was called
 	 * \param line number of line, from which log was called
 	 */
-	virtual void print(const std::string & msg, Severity sev, const std::string & file, int line) = 0;
+	virtual void print(const std::string & msg, Severity sev, const std::string & file, int line) const = 0;
 
 	void setLvl(Severity sev) {
 		lvl = sev;
 	}
 
-	Severity getLvl() {
+	Severity getLvl() const {
 		return lvl;
 	}
 
@@ -55,7 +55,7 @@ private:
 
 class ConsoleOutput : public LoggerOutput {
 public:
-	void print(const std::string & msg, Severity sev, const std::string & file, int line) {
+	void print(const std::string & msg, Severity sev, const std::string & file, int line) const {
 		switch (sev) {
 		case Trace:
 			std::cout << green << "TRACE" << reset << " in " << file << " [" << green << line << reset << "]: ";

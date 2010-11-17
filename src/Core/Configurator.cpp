@@ -54,8 +54,9 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 		try {
 			read_xml(configuration_filename, configuration);
 		}
-		catch(xml_parser_error&) {
-			LOG(LFATAL) << "Configuration: Couldn't parse '" << configuration_filename << "' file.\n";
+		catch(const xml_parser_error& ex) {
+			LOG(LERROR) << "Configuration: Couldn't parse '" << configuration_filename << "' file.";
+			LOG(LERROR) << ex.what();
 			throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + configuration_filename + "' file.\n");
 		}
 
@@ -70,17 +71,17 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 			loadExecutors(tmp_node, task);
 		}
 		catch(ptree_bad_path&) {
-			LOG(LFATAL) << "No Executors branch in configuration file!\n";
+			LOG(LERROR) << "No Executors branch in configuration file!\n";
 		}
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Components"));
+			loadComponents(tmp_node, task);
 		}
 		catch(const ptree_bad_path& ex) {
-			LOG(LFATAL) << "No Components branch in configuration file!\n";
+			LOG(LERROR) << "No Components branch in configuration file!\n";
 		}
 
-		loadComponents(tmp_node, task);
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Events"));
@@ -148,8 +149,9 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 			try {
 				read_xml(include, tmp);
 			}
-			catch(xml_parser_error&) {
-				LOG(LFATAL) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
+			catch(const xml_parser_error& ex) {
+				LOG(LERROR) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
+				LOG(LERROR) << ex.what();
 				throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + include + "' file.\n");
 			}
 		}
@@ -161,6 +163,12 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 			catch(const ptree_bad_path& ex) {
 				LOG(LERROR) << name << ": " << ex.what();
 				LOG(LNOTICE) << "Set this property in config file!";
+
+				throw Common::DisCODeException(name + ": failed to load component");
+			}
+			catch(const ptree_bad_data& ex) {
+				LOG(LERROR) << name << ": " << ex.what();
+				LOG(LNOTICE) << "Check properties in configuration file!";
 
 				throw Common::DisCODeException(name + ": failed to load component");
 			}

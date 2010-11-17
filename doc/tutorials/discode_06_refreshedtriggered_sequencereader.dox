@@ -1,5 +1,7 @@
 /*!
 \page discode_06_refreshedtriggered_sequencereader Move one of the components to another thread
+
+\prevnext_top{discode_05_trigerred_sequencereader,discode_07_component_images_blurer}
  
 \section ts_objectives Tutorial objectives
 Modify the TriggeredSequenceViewer.xml in order to add the displayed image refreshment.
@@ -49,5 +51,5 @@ images will be refreshed every 0.2s.
 \see \ref Core::PeriodicExecutor : Periodic executor
 \see \ref CvWindow : Sink responsible for displaying images
 
-\prevnext{discode_05_trigerred_sequencereader,discode_07_component_images_blurer}
+\prevnext_bottom{discode_05_trigerred_sequencereader,discode_07_component_images_blurer}
 */

@@ -161,12 +161,12 @@ public:
 	/*!
 	 * Check, if component is running
 	 */
-	bool running();
+	bool running() const;
 
 	/*!
 	 * Check, if component is initialized
 	 */
-	bool initialized();
+	bool initialized() const;
 
 protected:
 	/*!

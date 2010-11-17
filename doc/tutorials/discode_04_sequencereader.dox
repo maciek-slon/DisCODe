@@ -1,14 +1,14 @@
 /*!
-\page discode_04_sequencereader Create a new task 
+\page discode_04_sequencereader Create a new task
+
+\prevnext_top{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
 
 \section ts_objectives Tutorial objectives
 Create a task responsible for loading sequence of images from files.
 
 \section ts_command Command
 From the <b>bin</b> directory execute the following command.
-\cons
-./discode -T ../Tasks/SequenceViewer.xml
-\endcons
+\lin_win_command{./discode -T ../Tasks/SequenceViewer.xml, discode -T ..\\Tasks\\SequenceViewer.xml}
 
 \section ts_structure Task structure
 The structure of the SequenceViewer task is shown below.
@@ -17,12 +17,12 @@ The structure of the SequenceViewer task is shown below.
 <img src="images/SequenceViewer.png" style="margin: 5px; width: 400px;" alt="SequenceViewer"/>
 \endhtmlonly
 
-\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
 \section ts_file Task file
 Create a new SequenceViewer.xml file on the base of the existing MovieViewer.xml.
 Modify required parts:
-- Replace the <b>Mov1</b> component with the <b>Seq1</b> component. 
+- Replace the <b>Mov1</b> component with the <b>Seq1</b> component.
 \code
 	<Components>
 		...
@@ -32,7 +32,7 @@ Modify required parts:
 		...
 \endcode
 
-- Set the main thread component to <b>Seq1</b>. 
+- Set the main thread component to <b>Seq1</b>.
 \code
 	<Executors>
 		...
@@ -42,7 +42,7 @@ Modify required parts:
 		...
 \endcode
 
-- Connect events. 
+- Connect events.
 \code
 	<Events>
 		...
@@ -50,7 +50,7 @@ Modify required parts:
 		...
 \endcode
 
-- Assign data streams. 
+- Assign data streams.
 \code
 	<DataStreams>
 		...
@@ -75,6 +75,6 @@ A sequence of images  will be displayed image after image.
 \see \ref Sequence : Source responsible for loading image sequence from files.
 \see \ref CvWindow : Sink responsible for displaying images
 
-\prevnext{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
+\prevnext_bottom{discode_03_moviereader_changeparameter, discode_05_trigerred_sequencereader}
 
 */
