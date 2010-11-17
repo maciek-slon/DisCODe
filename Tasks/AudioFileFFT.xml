@@ -1,0 +1,63 @@
+<!-- ./DisCODe -T ../../Tasks/AudioFilePlayer.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Aud1 type="AudioFile" thread="Exec1" group="s1">
+			<filename>kawa.wav</filename>
+		</Aud1>
+
+		<Aud2 type="AudioFileFFT" thread="Exec1" group="s1">
+			<!--filename>Harp3.wav</filename-->
+		</Aud2>
+		
+		<Wnd2 type="CvWindow" thread="Exec2" group="s1">
+			<title>Preview l</title>
+		</Wnd2>
+		
+		<Aud3 type="AudioFileSpectrogram" thread="Exec1" group="s1">
+		</Aud3>
+		
+	</Components>
+
+	<!-- Threads of execution -->
+	<Executors>
+		<Exec1 type="continuous">
+			<main_component>Aud1</main_component>
+		</Exec1>
+		<Exec2 type="periodic">
+            <main_component>Wnd2</main_component>
+            <interval>0.2</interval>
+        </Exec2>
+		
+	</Executors>
+
+	<!-- Event connections -->
+	<Events>
+		<Event source="Aud1.newData" destination="Aud2.onNewData"/>
+		<Event source="Aud2.newData" destination="Aud3.onNewData"/>
+		<Event source="Aud3.newData" destination="Wnd2.onNewImage"/>
+	</Events>
+
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<Aud1>
+			<out_data type="out" group="Con1"/>
+		</Aud1>
+
+		<Aud2>
+			<in_data type="in" group="Con1"/>
+			<out_data_r type="out" group="Con2"/>
+			<out_data_l type="out" group="Con3"/>
+		</Aud2>
+		
+		<Aud3>
+			<in_data  type="in" group="Con2"/>
+			<out_data type="out" group="Con4"/>
+		</Aud3>
+		
+		<Wnd2>
+			<in_img  type="in" group="Con5"/>
+		</Wnd2>
+	</DataStreams>
+</Task>
