@@ -16,10 +16,10 @@ namespace Types {
 
 namespace Objects3D {
 
-struct HomogMatrix
-{
-	double elements[3][4];
-};
+//struct HomogMatrix
+//{
+//	double elements[3][4];
+//};
 
 class Object3D : public Types::Drawable
 {
@@ -36,7 +36,7 @@ public:
 		positionSet = o.positionSet;
 		imagePoints = o.imagePoints;
 		modelPoints = o.modelPoints;
-		position = o.position;
+//		position = o.position;
 	}
 
 	virtual ~Object3D()
@@ -83,19 +83,19 @@ public:
 		return modelPoints;
 	}
 
-	void setPosition(const HomogMatrix& position)
-	{
-		this->position = position;
-		positionSet = true;
-	}
+//	void setPosition(const HomogMatrix& position)
+//	{
+//		this->position = position;
+//		positionSet = true;
+//	}
 
-	const HomogMatrix& getPosition() const
-	{
-		if (!positionSet) {
-			throw std::logic_error("position has not been set.");
-		}
-		return position;
-	}
+//	const HomogMatrix& getPosition() const
+//	{
+//		if (!positionSet) {
+//			throw std::logic_error("position has not been set.");
+//		}
+//		return position;
+//	}
 
 	virtual Object3D* clone() = 0;
 
@@ -106,7 +106,7 @@ protected:
 
 	std::vector <cv::Point2f> imagePoints;
 	std::vector <cv::Point3f> modelPoints;
-	HomogMatrix position;
+//	HomogMatrix position;
 };
 
 }

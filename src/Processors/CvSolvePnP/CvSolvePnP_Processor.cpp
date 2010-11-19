@@ -18,6 +18,7 @@ namespace CvSolvePnP {
 using namespace std;
 using namespace cv;
 using namespace boost;
+using Types::HomogMatrix;
 using namespace Types::Objects3D;
 
 CvSolvePnP_Processor::CvSolvePnP_Processor(const std::string & n) :
@@ -52,7 +53,7 @@ bool CvSolvePnP_Processor::onInit()
 	registerHandler("onNewObject3D", &h_onNewObject3D);
 
 	registerStream("in_object3d", &in_object3d);
-	registerStream("out_object3d", &out_object3d);
+	registerStream("out_homogMatrix", &out_homogMatrix);
 
 	objectLocated = registerEvent("objectLocated");
 
@@ -97,8 +98,7 @@ void CvSolvePnP_Processor::onNewObject3D()
 	}
 	LOG(LDEBUG) << "HomogMatrix:\n" << ss.str() << endl;
 
-	object3D->setPosition(hm);
-	out_object3d.write(*object3D);
+	out_homogMatrix.write(hm);
 
 	objectLocated->raise();
 }
