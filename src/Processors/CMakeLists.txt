@@ -26,6 +26,7 @@ ADD_PROCESSOR(CvFindChessboardCorners)
 ADD_PROCESSOR(CvSolvePnP)
 ADD_PROCESSOR(CvUndistort)
 ADD_PROCESSOR(GrayClassification)
+ADD_PROCESSOR(VisualServoPB)
 
 ADD_PROCESSOR(KW_Palm_LUT)
 ADD_PROCESSOR(KW_Skin)

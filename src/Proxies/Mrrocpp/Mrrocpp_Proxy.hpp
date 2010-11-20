@@ -20,6 +20,7 @@
 #include "xdr/xdr_iarchive.hpp"
 #include "Socket.hpp"
 #include "headers.h"
+#include "Reading.hpp"
 
 namespace Proxies {
 namespace Mrrocpp {
@@ -96,12 +97,12 @@ protected:
 	 */
 	virtual bool onStep();
 private:
-	void onNewMsgToSend();
+	void onNewReading();
 
-	Base::EventHandler <Mrrocpp_Proxy> h_onNewMsgToSend;
-	Base::Event *newMsgReceived;
-	Base::DataStreamIn <xdr_oarchive <> > msgToSend;
-	Base::DataStreamOut <xdr_iarchive <> > msgReceived;
+	Base::EventHandler <Mrrocpp_Proxy> h_onNewReading;
+//	Base::Event *newMsgReceived;
+	Base::DataStreamInPtr <Reading> reading;
+//	Base::DataStreamOut <xdr_iarchive <> > msgReceived;
 
 	boost::shared_ptr <xdr_iarchive <> > header_iarchive;
 	boost::shared_ptr <xdr_iarchive <> > iarchive;

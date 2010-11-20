@@ -47,13 +47,13 @@ bool Mrrocpp_Proxy::onInit()
 {
 	LOG(LTRACE) << "Mrrocpp_Proxy::onInit\n";
 
-	h_onNewMsgToSend.setup(this, &Mrrocpp_Proxy::onNewMsgToSend);
-	registerHandler("onNewMsgToSend", &h_onNewMsgToSend);
+	h_onNewReading.setup(this, &Mrrocpp_Proxy::onNewReading);
+	registerHandler("onNewReading", &h_onNewReading);
 
-	newMsgReceived = registerEvent("newMsgReceived");
+//	newMsgReceived = registerEvent("newMsgReceived");
 
-	registerStream("msgToSend", &msgToSend);
-	registerStream("msgReceived", &msgReceived);
+	registerStream("reading", &reading);
+//	registerStream("msgReceived", &msgReceived);
 
 	serverSocket.setupServerSocket(props.port);
 	clientConnected = false;
@@ -107,10 +107,10 @@ bool Mrrocpp_Proxy::onStep()
 	return true;
 }
 
-void Mrrocpp_Proxy::onNewMsgToSend()
+void Mrrocpp_Proxy::onNewReading()
 {
-	msgToSend.read();
-	LOG(LTRACE) << "Mrrocpp_Proxy::onNewMsgToSend\n";
+	reading.read();
+	LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading\n";
 }
 
 Base::Props * Mrrocpp_Proxy::getProperties()

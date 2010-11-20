@@ -11,8 +11,8 @@
 		</BGRToGray>
 		
 		<FindChessboard type="CvFindChessboardCorners" thread="Thread1" group="s1">
-			<width>6</width>
-			<height>9</height>
+			<width>7</width>
+			<height>5</height>
 			<squareSize>0.02</squareSize>
 		</FindChessboard>
 		
@@ -58,20 +58,18 @@
 			<out_img type="out" group="GrayImage"/>
 		</ImageSource>
 		
-		<Window>
-			<in_draw type="in" group="PositionEstimated"/>
-			<in_img type="in" group="GrayImage"/>
-		</Window>
-		
 		<FindChessboard>
 			<in_img type="in" group="GrayImage"/>
 			<out_chessboard type="out" group="LocatedChessboard"/>
 		</FindChessboard>
 		<PositionEstimator>
 			<in_object3d type="in" group="LocatedChessboard"/>
-			<out_object3d type="out" group="PositionEstimated"/>
+			
 		</PositionEstimator>
 		
-		
+		<Window>
+			<in_draw type="in" group="LocatedChessboard"/>
+			<in_img type="in" group="GrayImage"/>
+		</Window>
 	</DataStreams>
 </Task>

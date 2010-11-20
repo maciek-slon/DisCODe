@@ -131,7 +131,7 @@ void Socket::writev2(const void *buf1, size_t buf1Size, const void *buf2, size_t
 	if (nwritten == -1) {
 		throw runtime_error("Socket::writev2() nwritten == -1");
 	}
-	if (nwritten != buf1Size + buf2Size) {
+	if ((size_t)nwritten != buf1Size + buf2Size) {
 		throw runtime_error("Socket::writev2() nwritten != buf1Size + buf2Size");
 	}
 }
@@ -144,7 +144,7 @@ void Socket::read(void *buf, size_t bufSize)
 	if(r == -1){
 		throw runtime_error("Socket::read: r == -1");
 	}
-	if(r != bufSize){
+	if((size_t)r != bufSize){
 		throw runtime_error("Socket::read: r != bufSize");
 	}
 }

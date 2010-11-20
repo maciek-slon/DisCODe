@@ -1,8 +1,6 @@
 /*
  * Reading.hpp
  *
- *  Created on: Nov 18, 2010
- *      Author: mboryn
  */
 
 #ifndef READING_HPP_
@@ -17,9 +15,15 @@ namespace Mrrocpp {
 class Reading
 {
 public:
-	Reading();
-	virtual ~Reading();
+	Reading()
+	{
+	}
 
+	virtual ~Reading()
+	{
+	}
+
+	virtual Reading* clone() = 0;
 private:
 	friend class boost::serialization::access;
 	template <class Archive>
@@ -33,8 +37,7 @@ private:
 
 };
 
-} // namespace Mrrocpp
-} // namespace Proxies
-
+}//namespace Mrrocpp
+}//namespace Proxies
 
 #endif /* READING_HPP_ */
