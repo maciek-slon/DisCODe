@@ -129,6 +129,7 @@ private:
 	void sendBuffersToMrrocpp();
 
 	initiate_message_header imh;
+	reading_message_header rmh;
 
 	void receiveCommand();
 

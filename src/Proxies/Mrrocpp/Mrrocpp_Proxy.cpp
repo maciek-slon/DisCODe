@@ -129,9 +129,22 @@ bool Mrrocpp_Proxy::onStep()
 
 void Mrrocpp_Proxy::onNewReading()
 {
-	readingMessage = reading.read();
-
 	LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading\n";
+	readingMessage = reading.read();
+	if (proxyState == PROXY_WAITING_FOR_READING) {
+		LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading(): proxyState == PROXY_WAITING_FOR_READING\n";
+		rmh.is_rpc_call = false;
+
+		oarchive->clear_buffer();
+		*oarchive << (*readingMessage);
+
+		sendBuffersToMrrocpp();
+
+		readingMessage.reset();
+		proxyState = PROXY_WAITING_FOR_COMMAND;
+	} else {
+		LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading(): proxyState != PROXY_WAITING_FOR_READING\n";
+	}
 }
 
 void Mrrocpp_Proxy::onRpcResult()
@@ -139,7 +152,19 @@ void Mrrocpp_Proxy::onRpcResult()
 	LOG(LTRACE) << "Mrrocpp_Proxy::onRpcResult\n";
 	rpcResultMessage = rpcResult.read();
 
-	LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading\n";
+	if (proxyState != PROXY_WAITING_FOR_RPC_RESULT) {
+		LOG(LFATAL) << "Mrrocpp_Proxy::onRpcResult(): proxyState != PROXY_WAITING_FOR_RPC_RESULT\n";
+		return;
+	}
+
+	rmh.is_rpc_call = true;
+
+	oarchive->clear_buffer();
+	*oarchive << (*rpcResultMessage);
+
+	sendBuffersToMrrocpp();
+
+	proxyState = PROXY_WAITING_FOR_COMMAND;
 }
 
 void Mrrocpp_Proxy::receiveCommand()
@@ -185,10 +210,9 @@ void Mrrocpp_Proxy::sendBuffersToMrrocpp()
 {
 	LOG(LTRACE) << "sendBuffersToMrrocpp() begin\n";
 
-	reading_message_header rmh;
 	rmh.data_size = oarchive->getArchiveSize();
-	rmh.is_rpc_call = false;
 
+	header_oarchive->clear_buffer();
 	*header_oarchive << rmh;
 
 	clientSocket->writev2(header_oarchive->get_buffer(), header_oarchive->getArchiveSize(), oarchive->get_buffer(), oarchive->getArchiveSize());
