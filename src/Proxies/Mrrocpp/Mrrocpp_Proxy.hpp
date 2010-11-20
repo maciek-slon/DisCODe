@@ -97,22 +97,40 @@ protected:
 	 */
 	virtual bool onStep();
 private:
+	/**
+	 * Event handler called when new reading is ready.
+	 */
 	void onNewReading();
+	void serviceReading();
 
 	Base::EventHandler <Mrrocpp_Proxy> h_onNewReading;
-//	Base::Event *newMsgReceived;
 	Base::DataStreamInPtr <Reading> reading;
-//	Base::DataStreamOut <xdr_iarchive <> > msgReceived;
+
+	/**
+	 * Event handler called when RPC call has finished.
+	 */
+	void onRpcResult();
+	void serviceRpc();
+
+	Base::Event *rpcCall;
+	Base::DataStreamOut <xdr_iarchive <> > rpcParam;
+	Base::DataStreamInPtr <Reading> rpcResult;
+	Base::EventHandler <Mrrocpp_Proxy> h_onRpcResult;
 
 	boost::shared_ptr <xdr_iarchive <> > header_iarchive;
 	boost::shared_ptr <xdr_iarchive <> > iarchive;
 	boost::shared_ptr <xdr_oarchive <> > header_oarchive;
 	boost::shared_ptr <xdr_oarchive <> > oarchive;
 
+	boost::shared_ptr <Reading> readingMessage;
+	boost::shared_ptr <Reading> rpcResultMessage;
+
 	void receiveBuffersFromMrrocpp();
 	void sendBuffersToMrrocpp();
 
-	SampleClass sample;
+	initiate_message_header imh;
+
+	void receiveCommand();
 
 	Socket serverSocket;
 	boost::shared_ptr <Socket> clientSocket;
@@ -123,7 +141,10 @@ private:
 	bool msgSet;
 	bool getReadingReceived;
 
-	void sendMsg();
+	enum
+	{
+		PROXY_NOT_CONFIGURED, PROXY_WAITING_FOR_COMMAND, PROXY_WAITING_FOR_READING, PROXY_WAITING_FOR_RPC_RESULT
+	} proxyState;
 
 	size_t initiate_message_header_size;
 };

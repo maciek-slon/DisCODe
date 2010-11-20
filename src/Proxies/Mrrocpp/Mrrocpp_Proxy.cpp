@@ -15,7 +15,7 @@ namespace Proxies {
 namespace Mrrocpp {
 
 Mrrocpp_Proxy::Mrrocpp_Proxy(const std::string & name) :
-	Base::Component(name), sample(0xAA, 0xAA, "qwer", "aaa"), clientConnected(false)
+	Base::Component(name), clientConnected(false)
 {
 	LOG(LFATAL) << "Mrrocpp_Proxy::Mrrocpp_Proxy\n";
 
@@ -30,6 +30,7 @@ Mrrocpp_Proxy::Mrrocpp_Proxy(const std::string & name) :
 	initiate_message_header_size = header_oarchive->getArchiveSize();
 	header_oarchive->clear_buffer();
 
+	proxyState = PROXY_NOT_CONFIGURED;
 }
 
 Mrrocpp_Proxy::~Mrrocpp_Proxy()
@@ -49,14 +50,21 @@ bool Mrrocpp_Proxy::onInit()
 
 	h_onNewReading.setup(this, &Mrrocpp_Proxy::onNewReading);
 	registerHandler("onNewReading", &h_onNewReading);
-
-//	newMsgReceived = registerEvent("newMsgReceived");
-
 	registerStream("reading", &reading);
-//	registerStream("msgReceived", &msgReceived);
+
+	rpcCall = registerEvent("rpcCall");
+	registerStream("rpcParam", &rpcParam);
+	registerStream("rpcResult", &rpcResult);
+	h_onRpcResult.setup(this, &Mrrocpp_Proxy::onRpcResult);
+	registerHandler("onRpcResult", &h_onRpcResult);
 
 	serverSocket.setupServerSocket(props.port);
 	clientConnected = false;
+
+	readingMessage.reset();
+	rpcResultMessage.reset();
+
+	proxyState = PROXY_WAITING_FOR_COMMAND;
 
 	return true;
 }
@@ -70,6 +78,14 @@ bool Mrrocpp_Proxy::onStop()
 bool Mrrocpp_Proxy::onFinish()
 {
 	LOG(LFATAL) << "Mrrocpp_Proxy::onFinish\n";
+	serverSocket.closeSocket();
+	clientConnected = false;
+
+	readingMessage.reset();
+	rpcResultMessage.reset();
+
+	proxyState = PROXY_NOT_CONFIGURED;
+
 	return true;
 }
 
@@ -79,21 +95,25 @@ bool Mrrocpp_Proxy::onStep()
 
 	if (clientConnected) {
 		LOG(LTRACE) << "if(clientConnected){\n";
-		if (!clientSocket->isDataAvailable()) {
-			return true;
+
+		switch (proxyState)
+		{
+			case PROXY_NOT_CONFIGURED:
+				LOG(LFATAL) << "bool Mrrocpp_Proxy::onStep(): proxyState==PROXY_NOT_CONFIGURED\n";
+				return true;
+				break;
+			case PROXY_WAITING_FOR_COMMAND:
+				if (clientSocket->isDataAvailable()) {
+					receiveCommand();
+				}
+				break;
+			case PROXY_WAITING_FOR_READING:
+				return true;
+				break;
+			case PROXY_WAITING_FOR_RPC_RESULT:
+				return true;
+				break;
 		}
-		receiveBuffersFromMrrocpp();
-
-		string s;
-
-		*iarchive >> s;
-
-		LOG(LDEBUG) << "iarchive >> s: \"" << s << "\"\n";
-
-		*oarchive << string("Mrrocpp_Proxy::onStep()");
-
-		sendBuffersToMrrocpp();
-
 	} else {
 		LOG(LTRACE) << "if(!clientConnected){\n";
 		if (!serverSocket.isDataAvailable()) {
@@ -102,15 +122,44 @@ bool Mrrocpp_Proxy::onStep()
 		}
 		clientSocket = serverSocket.acceptConnection();
 		clientConnected = true;
-		LOG(LFATAL) << "clientConnected!!!!\n";
+		LOG(LTRACE) << "clientConnected!!!!\n";
 	}
 	return true;
 }
 
 void Mrrocpp_Proxy::onNewReading()
 {
-	reading.read();
+	readingMessage = reading.read();
+
 	LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading\n";
+}
+
+void Mrrocpp_Proxy::onRpcResult()
+{
+	LOG(LTRACE) << "Mrrocpp_Proxy::onRpcResult\n";
+	rpcResultMessage = rpcResult.read();
+
+	LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading\n";
+}
+
+void Mrrocpp_Proxy::receiveCommand()
+{
+	LOG(LTRACE) << "Mrrocpp_Proxy::receiveCommand\n";
+	receiveBuffersFromMrrocpp();
+
+	if (imh.is_rpc_call) {
+		rpcParam.write(*iarchive); // send RPC param
+		rpcCall->raise();
+		proxyState = PROXY_WAITING_FOR_RPC_RESULT; // wait for RPC result
+	} else {
+		if (readingMessage.get() != 0) { // readingMessage has been already set
+			oarchive->clear_buffer(); // send message immediately
+			(*oarchive) << (*readingMessage);
+			sendBuffersToMrrocpp();
+		} else { // readingMessage hasn't been set yet, so wait for it
+			proxyState = PROXY_WAITING_FOR_READING;
+		}
+	}
 }
 
 Base::Props * Mrrocpp_Proxy::getProperties()
@@ -124,7 +173,6 @@ void Mrrocpp_Proxy::receiveBuffersFromMrrocpp()
 	header_iarchive->clear_buffer();
 	clientSocket->read(header_iarchive->get_buffer(), initiate_message_header_size);
 
-	initiate_message_header imh;
 	*header_iarchive >> imh;
 
 	iarchive->clear_buffer();

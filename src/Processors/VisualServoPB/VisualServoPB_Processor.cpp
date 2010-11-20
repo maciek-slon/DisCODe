@@ -12,7 +12,8 @@
 namespace Processors {
 namespace VisualServoPB {
 
-VisualServoPB_Processor::VisualServoPB_Processor(const std::string & name) : Base::Component(name)
+VisualServoPB_Processor::VisualServoPB_Processor(const std::string & name) :
+	Base::Component(name)
 {
 	LOG(LTRACE) << "Hello VisualServoPB_Processor\n";
 }
@@ -62,6 +63,30 @@ bool VisualServoPB_Processor::onStop()
 bool VisualServoPB_Processor::onStart()
 {
 	return true;
+}
+
+void VisualServoPB_Processor::onObjectLocated()
+{
+	PBReading pbr;
+	pbr.objectVisible = true;
+	pbr.objectPosition = in_position.read();
+
+	out_reading.write(pbr);
+	readingReady->raise();
+}
+
+void VisualServoPB_Processor::onObjectNotFound()
+{
+	PBReading pbr;
+	pbr.objectVisible = false;
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			pbr.objectPosition.elements[i][j] = 0;
+		}
+	}
+	out_reading.write(pbr);
+
+	readingReady->raise();
 }
 
 }//: namespace VisualServoPB

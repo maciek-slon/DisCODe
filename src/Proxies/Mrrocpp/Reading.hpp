@@ -7,6 +7,7 @@
 #define READING_HPP_
 
 #include "xdr/xdr_oarchive.hpp"
+#include "Logger.hpp"
 
 namespace Proxies {
 
@@ -29,10 +30,7 @@ private:
 	template <class Archive>
 	void serialize(Archive & ar, const unsigned int version)
 	{
-		// serialize base class information
-		ar & boost::serialization::base_object <bus_stop>(*this);
-		ar & street1;
-		ar & street2;
+		LOG(LTRACE) << "Reading::serialize()\n";
 	}
 
 };
