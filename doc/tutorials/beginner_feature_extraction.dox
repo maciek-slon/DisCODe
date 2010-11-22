@@ -1,7 +1,7 @@
 /*!
-\page feature_extraction_tutorials1 Feature extraction
+\page beginner_feature_extraction_tutorials1 Feature extraction
 <div class="center">[Intermediate level]</div>
-\prev_top{discode_tutorials}
+\prev_top{beginner_discode_tutorials}
 
 The tutorial focuses on the extraction of features from images.
 
@@ -21,6 +21,6 @@ Shape classfication with Bayes classifier.
 
 \endlinklist
 
-\prev_bottom{discode_tutorials}
+\prev_bottom{beginner_discode_tutorials}
 
 */

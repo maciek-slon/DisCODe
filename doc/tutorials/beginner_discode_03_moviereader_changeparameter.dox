@@ -1,7 +1,7 @@
 /*!
-\page discode_03_moviereader_changeparameter Override task parameter from the command line
+\page beginner_discode_03_moviereader_changeparameter Override task parameter from the command line
 
-\up_prevnext_top{discode_tutorials, discode_02_moviereader,discode_04_sequencereader}
+\up_prevnext_top{beginner_discode_tutorials, beginner_discode_02_moviereader,beginner_discode_04_sequencereader}
 
 \section ts_objectives Tutorial objectives
 Use the -S option in the command line in order to override the default value of parameter.
@@ -56,9 +56,9 @@ A different movie will be displayed.
 \note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
 
 \section ts_sections Related sections
-\see \ref discode_01_parameters : Explanations of inline parameters
+\see \ref beginner_discode_01_parameters : Explanations of inline parameters
 \see \ref Movie : Source responsible for loading frames from movie
 
-\up_prevnext_bottom{discode_tutorials, discode_02_moviereader,discode_04_sequencereader}
+\up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_02_moviereader,beginner_discode_04_sequencereader}
 
 */

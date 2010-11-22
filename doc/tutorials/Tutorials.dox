@@ -2,19 +2,23 @@
 /*!
 \page tutorials Tutorials
 
-\beginlinklist
+\section tut_beginner [Beginner level]
 
-- \ref discode_tutorials [Beginner level]\n
+\beginlinklist
+- \ref beginner_discode_tutorials\n
 The tutorial contains a step-by-step introduction to DisCODe.
 
-- \ref camera_calibration_tutorials [Intermediate level]\n
-The tutorial contains tutorials regarding the problem of camera calibration.
-
-\section using_utils Utilities
-- \ref using_logger\n
-  Tired of printf'ing and commenting out old debugs?
+- \ref beginner_camera_calibration_tutorials \n
+A step-by-step instruction describing the implementation of components responsible fod camera calibration and distortion removal.
 
 \endlinklist
-*/
 
-// - \ref newprocessor
+\section tut_intermediate [Intermediate level]
+
+\beginlinklist
+- \ref intermediate_camera_calibration_tutorials \n
+The tutorial contains instruction regarding the solution of the camera calibration problem.
+
+\endlinklist
+
+*/

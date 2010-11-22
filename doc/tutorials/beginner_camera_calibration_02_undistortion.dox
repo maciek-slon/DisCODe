@@ -1,7 +1,7 @@
 /*!
-\page camera_calibration_03_undistortion Display the undistorted images
+\page beginner_camera_calibration_02_undistortion Display the undistorted images
 
-\up_prev_top{camera_calibration_tutorials, camera_calibration_02_calibration}
+\up_prev_top{beginner_camera_calibration_tutorials, beginner_camera_calibration_01_findchessboard}
 
 \section ts_objectives Tutorial objectives
 The goal is to display a calibration sequence after performing the undistortion operation with the use of calibration parameters computed in the previous tutorial.
@@ -25,7 +25,7 @@ The component should perform the undistortion operation on received image and pa
 A set of undistorted images will be displayed.
 
 \section ts_sections Related sections
-\see OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.
+\see OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/intermediate_camera_calibration_and_3d_reconstruction.html">calibration</a> problem.
 
-\up_prev_bottom{camera_calibration_tutorials, camera_calibration_02_calibration}
+\up_prev_bottom{beginner_camera_calibration_tutorials, beginner_camera_calibration_01_findchessboard}
 */

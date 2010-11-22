@@ -1,7 +1,7 @@
 /*!
-\page discode_08_component_properties Create component properties
+\page beginner_discode_08_component_properties Add component properties
 
-\up_prev_top{camera_calibration_tutorials, discode_07_component_images_blurer}
+\up_prev_top{beginner_discode_tutorials, beginner_discode_07_component_images_blurer}
 
 \section ts_objectives Tutorial objectives
 The goal is to add properties to component, which can be set in the configuration file.
@@ -55,5 +55,5 @@ Component gains the possibility to change the size of blurring mask without code
 \section ts_sections Related sections
 \see \ref manuals_components : Description of components
 
-\up_prev_bottom{camera_calibration_tutorials, discode_07_component_images_blurer}
+\up_prev_bottom{beginner_discode_tutorials, beginner_discode_07_component_images_blurer}
 */

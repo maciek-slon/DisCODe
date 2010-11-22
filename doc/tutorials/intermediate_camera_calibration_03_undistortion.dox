@@ -1,0 +1,31 @@
+/*!
+\page intermediate_camera_calibration_03_undistortion Display the undistorted images
+
+\up_prev_top{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_02_calibration}
+
+\section ts_objectives Tutorial objectives
+The goal is to display a calibration sequence after performing the undistortion operation with the use of calibration parameters computed in the previous tutorial.
+
+\section ts_structure Task structure
+
+\htmlonly
+<img src="images/UndistortedImagesViewer.png" style="margin: 5px; width: 500px;" alt="UndistortedImagesViewer"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+\section ts_component_undis The ImageUndistortion component
+The component should perform the undistortion operation on received image and pass it to output data stream.
+
+\section ts_hints Hints
+ - Load intrinsic matrix and distortion coefficients (computed during the calibration task) from previously created files.
+ - Use the OpenCV <b>undistort()</b> function.
+
+\section ts_result Result
+A set of undistorted images will be displayed.
+
+\section ts_sections Related sections
+\see OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.
+
+\up_prev_bottom{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_02_calibration}
+*/

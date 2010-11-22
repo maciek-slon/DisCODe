@@ -34,13 +34,13 @@ Note: The size of out chessboard is 8 (width) x 6 (height).
 
 \section ecovi_tutorials Tutorials
 \beginlinklist
-- Tutorial 0: \ref discode_tutorials [Beginner level]\n
+- Tutorial 0: \ref beginner_discode_tutorials [Beginner level]\n
 The tutorial contains a step-by-step introduction to DisCODe.
 
-- Tutorial 1: \ref camera_calibration_tutorials [Intermediate level]\n
+- Tutorial 1: \ref beginner_camera_calibration_tutorials [Beginner level]\n
 The tutorial regards the problem of camera calibration.
 
-- Tutorial 2: \ref feature_extraction_tutorials [Intermediate level]\n
+- Tutorial 2: \ref beginner_feature_extraction_tutorials [Beginner level]\n
 The tutorial focuses on the extraction of features from images.
 
 \endlinklist

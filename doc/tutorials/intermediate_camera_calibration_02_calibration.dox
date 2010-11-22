@@ -1,7 +1,7 @@
 /*!
-\page camera_calibration_02_calibration Perform the calibration computations
+\page intermediate_camera_calibration_02_calibration Perform the calibration computations
 
-\up_prevnext_top{camera_calibration_tutorials, camera_calibration_01_findchessboard, camera_calibration_03_undistortion}
+\up_prevnext_top{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_01_findchessboard, intermediate_camera_calibration_03_undistortion}
 
 \section ts_objectives Tutorial objectives
 The aim is to create a task responsible for computation of the calibration parameters (camera intrinsics and distortion vector).
@@ -47,5 +47,5 @@ Calibration parameters will be computed.
 \see \ref manuals_events : Description of events
 
 
-\up_prevnext_bottom{camera_calibration_tutorials, camera_calibration_01_findchessboard, camera_calibration_03_undistortion}
+\up_prevnext_bottom{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_01_findchessboard, intermediate_camera_calibration_03_undistortion}
 */
