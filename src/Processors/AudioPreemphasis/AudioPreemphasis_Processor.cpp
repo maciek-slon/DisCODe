@@ -68,17 +68,24 @@ void AudioPreemphasis_Processor::onNewData() {
 	LOG(LTRACE) << "AudioPreemphasis_Processor::onNewData\n";
 	try {
 		if (licznik == 1) {
+//			printf("aa\n");
 			mat = in_data.read().clone();
 
+//			printf("bb\n");
 			for(int c=0;c<mat.rows;c++)//channels
 				for(int t=1;t<mat.cols;t++)//time
 					mat.at<double>(c,t)=mat.at<double>(c,t)-props.fi*mat.at<double>(c,t-1);
 
+//			printf("cc\n");
+			licznik++;
 			out_data.write(mat);
-			out_info.write(in_info.read());
-			printf("ee\n");
+//			printf("cd\n");
+			info=in_info.read();
+//			printf("dd\n");
+			out_info.write(info);
+//			printf("ee\n");
 			newData->raise();
-			printf("ff\n");
+//			printf("ff\n");
 
 		}
 	} catch (...) {

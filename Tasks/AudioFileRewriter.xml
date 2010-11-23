@@ -1,4 +1,4 @@
-<!-- ./DisCODe -T ../../Tasks/AudioFilePlayer.xml -->
+<!-- ./DisCODe -T ../../Tasks/AudioFileRewriter.xml -->
 <?xml version="1.0" encoding="utf-8"?>
 <Task>
 	<!-- List of components -->

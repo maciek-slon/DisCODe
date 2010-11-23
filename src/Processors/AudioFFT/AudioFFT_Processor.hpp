@@ -5,8 +5,8 @@
  *      Author: aszymane
  */
 
-#ifndef AUDIOFILEFFT_HPP_
-#define AUDIOFILEFFT_HPP_
+#ifndef AUDIOFFT_HPP_
+#define AUDIOFFT_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -20,43 +20,58 @@
 #include <sndfile.h>
 
 namespace Processors {
-namespace AudioFileFFT {
-
-using namespace cv;
+namespace AudioFFT {
 
 /*!
- * \brief AudioFileFFT properties
+ * \brief AudioFFT properties
  */
-struct AudioFileFFT: public Base::Props
+struct Props: public Base::Props
 {
 
+	int sample_size;
+
+	/*!
+	 * \copydoc Base::Props::load
+	 */
+	void load(const ptree & pt)
+	{
+		sample_size = pt.get("sample_size", 512);
+	}
+
+	/*!
+	 * \copydoc Base::Props::save
+	 */
+	void save(ptree & pt)
+	{
+		pt.put("sample_size", sample_size);
+	}
 
 };
 
 /*!
- * \class AudioFileFFT_Processor
+ * \class AudioFFT_Processor
  * \brief Example processor class.
  */
-class AudioFileFFT_Processor: public Base::Component
+class AudioFFT_Processor: public Base::Component
 {
 public:
 	/*!
 	 * Constructor.
 	 */
-	AudioFileFFT_Processor(const std::string & name = "");
+	AudioFFT_Processor(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~AudioFileFFT_Processor();
+	virtual ~AudioFFT_Processor();
 
 	/*!
 	 * Return window properties
 	 */
-//	Base::Props * getProperties()
-//	{
-//		return &props;
-//	}
+	Base::Props * getProperties()
+	{
+		return &props;
+	}
 
 protected:
 
@@ -90,15 +105,19 @@ protected:
 	 */
 	void onNewData();
 
+	cv::Mat WindowedFFT(cv::Mat data_mat, int sample_size=128);
+
 	/// Event handler.
-	Base::EventHandler <AudioFileFFT_Processor> h_onNewData;
+	Base::EventHandler <AudioFFT_Processor> h_onNewData;
 
 	/// Input data stream
 	Base::DataStreamIn <cv::Mat> in_data;
 
 	/// Event raised, when image is processed
-	Base::Event * newData;
+	Base::Event * newDataL;
 
+	/// Event raised, when image is processed
+	Base::Event * newDataR;
 
 	/// Output data stream - processed image
 	Base::DataStreamOut <cv::Mat> out_data_r;
@@ -106,6 +125,8 @@ protected:
 	/// Output data stream - processed image
 	Base::DataStreamOut <cv::Mat> out_data_l;
 
+	/// Threshold properties
+	Props props;
 
 	int licznik;
 
@@ -116,7 +137,7 @@ protected:
 	cv::Mat mat_l;
 	cv::Mat mat_r;
 
-	int data_sample;
+	int sample_size;
 
 	cv::Mat mat_samp_l;
 	cv::Mat mat_dft_l;
@@ -126,13 +147,13 @@ protected:
 
 };
 
-}//: namespace AudioFileFFT
+}//: namespace AudioFFT
 }//: namespace Processors
 
 
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("AudioFileFFT", Processors::AudioFileFFT::AudioFileFFT_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("AudioFFT", Processors::AudioFFT::AudioFFT_Processor, Common::Panel_Empty)
 
-#endif /* AUDIOFILEFFT_HPP_ */
+#endif /* AUDIOFFT_HPP_ */

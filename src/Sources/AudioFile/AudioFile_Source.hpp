@@ -26,8 +26,6 @@
 namespace Sources {
 namespace AudioFile_Source {
 
-//#define BUFFER_LEN 308952
-
 /*!
  * \brief AudioFile_Source properties
  */
@@ -54,16 +52,6 @@ struct Props: public Base::Props
 
 };
 
-/*!
- * \brief AudioFile_Source data
- */
-struct audioFileData
-{
-
-	SF_INFO sfinfo;
-	cv::Mat dataMat;
-
-};
 /*!
  * \class AudioFile_Source_Processor
  * \brief AudioFile_Source processor class.
@@ -121,15 +109,10 @@ protected:
 	Base::Event * newData;
 
 	/// Output data stream
-//	Base::DataStreamOut<double*> out_data;
-
-	/// Output data stream
 	Base::DataStreamOut<SF_INFO> out_info;
 
 	/// Output data stream
 	Base::DataStreamOut<cv::Mat> out_data;
-
-//	void SetListenerValues();
 
 	void KillALData();
 
@@ -144,9 +127,7 @@ protected:
 	cv::Mat data;
 
 	double *dataRead;
-//	double data[BUFFER_LEN];
 
-//	audioFileData dataFromFile;
 };
 
 }//: namespace AudioFile_Source

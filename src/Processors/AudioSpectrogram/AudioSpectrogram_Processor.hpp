@@ -1,12 +1,12 @@
 /*
- * AudioFileSpectrogram.h
+ * AudioSpectrogram.h
  *
  *  Created on: Nov 10, 2010
  *      Author: aszymane
  */
 
-#ifndef AUDIOFILESpectrogram_H_
-#define AUDIOFILESpectrogram_H_
+#ifndef AUDIOSPECTROGRAM_H_
+#define AUDIOSPECTROGRAM_H_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -20,14 +20,12 @@
 #include <sndfile.h>
 
 namespace Processors {
-namespace AudioFileSpectrogram {
-
-using namespace cv;
+namespace AudioSpectrogram {
 
 /*!
  * \brief AudioFileFFT properties
  */
-struct AudioFileSpectrogram: public Base::Props {
+struct Props: public Base::Props {
 
 };
 
@@ -35,17 +33,17 @@ struct AudioFileSpectrogram: public Base::Props {
  * \class AudioFileFFT_Processor
  * \brief Example processor class.
  */
-class AudioFileSpectrogram_Processor: public Base::Component {
+class AudioSpectrogram_Processor: public Base::Component {
 public:
 	/*!
 	 * Constructor.
 	 */
-	AudioFileSpectrogram_Processor(const std::string & name = "");
+	AudioSpectrogram_Processor(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~AudioFileSpectrogram_Processor();
+	virtual ~AudioSpectrogram_Processor();
 
 	/*!
 	 * Return window properties
@@ -86,9 +84,13 @@ protected:
 	 * Event handler function.
 	 */
 	void onNewData();
+	cv::Mat ComputeSpectrogram(cv::Mat mat);
+	cv::Mat ExtendOutputMatrix(cv::Mat mat, int n);
 
+	double Max(cv::Mat mat);
+	double Min(cv::Mat mat);
 	/// Event handler.
-	Base::EventHandler<AudioFileSpectrogram_Processor> h_onNewData;
+	Base::EventHandler<AudioSpectrogram_Processor> h_onNewData;
 
 	/// Input data stream
 	Base::DataStreamIn<cv::Mat> in_data;
@@ -101,15 +103,21 @@ protected:
 
 	int licznik;
 
+	cv::Mat img_out_transp;
+	cv::Mat mat_big;
+	cv::Mat mat_out;
+	cv::Mat mat_in;
+	double max;
+	double min;
 };
 
-}//: namespace AudioFileSpectrogram
+}//: namespace AudioSpectrogram
 }//: namespace Processors
 
 
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("AudioFileSpectrogram", Processors::AudioFileSpectrogram::AudioFileSpectrogram_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("AudioSpectrogram", Processors::AudioSpectrogram::AudioSpectrogram_Processor, Common::Panel_Empty)
 
-#endif /* AUDIOFILESpectrogram_H_ */
+#endif /* AUDIOSPECTROGRAM_H_ */

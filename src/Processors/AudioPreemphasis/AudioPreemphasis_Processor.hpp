@@ -22,8 +22,6 @@
 namespace Processors {
 namespace AudioPreemphasis {
 
-using namespace cv;
-
 /*!
  * \brief AudioPreemphasis properties
  */
@@ -125,6 +123,8 @@ protected:
 	Base::DataStreamOut<SF_INFO> out_info;
 
 	Props props;
+
+	SF_INFO info;
 
 	int licznik;
 

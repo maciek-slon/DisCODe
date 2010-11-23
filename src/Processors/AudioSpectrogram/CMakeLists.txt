@@ -8,7 +8,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 FILE(GLOB files *_Processor.cpp)
 
 # Create an executable file from sources:
-ADD_LIBRARY(procAudioFileSpectrogram SHARED ${files})
-TARGET_LINK_LIBRARIES(procAudioFileSpectrogram ${OpenCV_LIBS} ${DisCODe_LIBRARIES} -lsndfile)
+ADD_LIBRARY(procAudioSpectrogram SHARED ${files})
+TARGET_LINK_LIBRARIES(procAudioSpectrogram ${OpenCV_LIBS} ${DisCODe_LIBRARIES} -lsndfile)
 
-INSTALL_PROCESSOR(procAudioFileSpectrogram)
+INSTALL_PROCESSOR(procAudioSpectrogram)

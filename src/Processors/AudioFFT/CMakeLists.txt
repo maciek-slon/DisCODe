@@ -8,7 +8,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 FILE(GLOB files *_Processor.cpp)
 
 # Create an executable file from sources:
-ADD_LIBRARY(procAudioFileFFT SHARED ${files})
-TARGET_LINK_LIBRARIES(procAudioFileFFT ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
+ADD_LIBRARY(procAudioFFT SHARED ${files})
+TARGET_LINK_LIBRARIES(procAudioFFT ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
-INSTALL_PROCESSOR(procAudioFileFFT)
+INSTALL_PROCESSOR(procAudioFFT)

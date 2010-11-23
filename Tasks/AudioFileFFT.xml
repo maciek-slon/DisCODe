@@ -1,32 +1,43 @@
-<!-- ./DisCODe -T ../../Tasks/AudioFilePlayer.xml -->
+<!-- ./DisCODe -T ../../Tasks/AudioFileFFT.xml -->
 <?xml version="1.0" encoding="utf-8"?>
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Aud1 type="AudioFile" thread="Exec1" group="s1">
-			<filename>kawa.wav</filename>
-		</Aud1>
+		<AudIn type="AudioFile" thread="Exec1" group="s1">
+			<filename>test2.wav</filename>
+		</AudIn>
 
-		<Aud2 type="AudioFileFFT" thread="Exec1" group="s1">
-			<!--filename>Harp3.wav</filename-->
-		</Aud2>
+		<AudPree type="AudioPreemphasis" thread="Exec1" group="s1">
+			<fi>0.95</fi>
+		</AudPree>
 		
-		<Wnd2 type="CvWindow" thread="Exec2" group="s1">
+		<AudFFT type="AudioFFT" thread="Exec1" group="s1">
+			<sample_size>128</sample_size>
+		</AudFFT>
+		
+		<AudSpectL type="AudioSpectrogram" thread="Exec1" group="s1">
+		</AudSpectL>
+		
+		<AudSpectR type="AudioSpectrogram" thread="Exec1" group="s1">
+		</AudSpectR>
+		
+		<WndL type="CvWindow" thread="Exec2" group="s1">
 			<title>Preview l</title>
-		</Wnd2>
+		</WndL>
 		
-		<Aud3 type="AudioFileSpectrogram" thread="Exec1" group="s1">
-		</Aud3>
+		<WndR type="CvWindow" thread="Exec2" group="s1">
+			<title>Preview r</title>
+		</WndR>
 		
 	</Components>
 
 	<!-- Threads of execution -->
 	<Executors>
 		<Exec1 type="continuous">
-			<main_component>Aud1</main_component>
+			<main_component>AudIn</main_component>
 		</Exec1>
 		<Exec2 type="periodic">
-            <main_component>Wnd2</main_component>
+            <main_component>WndL</main_component>
             <interval>0.2</interval>
         </Exec2>
 		
@@ -34,30 +45,51 @@
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Aud1.newData" destination="Aud2.onNewData"/>
-		<Event source="Aud2.newData" destination="Aud3.onNewData"/>
-		<Event source="Aud3.newData" destination="Wnd2.onNewImage"/>
+		<Event source="AudIn.newData" destination="AudPree.onNewData"/>
+		<Event source="AudPree.newData" destination="AudFFT.onNewData"/>
+		
+		<Event source="AudFFT.newDataL" destination="AudSpectL.onNewData"/>
+		<Event source="AudSpectL.newData" destination="WndL.onNewImage"/>
+		
+		<Event source="AudFFT.newDataR" destination="AudSpectR.onNewData"/>
+		<Event source="AudSpectR.newData" destination="WndR.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
 	<DataStreams>
-		<Aud1>
+		<AudIn>
 			<out_data type="out" group="Con1"/>
-		</Aud1>
+			<out_info type="out" group="Con10"/>
+		</AudIn>
 
-		<Aud2>
-			<in_data type="in" group="Con1"/>
-			<out_data_r type="out" group="Con2"/>
-			<out_data_l type="out" group="Con3"/>
-		</Aud2>
+		<AudPree>
+			<in_data  type="in" group="Con1"/>
+			<in_info  type="in" group="Con10"/>
+			<out_data type="out" group="Con2"/>
+		</AudPree>
 		
-		<Aud3>
-			<in_data  type="in" group="Con2"/>
-			<out_data type="out" group="Con4"/>
-		</Aud3>
+		<AudFFT>
+			<in_data type="in" group="Con2"/>
+			<out_data_r type="out" group="Con3"/>
+			<out_data_l type="out" group="Con4"/>
+		</AudFFT>
 		
-		<Wnd2>
+		<AudSpectL>
+			<in_data  type="in" group="Con3"/>
+			<out_data type="out" group="Con5"/>
+		</AudSpectL>
+		
+		<WndL>
 			<in_img  type="in" group="Con5"/>
-		</Wnd2>
+		</WndL>
+		
+		<AudSpectR>
+			<in_data  type="in" group="Con4"/>
+			<out_data type="out" group="Con6"/>
+		</AudSpectR>
+		
+		<WndR>
+			<in_img  type="in" group="Con6"/>
+		</WndR>
 	</DataStreams>
 </Task>

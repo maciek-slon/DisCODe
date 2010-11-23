@@ -13,6 +13,8 @@
 #include "AudioFile_Source.hpp"
 #include "Common/Logger.hpp"
 
+#include <cstdlib>
+
 namespace Sources {
 namespace AudioFile_Source {
 
@@ -33,12 +35,28 @@ bool AudioFile_Source::onInit() {
 	registerStream("out_data", &out_data);
 
 	sfinfo.format = 0;
+	memset(&sfinfo, 0, sizeof(sfinfo));
 	if (!(infile = sf_open(props.filename.c_str(), SFM_READ, &sfinfo))) { /* Open failed so print an error message. */
 		printf("Not able to open input file %s.\n", props.filename.c_str());
 		/* Print the error message from libsndfile. */
 		sf_perror(infile);
 		return 1;
 	};
+
+	printf("in %8d frames\n", (int) sfinfo.frames);
+	printf("in %8d samplerate\n", sfinfo.samplerate);
+	printf("in %8d channels\n", sfinfo.channels);
+	printf("in %8d format\n", sfinfo.format);
+	printf("in %8d sections\n", sfinfo.sections);
+	printf("in %8d seekable\n", sfinfo.seekable);
+
+//	void* ptr = &sfinfo;
+//	printf("in %8d frames\n", &(sfinfo.frames));
+//	printf("in %8d samplerate\n", (&(sfinfo.samplerate)));
+//	printf("in %8d channels\n", &(sfinfo.channels));
+//	printf("in %8d format\n", &(sfinfo.format));
+//	printf("in %8d sections\n", &(sfinfo.sections));
+//	printf("in %8d seekable\n", &(sfinfo.seekable));
 
 	dataRead = NULL;
 	dataRead = new double[sfinfo.frames * sfinfo.channels];
@@ -62,19 +80,14 @@ bool AudioFile_Source::onFinish() {
 bool AudioFile_Source::onStep() {
 	LOG(LTRACE) << "AudioFile_Source::step\n";
 
-//	printf("step source1 %d\n",licznik);
-
 	if (licznik == 1) {
-/*		printf("in%d frames\n", (int) sfinfo.frames);
-		printf("in%d samplerate\n", sfinfo.samplerate);
-		printf("in%d channels\n", sfinfo.channels);
-		printf("in%d format\n", sfinfo.format);
-		printf("in%d sections\n", sfinfo.sections);
-		printf("in%d seekable\n", sfinfo.seekable);
-*/
+//		printf("in%d frames\n", (int) sfinfo.frames);
+//		printf("in%d samplerate\n", sfinfo.samplerate);
+//		printf("in%d channels\n", sfinfo.channels);
+//		printf("in%d format\n", sfinfo.format);
+//		printf("in%d sections\n", sfinfo.sections);
+//		printf("in%d seekable\n", sfinfo.seekable);
 
-//		dataRead = NULL;
-//		dataRead = new double[sfinfo.frames * sfinfo.channels];
 
 		int readcount = sf_read_double(infile, dataRead, sfinfo.frames * sfinfo.channels);
 
@@ -85,31 +98,16 @@ bool AudioFile_Source::onStep() {
 				data.at<double> (c, i) = dataRead[c * i + c];
 
 /*
-		printf("dane we:\n");
-		for (int i = 0; i < 20; i++)
-			printf("%f\n", data.at<double> (0, i));
-
-		printf("data size %d\n", sizeof(data) / sizeof(double));
+		printf("data size %d\n", sfinfo.frames);
 		printf("readcount %d<-------------------\n", readcount);
 */
 		licznik++;
 
-//		delete [] dataRead;
-//		dataRead = NULL;
-
-
-//		printf("dane wy:\n");
-//		for (int i = 0; i < 10; i++)
-//			printf("%f\n", data.at<double> (0, i));
-
 		out_info.write(sfinfo);
 		out_data.write(data.clone());
-//		printf("do wyslania s\n");
 
 		newData->raise();
-//		printf("wyslane s\n");
 	}
-//	printf("step source2 %d\n",licznik);
 
 	return true;
 }
