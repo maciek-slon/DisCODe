@@ -81,5 +81,9 @@
 			<out_homogMatrix typr="out" group="position"/>
 		</PositionEstimator>
 		
+		<VisualServoPB>
+		
+		</VisualServoPB>
+		
 	</DataStreams>
 </Task>
