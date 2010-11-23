@@ -6,10 +6,12 @@ SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Find OpenCV library files
 FIND_PACKAGE( OpenCV REQUIRED )
 
+PKG_SEARCH_MODULE(Unicap libunicap)
+
+IF(Unicap_FOUND)
+
 # Create a variable containing all .cpp files:
 FILE(GLOB files *.cpp)
-
-PKG_SEARCH_MODULE(Unicap REQUIRED libunicap)
 
 INCLUDE_DIRECTORIES(${Unicap_INCLUDE_DIRS})
 
@@ -20,3 +22,5 @@ ADD_LIBRARY(srcCameraUniCap SHARED ${files})
 TARGET_LINK_LIBRARIES(srcCameraUniCap ${OpenCV_LIBS} ${DisCODe_LIBRARIES} ${Unicap_LIBRARIES} )
 
 INSTALL_SOURCE(srcCameraUniCap)
+
+ENDIF(Unicap_FOUND)

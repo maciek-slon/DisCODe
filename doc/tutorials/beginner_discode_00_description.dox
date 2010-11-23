@@ -1,0 +1,39 @@
+/*!
+\page beginner_discode_00_description How to read the tutorials
+
+\up_next_top{beginner_discode_tutorials, beginner_discode_01_parameters}
+
+\section ts_objectives Tutorial objectives
+Contains small description of the problem.
+
+\section ts_command Command
+\lin_win_command{Linux shell command, DisCODe environment command}
+
+\section ts_structure Task structure
+Describes the image of the task structure.
+
+Elements of diagrams representing the task structure are explained below.
+
+\htmlonly
+<img src="images/Legend.png" style="margin: 5px; width: 500px;" alt="Legend"/>
+\endhtmlonly
+
+\note For more informations regarding the diagram elements please refer to the manuals.
+
+\section ts_hints Hints
+List of useful hints related to given problem.
+
+\section ts_file Task file
+Contains the description of the task file (XML).
+
+\section ts_component Component
+Contains informations related to given component.
+
+\section ts_result Result
+Describes the results of the given tutorial.
+
+\section ts_sections Related sections
+List of useful links.
+
+\up_next_bottom{beginner_discode_tutorials, beginner_discode_01_parameters}
+*/

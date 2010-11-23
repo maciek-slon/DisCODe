@@ -1,0 +1,59 @@
+/*!
+\page beginner_discode_08_component_properties Add component properties
+
+\up_prev_top{beginner_discode_tutorials, beginner_discode_07_component_images_blurer}
+
+\section ts_objectives Tutorial objectives
+The goal is to add properties to component, which can be set in the configuration file.
+
+\section blurer_hpp_edit Edit the header file ImageBlurer.hpp
+Edit the ImageBlur_props class and perform changes listed below.
+- Add the parameter related to the size of blur mask (width and height).
+\code
+/*!
+ * Size of mask.
+ */
+cv::Size maskSize;
+\endcode
+
+ - Add code responsible for loading of properties from file in the <b>load()</b> method.
+\code
+maskSize.width = pt.get("width", 3);
+maskSize.height = pt.get("height", 3);
+\endcode
+\note The second parameter of the <b>get()</b> method is the default value - in case when related section won't be found in the xml configuration file.
+ - Add code responsible for saving properties to files in the <b>save()</b> method.
+\code
+pt.put("width",  maskSize.width);
+pt.put("height", maskSize.height);
+\endcode
+
+\section blurer_cpp_edit Edit the source file ImageBlurer.cpp
+Find the code related to the bluring and substitute it with the following.
+\code
+...
+blur(img, img, cv::Size(props.maskSize.width, props.maskSize.height));
+...
+\endcode
+
+\note Compile and copy the result to the <b>bin</b> directory.
+
+\section ts_file Task file
+Edit the ImageBlurer.xml file and add new properties to the <b>Blur1</b> component configuration.
+\code
+	...
+	<Blur1 type="ImageBlurer" thread="Exec1" group="s1">
+		<width>10</width>
+		<heigth>10</heigth>
+	</Blur1>
+	...
+\endcode
+
+\section ts_result Result
+Component gains the possibility to change the size of blurring mask without code recompilation.
+
+\section ts_sections Related sections
+\see \ref manuals_components : Description of components
+
+\up_prev_bottom{beginner_discode_tutorials, beginner_discode_07_component_images_blurer}
+*/

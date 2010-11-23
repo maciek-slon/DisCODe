@@ -1,0 +1,44 @@
+/*!
+\page beginner_discode_tutorials The introduction to DisCODe
+<div class="center">[Beginner level]</div>
+\next_top{beginner_camera_calibration_tutorials}
+
+The tutorial contains a step-by-step introduction to DisCODe.
+
+\beginlinklist
+- \ref beginner_discode_00_description\n
+Describes common sections, from which every tutorial is built.
+
+- \ref beginner_discode_01_parameters\n
+Explains parameters passed to DisCODe.
+
+- \ref beginner_discode_02_moviereader\n
+The goal of this tutorial is to load a task responsible for loading movie from files and displaying them on screen.
+
+- \ref beginner_discode_03_moviereader_changeparameter\n
+The tutorial explains how to override from the command line the value of parameter loaded from the task configuration file.
+
+- \ref beginner_discode_04_sequencereader\n
+Describes how to create a new task - in this case responsible for loading sequence of images from files.
+
+- \ref beginner_discode_05_trigerred_sequencereader\n
+The tutorial explains how to expand task by another, existing component.
+
+- \ref beginner_discode_06_refreshedtriggered_sequencereader\n
+The tutorial goal is to move a component to a separate executor - in order to achieve better refresh rate of displayed images.
+
+- \ref beginner_discode_07_component_images_blurer\n
+The goal is to create a component responsible for bluring of the images.
+
+- \ref beginner_discode_08_component_properties\n
+The goal is to add properties to component, which can be set in the configuration file.
+
+- \ref beginner_discode_09_using_logger\n
+Tired of printf'ing and commenting out old debugs?
+
+
+\endlinklist
+
+\next_bottom{beginner_camera_calibration_tutorials}
+
+*/

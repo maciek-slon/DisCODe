@@ -1,60 +1,48 @@
 /*!
 \page didactics_ecovi ECOVI - Computer Vision
 
-\section Download
+\section ecovi_discode_installation The DisCODe installation
+Please refer to the \ref installation. Please perform the following steps:
+ - select the SDK for Windows (32bit),
+ - install both the developement environment and SDK,
+ - create a test component and configure its makefile.
 
-\subsection discode_sh The DisCODe SDK install script
-The latest SDK prepared for machines working under the control of the GENTOO network Linux (Segomo Server) 
-can be downloaded from <a href="http://segomo.elka.pw.edu.pl/~discode/DisCODe-1.0.0-Linux.sh">here</a>.
-
-After successful download please display script parameters.
-
-\cons
-cd bin 
-./DisCODe-1.0.0-Linux.sh --help
-\endcons
-
-Execute the script to install the SDK.
-\note Utilize the <b>--prefix</b> to set the directory in which SDK will be installed.
-
-\subsection discode_datasets The Datasets
+\section ecovi_discode_datasets Required datasets
 Datasets can be downloaded, as well as used externally.
 
-Movies:
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a> - Movies containing road signs. 
+- Movies containing road signs.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a>
 
-Images:
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> - images used commonly in computer vision (Lena, etc.). 
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a> - some other images from the OpenCV examples.
+- Images used commonly in computer vision (Lena, etc.).\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
 
-Calibration:
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a> - chessboard pictures from the OpenCV examples.
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a> - chessboard pictures taken with the use camera from the Robotics Lab.  
+ - Some other images from the OpenCV examples.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
 
+- Calibration: chessboard pictures from the OpenCV examples.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv.rar">calibration_opencv.rar</a>\n
+Note: The size from the OpenCV example chessboard is 9 (width) x 6 (height).
 
-\section decovi_t0 Tutorial 0: Introduction to DisCODe
-
-- \ref discode_00_description
-- \ref discode_01_parameters
-- \ref discode_02_moviereader
-- \ref discode_03_moviereader_changeparameter
-- \ref discode_04_sequencereader
-- \ref discode_05_trigerred_sequencereader
-- \ref discode_06_refreshedtriggered_sequencereader
-- \ref discode_07_component_images_blurer
+- Calibration: chessboard pictures taken with the use camera from the Robotics Lab at the ICCE.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab.rar">calibration_robotics_lab.rar</a>\n
+Note: The size of out chessboard is 8 (width) x 6 (height).
 
 
-\subsection discode_tut0 Additional files
- - <a href="/home/discode/public_html/TriggeredSequenceViewer.xml">TriggeredSequenceViewer.xml</a> - Task file related to the 5th part of tutorial.
+\section ecovi_tutorials Tutorials
+\beginlinklist
+- Tutorial 0: \ref beginner_discode_tutorials [Beginner level]\n
+The tutorial contains a step-by-step introduction to DisCODe.
 
+- Tutorial 1: \ref beginner_camera_calibration_tutorials [Beginner level]\n
+The tutorial regards the problem of camera calibration.
 
-\section decovi_t1 Tutorial 1: Camera calibration 
+- Tutorial 2: \ref beginner_feature_extraction_tutorials [Beginner level]\n
+The tutorial focuses on the extraction of features from images.
 
- - \ref camera_calibration_01_findchessboard
- - \ref camera_calibration_02_calibration 
- - \ref camera_calibration_03_undistortion
+\endlinklist
+
 */
-
-//\subsection discode_tut0 Additional files
-// - <a href="/home/discode/public_html/TriggeredSequenceViewer.xml">TriggeredSequenceViewer.xml</a> - Task file related to the 5th part of the tutorial.
-

@@ -1,0 +1,124 @@
+/*!
+\page windows_sdk_installation Windows SDK
+
+\up_top{installation}
+
+There are two elements that must be installed:
+- the DisCODe developement environment, containing tools and libraries required during the component developement and compilation,
+- the DisCODe SDK for Windows.
+
+\section win_dis_env The DisCODe environment
+- Download the latest version of environment from here: <a href="https://segomo.elka.pw.edu.pl/~discode/DisCODeEnv.exe">DisCODeEnv.exe</a>.
+
+- Install the environment by simply running the <b>DisCODeEnv.exe</b> and enter the destination path
+(e.g. "D:\" will extract the environment to the "D:\DisCODeEnv\". The output directory will be called <i>env_dest_path</i>).
+
+
+\section win_dis_The DisCODe SDK
+- Download the latest version of SDK from here: <a href="https://segomo.elka.pw.edu.pl/~discode/DisCODe-1.0.0-win32.exe">DisCODe-1.0.0-win32.exe</a>.
+
+- Run the SDK installator. Read and accept the license agreement.
+
+- Set the destination path <i>sdk_dest_path</i> (for further cmake configuration it is
+suggested to install the SDK near (or inside) the <i>env_dest_path</i> directory, e.g. "D:\DisCODeEnv\DisCODe").
+
+
+\page win_sdk_new_comp New Component in SDK
+
+\up_top{installation}
+
+\section win_dis_evn_run Run the DisCODe environment
+- Enter the <i>env_dest_path</i> and run the <b>env.bat</b> script.
+
+\htmlonly
+<img src="images/win_dis_env_command_line.png" style="margin: 5px; width: 500px;">
+\endhtmlonly
+
+\note The <i>env_dest_path</i> is a directory where the DisCODe environment was installed.
+
+\section win_sdk_comp_gen Generate new component
+The <b>create.bat</b> can be used for generation of the empty shell of the new component (divided in to hpp and cpp files).
+- In the environment enter the Component directory:
+\cons
+cd <i>sdk_dest_path</i>\\Component
+\endcons
+
+\note The <i>sdk_dest_path</i> is a directory where the DisCODe SDK was installed.
+
+- Run script with new components name as parameter (e.g. TestComponent)
+\cons
+create.bat TestComponent
+\endcons
+
+A directory <i>TestComponent</i> with adequte hpp, cpp and CMakeList.txt files will be created.
+
+\section win_sdk_comp_cmake Generate the Makefile for Component
+- Enter the <i>TestComponent</i> directory and run the <b>cmake-gui</b>.
+\cons
+cmake-gui
+\endcons
+
+- Set paths to the <i>TestComponent</i> source and output binaries.
+
+\htmlonly
+<img src="images/win_dis_sdk_cmake1.png" style="margin: 5px; width: 700px;">
+\endhtmlonly
+
+- Press the <b>Configure</b> button. A window will appear with the selection of generator. Choose the MinGW Makefile.
+
+\htmlonly
+<img src="images/win_dis_sdk_cmake2.png" style="margin: 5px; width: 400px;">
+\endhtmlonly
+
+- Press the <b>Configure</b> button once again - the <b>Generate</b> button will become active.
+
+- Press the <b>Generate</b> button - the Makefile for the TestComponent will be generated.
+
+Adequate Makefile (with required files) will be generated.
+
+\note CMake enables also the out-of-source build. For more please refer \link http://www.openscenegraph.org/projects/osg/wiki/Build/CMake here\endlink.
+
+\section win_sdk_component_opencv Add OpenCV library to list of linked libraries
+In order to utilize OpenCV in component perform operations described below.
+
+- Add OpenCV library to list of linked libraries: edit the <b>CMakeLists.txt</b> file in order to uncomment the OpenCV library dependency.
+\code
+...
+FIND_PACKAGE( OpenCV REQUIRED )
+SET(LIBS ${OpenCV_LIBS} ${OpenCV_LIBRARIES} ${LIBS} )
+...
+\endcode
+
+\note To uncomment given line remove the # character from the front.
+
+- Run <b>cmake-gui</b> and set path to the <i>OpenCV</i>.
+
+\htmlonly
+<img src="images/win_dis_sdk_cmake3.png" style="margin: 5px; width: 700px;">
+\endhtmlonly
+
+\note In order to perform the above changes you <b>must generate Makefile</b> once again!
+
+- Edit the component header file in order to add required OpenCV headers after the existing ones and access to the OpenCV namespace <b>cv</b>.
+\code
+...
+#include <cv.h>
+using namespace cv;
+...
+\endcode
+
+
+\section win_sdk_comp_make Compile and install the component
+- Run makefile (from the environment)
+\cons
+make
+\endcons
+
+- Copy the created library to DisCODe binaries.
+\cons
+copy libTestComponent.dll ..\..\\bin
+\endcons
+
+\up_bottom{installation}
+
+*/

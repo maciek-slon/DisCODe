@@ -1,0 +1,313 @@
+/*!
+\page beginner_camera_calibration_01_findchessboard Localize the calibration pattern
+
+\up_next_top{beginner_camera_calibration_tutorials, beginner_camera_calibration_02_undistortion}
+
+\section ts_objectives Tutorial objectives
+The goal of this tutorial is to create a task responsible for chessboard localization and performing the calibration computations.
+
+\section ts_structure Task structure
+The task should consist of four components - three existing and a one new, implemented during this tutorial.
+\htmlonly
+<img src="images/beginner_CameraCalibration.png" style="margin: 5px; width: 500px;" alt="CameraCalibration"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+\section ts_component_chess The CameraCalibration component
+
+The <b>ChessboardComponent</b> component has two major functions:
+- Localization of chessboard in the input image (<b>in_img</b> data port). \n
+The <b>t_Pressed</b> event should trigger the <b>Sequence</b> to load next image from file, pass it to the output data port <b>out_omg</b> and emit the <b>newImage</b> event.
+In the <b>ChessboardComponent::onNewImage()</b> event handler the component should try to localize it and - in the case of successful localization - it should remember
+the result (set of image points containing corners and adequate object points). Afterwards the chessboard should be drawn on the ouput image and passed to the
+<b>imageProcesed</b> output data port.
+
+- performing the calibration computations - in the case when user pressed the <b>c</b>. \n
+The <b>c_Pressed</b> event should trigger the <b>onCalibration()</b> handler, which should compute the calibration parameters (on the base of gathered calibration set).
+The result should be save to a file.
+
+\subsection component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile.
+Select your operating system:
+\htmlonly
+<table style="border: 0px;">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/linux_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref linux_sdk_new_comp
+\htmlonly
+</td>
+<td>
+Describes how to utilize the SDK in order to create and compile new component under Ubuntu OS.
+</td>
+</tr>
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref win_sdk_new_comp
+\htmlonly
+</td>
+<td>
+Describes how to utilize the SDK in order to create and compile new component under Windows OS (32bit).
+</td></tr>
+</table>
+\endhtmlonly
+
+\subsection beg_cam_calib_properties Create component properties
+Because the calibration patterns might differ (e.g. different number of squares and their sizes) it is required to create the possibility for changing those parameters without the recompilation.
+That is why the component properties should be implemented.
+
+ - Edit the component header, find the <b>Props</b> structure and add following fields to the structure.
+\code
+	// Size of chessboard - number of inner corners in both board dimensions.
+	cv::Size patternSize;
+
+	// Size of chessboard square - in metres.
+	float squareSize;
+
+    // Name of file to which calibration results will be saved.
+	string calibrationResults;
+\endcode
+
+- Implement the method responsible for properties load.
+\code
+	void load(const ptree & pt)
+	{
+         patternSize.width = pt.get<int>("width",6);
+         patternSize.height = pt.get<int>("height",9);
+         squareSize = pt.get<float>("squareSize",0.02);
+         calibrationResults = pt.get<string>("calibrationResults", "calibration_results.xml");
+
+         LOG(LNOTICE) << "Searching for chessboards: (" <<patternSize.width << "," <<patternSize.height << ")\n";
+	}
+\endcode
+
+\note The default values are passed as second parameters to the <b>get</b> template method.
+
+- Implement the method responsible for properties save.
+\code
+	void save(ptree & pt)
+	{
+         pt.put("width", patternSize.width);
+         pt.put("height", patternSize.height);
+         pt.put("squareSize", squareSize);
+         pt.put("calibrationResults", calibrationResults);
+    }
+\endcode
+
+\subsection beg_cam_calib_declarations Add required fields and methods to the declaration of the ChessboardComponent class.
+ - Enter the <b>protected</b> section of the class and add fields related to data stored between frames.
+\code
+	...
+     // Size of the image.
+    Size imageSize;
+
+    // The vector of vectors of the object point projections on the calibration pattern views, one vector per a view.
+    vector<vector<Point2f> > imagePoints;
+
+    // The vector of vectors of points on the calibration pattern in its coordinate system, one vector per view.
+    vector<vector<Point3f> > objectPoints;
+	...
+\endcode
+
+- Add input and output data ports.
+\code
+	...
+    // Input data port.
+    Base::DataStreamIn <cv::Mat> in_img;
+
+    // Output image - with chessboard drawn if located.
+    Base::DataStreamOut <cv::Mat> out_img;
+	...
+\endcode
+
+ - Add event emited after the image is processed.
+\code
+	...
+	// Event emited after the image is processed.
+    Base::Event * imageProcessed;
+	...
+\endcode
+
+ - Add event handlers and methods utilized when a new image is received.
+\code
+	...
+    // "OnNewImage" event handler.
+    Base::EventHandler <CameraCalibration_Processor> h_onNewImage;
+
+    // Method related to the event h_onNewImage handler.
+    void onNewImage();
+
+    // Adds detected chessboard corners to set (all found object and image points).
+    void addCornersVectorToSet(vector<Point2f>& corners_);
+	...
+\endcode
+
+ - Add event handlers and methods related to calibration.
+\code
+	...
+    // "onCalibrate" event handler.
+    Base::EventHandler <CameraCalibration_Processor> h_onCalibrate;
+
+    // Method related to the event h_onCalibrate handler.
+    void onCalibrate();
+
+    // Save parameters to file.
+    void saveParameters(Mat& cameraMatrix_, Mat& distCoeffs_);
+	...
+\endcode
+
+\subsection beg_cam_calib_definitions Add definitions of ChessboardComponent class methods.
+- In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
+\code
+	...
+    // Register handlers.
+    h_onNewImage.setup(this, &CameraCalibration_Processor::onNewImage);
+    registerHandler("onNewImage", &h_onNewImage);
+
+    h_onCalibrate.setup(this, &CameraCalibration_Processor::onCalibrate);
+    registerHandler("onCalibrate", &h_onCalibrate);
+
+    // Register event.
+    imageProcessed = registerEvent("imageProcessed");
+
+    // Register data streams.
+    registerStream("in_img", &in_img);
+    registerStream("out_img", &out_img);
+	...
+\endcode
+
+- Implement the <b>onNewImage()</b> method - localize the chessboard.
+\code
+void CameraCalibration_Processor::onNewImage()
+{
+	LOG(LTRACE) << "CameraCalibration_Processor::onNewImage()";
+
+	// Vector containing found corners.
+    vector <Point2f> corners;
+    // Read image from input data stream.
+    Mat img = in_img.read();
+
+    // Set the image size.
+    imageSize = img.size();
+
+    // Try to find chessboard corners.
+    if(findChessboardCorners(img, props.patternSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE + CV_CALIB_CB_FAST_CHECK))
+    {
+        // Add found vector to calibration dataset.
+        addCornersVectorToSet(corners);
+        // Draw chessboard.
+        drawChessboardCorners(img, props.patternSize, Mat(corners), true);
+        LOG(LNOTICE) << "Chessboard found";
+    }
+    else
+        LOG(LWARNING) << "Chessboard not found";
+
+    // Write image to output data stream.
+    out_img.write(img);
+    // Raise event.
+    imageProcessed->raise();
+}
+\endcode
+
+- Implement method responsible for saving localized corners.
+\code
+void CameraCalibration_Processor::addCornersVectorToSet(vector<Point2f>& crnpts_)
+{
+    // Add image points.
+    imagePoints.push_back(crnpts_);
+
+    // Compute object points.
+    vector<Point3f> objpts;
+    for( int i = 0; i < props.patternSize.height; i++ )
+        for( int j = 0; j < props.patternSize.width; j++ )
+            objpts.push_back(Point3f(float(j*props.squareSize), float(i*props.squareSize), 0));
+
+    // Add object points.
+    objectPoints.push_back(objpts);
+
+    LOG(LINFO) << "Image Points: ";
+    BOOST_FOREACH(Point2f pt, crnpts_) {
+        LOG(LINFO) <<"("<<pt.x<<","<<pt.y <<") ";
+    }//: foreach
+    LOG(LINFO) << "Object Points: ";
+    BOOST_FOREACH(Point3f pt, objpts) {
+        LOG(LINFO) <<"("<<pt.x<<","<<pt.y <<",0) ";
+    }//: foreach
+}
+\endcode
+
+- Implement the <b>onCalibrate</b> handler responsible for calibration computations.
+\code
+void CameraCalibration_Processor::onCalibrate()
+{
+    LOG(LINFO) << "CameraCalibration_Processor::onCalibrate()";
+
+    // The 3x3 camera matrix containing focal lengths fx,fy and displacement of the center of coordinates cx,cy.
+    Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
+    // Set two focal lengths in intrinsic matrix to have a ratio of 1.
+    cameraMatrix.at<double>(0,0) = 1.0f;
+    cameraMatrix.at<double>(1,1) = 1.0f;
+
+    // Vector with distortion coefficients k_1, k_2, p_1, p_2, k_3.
+    Mat distCoeffs = Mat::zeros(8, 1, CV_64F);
+
+    // The output vector of rotation vectors.
+    vector<Mat> rvecs;
+    // The output vector of translation vectors.
+    vector<Mat> tvecs;
+
+    // Calibrate camera.
+    double errors = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs, 0);
+
+    LOG(LNOTICE) << "Calibration finished with reprojection error =" << errors;
+
+    // Save calibration parameters.
+    saveParameters(cameraMatrix, distCoeffs);
+}
+\endcode
+
+
+- Implement method responsible for saving of the computed calibration parameters.
+\code
+void CameraCalibration_Processor::saveParameters(Mat& cameraMatrix_, Mat& distCoeffs_)
+{
+    LOG(LNOTICE) << "Camera matrix";
+    LOG(LNOTICE) << cameraMatrix_.at<double>(0,0) <<" "<< cameraMatrix_.at<double>(0,1) <<" "<< cameraMatrix_.at<double>(0,2);
+    LOG(LNOTICE) << cameraMatrix_.at<double>(1,0) <<" "<< cameraMatrix_.at<double>(1,1) <<" "<< cameraMatrix_.at<double>(1,2);
+    LOG(LNOTICE) << cameraMatrix_.at<double>(2,0) <<" "<< cameraMatrix_.at<double>(2,1) <<" "<< cameraMatrix_.at<double>(2,2);
+    LOG(LNOTICE) << "Distortion coefficients";
+    LOG(LNOTICE) << distCoeffs_.at<double>(0,0) <<" "<< distCoeffs_.at<double>(1,0) <<" "<< distCoeffs_.at<double>(2,0) <<" "<< distCoeffs_.at<double>(3,0)
+                 <<" "<< distCoeffs_.at<double>(4,0) <<" "<< distCoeffs_.at<double>(5,0) <<" "<< distCoeffs_.at<double>(6,0) <<" "<< distCoeffs_.at<double>(7,0);
+
+    FileStorage fs(props.calibrationResults, FileStorage::WRITE);
+    fs << "camera_matrix" << cameraMatrix_;
+    fs << "distortion_coefficients" << distCoeffs_;
+
+    LOG(LINFO) << "Results saved to "<< props.calibrationResults << " file.";
+}
+\endcode
+
+\section ts_hints Hints
+ - Select one of the two available calibration datasets.
+ - Create task file on the base of the <b>ImageBlurer.xml</b> file.
+ - Use the OpenCV <b>findChessboardCorners()</b> for chessboard localization.
+ - Utilize the <b>drawChessboardCorners()</b> for drawing of chessboard corners on output image.
+
+
+\section ts_result Result
+In result a calibration a sequence of images will be displayed - with located corners on every image containing chessboard.
+
+\section ts_sections Related sections
+\see OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.
+\see A <a href="http://www.youtube.com/watch?v=DrXIQfQHFv0">movie</a> presenting the OpenCV-based chessboard localization.
+\see \ref manuals_components : Description of components
+
+\up_next_bottom{beginner_camera_calibration_tutorials, beginner_camera_calibration_02_undistortion}
+*/
+
+-
+\code
+...
+
+...
+\endcode
+

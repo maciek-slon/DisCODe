@@ -1,43 +1,113 @@
 // Installation
 /*!
-\page installation Installation notes
+\page installation Installation instructions
 
-\beginlinklist
+Currently there are two installation possibilities: the whole DisCODe distribution or the DisCODe SDK.
 
-\section stepsbystep Step by step
+\section sdk_installation The DisCODe SDKs
+The Software Developement Kit (SDK) consists of four directories required for DisCODe execution and developement of new components:
+- bin - contains binaries (DisCODe core, libraries, selected components),
+- include - headers containing base classes and interfaces that can berequired during compilation,
+- Tasks - folder containing selected tasks,
+- Component - contains the Example component and <b>create</b> script utilized for creation of new component.
 
-Select your operating system to get detailed, step by step instructions how to get, build and run DisCODe.
-
+Select your operating system:
 \htmlonly
 <table style="border: 0px; margin-left: 40px;">
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/UbuntuLogo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/gentoo_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
-\subpage ubuntu "Ubuntu"
+\ref gentoo_sdk_installation (supported)
 \htmlonly
-</td></tr>
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="images/WindowsLogo.jpg"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+</td>
+<td>
+Provides instructions regarding the method of the DisCODe SDK installation on machines controlled by the Gentoo OS (Segomo Server).
+</td>
+</tr>
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
-\subpage windows "Windows"
+\ref windows_sdk_installation (supported)
 \htmlonly
+</td>
+<td>
+Provides instructions regarding the method of the DisCODe SDK installation under the Windows OS (32bit).
 </td></tr>
 </table>
 \endhtmlonly
 
+\section sdk_component Utilization of DisCODe SDKs
+There are tools prepared that facilitate the creation of new components and generation of Makefiles required for their compilation.
+
+Select your operating system:
 \htmlonly
-<iframe src="http://player.vimeo.com/video/15740907" width="400" height="300" frameborder="0"></iframe><p><a href="http://vimeo.com/15740907">Getting started on Windows - compile</a> from <a href="http://vimeo.com/user4940026">DisCODe</a> on <a href="http://vimeo.com">Vimeo</a>.</p>
+<table style="border: 0px; margin-left: 40px;">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/linux_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
 \endhtmlonly
+\ref linux_sdk_new_comp (supported)
+\htmlonly
+</td>
+<td>
+Describes how to utilize the SDK in order to create and compile new component under OS from the Linux family.
+</td>
+</tr>
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref win_sdk_new_comp (supported)
+\htmlonly
+</td>
+<td>
+Describes how to utilize the SDK in order to create and compile new component under Windows OS (32bit).
+</td></tr>
+</table>
+\endhtmlonly
+
+
+
+\section stepsbystep The DisCODe source
+The DisCODe source contains the code sources (core, components, utilities) and enables you to compile the whole project on your own.
+
+Select your operating system:
+\htmlonly
+<table style="border: 0px; margin-left: 40px;">
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/ubuntu_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref ubuntu (supported)
+\htmlonly
+</td>
+<td>
+Provides detailed step by step instructions how to download, build and run DisCODe on Ubuntu OS.
+</td>
+</tr>
+<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
+\endhtmlonly
+\ref windows (supported)
+\htmlonly
+</td>
+<td>
+Provides detailed step by step instructions how to download, build and run DisCODe on Windows OS.
+</td></tr>
+</table>
+\endhtmlonly
+
+\note Distributions require installation of additional \ref software_utilities.
+
+- \ref win_dis_sdk
+
 
 \section system_ide System and IDE related stuff
 
 - \ref git_intro \n
   Introduction to Git and Github as well.
-- \ref system_requirements\n
+- \ref software_utilities\n
   List of required software and libraries.
 - \ref eclipseconfig\n
   Required plugins, importing repository, using CMake.
-
-\endlinklist
 */
+
+//\beginlinklist
+//\endlinklist
+
+
+
 
 // Eclipse configuration
 /// \todo translate to english

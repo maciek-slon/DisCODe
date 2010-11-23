@@ -14,6 +14,8 @@
 #include <cv.h>
 #include <vector>
 
+#include <boost/foreach.hpp>
+
 namespace Types {
 
 class DrawableContainer : public Drawable {
@@ -21,8 +23,8 @@ public:
 	~DrawableContainer() {}
 
 	virtual void draw(cv::Mat & image, CvScalar color, int offsetX = 0, int offsetY = 0) {
-		for (size_t i = 0; i < items.size(); ++i) {
-			items[i]->draw(image, color, offsetX, offsetY);
+		BOOST_FOREACH(Drawable * item, items) {
+			item->draw(image, color, offsetX, offsetY);
 		}
 	}
 
@@ -32,8 +34,9 @@ public:
 
 	virtual Drawable * clone() {
 		DrawableContainer * ret = new DrawableContainer;
-		for (size_t i = 0; i < items.size(); ++i)
-			ret->add(items[i]->clone());
+		BOOST_FOREACH(Drawable * item, items) {
+			ret->add(item->clone());
+		}
 
 		return ret;
 	}

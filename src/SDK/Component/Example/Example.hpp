@@ -18,17 +18,15 @@ namespace Example {
 /*!
  * \brief Example properties
  */
-struct Props: public Base::Props
+struct Example_Props: public Base::Props
 {
-
-	int sample;
 
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
-		sample = pt.get("sample", 0);
+
 	}
 
 	/*!
@@ -36,7 +34,7 @@ struct Props: public Base::Props
 	 */
 	void save(ptree & pt)
 	{
-		pt.put("sample", sample);
+
 	}
 
 };
@@ -93,10 +91,9 @@ protected:
 	 */
 	bool onStop();
 
+	/// Properties
+	Example_Props props;
 
-
-	/// Threshold properties
-	Props props;
 };
 
 }//: namespace Example

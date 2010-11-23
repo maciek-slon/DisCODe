@@ -1,10 +1,12 @@
 /*!
-\page discode_05_trigerred_sequencereader Expand task by a new component
+\page beginner_discode_05_trigerred_sequencereader Expand task by a new component
+
+\up_prevnext_top{beginner_discode_tutorials, beginner_discode_04_sequencereader, beginner_discode_06_refreshedtriggered_sequencereader}
 
 \section ts_objectives Tutorial objectives
 Modify the SequenceViewer.xml (task responsible for loading sequence of images from files and
-displaying them one-by-one) by adding the Keyboard component in order to gain the possibility 
-to trigger the next image load, thus its display.    
+displaying them one-by-one) by adding the Keyboard component in order to gain the possibility
+to trigger the next image load, thus its display.
 
 \section ts_structure Task structure
 The structure of the TriggeredSequenceViewer task is shown below.
@@ -13,24 +15,24 @@ The structure of the TriggeredSequenceViewer task is shown below.
 <img src="images/TriggeredSequenceViewer.png" style="margin: 5px; width: 450px;" alt="TriggeredSequenceViewer"/>
 \endhtmlonly
 
-\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 \note The reason of the separate thread for the \ref Keyboard is explained in its description.
 
 \section ts_file Task file
 Create a new TriggeredSequenceViewer.xml file on the base of the previously created SequenceViewer.xml.
 Modify required parts:
-- Add the <b>Kbd1</b> component to a separate <b>Exec2</b> executor.  
+- Add the <b>Kbd1</b> component to a separate <b>Exec2</b> executor.
 \code
 	<Components>
 		...
         <Kbd1 type="Keyboard" thread="Exec2" group="s1">
-            <keys>t</keys> 
+            <keys>t</keys>
         </Kbd1>
 		...
 \endcode
 \note The list of keys contain only one key. This means that only the <b>t</b> button will raise adequate (<b>t_Pressed</b>) event.
 
-- Set the <b>triggered</b> property of the <b>Seq1</b> component.  
+- Set the <b>triggered</b> property of the <b>Seq1</b> component.
 \code
 		<Seq1 type="Sequence" thread="Exec1" group="s1">
 			...
@@ -40,7 +42,7 @@ Modify required parts:
 \endcode
 
 
-- Create second executor and set the main thread component to <b>Kbd1</b>. 
+- Create second executor and set the main thread component to <b>Kbd1</b>.
 \code
 	<Executors>
 		...
@@ -50,7 +52,7 @@ Modify required parts:
 		...
 \endcode
 
-- Add event and event handler - thrown when the <b>t</b> button will be pressed and handled by the <b>onTrigger</b> connected handler. 
+- Add event and event handler - thrown when the <b>t</b> button will be pressed and handled by the <b>onTrigger</b> connected handler.
 \code
 	<Events>
 		...
@@ -59,7 +61,7 @@ Modify required parts:
 \endcode
 
 \section ts_result Result
-A sequence of images  will be displayed. After an image will be shown application will wait for user 
+A sequence of images  will be displayed. After an image will be shown application will wait for user
 to enter the 't' (must be followed by <enter>) to load and display another.
 
 \note Notice the problem of image refreshment - this will be solved in the next tutorial.
@@ -67,7 +69,8 @@ to enter the 't' (must be followed by <enter>) to load and display another.
 \section ts_sections Related sections
 \see \ref manuals_components : Description of components
 \see \ref manuals_executors : Description of executors
-\see \ref Keyboard : Source responsible for raising events related to keystrokes   
+\see \ref Keyboard : Source responsible for raising events related to keystrokes
 
-\prevnext{discode_04_sequencereader, discode_06_refreshedtriggered_sequencereader}
+\up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_04_sequencereader, beginner_discode_06_refreshedtriggered_sequencereader}
+
 */

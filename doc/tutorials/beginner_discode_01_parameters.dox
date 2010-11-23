@@ -1,14 +1,14 @@
 /*!
-\page discode_01_parameters Display DisCODe parameters 
+\page beginner_discode_01_parameters Display DisCODe parameters
+
+\up_prevnext_top{beginner_discode_tutorials, beginner_discode_00_description, beginner_discode_02_moviereader}
 
 \section ts_objectives Tutorial objectives
 Familiarize yourself with DisCODe parameters.
 
 \section ts_command Command
 From the <b>bin</b> directory execute the discode with option that lists possible parameters.
-\cons
-./discode --help
-\endcons
+\lin_win_command{./discode --help, discode --help}
 
 \section ts_result Result
 DisCODe parameters will be listed.
@@ -25,6 +25,6 @@ Additional options:
   - <b>-D [ --create-config ]</b>            Create default configuration file.
   - <b>--create-task</b>                     Create a default task file.
   - <b>--unstoppable</b>                     Process cannot be stopped by SIGINT (CTRL+C) signal. MWAHAHAHA!
- 
-\prevnext{discode_00_description, discode_02_moviereader}
+
+\up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_00_description, beginner_discode_02_moviereader}
 */

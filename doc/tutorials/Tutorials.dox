@@ -2,62 +2,23 @@
 /*!
 \page tutorials Tutorials
 
+\section tut_beginner [Beginner level]
+
 \beginlinklist
+- \ref beginner_discode_tutorials\n
+The tutorial contains a step-by-step introduction to DisCODe.
 
-\section dev_components Introduction to DisCODe
-- \ref discode_00_description
-- \ref discode_01_parameters
-- \ref discode_02_moviereader
-- \ref discode_03_moviereader_changeparameter
-- \ref discode_04_sequencereader
-- \ref discode_05_trigerred_sequencereader
-- \ref discode_06_refreshedtriggered_sequencereader
-- \ref discode_07_component_images_blurer
-
-\section using_utils Utility library usage
-- \ref using_logger\n
-  Tired of printf'ing and commenting out old debugs?
+- \ref beginner_camera_calibration_tutorials \n
+A step-by-step instruction describing the implementation of components responsible fod camera calibration and distortion removal.
 
 \endlinklist
-*/
 
+\section tut_intermediate [Intermediate level]
 
-// - \ref newprocessor
-/*!
-\page discode_00_description How to read the tutorials
+\beginlinklist
+- \ref intermediate_camera_calibration_tutorials \n
+The tutorial contains instruction regarding the solution of the camera calibration problem.
 
-\section ts_objectives Tutorial objectives
-Contains small description of the problem.
-
-\section ts_command Command
-Shell command. 
-
-\section ts_structure Task structure
-Describes the image of the task structure.
-
-Elements of diagrams representing the task structure are explained below.
-
-\htmlonly
-<img src="images/Legend.png" style="margin: 5px; width: 500px;" alt="Legend"/>
-\endhtmlonly
-
-\note For more informations regarding the diagram elements please refer to the manuals.   
-
-\section ts_hints Hints
-List of useful hints related to given problem. 
-
-\section ts_file Task file
-Contains the description of the task file (XML).
-
-\section ts_component Component
-Contains informations related to given component.
-
-\section ts_result Result
-Describes the results of the given tutorial.
-
-\section ts_sections Related sections
-List of useful links.
-
-\next{discode_01_parameters}
+\endlinklist
 
 */
