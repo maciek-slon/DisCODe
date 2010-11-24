@@ -15,7 +15,6 @@
 #include "Component_Aux.hpp"
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
-#include "SampleClass.hpp"
 #include "xdr/xdr_oarchive.hpp"
 #include "xdr/xdr_iarchive.hpp"
 #include "Socket.hpp"
