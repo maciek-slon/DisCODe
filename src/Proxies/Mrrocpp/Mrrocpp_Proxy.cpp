@@ -129,8 +129,9 @@ bool Mrrocpp_Proxy::onStep()
 
 void Mrrocpp_Proxy::onNewReading()
 {
-	LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading\n";
+	LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading\n";
 	readingMessage = reading.read();
+	readingMessage->printInfo();
 	if (proxyState == PROXY_WAITING_FOR_READING) {
 		LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading(): proxyState == PROXY_WAITING_FOR_READING\n";
 		rmh.is_rpc_call = false;

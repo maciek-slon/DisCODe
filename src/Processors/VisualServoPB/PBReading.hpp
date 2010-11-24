@@ -39,12 +39,31 @@ public:
 
 	bool objectVisible;
 	Types::HomogMatrix objectPosition;
+
+	virtual void printInfo()
+	{
+		LOG(LNOTICE) << "PBReading::printInfo()\n";
+		stringstream ss;
+		if (objectVisible) {
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 4; ++j) {
+					ss << objectPosition.elements[i][j] << "  ";
+				}
+
+				ss << "\n";
+			}
+		} else {
+			ss << "object not visible\n";
+		}
+
+		LOG(LNOTICE) << "HomogMatrix:\n" << ss.str() << endl;
+	}
 private:
 	friend class boost::serialization::access;
 	template <class Archive>
 	void serialize(Archive & ar, const unsigned int version)
 	{
-		ar & boost::serialization::base_object<PBReading>(*this);
+		ar & boost::serialization::base_object <PBReading>(*this);
 		LOG(LTRACE) << "PBReading::serialize()\n";
 		ar & objectVisible;
 		ar & objectPosition;

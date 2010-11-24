@@ -37,11 +37,13 @@ Base::Props * CvSolvePnP_Processor::getProperties()
 
 bool CvSolvePnP_Processor::onStart()
 {
+	LOG(LTRACE) << "CvSolvePnP_Processor::onStart()\n";
 	return true;
 }
 
 bool CvSolvePnP_Processor::onStop()
 {
+	LOG(LTRACE) << "CvSolvePnP_Processor::onStop()\n";
 	return true;
 }
 
@@ -62,11 +64,13 @@ bool CvSolvePnP_Processor::onInit()
 
 bool CvSolvePnP_Processor::onFinish()
 {
+	LOG(LTRACE) << "CvSolvePnP_Processor::onFinish()\n";
 	return true;
 }
 
 bool CvSolvePnP_Processor::onStep()
 {
+	LOG(LTRACE) << "CvSolvePnP_Processor::onStep()\n";
 	return true;
 }
 
@@ -96,7 +100,7 @@ void CvSolvePnP_Processor::onNewObject3D()
 		hm.elements[i][3] = tvec(i, 0);
 		ss << hm.elements[i][3] << "\n";
 	}
-	LOG(LINFO) << "HomogMatrix:\n" << ss.str() << endl;
+	LOG(LNOTICE) << "HomogMatrix:\n" << ss.str() << endl;
 
 	out_homogMatrix.write(hm);
 

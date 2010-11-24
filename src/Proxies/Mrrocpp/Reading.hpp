@@ -25,12 +25,17 @@ public:
 	}
 
 	virtual Reading* clone() = 0;
+
+	virtual void printInfo()
+	{
+		LOG(LNOTICE) << "Reading::printInfo()\n";
+	}
 private:
 	friend class boost::serialization::access;
 	template <class Archive>
 	void serialize(Archive & ar, const unsigned int version)
 	{
-		LOG(LTRACE) << "Reading::serialize()\n";
+		LOG(LNOTICE) << "Reading::serialize()\n";
 	}
 
 };

@@ -42,7 +42,7 @@
 	<Executors>
 		<MrrocProxyThread type="periodic">
 			<main_component>Mrrocpp</main_component>
-			<interval>10</interval>
+			<interval>0.02</interval>
 		</MrrocProxyThread>
 		<ImageSourceThread type="periodic">
 			<main_component>ImageSource</main_component>
@@ -56,9 +56,12 @@
 	<Events>
 		<Event source="Kbd1.t_Pressed" destination="ImageSource.onTrigger"/>
 		<Event source="ImageSource.newImage" destination="FindChessboard.onNewImage"/>
+		<Event source="FindChessboard.chessboardFound" destination="PositionEstimator.onNewObject3D"/>
 		<Event source="FindChessboard.chessboardFound" destination="Window.onNewImage"/>
 		<Event source="FindChessboard.chessboardNotFound" destination="Window.onNewImage"/>
-		<Event source="FindChessboard.chessboardFound" destination="PositionEstimator.onNewObject3D"/>
+		<Event source="PositionEstimator.objectLocated" destination="VisualServoPB.onObjectLocated"/>
+		<Event source="FindChessboard.chessboardNotFound" destination="VisualServoPB.onObjectNotFound"/>
+		<Event source="VisualServoPB.readingReady" destination="Mrrocpp.onNewReading"/>
 	</Events>
 
 	<DataStreams>
@@ -82,8 +85,12 @@
 		</PositionEstimator>
 		
 		<VisualServoPB>
-		
+			<in_position type="in" group="position"/>
+			<out_reading type="out" group="reading"/>
 		</VisualServoPB>
 		
+		<Mrrocpp>
+			<reading type="in" group="reading"/>
+		</Mrrocpp>
 	</DataStreams>
 </Task>
