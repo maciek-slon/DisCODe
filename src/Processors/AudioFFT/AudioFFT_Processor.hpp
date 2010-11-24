@@ -106,12 +106,15 @@ protected:
 	void onNewData();
 
 	cv::Mat WindowedFFT(cv::Mat data_mat, int sample_size=128);
+	cv::Mat WindowedFFT2(cv::Mat data_mat, int sample_size=128);
 
 	/// Event handler.
 	Base::EventHandler <AudioFFT_Processor> h_onNewData;
 
 	/// Input data stream
 	Base::DataStreamIn <cv::Mat> in_data;
+	/// Input data stream
+	Base::DataStreamIn <SF_INFO> in_info;
 
 	/// Event raised, when image is processed
 	Base::Event * newDataL;
@@ -129,7 +132,7 @@ protected:
 	Props props;
 
 	int licznik;
-
+	SF_INFO sfinfo;
 
 	cv::Mat mat;
 	cv::Mat mat_dft;

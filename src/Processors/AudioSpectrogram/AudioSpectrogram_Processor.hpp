@@ -109,6 +109,11 @@ protected:
 	cv::Mat mat_in;
 	double max;
 	double min;
+	cv::Mat img;
+	cv::Mat mat_color;
+	cv::Mat mat_rgb;
+	cv::Mat jedynki;
+	cv::Mat jedynki2;
 };
 
 }//: namespace AudioSpectrogram

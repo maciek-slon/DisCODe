@@ -93,10 +93,10 @@ bool AudioFile_Source::onStep() {
 
 		data.create(sfinfo.channels, sfinfo.frames, CV_64FC1);
 
-		for (int c = 0; c < sfinfo.channels; c++)
-			for (int i = 0; i < sfinfo.frames; i++)
-				data.at<double> (c, i) = dataRead[c * i + c];
 
+		for (int i = 0; i < sfinfo.frames; i++)
+			for (int c = 0; c < sfinfo.channels; c++)
+				data.at<double> (c, i) = dataRead[sfinfo.channels * i + c];
 /*
 		printf("data size %d\n", sfinfo.frames);
 		printf("readcount %d<-------------------\n", readcount);

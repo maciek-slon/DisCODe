@@ -4,7 +4,7 @@
 	<!-- List of components -->
 	<Components>
 		<AudIn type="AudioFile" thread="Exec1" group="s1">
-			<filename>test2.wav</filename>
+			<filename>Harp.wav</filename>
 		</AudIn>
 
 		<AudPree type="AudioPreemphasis" thread="Exec1" group="s1">
@@ -12,7 +12,7 @@
 		</AudPree>
 		
 		<AudFFT type="AudioFFT" thread="Exec1" group="s1">
-			<sample_size>128</sample_size>
+			<sample_size>200</sample_size>
 		</AudFFT>
 		
 		<AudSpectL type="AudioSpectrogram" thread="Exec1" group="s1">
@@ -22,11 +22,11 @@
 		</AudSpectR>
 		
 		<WndL type="CvWindow" thread="Exec2" group="s1">
-			<title>Preview l</title>
+			<title>Preview left</title>
 		</WndL>
 		
 		<WndR type="CvWindow" thread="Exec2" group="s1">
-			<title>Preview r</title>
+			<title>Preview right</title>
 		</WndR>
 		
 	</Components>
@@ -40,7 +40,6 @@
             <main_component>WndL</main_component>
             <interval>0.2</interval>
         </Exec2>
-		
 	</Executors>
 
 	<!-- Event connections -->
@@ -59,17 +58,19 @@
 	<DataStreams>
 		<AudIn>
 			<out_data type="out" group="Con1"/>
-			<out_info type="out" group="Con10"/>
+			<out_info type="out" group="Con2"/>
 		</AudIn>
-
+		
 		<AudPree>
-			<in_data  type="in" group="Con1"/>
-			<in_info  type="in" group="Con10"/>
-			<out_data type="out" group="Con2"/>
+			<in_data type="in" group="Con1"/>
+			<in_info  type="in" group="Con2"/>
+			<out_data type="out" group="Con13"/>
+			<out_info type="out" group="Con14"/>
 		</AudPree>
 		
 		<AudFFT>
-			<in_data type="in" group="Con2"/>
+			<in_data type="in" group="Con13"/>
+			<in_info  type="in" group="Con14"/>
 			<out_data_r type="out" group="Con3"/>
 			<out_data_l type="out" group="Con4"/>
 		</AudFFT>

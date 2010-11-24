@@ -14,8 +14,7 @@
 namespace Processors {
 namespace AudioSpectrogram {
 
-AudioSpectrogram_Processor::AudioSpectrogram_Processor(
-		const std::string & name) :
+AudioSpectrogram_Processor::AudioSpectrogram_Processor(const std::string & name) :
 	Base::Component(name) {
 	LOG(LTRACE) << "Hello AudioSpectrogram_Processor\n";
 }
@@ -66,72 +65,44 @@ void AudioSpectrogram_Processor::onNewData() {
 	LOG(LTRACE) << "AudioSpectrogram_Processor::onNewData\n";
 	try {
 		if (licznik == 1) {
-			printf("aa\n");
 
 			if (in_data.empty())
 				return;
 
-			mat_in = in_data.read();//.clone();
+			mat_in = in_data.read();
 
-			printf("ab\n");
+			cv::Mat mat = mat_in.clone();
 
-			for (int i = 0; i < 10; i++) {
-				for (int j = 0; j < 6; j++)
-					printf("%f\t\t", mat_in.at<double> (i, j));
-				printf("\n");
-			}
+			// invert image
+			for (int t = 0; t < mat_in.cols; t++)
+				for (int s = 0; s < mat_in.rows; s++)
+					mat.at<double> ((mat_in.rows - 1) - s, t) = mat_in.at<
+							double> (s, t);
 
-			printf("bb\n");
+			// compute square of amplitude
+			mat_out = ComputeSpectrogram(mat);
 
-			mat_out=ComputeSpectrogram(mat_in);//.clone();
+			max = Max(mat_out);
+			min = Min(mat_out);
 
-			printf("mat rows=%d\tcols=%d\n", mat_in.rows, mat_in.cols);
-			printf("mat_out rows=%d\tcols=%d\n", mat_out.rows, mat_out.cols);
 
-			printf("cc\n");
-
-			for (int s = 0; s < 10; s++) // sample in time window
-			{
-				for (int t = 0; t < 6; t++) // time window
-					printf("%f\t\t", mat_out.at<double> (s, t));
-				printf("\n");
-			}
-			printf("\n");
-
-			printf("dd\n");
-
-			max=Max(mat_out);
-			min=Min(mat_out);
-
-			printf("de\n");
-			printf("min=%f\tmax=%f\t\n",min,max);
-			printf("wsp=%f\n", ((max - min) )/256);
-
-			for (int s = 0; s < mat_out.rows; s++) // sample in time window
-				for (int t = 0; t < mat_out.cols; t++) // time window
-				{
-					if (max == min)
-						max = max + 1;
-
-					mat_out.at<double> (s, t) = (mat_out.at<double> (s, t) / ((max - min ))/255) ;
-					mat_out.at<double>(s,t)=( (255.0-mat_out.at<double>(s,t)));
-				}
-
-			printf("df\n");
-			for (int s = 0; s < 10; s++) {
-				for (int t = 0; t < 6; t++)
-					printf("%f\t\t", mat_out.at<double> (s, t));
-				printf("\n");
-			}
+//			for (int s = 0; s < mat_out.rows; s++) // sample in time window
+//				for (int t = 0; t < mat_out.cols; t++) // time window
+//				{
+//					if (max == min)
+//						max = max + 1;
+//
+//					//					mat_out.at<double> (s, t) = (mat_out.at<double> (s, t) / ((max - min )/256)) ;
+//					//					mat_out.at<double>(s,t)=( (max-mat_out.at<double>(s,t)));
+//				}
 
 			printf("dg\n");
-			mat_out.convertTo(img_out_transp, CV_8SC1, 1, 0);
+			mat_out.convertTo(img_out_transp, CV_8UC1, 0.1, 0);
 
 			printf("dh\n");
 			printf("mat_out row=%d\tcol=%d\n", mat_out.rows, mat_out.cols);
 			printf("img_out_transp row=%d\tcol=%d\n", img_out_transp.rows,
 					img_out_transp.cols);
-
 
 			for (int s = 0; s < 20; s++) {
 				for (int t = 0; t < 10; t++)
@@ -139,16 +110,75 @@ void AudioSpectrogram_Processor::onNewData() {
 				printf("\n");
 			}
 
+			for (int s = 0; s < img_out_transp.rows; s++) // sample in time window
+				for (int t = 0; t < img_out_transp.cols; t++) // time window
+				{
+					//					printf("img=%d,\t255-img=%d\n",img_out_transp.at<uint8_t>(s,t),(255-img_out_transp.at<uint8_t>(s,t)));
+					img_out_transp.at<uint8_t> (s, t) = (255-(img_out_transp.at<uint8_t> (s, t)));
+				}
 			printf("di\n");
 
-			// bigger image
-			mat_big=ExtendOutputMatrix(img_out_transp,2);//.clone();
-			printf("mat_big row=%d\tcol=%d\n",mat_big.rows,
-					mat_big.cols);
+			// extend image
+			mat_big = ExtendOutputMatrix(img_out_transp, 2);
+			printf("mat_big row=%d\tcol=%d\n", mat_big.rows, mat_big.cols);
+
+			for (int s = 0; s < 20; s++) {
+				for (int t = 0; t < 10; t++)
+					printf("%d\t\t", mat_big.at<int> (s, t));
+				printf("\n");
+			}
+			cv::Mat maaat;
+			printf("aaaa\n");
+			mat_out.convertTo(maaat, CV_64FC1, 1, 0);
+
+			max=Max(maaat);
+			min=Min(maaat);
+			printf("min=%f\tmax=%f\n", min, max);
+			for(int s=0;s<mat_big.rows;s++)
+				for(int t=0;t<mat_big.cols;t++)
+				{
+					maaat.at<double>(s,t)=(maaat.at<double>(s,t));
+				}
+
+			for (int s = 0; s < 20; s++) {
+				for (int t = 0; t < 10; t++)
+					printf("%f\t\t", maaat.at<double> (s, t));
+				printf("\n");
+			}
+			printf("aaaa2\n");
+			img=cv::Mat(cv::Size(mat_out.cols,mat_out.rows),CV_64FC3);
+			printf("aaaa3\n");
+			jedynki=cv::Mat::ones(mat_out.rows,mat_out.cols,CV_64FC1);
+			jedynki2=cv::Mat::ones(mat_out.rows,mat_out.cols,CV_64FC1);
+			printf("aaaa4\n");
+			std::vector<cv::Mat> macierze=std::vector<cv::Mat>();
+			printf("aaaa5\n");
+			macierze.push_back(maaat);
+			macierze.push_back(jedynki);
+			macierze.push_back(jedynki2);
+
+			printf("maaat=(%d,%d),%d\t",maaat.cols,maaat.rows,maaat.channels());
+			printf("jedynki=(%d,%d).%d\t",jedynki.cols,jedynki.rows,jedynki.channels());
+			printf("img=(%d,%d),%d\t",img.cols,img.rows,img.channels());
+
+			printf("aaaa6\n");
+			cv::merge(macierze,img);
+			printf("aaaa7\n");
+//			cv::cvtColor(img,mat_color,CV_RGB2HSV);
+//			for(int t=0;t<mat_color.cols;t++)
+//				for(int s=0;s<mat_color.rows;s++)
+//				{
+////					mat_color.at<cv::Scalar>(s,t)=cv::Scalar(mat_big.at<int>(s,t),1,1);
+////					mat_color.at<double>(s,t*3)=mat_big.at<int>(s,t);
+////					mat_color.at<double>(s,t*3+1)=1;
+////					mat_color.at<double>(s,t*3+2)=1;
+//				}
+//			cv::cvtColor(img,mat_rgb,CV_HSV2RGB);
 
 			printf("dj\n");
 			licznik++;
 			printf("dk\n");
+//			out_data.write(img.clone());
 			out_data.write(mat_big.clone());
 			printf("ee\n");
 			newData->raise();
@@ -162,10 +192,10 @@ void AudioSpectrogram_Processor::onNewData() {
 	printf("gg\n");
 }
 
-cv::Mat AudioSpectrogram_Processor::ComputeSpectrogram(cv::Mat mat)
-{
+// Compute square of amplitude
+cv::Mat AudioSpectrogram_Processor::ComputeSpectrogram(cv::Mat mat) {
 	cv::Mat mat_out = cv::Mat(mat.rows, mat.cols / 2 + 1, CV_64FC1);
-	// kwadrat amplitudy
+	// square of amplitude
 	for (int s = 0; s < mat.rows; s++) // sample in time window
 		for (int t = 0; t < mat.cols; t++) // time window
 		{
@@ -189,9 +219,8 @@ cv::Mat AudioSpectrogram_Processor::ComputeSpectrogram(cv::Mat mat)
 	return mat_out;
 }
 
-
-double AudioSpectrogram_Processor::Max(cv::Mat mat)
-{
+// Compute maximal value in matrix
+double AudioSpectrogram_Processor::Max(cv::Mat mat) {
 	double max = -10;
 	for (int s = 0; s < mat.rows; s++)// sample in time window
 		for (int t = 0; t < mat.cols; t++) // time window
@@ -200,8 +229,8 @@ double AudioSpectrogram_Processor::Max(cv::Mat mat)
 	return max;
 }
 
-double AudioSpectrogram_Processor::Min(cv::Mat mat)
-{
+// Compute minimal value in matrix
+double AudioSpectrogram_Processor::Min(cv::Mat mat) {
 	double min = 100000;
 	for (int s = 0; s < mat.rows; s++)// sample in time window
 		for (int t = 0; t < mat.cols; t++) // time window
@@ -211,27 +240,22 @@ double AudioSpectrogram_Processor::Min(cv::Mat mat)
 }
 
 // Extends matrix n times
-cv::Mat AudioSpectrogram_Processor::ExtendOutputMatrix(cv::Mat mat, int n)
-{
-
-	printf("before1\n");
+cv::Mat AudioSpectrogram_Processor::ExtendOutputMatrix(cv::Mat mat, int n) {
+	printf("aaaaaa");
 	cv::Mat mat_big_ = cv::Mat(mat.rows * 2, mat.cols * 2, CV_8UC1);
-	printf("before2\n");
+
+	printf("bbbbbbbbbb");
 	for (int s = 0; s < mat.rows; s++)// sample in time window
 		for (int t = 0; t < mat.cols; t++) // time window
 		{
-			for(int i=0;i<n;i++)
-				for(int j=0;j<n;j++)
-				{
-					mat_big_.at<uint8_t> (s * 2 + i, t * 2 + j) = mat.at<uint8_t> (s,t);
-//					printf("s=%8d,\tt=%8d,\trows=%8d,\tcols=%8d,\ti=%8d,\tj=%8d,\tmat_big i=%8d,\tmat_big j=%8d\n"
-//							,s,t,mat.rows,mat.cols,i,j,s * 2 + i,t * 2 + j);
-				}
-//			mat_big.at<int> (s * 2 + 1, t * 2) = mat.at<int> (s, t);
-//			mat_big.at<int> (s * 2, t * 2 + 1) = mat.at<int> (s, t);
-//			mat_big.at<int> (s * 2 + 1, t * 2 + 1) = mat.at<int> (s, t);
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < n; j++)
+					// extend value from mat to nxn square
+					mat_big_.at<uint8_t> (s * 2 + i, t * 2 + j) = mat.at<
+							uint8_t> (s, t);
 		}
-	printf("after\n");
+
+	printf("ccccccccccc");
 	return mat_big_;
 }
 
