@@ -8,11 +8,20 @@
 #ifndef HOMOGMATRIX_HPP_
 #define HOMOGMATRIX_HPP_
 
+#include <boost/serialization/serialization.hpp>
+
 namespace Types {
 
 struct HomogMatrix
 {
 	double elements[3][4];
+private:
+	friend class boost::serialization::access;
+	template <class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar & elements;
+	}
 };
 
 } // namespace Types

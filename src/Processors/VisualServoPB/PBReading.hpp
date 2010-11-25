@@ -58,6 +58,12 @@ public:
 
 		LOG(LNOTICE) << "HomogMatrix:\n" << ss.str() << endl;
 	}
+
+	virtual void send(boost::shared_ptr<xdr_oarchive<> > & ar){
+		LOG(LNOTICE) << "PBReading::send(): hehehehe\n";
+		*ar<<*this;
+	}
+
 private:
 	friend class boost::serialization::access;
 	template <class Archive>

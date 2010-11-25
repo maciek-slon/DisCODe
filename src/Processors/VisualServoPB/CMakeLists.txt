@@ -1,6 +1,11 @@
 # Include the directory itself as a path to include directories
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+SET(DisCODe_LIBRARIES
+    ${DisCODe_LIBRARIES}
+    ${Boost_SERIALIZATION_LIBRARY}
+)
+
 # Create a variable containing all .cpp files:
 FILE(GLOB files *.cpp)
 

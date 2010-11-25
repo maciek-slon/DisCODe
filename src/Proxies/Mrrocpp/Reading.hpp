@@ -7,6 +7,7 @@
 #define READING_HPP_
 
 #include "xdr/xdr_oarchive.hpp"
+#include <boost/shared_ptr.hpp>
 #include "Logger.hpp"
 
 namespace Proxies {
@@ -30,6 +31,8 @@ public:
 	{
 		LOG(LNOTICE) << "Reading::printInfo()\n";
 	}
+
+	virtual void send(boost::shared_ptr<xdr_oarchive<> > & ar) = 0;
 private:
 	friend class boost::serialization::access;
 	template <class Archive>
