@@ -122,6 +122,8 @@ bool Mrrocpp_Proxy::onStep()
 		}
 		clientSocket = serverSocket.acceptConnection();
 		clientConnected = true;
+		readingMessage.reset();
+		rpcResultMessage.reset();
 		LOG(LTRACE) << "clientConnected!!!!\n";
 	}
 	return true;
@@ -132,21 +134,20 @@ void Mrrocpp_Proxy::onNewReading()
 	LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading ehehehehehehs\n";
 	readingMessage = reading.read();
 	readingMessage->printInfo();
-	if (proxyState == PROXY_WAITING_FOR_READING) {
-		LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading(): proxyState == PROXY_WAITING_FOR_READING\n";
-		rmh.is_rpc_call = false;
-
-		oarchive->clear_buffer();
-		readingMessage->send(oarchive);
-//		*oarchive << (*readingMessage);
-
-		sendBuffersToMrrocpp();
-
-		readingMessage.reset();
-		proxyState = PROXY_WAITING_FOR_COMMAND;
-	} else {
-		LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading(): proxyState != PROXY_WAITING_FOR_READING\n";
-	}
+//	if (proxyState == PROXY_WAITING_FOR_READING) {
+//		LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading(): proxyState == PROXY_WAITING_FOR_READING\n";
+//		rmh.is_rpc_call = false;
+//
+//		oarchive->clear_buffer();
+//		readingMessage->send(oarchive);
+//
+//		sendBuffersToMrrocpp();
+//
+//		readingMessage.reset();
+//		proxyState = PROXY_WAITING_FOR_COMMAND;
+//	} else {
+//		LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading(): proxyState != PROXY_WAITING_FOR_READING\n";
+//	}
 }
 
 void Mrrocpp_Proxy::onRpcResult()
@@ -179,15 +180,13 @@ void Mrrocpp_Proxy::receiveCommand()
 		rpcCall->raise();
 		proxyState = PROXY_WAITING_FOR_RPC_RESULT; // wait for RPC result
 	} else {
-		if (readingMessage.get() != 0) { // readingMessage has been already set
-			oarchive->clear_buffer(); // send message immediately
+		oarchive->clear_buffer();
+		if (readingMessage.get() != 0) { // there is no reading ready
+			rmh.is_rpc_call = false;
 			readingMessage->send(oarchive);
-
-			sendBuffersToMrrocpp();
-			readingMessage.reset();
-		} else { // readingMessage hasn't been set yet, so wait for it
-			proxyState = PROXY_WAITING_FOR_READING;
 		}
+		sendBuffersToMrrocpp();
+		readingMessage.reset();
 	}
 	LOG(LINFO) << "Mrrocpp_Proxy::receiveCommand() end: proxyState = "<< proxyState << "\n";
 }
