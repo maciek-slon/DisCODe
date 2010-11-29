@@ -72,12 +72,14 @@ struct CvFindChessboardCornersProps: public Base::Props
 {
 	cv::Size patternSize;
 	float squareSize;
+	bool findSubpix;
 	void load(const ptree & pt)
 	{
 		LOG(LTRACE) << "CvFindChessboardCornersProps::load()\n";
 		patternSize.width = pt.get<int>("width");
 		patternSize.height = pt.get<int>("height");
 		squareSize = pt.get<float>("squareSize");
+		findSubpix = pt.get<bool>("findSubpix");
 	}
 	void save(ptree & pt)
 	{
@@ -85,6 +87,7 @@ struct CvFindChessboardCornersProps: public Base::Props
 		pt.put("width", patternSize.width);
 		pt.put("height", patternSize.height);
 		pt.put("squareSize", squareSize);
+		pt.put("findSubpix", findSubpix);
 	}
 };
 
