@@ -1,0 +1,21 @@
+/*!
+\page beginner_camera_calibration_tutorials Camera calibration
+<div class="center">[Beginner level]</div>
+\prevnext_top{beginner_discode_tutorials, beginner_feature_extraction_tutorials}
+
+The tutorial regards the problem of camera calibration. The camera calibration is a process in which camera indrinsic parameters and distortion parameters are computed.
+In order to perform the computations first a <b>calibration pattern</b> must be localized in multipe images - a chessboard is commonly used as the pattern, because it
+contains multiple parallel and orthogonal lines on which the distortion is easily measureable.
+
+\beginlinklist
+- \ref beginner_camera_calibration_01_findchessboard\n
+The goal of this tutorial is to create a task responsible for chessboard localization and performing the calibration computations.
+
+- \ref beginner_camera_calibration_02_undistortion\n
+The goal is to display a calibration sequence after performing the undistortion operation with the use of calibration parameters computed in the previous tutorial.
+
+\endlinklist
+
+\prevnext_bottom{beginner_discode_tutorials, beginner_feature_extraction_tutorials}
+
+*/

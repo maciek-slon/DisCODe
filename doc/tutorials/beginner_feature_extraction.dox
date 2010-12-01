@@ -1,0 +1,26 @@
+/*!
+\page beginner_feature_extraction_tutorials1 Feature extraction
+<div class="center">[Intermediate level]</div>
+\prev_top{beginner_discode_tutorials}
+
+The tutorial focuses on the extraction of features from images.
+
+
+\beginlinklist
+
+IMAGE PROCESSING
+Image processing (preprocessing) - image processing: mean filters, medium filters, color space transformations, histogram operations, binarization, color classification, morphological operations.
+
+TEXTURE CLASSIFICATION
+Feature extraction, characteristic poins detection (Harris, SIFT, SURF), features normalization.
+Texture detection and classification (knn)
+
+OBJECT CLASSIFICATION
+Edge extraction, thinning, Lines and shape detectors (Hough). Chain approximation. Segmentation
+Shape classfication with Bayes classifier.
+
+\endlinklist
+
+\prev_bottom{beginner_discode_tutorials}
+
+*/

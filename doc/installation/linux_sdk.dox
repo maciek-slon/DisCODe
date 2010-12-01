@@ -1,0 +1,67 @@
+/*!
+\page linux_sdk_new_comp New Component in SDK
+
+\up_top{installation}
+
+\section gentoo_sdk_comp_gen Generate new component
+The <b>create.sh</b> can be used for generation of the empty shell of the new component (divided in to hpp and cpp files).
+- Enter the Component directory:
+\cons
+cd <i>sdk_dest_path</i>/Component
+\endcons
+
+\note The <i>sdk_dest_path</i> is a directory where the DisCODe SDK was installed.
+
+- Run script with new components name as parameter (e.g. TestComponent)
+\cons
+./create.sh TestComponent
+\endcons
+
+A directory <i>TestComponent</i> with adequte hpp, cpp and CMakeList.txt files will be created.
+
+\section linux_sdk_comp_cmake Generate the Makefile for Component
+- Enter the <i>TestComponent</i> directory and run the <b>cmake</b>.
+\cons
+cmake .
+\endcons
+
+Adequate Makefile (with required files) will be generated.
+
+\note CMake enables also the out-of-source build. For more please refer \link http://www.openscenegraph.org/projects/osg/wiki/Build/CMake here\endlink.
+
+\section linux_sdk_component_opencv Add OpenCV library to list of linked libraries
+In order to utilize OpenCV in component perform operations described below.
+
+- Add OpenCV library to list of linked libraries: edit the <b>CMakeLists.txt</b> file in order to uncomment the OpenCV library dependency.
+\code
+...
+FIND_PACKAGE( OpenCV REQUIRED )
+SET(LIBS ${OpenCV_LIBS} ${OpenCV_LIBRARIES} ${LIBS} )
+...
+\endcode
+
+\note To uncomment given line remove the # character from the front.
+\note In order to perform the above changes you <b>must generate Makefile</b> once again!
+
+- Edit the component header file in order to add required OpenCV headers after the existing ones and access to the OpenCV namespace <b>cv</b>.
+\code
+...
+#include <cv.h>
+using namespace cv;
+...
+\endcode
+
+
+\section linux_sdk_comp_make Compile and install the component
+- Run makefile (from the environment)
+\cons
+make
+\endcons
+
+- Copy the created library to DisCODe binaries.
+\cons
+cp libTestComponent.dll ../../bin/
+\endcons
+
+*/
+

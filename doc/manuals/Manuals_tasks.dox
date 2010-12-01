@@ -1,27 +1,28 @@
 /*!
 \page manuals_tasks Tasks - building monumens from bricks
-<center> [\ref manuals] </center> 
+
+\up_next_top{manuals, manuals_components}
 
 Perception is the process of attaining awareness or understanding of sensory information, that can consist of multiple processing steps.
 In DisCODe each step is encapsulated in a single <b>Component</b>.
 
-Because those components can be arranged in many orders and executed in different ways (f.e. there might be a need that sime of them should work concurrently in different <b>Threads</b>), 
-there are component managers called <b>Executors</b>, that can govern all or some of them.      
+Because those components can be arranged in many orders and executed in different ways (f.e. there might be a need that sime of them should work concurrently in different <b>Threads</b>),
+there are component managers called <b>Executors</b>, that can govern all or some of them.
 
-In order to let components being totally independent of each other special methods of data passing between them (loose coupling) needed to be created. 
-We wanted also to distinguish the communication related strictly for passing data processed by one component to another from communication 
+In order to let components being totally independent of each other special methods of data passing between them (loose coupling) needed to be created.
+We wanted also to distinguish the communication related strictly for passing data processed by one component to another from communication
 responsible for passing commands - events, that might occur occasionally. This lead to the creation of two mechanisms: datastreams and events.
 
 <b>DataStream</b> is a one-to-many type connection for passing processed data (every output datastream of given component can be linked to many inputs of many components).
-The DisCODe creates <b>Connections</b> between components (in fact between their output and input datastreams) during the application start.   
+The DisCODe creates <b>Connections</b> between components (in fact between their output and input datastreams) during the application start.
 
 <b>Event</b> is a many-to-many connection for passing control flow commands. The same event (event type) can be raised by different components, as well as one event can be handled by many components.
-However, in configuration file they are writen as a set of pairs.   
+However, in configuration file they are writen as a set of pairs.
 
 <img src="images/task_elements.png" style="margin: 5px;" alt="Task"/>
 
 The tasks are created in the form of XML configuration files, having the form presented in the figure above.
-Only a single task can be loaded during the application start.  
+Only a single task can be loaded during the application start.
 
-\next{manuals_components}
+\up_next_bottom{manuals, manuals_components}
 */
