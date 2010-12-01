@@ -11,14 +11,14 @@
 		<PositionEstimator type="CvSolvePnP" thread="ImageSourceThread" group="s1">
 			<cameraMatrix>
 				[3,3](
-					(647.07647705, 0., 383.50000000),
-					(0., 632.76348877, 287.50000000),
+					(1.87120312e+03, 0., 3.83500000e+02),
+					(0., 1.87757153e+03, 2.87500000e+02),
 					(0, 0, 1)
 				)
 			</cameraMatrix>
 			<distCoeffs>
 				[1,5](
-					(-0.51084775, 0.23313555, 4.50637517e-03, -6.86281081e-03, 4.94365674e-03)
+					(-6.87764436e-02, 8.20148945e+00, 7.74234859e-03, 2.96020857e-03, -1.36298920e+02)
 				)
 			</distCoeffs>
 		</PositionEstimator>
@@ -36,7 +36,7 @@
 		</BGRToGray>
 		<ImageSource type="CameraUniCap" thread="ImageSourceThread" group="s1">
 			<dev>
-				<device>/dev/video0</device>
+				<device>/dev/video1</device>
 			</dev>
 		</ImageSource>
 	</Components>
