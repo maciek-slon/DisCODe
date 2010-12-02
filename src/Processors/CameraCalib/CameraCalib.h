@@ -8,20 +8,42 @@
 #ifndef CAMERACALIB_H_
 #define CAMERACALIB_H_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
-#include "Panel_Empty.hpp"
-#include "DataStream.hpp"
-#include "Props.hpp"
-#include "Logger.hpp"
-
 #include <cv.h>
+#include <boost/shared_ptr.hpp>
+
+#include "Component_Aux.hpp"
+#include "Panel_Empty.hpp"
+#include "Objects3D/Chessboard.hpp"
 
 namespace Processors {
-
 namespace CameraCalib {
 
-using namespace cv;
+struct CameraCalib_Props: public Base::Props
+{
+	std::string outputFilename;
+
+	cv::Size patternSize;
+	float squareSize;
+	bool findSubpix;
+
+	virtual void load(const ptree & pt)
+	{
+		outputFilename = pt.get <std::string> ("outputFilename");
+		patternSize.width = pt.get <int> ("width");
+		patternSize.height = pt.get <int> ("height");
+		squareSize = pt.get <float> ("squareSize");
+		findSubpix = pt.get <bool> ("findSubpix");
+
+	}
+	virtual void save(ptree & pt)
+	{
+		pt.put("outputFilename", outputFilename);
+		pt.put("width", patternSize.width);
+		pt.put("height", patternSize.height);
+		pt.put("squareSize", squareSize);
+		pt.put("findSubpix", findSubpix);
+	}
+};
 
 class CameraCalib_Processor: public Base::Kernel
 {
@@ -29,41 +51,66 @@ public:
 	CameraCalib_Processor();
 	virtual ~CameraCalib_Processor();
 
-	/*!
-	 * Processor initialization
-	 */
-	bool initialize();
-
-	/*!
-	 * Release all resources
-	 */
-	bool finish();
-
-	/*!
-	 * Processes given frame.
-	 */
-	int step();
-
+	Base::Props * getProperties()
+	{
+		return &props;
+	}
 protected:
 	/*!
-	 * Event handler function.
+	 * Method called when component is started
+	 * \return true on success
 	 */
-	void onNewImage();
+	virtual bool onStart();
 
-	/// Event handler.
-	Base::EventHandler<CameraCalib_Processor> h_onNewImage;
+	/*!
+	 * Method called when component is stopped
+	 * \return true on success
+	 */
+	virtual bool onStop();
 
-	/// Input data stream
-	Base::DataStreamIn<Mat> in_img;
+	/*!
+	 * Method called when component is initialized
+	 * \return true on success
+	 */
+	virtual bool onInit();
 
+	/*!
+	 * Method called when component is finished
+	 * \return true on success
+	 */
+	virtual bool onFinish();
+
+	/*!
+	 * Method called when step is called
+	 * \return true on success
+	 */
+	virtual bool onStep();
 private:
-	Mat frame;
+	void onNewImage();
+	void onCaptureNow();
+	void onSequenceEnd();
 
+	Base::EventHandler <CameraCalib_Processor> h_onNewImage;
+	Base::EventHandler <CameraCalib_Processor> h_onCaptureNow;
+	Base::EventHandler <CameraCalib_Processor> h_onSequenceEnd;
+
+	Base::DataStreamIn <cv::Mat> in_img;
+	Base::DataStreamOut <Types::Objects3D::Chessboard> out_chessboard;
+
+	/** Raised when chessboard has been located on the image. */
+	Base::Event *chessboardFound;
+	/** Raised when chessboard has not been located on the image. */
+	Base::Event *chessboardNotFound;
+
+	std::vector <std::vector <cv::Point3f> > objectPoints;
+	std::vector <std::vector <cv::Point2f> > imagePoints;
+	cv::Size imageSize;
+	CameraCalib_Props props;
 };
 
-}
+} // namespace CameraCalib
 
-}
+} // namespace Processors
 
 REGISTER_PROCESSOR_KERNEL("CameraCalib", Processors::CameraCalib::CameraCalib_Processor, Common::Panel_Empty);
 

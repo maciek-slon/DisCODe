@@ -11,7 +11,6 @@
 #include <cv.h>
 #include <boost/shared_ptr.hpp>
 #include "Component_Aux.hpp"
-#include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "Objects3D/Chessboard.hpp"
 #include "Drawable.hpp"
