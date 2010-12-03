@@ -8,7 +8,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
-ADD_LIBRARY(GrayClassification SHARED ${files})
-TARGET_LINK_LIBRARIES(GrayClassification ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
+ADD_LIBRARY(GrayImageSegmentation SHARED ${files})
+TARGET_LINK_LIBRARIES(GrayImageSegmentation ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
-INSTALL_PROCESSOR(GrayClassification)
+INSTALL_PROCESSOR(GrayImageSegmentation)

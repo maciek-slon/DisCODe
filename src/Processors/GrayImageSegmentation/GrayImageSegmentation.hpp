@@ -3,8 +3,8 @@
  * \brief
  */
 
-#ifndef GRAYCLASSIFICATION_PROCESSOR_HPP_
-#define GRAYCLASSIFICATION_PROCESSOR_HPP_
+#ifndef GRAYIMAGESEGMENTATION_PROCESSOR_HPP_
+#define GRAYIMAGESEGMENTATION_PROCESSOR_HPP_
 
 #include <cv.h>
 
@@ -15,22 +15,20 @@
 #include "Props.hpp"
 
 namespace Processors {
-namespace GrayClassification {
+namespace GrayImageSegmentation {
 
 /*!
- * \brief GrayClassification properties
+ * \brief GrayImageSegmentation properties
  */
-struct Props: public Base::Props
+struct GrayImageSegmentation_Props: public Base::Props
 {
-
-	int sample;
 
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
-		sample = pt.get("sample", 0);
+
 	}
 
 	/*!
@@ -38,27 +36,27 @@ struct Props: public Base::Props
 	 */
 	void save(ptree & pt)
 	{
-		pt.put("sample", sample);
+
 	}
 
 };
 
 /*!
- * \class GrayClassification_Processor
- * \brief GrayClassification processor class.
+ * \class GrayImageSegmentation_Processor
+ * \brief GrayImageSegmentation processor class.
  */
-class GrayClassification_Processor: public Base::Component
+class GrayImageSegmentation_Processor: public Base::Component
 {
 public:
 	/*!
 	 * Constructor.
 	 */
-	GrayClassification_Processor(const std::string & name = "");
+	GrayImageSegmentation_Processor(const std::string & name = "");
 
 	/*!
 	 * Destructor
 	 */
-	virtual ~GrayClassification_Processor();
+	virtual ~GrayImageSegmentation_Processor();
 
 	/*!
 	 * Return window properties
@@ -96,35 +94,26 @@ protected:
 	bool onStop();
 
 private:
-	/// Threshold properties
-	Props props;
+	/// Properties
+	GrayImageSegmentation_Props props;
 
-	/*!
-	 * Event handler function.
-	 */
 	void onNewImage();
 
 	/// Event handler.
-	Base::EventHandler <GrayClassification_Processor> h_onNewImage;
+	Base::EventHandler <GrayImageSegmentation_Processor> h_onNewImage;
 
 	/// Input data stream
 	Base::DataStreamIn <cv::Mat> in_img;
 
-	/// Event raised, when image is processed
-	Base::Event * newImage;
-
-	/// Output data stream - processed image
-	Base::DataStreamOut <cv::Mat> out_img;
-
 };
 
-}//: namespace GrayClassification
+}//: namespace GrayImageSegmentation
 }//: namespace Processors
 
 
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("GrayClassification", Processors::GrayClassification::GrayClassification_Processor, Common::Panel_Empty)
+REGISTER_PROCESSOR_COMPONENT("GrayImageSegmentation", Processors::GrayImageSegmentation::GrayImageSegmentation_Processor, Common::Panel_Empty)
 
-#endif /* GRAYCLASSIFICATION_PROCESSOR_HPP_ */
+#endif /* GRAYIMAGESEGMENTATION_PROCESSOR_HPP_ */
