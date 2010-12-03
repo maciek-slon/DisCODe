@@ -26,6 +26,8 @@ struct CameraCalib_Props: public Base::Props
 	float squareSize;
 	bool findSubpix;
 
+	bool storeOnNewImage;
+
 	virtual void load(const ptree & pt)
 	{
 		outputFilename = pt.get <std::string> ("outputFilename");
@@ -33,7 +35,7 @@ struct CameraCalib_Props: public Base::Props
 		patternSize.height = pt.get <int> ("height");
 		squareSize = pt.get <float> ("squareSize");
 		findSubpix = pt.get <bool> ("findSubpix");
-
+		storeOnNewImage = pt.get<bool>("storeOnNewImage");
 	}
 	virtual void save(ptree & pt)
 	{
@@ -42,6 +44,7 @@ struct CameraCalib_Props: public Base::Props
 		pt.put("height", patternSize.height);
 		pt.put("squareSize", squareSize);
 		pt.put("findSubpix", findSubpix);
+		pt.put("storeOnNewImage", storeOnNewImage);
 	}
 };
 
@@ -87,11 +90,13 @@ protected:
 	virtual bool onStep();
 private:
 	void onNewImage();
-	void onCaptureNow();
+	void onStoreLastImage();
 	void onSequenceEnd();
 
+	void addImageToSet();
+
 	Base::EventHandler <CameraCalib_Processor> h_onNewImage;
-	Base::EventHandler <CameraCalib_Processor> h_onCaptureNow;
+	Base::EventHandler <CameraCalib_Processor> h_onStoreLastImage;
 	Base::EventHandler <CameraCalib_Processor> h_onSequenceEnd;
 
 	Base::DataStreamIn <cv::Mat> in_img;
@@ -104,8 +109,13 @@ private:
 
 	std::vector <std::vector <cv::Point3f> > objectPoints;
 	std::vector <std::vector <cv::Point2f> > imagePoints;
+	std::vector <cv::Point2f> lastImagePoints;
+	std::vector<cv::Point3f> chessboardModelPoints;
 	cv::Size imageSize;
 	CameraCalib_Props props;
+
+	int findChessboardCornersFlags;
+
 };
 
 } // namespace CameraCalib
