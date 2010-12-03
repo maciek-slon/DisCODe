@@ -45,10 +45,10 @@ struct CameraCalib_Props: public Base::Props
 	}
 };
 
-class CameraCalib_Processor: public Base::Kernel
+class CameraCalib_Processor: public Base::Component
 {
 public:
-	CameraCalib_Processor();
+	CameraCalib_Processor(const std::string & name);
 	virtual ~CameraCalib_Processor();
 
 	Base::Props * getProperties()
@@ -112,6 +112,6 @@ private:
 
 } // namespace Processors
 
-REGISTER_PROCESSOR_KERNEL("CameraCalib", Processors::CameraCalib::CameraCalib_Processor, Common::Panel_Empty);
+REGISTER_PROCESSOR_COMPONENT("CameraCalib", Processors::CameraCalib::CameraCalib_Processor, Common::Panel_Empty)
 
 #endif /* CAMERACALIB_H_ */
