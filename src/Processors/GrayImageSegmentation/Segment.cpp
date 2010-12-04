@@ -33,11 +33,11 @@ Segment::~Segment()
 {
 }
 
-cv::Point Segment::getStartingPoint()
+cv::Point Segment::getStartingPoint() const
 {
 	return startingPoint;
 }
-MaskType Segment::getSegmentClass()
+MaskType Segment::getSegmentClass() const
 {
 	return segmentClass;
 }

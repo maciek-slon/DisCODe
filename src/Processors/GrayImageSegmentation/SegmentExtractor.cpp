@@ -6,7 +6,7 @@
  */
 
 #include <stdexcept>
-
+#include <boost/foreach.hpp>
 #include "SegmentExtractor.hpp"
 
 #include "Logger.hpp"
@@ -37,16 +37,20 @@ Types::Segmentation::SegmentedImage SegmentExtractor::segmentImage(const cv::Mat
 	segmentedImage.image.setTo(currentHighestClass);
 	segmentedImage.segments.clear();
 
-	segmentRecursive(currentHighestClass);
+	Segment s(Point(0,0), currentHighestClass);
+
+	segmentRecursive(s);
 
 	return segmentedImage;
 }
 
-void SegmentExtractor::segmentRecursive(MaskType whichClass)
+void SegmentExtractor::segmentRecursive(const Segment& s)
 {
+	MaskType whichClass = s.getSegmentClass();
 	computeHistogram(whichClass);
 	if (checkTerminationCondition()) {
 		LOG(LTRACE) << "Termination condition on histogram has been satisfied.\n";
+		segmentedImage.segments.push_back(s);
 		return;
 	}
 
@@ -54,14 +58,11 @@ void SegmentExtractor::segmentRecursive(MaskType whichClass)
 	MaskType classBelowOrEqual = ++currentHighestClass;
 	MaskType classAbove = ++currentHighestClass;
 
-	int firstSegmentIdx = segmentedImage.segments.size();
-
 	thresholdImage(th, whichClass, classBelowOrEqual, classAbove);
+	vector<Segment> segments = extractHomogRegions(classBelowOrEqual, classAbove);
 
-	int lastSegmentIdx = segmentedImage.segments.size();
-
-	for (int i = firstSegmentIdx; i < lastSegmentIdx; ++i) {
-		segmentRecursive(segmentedImage.segments[i].getSegmentClass());
+	BOOST_FOREACH(Segment s, segmentedImage.segments){
+		segmentRecursive(s);
 	}
 }
 
@@ -177,8 +178,9 @@ void SegmentExtractor::thresholdImage(int th, MaskType whichClass, MaskType clas
 	}
 }
 
-void SegmentExtractor::extractHomogRegions(MaskType mask1, MaskType mask2)
+std::vector<Types::Segmentation::Segment> SegmentExtractor::extractHomogRegions(MaskType mask1, MaskType mask2)
 {
+	vector<Segment> segments;
 	int w = segmentedImage.image.size().width;
 	int h = segmentedImage.image.size().height;
 	for (int y = 0; y < h; ++y) {
@@ -191,11 +193,12 @@ void SegmentExtractor::extractHomogRegions(MaskType mask1, MaskType mask2)
 				extractHomogRegion(y, x, originalClass, newSegmentClass, area);
 				if (area >= minSegmentArea) {
 					Segment s(Point(x, y), newSegmentClass, area);
-					segmentedImage.segments.push_back(s);
+					segments.push_back(s);
 				}
 			}
 		}
 	}
+	return segments;
 }
 
 void SegmentExtractor::setMinSegmentArea(int minSegmentArea)

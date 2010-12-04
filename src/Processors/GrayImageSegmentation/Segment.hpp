@@ -24,8 +24,8 @@ public:
 	Segment(const Segment& o);
 	virtual ~Segment();
 
-	cv::Point getStartingPoint();
-	MaskType getSegmentClass();
+	cv::Point getStartingPoint() const;
+	MaskType getSegmentClass() const;
 private:
 	cv::Point startingPoint;
 	MaskType segmentClass;

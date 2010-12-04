@@ -14,6 +14,8 @@
 #include "DataStream.hpp"
 #include "Props.hpp"
 
+#include "SegmentExtractor.hpp"
+
 namespace Processors {
 namespace GrayImageSegmentation {
 
@@ -22,13 +24,16 @@ namespace GrayImageSegmentation {
  */
 struct GrayImageSegmentation_Props: public Base::Props
 {
+	int minSegmentArea;
+	double minVariance;
 
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
-
+		minSegmentArea = pt.get <int> ("minSegmentArea");
+		minVariance = pt.get <double> ("minVariance");
 	}
 
 	/*!
@@ -36,7 +41,8 @@ struct GrayImageSegmentation_Props: public Base::Props
 	 */
 	void save(ptree & pt)
 	{
-
+		pt.put("minSegmentArea", minSegmentArea);
+		pt.put("minVariance", minVariance);
 	}
 
 };
@@ -105,6 +111,11 @@ private:
 	/// Input data stream
 	Base::DataStreamIn <cv::Mat> in_img;
 
+	Base::DataStreamOut <Types::Segmentation::SegmentedImage> out_segmented;
+
+	Base::Event * onSegmented;
+
+	SegmentExtractor segmentExtractor;
 };
 
 }//: namespace GrayImageSegmentation

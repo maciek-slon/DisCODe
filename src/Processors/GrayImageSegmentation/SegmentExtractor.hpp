@@ -37,12 +37,12 @@ private:
 	int minSegmentArea;
 	std::stack<cv::Point> points;
 
-	void segmentRecursive(MaskType whichClass);
+	void segmentRecursive(const Types::Segmentation::Segment& s);
 	void computeHistogram(MaskType whichClass);
 	bool checkTerminationCondition();
 	int findOptimalThreshold();
 	void thresholdImage(int th, MaskType whichClass, MaskType classBelowOrEqual, MaskType classAbove);
-	void extractHomogRegions(MaskType mask1, MaskType mask2);
+	std::vector<Types::Segmentation::Segment> extractHomogRegions(MaskType mask1, MaskType mask2);
 	void extractHomogRegion(int y, int x, MaskType originalClass, MaskType newSegmentClass, int &area);
 };
 

@@ -29,6 +29,7 @@ ADD_PROCESSOR(VisualServoPB)
 ADD_PROCESSOR(VisualServoIB)
 ADD_PROCESSOR(CameraCalib)
 ADD_PROCESSOR(GrayImageSegmentation)
+ADD_PROCESSOR(ConvertSegments)
 
 ADD_PROCESSOR(KW_Palm_LUT)
 ADD_PROCESSOR(KW_Skin)

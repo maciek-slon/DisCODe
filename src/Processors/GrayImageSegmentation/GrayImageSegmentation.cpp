@@ -12,6 +12,10 @@
 namespace Processors {
 namespace GrayImageSegmentation {
 
+using namespace cv;
+using namespace std;
+using Types::Segmentation::SegmentedImage;
+
 GrayImageSegmentation_Processor::GrayImageSegmentation_Processor(const std::string & name) :
 	Base::Component(name)
 {
@@ -33,6 +37,11 @@ bool GrayImageSegmentation_Processor::onInit()
 
 	registerStream("in_img", &in_img);
 
+	registerStream("out_segmented", &out_segmented);
+	onSegmented = registerEvent("onSegmented");
+
+	segmentExtractor.setMinSegmentArea(props.minSegmentArea);
+	segmentExtractor.setMinVariance(props.minVariance);
 	return true;
 }
 
@@ -61,7 +70,15 @@ bool GrayImageSegmentation_Processor::onStart()
 
 void GrayImageSegmentation_Processor::onNewImage()
 {
+	Mat image = in_img.read();
+	if (image.type() != CV_8U) {
+		LOG(LERROR) << "GrayImageSegmentation_Processor::onNewImage(): image.type() != CV_8U\n";
+		return;
+	}
+	SegmentedImage si = segmentExtractor.segmentImage(image);
 
+	out_segmented.write(si);
+	onSegmented->raise();
 }
 
 }//: namespace GrayImageSegmentation
