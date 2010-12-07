@@ -77,11 +77,7 @@ void ConvertSegments_Processor::onSegmented()
 
 	SegmentedImage si = in_segmented.read();
 
-	LOG(LFATAL) << "HEHEHEHEHEHEEH=========================: " << si.segments.size() << endl;
-
 	Mat image = Mat::zeros(si.image.size(), CV_8U);
-
-	LOG(LTRACE) << "image.size(): (" << image.size().width << ", " << image.size().height << endl;
 
 	map <MaskType, u_int8_t> conversionMap;
 	conversionMap[0] = 0;

@@ -67,27 +67,27 @@ void SegmentExtractor::segmentRecursive(const Segment& s)
 	MaskType whichClass = s.getSegmentClass();
 	computeHistogram(whichClass);
 	if (checkTerminationCondition()) {
-		LOG(LFATAL) << "Termination condition on histogram has been satisfied.\n";
+//		LOG(LFATAL) << "Termination condition on histogram has been satisfied.\n";
 		segmentedImage.segments.push_back(s);
 		return;
 	}
 
 	int th = findOptimalThreshold();
-	LOG(LFATAL) << "findOptimalThreshold(): " << th;
+//	LOG(LFATAL) << "findOptimalThreshold(): " << th;
 	MaskType classBelowOrEqual = ++currentHighestClass;
 	MaskType classAbove = ++currentHighestClass;
 
-	LOG(LFATAL) << "currentHighestClass: " << currentHighestClass;
-	LOG(LFATAL) << "classBelowOrEqual: " << classBelowOrEqual;
-	LOG(LFATAL) << "classAbove: " << classAbove;
+//	LOG(LFATAL) << "currentHighestClass: " << currentHighestClass;
+//	LOG(LFATAL) << "classBelowOrEqual: " << classBelowOrEqual;
+//	LOG(LFATAL) << "classAbove: " << classAbove;
 
 	thresholdImage(th, whichClass, classBelowOrEqual, classAbove);
 	vector <Segment> segments = extractHomogRegions(classBelowOrEqual, classAbove);
-	LOG(LFATAL) << "extractHomogRegions returned " << segments.size() << " segments";
+//	LOG(LFATAL) << "extractHomogRegions returned " << segments.size() << " segments";
 
 	BOOST_FOREACH(Segment s, segments)
 				{
-					LOG(LFATAL) << "segmenting recursive...";
+					//LOG(LFATAL) << "segmenting recursive...";
 					segmentRecursive(s);
 				}
 }
@@ -134,10 +134,10 @@ bool SegmentExtractor::checkTerminationCondition()
 
 	// TODO: porwonac wariancje
 	if (variance < minVariance) {
-		LOG(LFATAL) << "SegmentExtractor::checkTerminationCondition(): variance < minVariance";
+//		LOG(LFATAL) << "SegmentExtractor::checkTerminationCondition(): variance < minVariance";
 		return true;
 	}
-	LOG(LFATAL) << "SegmentExtractor::checkTerminationCondition(): variance >= minVariance";
+//	LOG(LFATAL) << "SegmentExtractor::checkTerminationCondition(): variance >= minVariance";
 	return false;
 }
 
