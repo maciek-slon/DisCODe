@@ -7,9 +7,9 @@ MESSAGE(STATUS "\tUsing Qt ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_
 MESSAGE(STATUS "\tIncludes in ${QT_INCLUDE_DIR}")
 
 # add Qt modules here, the include will setup QT_LIBRARIES
-# 
+#
 # SET(QT_USE_XXX TRUE)
-# 
+#
 # Possible values are:
 # QT_DONT_USE_QTCORE
 # QT_DONT_USE_QTGUI
@@ -70,7 +70,16 @@ ADD_EXECUTABLE(discode_gui ${GUI_CXX_SRCS})
 TARGET_LINK_LIBRARIES(discode_gui ${QT_LIBRARIES})
 
 
+SET_TARGET_PROPERTIES(discode_gui PROPERTIES
+   BUILD_WITH_INSTALL_RPATH ON
+   INSTALL_RPATH_USE_LINK_PATH 1
+   INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib
+)
 
+install(
+  TARGETS discode_gui
+  RUNTIME DESTINATION bin COMPONENT applications
+)
 
 
 ELSE(QT_FOUND)
