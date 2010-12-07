@@ -100,6 +100,14 @@ add_subdirectory(Processors)
 add_subdirectory(Sinks)
 add_subdirectory(Proxies)
 
+# User interface
+set(WITH_GUI ON CACHE BOOL "Build GUI")
+
+IF (WITH_GUI)
+    MESSAGE(STATUS "Building GUI")
+    add_subdirectory(GUI)
+ENDIF(WITH_GUI)
+
 # Small utility programs
 set(WITH_TOOLS ON CACHE BOOL "Build tools")
 
@@ -108,12 +116,6 @@ IF (WITH_TOOLS)
     add_subdirectory(Tools)
 ENDIF(WITH_TOOLS)
 
-# Small test programs
-#set(WITH_TMP_PROGRAMS OFF CACHE BOOL "Build temporary programs")
 
-#IF (WITH_TMP_PROGRAMS)
-#    MESSAGE(STATUS "Building temporary programs")
-#    add_subdirectory(Tmp)
-#ENDIF(WITH_TMP_PROGRAMS)
 
 add_subdirectory(SDK)
