@@ -77,6 +77,8 @@ void GrayImageSegmentation_Processor::onNewImage()
 	}
 	SegmentedImage si = segmentExtractor.segmentImage(image);
 
+	LOG(LFATAL) << "GrayImageSegmentation_Processor::onNewImage(): si.segments.size()=" << si.segments.size();
+
 	out_segmented.write(si);
 	onSegmented->raise();
 }

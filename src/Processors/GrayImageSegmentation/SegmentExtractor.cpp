@@ -37,9 +37,27 @@ Types::Segmentation::SegmentedImage SegmentExtractor::segmentImage(const cv::Mat
 	segmentedImage.image.setTo(currentHighestClass);
 	segmentedImage.segments.clear();
 
-	Segment s(Point(0,0), currentHighestClass);
+	Segment s(Point(0, 0), currentHighestClass);
 
 	segmentRecursive(s);
+
+	int w = segmentedImage.image.size().width;
+	int h = segmentedImage.image.size().height;
+	for (int y = 0; y < h; ++y) {
+		for (int x = 0; x < w; ++x) {
+			MaskType m = segmentedImage.image.at <MaskType> (y, x);
+			bool found = false;
+			for (int i = 0; i < segmentedImage.segments.size(); ++i) {
+				if (segmentedImage.segments[i].getSegmentClass() == m) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				segmentedImage.image.at <MaskType> (y, x) = 0;
+			}
+		}
+	}
 
 	return segmentedImage;
 }
@@ -49,21 +67,29 @@ void SegmentExtractor::segmentRecursive(const Segment& s)
 	MaskType whichClass = s.getSegmentClass();
 	computeHistogram(whichClass);
 	if (checkTerminationCondition()) {
-		LOG(LTRACE) << "Termination condition on histogram has been satisfied.\n";
+		LOG(LFATAL) << "Termination condition on histogram has been satisfied.\n";
 		segmentedImage.segments.push_back(s);
 		return;
 	}
 
 	int th = findOptimalThreshold();
+	LOG(LFATAL) << "findOptimalThreshold(): " << th;
 	MaskType classBelowOrEqual = ++currentHighestClass;
 	MaskType classAbove = ++currentHighestClass;
 
-	thresholdImage(th, whichClass, classBelowOrEqual, classAbove);
-	vector<Segment> segments = extractHomogRegions(classBelowOrEqual, classAbove);
+	LOG(LFATAL) << "currentHighestClass: " << currentHighestClass;
+	LOG(LFATAL) << "classBelowOrEqual: " << classBelowOrEqual;
+	LOG(LFATAL) << "classAbove: " << classAbove;
 
-	BOOST_FOREACH(Segment s, segmentedImage.segments){
-		segmentRecursive(s);
-	}
+	thresholdImage(th, whichClass, classBelowOrEqual, classAbove);
+	vector <Segment> segments = extractHomogRegions(classBelowOrEqual, classAbove);
+	LOG(LFATAL) << "extractHomogRegions returned " << segments.size() << " segments";
+
+	BOOST_FOREACH(Segment s, segments)
+				{
+					LOG(LFATAL) << "segmenting recursive...";
+					segmentRecursive(s);
+				}
 }
 
 void SegmentExtractor::computeHistogram(MaskType whichClass)
@@ -74,7 +100,7 @@ void SegmentExtractor::computeHistogram(MaskType whichClass)
 	Size imageSize = originalImage->size();
 	for (int y = 0; y < imageSize.height; ++y) {
 		for (int x = 0; x < imageSize.width; ++x) {
-			if (segmentedImage.image.at <MaskType> (y, x) != 0) {
+			if (segmentedImage.image.at <MaskType> (y, x) == whichClass) {
 				u_int8_t brightness = originalImage->at <u_int8_t> (y, x);
 				histogram[brightness]++;
 			}
@@ -108,8 +134,10 @@ bool SegmentExtractor::checkTerminationCondition()
 
 	// TODO: porwonac wariancje
 	if (variance < minVariance) {
+		LOG(LFATAL) << "SegmentExtractor::checkTerminationCondition(): variance < minVariance";
 		return true;
 	}
+	LOG(LFATAL) << "SegmentExtractor::checkTerminationCondition(): variance >= minVariance";
 	return false;
 }
 
@@ -178,9 +206,9 @@ void SegmentExtractor::thresholdImage(int th, MaskType whichClass, MaskType clas
 	}
 }
 
-std::vector<Types::Segmentation::Segment> SegmentExtractor::extractHomogRegions(MaskType mask1, MaskType mask2)
+std::vector <Types::Segmentation::Segment> SegmentExtractor::extractHomogRegions(MaskType mask1, MaskType mask2)
 {
-	vector<Segment> segments;
+	vector <Segment> segments;
 	int w = segmentedImage.image.size().width;
 	int h = segmentedImage.image.size().height;
 	for (int y = 0; y < h; ++y) {

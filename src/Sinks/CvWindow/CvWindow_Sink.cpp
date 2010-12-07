@@ -78,6 +78,8 @@ bool CvWindow_Sink::onStep()
 
 			// Refresh image.
 			imshow( props.title + id, img[i] );
+			waitKey( 10 );
+			imshow( props.title + id, img[i] );
 		}
 
 		waitKey( 10 );

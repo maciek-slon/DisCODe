@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string>
+#include <map>
 
 #include "ConvertSegments.hpp"
 #include "Common/Logger.hpp"
@@ -15,6 +16,7 @@ namespace ConvertSegments {
 using namespace cv;
 using namespace std;
 using Types::Segmentation::SegmentedImage;
+using Types::Segmentation::MaskType;
 
 ConvertSegments_Processor::ConvertSegments_Processor(const std::string & name) :
 	Base::Component(name)
@@ -72,18 +74,36 @@ bool ConvertSegments_Processor::onStart()
 
 void ConvertSegments_Processor::onSegmented()
 {
+
 	SegmentedImage si = in_segmented.read();
+
+	LOG(LFATAL) << "HEHEHEHEHEHEEH=========================: " << si.segments.size() << endl;
 
 	Mat image = Mat::zeros(si.image.size(), CV_8U);
 
+	LOG(LTRACE) << "image.size(): (" << image.size().width << ", " << image.size().height << endl;
+
+	map <MaskType, u_int8_t> conversionMap;
+	conversionMap[0] = 0;
+
+	u_int8_t color = 0;
 	Size size = si.image.size();
 	for (int y = 0; y < size.height; ++y) {
 		for (int x = 0; x < size.width; ++x) {
-image		.at<u_int8_t>(y, x) =
+			MaskType originalValue = si.image.at <MaskType> (y, x);
+			if (conversionMap.find(originalValue) == conversionMap.end()) {
+				color = (color + 16) % 256;
+				if (color == 0) {
+					color = 16;
+				}
+				conversionMap[originalValue] = color;
+			}
+			image.at <u_int8_t> (y, x) = conversionMap[originalValue];
+		}
 	}
-}
 
-out_img.write(image);
+	out_img.write(image);
+	onNewImage->raise();
 }
 
 }//: namespace ConvertSegments
