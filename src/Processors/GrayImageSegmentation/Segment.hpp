@@ -26,9 +26,12 @@ public:
 
 	cv::Point getStartingPoint() const;
 	MaskType getSegmentClass() const;
+	void setSegmentImage(cv::Mat& segmentImage);
+	cv::Mat getSegmentImage();
 private:
 	cv::Point startingPoint;
 	MaskType segmentClass;
+	cv::Mat segmentImage;
 
 	bool areaComputed;
 	int area;

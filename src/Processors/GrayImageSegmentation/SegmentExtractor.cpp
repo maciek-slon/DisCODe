@@ -32,6 +32,7 @@ Types::Segmentation::SegmentedImage SegmentExtractor::segmentImage(const cv::Mat
 	if (segmentedImage.image.size() != originalImage.size()) {
 		LOG(LTRACE) << "SegmentExtractor::segmentImage() changing image size.";
 		segmentedImage.image = Mat(originalImage.size(), MaskType_CV);
+		segmentedImage.edgeImage = Mat(originalImage.size(), MaskType_CV);
 	}
 	currentHighestClass = 1;
 	segmentedImage.image.setTo(currentHighestClass);

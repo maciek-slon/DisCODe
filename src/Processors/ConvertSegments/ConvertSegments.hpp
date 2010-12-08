@@ -25,13 +25,13 @@ namespace ConvertSegments {
  */
 struct ConvertSegments_Props: public Base::Props
 {
-
+	bool showEdgeImage;
 	/*!
 	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt)
 	{
-
+		showEdgeImage = pt.get <bool> ("showEdgeImage");
 	}
 
 	/*!
@@ -39,7 +39,7 @@ struct ConvertSegments_Props: public Base::Props
 	 */
 	void save(ptree & pt)
 	{
-
+		pt.put <bool> ("showEdgeImage", showEdgeImage);
 	}
 
 };
@@ -101,10 +101,10 @@ protected:
 private:
 	void onSegmented();
 
-	Base::DataStreamIn<Types::Segmentation::SegmentedImage> in_segmented;
-	Base::EventHandler<ConvertSegments_Processor> h_onSegmented;
+	Base::DataStreamIn <Types::Segmentation::SegmentedImage> in_segmented;
+	Base::EventHandler <ConvertSegments_Processor> h_onSegmented;
 
-	Base::DataStreamOut<cv::Mat> out_img;
+	Base::DataStreamOut <cv::Mat> out_img;
 	Base::Event* onNewImage;
 
 	static const int colorsSize = 16;

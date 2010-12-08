@@ -42,5 +42,15 @@ MaskType Segment::getSegmentClass() const
 	return segmentClass;
 }
 
+cv::Mat Segment::getSegmentImage()
+{
+	return segmentImage;
+}
+
+void Segment::setSegmentImage(cv::Mat& segmentImage)
+{
+	this->segmentImage = segmentImage;
+}
+
 } // namespace Segmentation
 } // namespace Types

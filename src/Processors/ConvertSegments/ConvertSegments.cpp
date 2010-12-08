@@ -77,6 +77,13 @@ void ConvertSegments_Processor::onSegmented()
 
 	SegmentedImage si = in_segmented.read();
 
+	Mat classImage;
+	if (props.showEdgeImage) {
+		classImage = si.edgeImage;
+	} else {
+		classImage = si.image;
+	}
+
 	Mat image = Mat::zeros(si.image.size(), CV_8U);
 
 	map <MaskType, u_int8_t> conversionMap;
@@ -86,11 +93,11 @@ void ConvertSegments_Processor::onSegmented()
 	Size size = si.image.size();
 	for (int y = 0; y < size.height; ++y) {
 		for (int x = 0; x < size.width; ++x) {
-			MaskType originalValue = si.image.at <MaskType> (y, x);
+			MaskType originalValue = classImage.at <MaskType> (y, x);
 			if (conversionMap.find(originalValue) == conversionMap.end()) {
-				color = (color + 16) % 256;
+				color = (color + 32) % 256;
 				if (color == 0) {
-					color = 16;
+					color = 32;
 				}
 				conversionMap[originalValue] = color;
 			}

@@ -19,7 +19,10 @@ namespace Segmentation {
 struct SegmentedImage
 {
 	cv::Mat image;
+	cv::Mat edgeImage;
 	std::vector <Segment> segments;
+
+	void detectEdges();
 };
 
 } // namespace Segmentation
