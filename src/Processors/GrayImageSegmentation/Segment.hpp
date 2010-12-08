@@ -27,14 +27,22 @@ public:
 	cv::Point getStartingPoint() const;
 	MaskType getSegmentClass() const;
 	void setSegmentImage(cv::Mat& segmentImage);
+	void setSegmentImageFromSegmentedImage(cv::Mat& segmentedImage);
 	cv::Mat getSegmentImage();
+	std::vector <std::vector <cv::Point> >* getContours();
 private:
 	cv::Point startingPoint;
 	MaskType segmentClass;
+
+	bool segmentImageSet;
 	cv::Mat segmentImage;
 
 	bool areaComputed;
 	int area;
+
+	bool contoursComputed;
+	std::vector <std::vector <cv::Point> > contours;
+	void computeContours();
 };
 
 } // namespace Segmentation
