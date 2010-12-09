@@ -1,8 +1,6 @@
 /*!
  * \file Property.hpp
  * \brief
- * \author mstefanc
- * \date Jul 27, 2010
  */
 
 #ifndef PROPERTY_HPP_
@@ -10,13 +8,16 @@
 
 #include <string>
 
+#include <boost/lexical_cast.hpp>
+
 namespace Base {
 
 class PropertyInterface {
 public:
 
-	PropertyInterface(const std::string & n) : name(n), stored(true) {}
+	PropertyInterface(const std::string & n) : name_(n), persistent(true) {}
 
+	/*
 	template <typename T>
 	T get() {
 		return &((T*)internalGet());
@@ -26,12 +27,12 @@ public:
 	T set(const T & t) {
 		internalSet(&t);
 		return t;
-	}
+	}*/
 
 
 
-	bool isStored() {
-		return stored;
+	bool isPersistent() {
+		return persistent;
 	}
 
 	virtual std::string store() = 0;
@@ -39,17 +40,15 @@ public:
 	virtual void retrieve(const std::string & str) = 0;
 
 
-
-protected:
-	virtual void internalSet(void * data) = 0;
-
-	virtual void* internalGet() = 0;
+	const std::string & name() const {
+		return name_;
+	}
 
 private:
 	/// property name
-	std::string name;
+	std::string name_;
 
-	bool stored;
+	bool persistent;
 };
 
 /*!
@@ -59,7 +58,7 @@ template < class T >
 class Property : public PropertyInterface
 {
 public:
-	Property(const std::string& name) : PropertyInterface(name), data()
+	Property(const std::string& name, const T & initializer = T()) : PropertyInterface(name), data(initializer)
 	{
 	}
 
@@ -77,28 +76,51 @@ public:
 		return data;
 	}
 
+	/*!
+	 * Return value
+	 *
+	 * @return current value
+	 */
 	operator T() const
 	{
 		return data;
 	}
 
+	/*!
+	 * Set new value.
+	 *
+	 * @param value value to be set
+	 * @return value
+	 */
 	T operator= (T const & value)
 	{
 		data = value;
 		return data;
 	}
 
+
+	/*!
+	 * Return string representation of current value
+	 *
+	 * @return string representation of current value.
+	 */
+	virtual std::string store() {
+		return boost::lexical_cast<std::string>(data);
+	}
+
+	/*!
+	 * Retrieve value from it's string representation.
+	 *
+	 * @param str string to retrieve value from.
+	 */
+	virtual void retrieve(const std::string & str) {
+		data = boost::lexical_cast<T>(str);
+	}
+
+
+
 	/// Might be useful for template deductions
 	typedef T value_type;
-
-protected:
-	void internalSet(void * t) {
-		data = *((T*)t);
-	}
-
-	void* internalGet() {
-		return &data;
-	}
 
 private:
 	/// actual data

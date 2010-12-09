@@ -13,6 +13,7 @@
 #include "Component.hpp"
 #include "Event.hpp"
 #include "EventHandler.hpp"
+#include "Property.hpp"
 #include "DataStreamInterface.hpp"
 
 #include "ComponentManager.hpp"
@@ -129,6 +130,9 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 	std::string thread;
 	std::string group;
 	std::string include;
+
+	Base::PropertyInterface * prop;
+
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
 		name = nd.first;
@@ -171,6 +175,22 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 				LOG(LNOTICE) << "Check properties in configuration file!";
 
 				throw Common::DisCODeException(name + ": failed to load component");
+			}
+		}
+
+		std::cout << name << " properties:\n";
+		kern->printProperties();
+
+		std::cout << name << " properties defined in xml:" << std::endl;
+		BOOST_FOREACH( TreeNode nd2, tmp) {
+			std::cout << nd2.first << "=[" << tmp.get(nd2.first, "") << "]" << std::endl;
+			prop = kern->getProperty(nd2.first);
+			if (prop != NULL) {
+				std::cout << "\t- this property is present in component.\n";
+				if (prop->isPersistent()) {
+					std::cout << "\t- this property is persistent.\n";
+					prop->retrieve(tmp.get(nd2.first, ""));
+				}
 			}
 		}
 
