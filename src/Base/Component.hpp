@@ -18,6 +18,7 @@ class Props;
 class Event;
 class EventHandlerInterface;
 class DataStreamInterface;
+class PropertyInterface;
 
 /*!
  * \class Component

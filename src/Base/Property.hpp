@@ -15,7 +15,7 @@ namespace Base {
 class PropertyInterface {
 public:
 
-	PropertyInterface(const std::string & n) : name(n) {}
+	PropertyInterface(const std::string & n) : name(n), stored(true) {}
 
 	template <typename T>
 	T get() {
@@ -28,6 +28,18 @@ public:
 		return t;
 	}
 
+
+
+	bool isStored() {
+		return stored;
+	}
+
+	virtual std::string store() = 0;
+
+	virtual void retrieve(const std::string & str) = 0;
+
+
+
 protected:
 	virtual void internalSet(void * data) = 0;
 
@@ -36,17 +48,14 @@ protected:
 private:
 	/// property name
 	std::string name;
+
+	bool stored;
 };
 
 /*!
- * Each property has three sets of redundant accessors:
- * 1. function call syntax
- * 2. get() and set() functions
- * 3. overloaded operator =
- * a read-write property with data store and
- * automatically generated get/set functions.
+ *
  */
-template <class T>
+template < class T >
 class Property : public PropertyInterface
 {
 public:
