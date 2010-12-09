@@ -29,7 +29,7 @@ Note: The size from the OpenCV example chessboard is 9 (width) x 6 (height).
 - Calibration: chessboard pictures taken with the use camera from the Robotics Lab at the ICCE.\n
 Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a>\n
 Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab.rar">calibration_robotics_lab.rar</a>\n
-Note: The size of out chessboard is 8 (width) x 6 (height).
+Note: The size of our chessboard is 8 (width) x 6 (height).
 
 
 \section ecovi_tutorials Tutorials

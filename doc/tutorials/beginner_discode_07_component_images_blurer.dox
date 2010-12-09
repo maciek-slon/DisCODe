@@ -117,10 +117,10 @@ void ImageBlurer_Processor::onNewImage()
 ...
 \endcode
 
- - Compile and copy the component to bin library.
+\note Compile and copy the component to bin library.
 
 \section ts_file Task file
-Create a new ImageBlurer.xml file on the base of the  RefreshedTriggeredSequenceViewer.xml.
+Create a new ImageBlurer.xml file on the base of the RefreshedTriggeredSequenceViewer.xml.
 - Add the <b>Blur1</b> component to the list of components, set its executor to <b>Exec1</b>
 \code
 		...

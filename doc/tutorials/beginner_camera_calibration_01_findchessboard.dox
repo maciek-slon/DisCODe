@@ -6,6 +6,22 @@
 \section ts_objectives Tutorial objectives
 The goal of this tutorial is to create a task responsible for chessboard localization and performing the calibration computations.
 
+The main challeng is to implement the <b>ChessboardComponent</b> component, which will offer two major functionalities:
+- Localization of chessboard. \n
+The <b>t_Pressed</b> event should trigger the <b>Sequence</b> to load next image from file, pass it to the output data port <b>out_img</b> and emit the <b>newImage</b> event.
+The attached <b>ChessboardComponent</b> event handler <b>onNewImage()</b> is responsible for localization and - in the case of success - it should remember
+the result (a set of image points containing corners and adequate object points). Afterwards the chessboard should be drawn on the output image, passed to the
+<b>out_img</b> output data port and related <b>imageProcesed</b> event should be emitted.
+
+- Calibration computations. \n
+The <b>c_Pressed</b> event should trigger the <b>onCalibration()</b> handler of the <b>ChessboardComponent</b>, which should perform the calibration parameters computation (
+on the base of gathered calibration set) and save the result to a file. 
+
+Because the calibration patterns might differ (e.g. different number of squares or square sizes) it is 
+required to create the possibility for changing their parameters without code recompilation.
+That is the reason why the component properties should be implemented, offering the possibility to change values of component 
+parameters in the configuration file.
+
 \section ts_structure Task structure
 The task should consist of four components - three existing and a one new, implemented during this tutorial.
 \htmlonly
@@ -15,17 +31,6 @@ The task should consist of four components - three existing and a one new, imple
 \note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
 \section ts_component_chess The CameraCalibration component
-
-The <b>ChessboardComponent</b> component has two major functions:
-- Localization of chessboard in the input image (<b>in_img</b> data port). \n
-The <b>t_Pressed</b> event should trigger the <b>Sequence</b> to load next image from file, pass it to the output data port <b>out_omg</b> and emit the <b>newImage</b> event.
-In the <b>ChessboardComponent::onNewImage()</b> event handler the component should try to localize it and - in the case of successful localization - it should remember
-the result (set of image points containing corners and adequate object points). Afterwards the chessboard should be drawn on the ouput image and passed to the
-<b>imageProcesed</b> output data port.
-
-- performing the calibration computations - in the case when user pressed the <b>c</b>. \n
-The <b>c_Pressed</b> event should trigger the <b>onCalibration()</b> handler, which should compute the calibration parameters (on the base of gathered calibration set).
-The result should be save to a file.
 
 \subsection component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile.
 Select your operating system:
@@ -52,9 +57,6 @@ Describes how to utilize the SDK in order to create and compile new component un
 \endhtmlonly
 
 \subsection beg_cam_calib_properties Create component properties
-Because the calibration patterns might differ (e.g. different number of squares and their sizes) it is required to create the possibility for changing those parameters without the recompilation.
-That is why the component properties should be implemented.
-
  - Edit the component header, find the <b>Props</b> structure and add following fields to the structure.
 \code
 	// Size of chessboard - number of inner corners in both board dimensions.
@@ -96,7 +98,6 @@ That is why the component properties should be implemented.
 \subsection beg_cam_calib_declarations Add required fields and methods to the declaration of the ChessboardComponent class.
  - Enter the <b>protected</b> section of the class and add fields related to data stored between frames.
 \code
-	...
      // Size of the image.
     Size imageSize;
 
@@ -105,31 +106,25 @@ That is why the component properties should be implemented.
 
     // The vector of vectors of points on the calibration pattern in its coordinate system, one vector per view.
     vector<vector<Point3f> > objectPoints;
-	...
 \endcode
 
 - Add input and output data ports.
 \code
-	...
     // Input data port.
     Base::DataStreamIn <cv::Mat> in_img;
 
     // Output image - with chessboard drawn if located.
     Base::DataStreamOut <cv::Mat> out_img;
-	...
 \endcode
 
  - Add event emited after the image is processed.
 \code
-	...
 	// Event emited after the image is processed.
     Base::Event * imageProcessed;
-	...
 \endcode
 
  - Add event handlers and methods utilized when a new image is received.
 \code
-	...
     // "OnNewImage" event handler.
     Base::EventHandler <CameraCalibration_Processor> h_onNewImage;
 
@@ -138,12 +133,10 @@ That is why the component properties should be implemented.
 
     // Adds detected chessboard corners to set (all found object and image points).
     void addCornersVectorToSet(vector<Point2f>& corners_);
-	...
 \endcode
 
  - Add event handlers and methods related to calibration.
 \code
-	...
     // "onCalibrate" event handler.
     Base::EventHandler <CameraCalibration_Processor> h_onCalibrate;
 
@@ -152,13 +145,11 @@ That is why the component properties should be implemented.
 
     // Save parameters to file.
     void saveParameters(Mat& cameraMatrix_, Mat& distCoeffs_);
-	...
 \endcode
 
 \subsection beg_cam_calib_definitions Add definitions of ChessboardComponent class methods.
 - In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
 \code
-	...
     // Register handlers.
     h_onNewImage.setup(this, &CameraCalibration_Processor::onNewImage);
     registerHandler("onNewImage", &h_onNewImage);
@@ -172,7 +163,6 @@ That is why the component properties should be implemented.
     // Register data streams.
     registerStream("in_img", &in_img);
     registerStream("out_img", &out_img);
-	...
 \endcode
 
 - Implement the <b>onNewImage()</b> method - localize the chessboard.
@@ -285,6 +275,55 @@ void CameraCalibration_Processor::saveParameters(Mat& cameraMatrix_, Mat& distCo
     LOG(LINFO) << "Results saved to "<< props.calibrationResults << " file.";
 }
 \endcode
+
+\note Compile and copy the component to bin library.
+
+\section ts_file Task file
+Create a new CameraCalibration.xml file (e.g. on the base of the RefreshedTriggeredSequenceViewer.xml).
+- Add the <b>Calib1</b> component to the list of components, set its executor to <b>Exec1</b>
+\code
+        <Calib1 type="CameraCalibration" thread="Exec1" group="s1">
+			<width>9</width>
+			<height>6</height>
+			<squareSize>0.02</squareSize>
+			<calibrationResults>left_calibration_results.xml</calibrationResults>
+        </Calib1>
+\endcode
+
+- Add new <b>c</b> key to list active keys in the <b>Keyboard</b> component.
+\code
+			<keys>ct</keys>
+\endcode
+
+- Connect data pipes between: <b>Seq1.Out</b> -> <b>Calib1.In</b> and <b>Calib1.Out</b> -> <b>Wnd1.In</b>.
+\code
+        <Seq1>
+            <out_img type="out" group="Con1"/>
+        </Seq1>
+        <Calib1>
+            <in_img  type="in" group="Con1"/>
+        </Calib1>
+
+        <Calib1>
+            <out_img type="out" group="Con2"/>
+        </Calib1>
+        <Wnd1>
+            <in_img  type="in" group="Con2"/>
+        </Wnd1>
+\endcode
+
+- Create new connections between event emitters and handlers: 
+<b>Kbd1.c_Pressed</b> -> <b>Calib1.onCalibrate</b>, <b>Kbd1.t_Pressed</b> -> <b>Seq1.onTrigger</b>, 
+<b>Seq1.NewImage</b> -> <b>Calib1.onNewImage</b> and <b>Calib1.imageProcessed</b> -> <b>Wnd1.onNewImage</b>.
+\code
+		<Event source="Kbd1.t_Pressed" destination="Seq1.onTrigger"/>
+		<Event source="Kbd1.c_Pressed" destination="Calib1.onCalibrate"/>
+        <Event source="Seq1.newImage" destination="Calib1.onNewImage"/>
+        <Event source="Calib1.imageProcessed" destination="Wnd1.onNewImage"/>
+\endcode
+
+\note For more task file details please refer to the previous tutorials.
+
 
 \section ts_hints Hints
  - Select one of the two available calibration datasets.
