@@ -12,6 +12,10 @@
 namespace Processors {
 namespace EdgeDetectorForSegmentedImage {
 
+using namespace cv;
+using namespace std;
+using namespace Types;
+
 EdgeDetectorForSegmentedImage_Processor::EdgeDetectorForSegmentedImage_Processor(const std::string & name) :
 	Base::Component(name)
 {
@@ -30,6 +34,7 @@ bool EdgeDetectorForSegmentedImage_Processor::onInit()
 	// Register data streams, events and event handlers HERE!
 	registerStream("in_segmented", &in_segmented);
 	registerStream("out_edgesDetected", &out_edgesDetected);
+	registerStream("out_contours", &out_contours);
 
 	h_onSegmented.setup(this, &EdgeDetectorForSegmentedImage_Processor::onSegmented);
 	registerHandler("onSegmented", &h_onSegmented);
@@ -68,7 +73,17 @@ void EdgeDetectorForSegmentedImage_Processor::onSegmented()
 
 	si.detectEdges();
 
+	DrawableContainer dc;
+
+	for (size_t i = 0; i < si.segments.size(); ++i) {
+		si.segments[i].setSegmentImageFromSegmentedImage(si.image);
+		Contour *c = new Contour;
+		c->setContours(*(si.segments[i].getContours()));
+		dc.add(c);
+	}
+
 	out_edgesDetected.write(si);
+	out_contours.write(dc);
 	edgesDetected->raise();
 }
 

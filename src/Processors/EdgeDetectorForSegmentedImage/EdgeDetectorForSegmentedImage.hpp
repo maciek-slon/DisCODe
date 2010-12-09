@@ -11,6 +11,8 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
+#include "DrawableContainer.hpp"
+#include "Contour.hpp"
 
 #include "../GrayImageSegmentation/SegmentedImage.hpp"
 
@@ -101,6 +103,7 @@ private:
 	Base::DataStreamIn <Types::Segmentation::SegmentedImage> in_segmented;
 	Base::EventHandler <EdgeDetectorForSegmentedImage_Processor> h_onSegmented;
 	Base::DataStreamOut <Types::Segmentation::SegmentedImage> out_edgesDetected;
+	Base::DataStreamOut <Types::DrawableContainer> out_contours;
 	Base::Event* edgesDetected;
 };
 
