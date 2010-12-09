@@ -40,6 +40,15 @@
 		<ContourWnd type="CvWindow" thread="Exec1" group="s1">
 			<title>Contour </title>
 		</ContourWnd>
+		
+		
+		<LineSegments type="LineSegments" thread="Exec1" group="s1">
+		</LineSegments>
+		
+		<LineSegmentsWnd type="CvWindow" thread="Exec1" group="s1">
+			<title>LineSegments </title>
+		</LineSegmentsWnd>
+		
 	</Components>
 
 	<!-- Threads of execution -->
@@ -63,6 +72,9 @@
 		<Event source="ConvertSegmentsForEdgeImage.onNewImage" destination="EdgeWnd.onNewImage"/>
 		
 		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="ContourWnd.onNewImage"/>
+		
+		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="LineSegments.onEdgesDetected"/>
+		<Event source="LineSegments.lineSegmentsEstimated" destination="LineSegmentsWnd"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -112,6 +124,16 @@
 			<in_img type="in" group="ColorImageDataStream"/>
 			<in_draw type="in" group="Contours"/>
 		</ContourWnd>
+		
+		<LineSegments>
+			<in_edgesDetected type="in" group="EdgesDetected"/>
+			<out_lineSegments type="out" group="LineSegments"/>
+		</LineSegments>
+		
+		<LineSegmentsWnd>
+			<in_img type="in" group="ColorImageDataStream"/>
+			<in_draw type="in" group="LineSegments"/>
+		</LineSegmentsWnd>
 	</DataStreams>
 
 </Task>

@@ -48,7 +48,7 @@ Types::Segmentation::SegmentedImage SegmentExtractor::segmentImage(const cv::Mat
 		for (int x = 0; x < w; ++x) {
 			MaskType m = segmentedImage.image.at <MaskType> (y, x);
 			bool found = false;
-			for (int i = 0; i < segmentedImage.segments.size(); ++i) {
+			for (size_t i = 0; i < segmentedImage.segments.size(); ++i) {
 				if (segmentedImage.segments[i].getSegmentClass() == m) {
 					found = true;
 					break;

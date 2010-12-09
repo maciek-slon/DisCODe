@@ -8,6 +8,7 @@
 #include <stdexcept>
 
 #include "Segment.hpp"
+#include "Logger.hpp"
 
 namespace Types {
 namespace Segmentation {
@@ -93,6 +94,57 @@ std::vector <std::vector <cv::Point> >* Segment::getContours()
 		computeContours();
 	}
 	return &contours;
+}
+
+void Segment::computeLineSegments()
+{
+	getContours();
+	lineSegments.clear();
+	std::vector <std::vector <cv::Point> >::const_iterator contourIt;
+	LOG(LDEBUG) << "Segment::computeLineSegments() contours.size(): " << contours.size();
+	for (contourIt = contours.begin(); contourIt != contours.end(); ++contourIt) {
+		LOG(LDEBUG) << "Segment::computeLineSegments() contour length: " << contourIt->size() << endl;
+		computeLineSegmentsForSingleContour(contourIt, 0, contourIt->size() - 1);
+	}
+	lineSegmentsComputed = true;
+}
+
+void Segment::computeLineSegmentsForSingleContour(std::vector <std::vector <cv::Point> >::const_iterator contourIt, int p1Idx, int p2Idx)
+{
+	LOG(LDEBUG) << "Segment::computeLineSegmentsForSingleContour: (" << p1Idx << ", " << p2Idx << ")\n";
+	//	if (!(p1Idx < p2Idx)) {
+	//
+	//	}
+
+	Point p1 = (*contourIt)[p1Idx];
+	Point p2 = (*contourIt)[p2Idx];
+
+	Line line(p1, p2);
+
+	double maxDistance = 0;
+	int maxDistancePointIdx = p1Idx;
+	for (int i = p1Idx + 1; i < p2Idx - 1; ++i) {
+		Point p3 = (*contourIt)[i];
+		double dist = line.getDistanceFromPoint(p3);
+		if (maxDistance < dist) {
+			maxDistance = dist;
+			maxDistancePointIdx = i;
+		}
+	}
+	if (maxDistance > splitDistance) {
+		computeLineSegmentsForSingleContour(contourIt, p1Idx, maxDistancePointIdx);
+		computeLineSegmentsForSingleContour(contourIt, maxDistancePointIdx, p2Idx);
+	} else {
+		lineSegments.push_back(line);
+	}
+}
+
+std::vector <Types::Line>* Segment::getLineSegments()
+{
+	if (!lineSegmentsComputed) {
+		computeLineSegments();
+	}
+	return &lineSegments;
 }
 
 } // namespace Segmentation

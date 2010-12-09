@@ -10,6 +10,8 @@
 
 #include <cv.h>
 
+#include "Line.hpp"
+
 namespace Types {
 namespace Segmentation {
 
@@ -30,6 +32,7 @@ public:
 	void setSegmentImageFromSegmentedImage(cv::Mat& segmentedImage);
 	cv::Mat getSegmentImage();
 	std::vector <std::vector <cv::Point> >* getContours();
+	std::vector <Types::Line>* getLineSegments();
 private:
 	cv::Point startingPoint;
 	MaskType segmentClass;
@@ -43,6 +46,13 @@ private:
 	bool contoursComputed;
 	std::vector <std::vector <cv::Point> > contours;
 	void computeContours();
+
+	static const double splitDistance = 5;
+	bool lineSegmentsComputed;
+	std::vector <Types::Line> lineSegments;
+	void computeLineSegments();
+	void computeLineSegmentsForSingleContour(std::vector <std::vector <cv::Point> >::const_iterator contourIt, int p1Idx, int p2Idx);
+
 };
 
 } // namespace Segmentation
