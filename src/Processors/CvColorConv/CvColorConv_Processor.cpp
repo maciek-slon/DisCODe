@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <stdexcept>
 
 #include "CvColorConv_Processor.hpp"
 #include "Logger.hpp"
@@ -71,8 +72,8 @@ void CvColorConv_Processor::onNewImage()
 		cvtColor(img, out, props.type);
 		out_img.write(out);
 		newImage->raise();
-	} catch (...) {
-		LOG(LERROR) << "CvThreshold::onNewImage failed\n";
+	} catch (const exception& ex) {
+		LOG(LERROR) << "CvColorConv_Processor::onNewImage() failed. " << ex.what() << endl;
 	}
 }
 

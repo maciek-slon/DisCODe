@@ -32,8 +32,14 @@ Segment::Segment(const Segment& o)
 {
 	startingPoint = o.startingPoint;
 	segmentClass = o.segmentClass;
+	segmentImageSet = o.segmentImageSet;
+	segmentImage = o.segmentImage.clone();
 	areaComputed = o.areaComputed;
 	area = o.area;
+	contoursComputed = o.contoursComputed;
+	contours = o.contours;
+	lineSegmentsComputed = o.lineSegmentsComputed;
+	lineSegments = o.lineSegments;
 }
 
 Segment::~Segment()

@@ -33,7 +33,7 @@ bool LineSegments_Processor::onInit()
 	// Register data streams, events and event handlers HERE!
 
 	h_onEdgesDetected.setup(this, &LineSegments_Processor::onEdgesDetected);
-	registerHandler("h_onEdgesDetected", &h_onEdgesDetected);
+	registerHandler("onEdgesDetected", &h_onEdgesDetected);
 
 	registerStream("in_edgesDetected", &in_edgesDetected);
 	registerStream("out_lineSegmentsEstimated", &out_lineSegmentsEstimated);

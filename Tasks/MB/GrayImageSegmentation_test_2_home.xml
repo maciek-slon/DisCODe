@@ -74,7 +74,7 @@
 		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="ContourWnd.onNewImage"/>
 		
 		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="LineSegments.onEdgesDetected"/>
-		<Event source="LineSegments.lineSegmentsEstimated" destination="LineSegmentsWnd"/>
+		<Event source="LineSegments.lineSegmentsEstimated" destination="LineSegmentsWnd.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->

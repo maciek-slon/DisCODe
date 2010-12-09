@@ -9,7 +9,7 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 ADD_LIBRARY(LineSegments SHARED ${files})
-TARGET_LINK_LIBRARIES(LineSegments ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
+TARGET_LINK_LIBRARIES(LineSegments ${OpenCV_LIBS} ${DisCODe_LIBRARIES} GrayImageSegmentation)
 
 INSTALL_PROCESSOR(LineSegments)
 
