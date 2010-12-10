@@ -2,11 +2,18 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Source type="CameraOpenCV" thread="Thread1" group="s1">
+		<Source type="CameraUniCap" thread="Thread1" group="s1">
+			<device>
+
+			</device>
+
+			<image>
+
+			</image>
 		</Source>
 
 		<Window type="CvWindow" thread="Thread1" group="s1">
-			<title>Preview</title>	
+			<title>Preview</title>
 		</Window>
 	</Components>
 
