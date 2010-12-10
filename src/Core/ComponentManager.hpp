@@ -75,7 +75,11 @@ public:
 	{
 		// Get filenames.
 		vector <string> files;
-		getSOList(".", files);
+		try {
+			getSOList("../lib", files);
+		}
+		catch(...) {
+		}
 
 		// Check number of so's to import.
 		if (files.empty()) {

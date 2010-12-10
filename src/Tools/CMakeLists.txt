@@ -1,6 +1,23 @@
+
 #
 ADD_EXECUTABLE(xmltree xmltree.cpp)
+MESSAGE(STATUS "\txmltree")
+SET(BUILT_TOOLS ${BUILT_TOOLS} xmltree)
 
 #
 ADD_EXECUTABLE(regexfind regexfind.cpp)
 target_link_libraries(regexfind ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
+MESSAGE(STATUS "\tregexfind")
+SET(BUILT_TOOLS ${BUILT_TOOLS} regexfind)
+
+
+SET_TARGET_PROPERTIES(${BUILT_TOOLS} PROPERTIES
+   BUILD_WITH_INSTALL_RPATH ON
+   INSTALL_RPATH_USE_LINK_PATH 1
+   INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib
+)
+
+install(
+  TARGETS ${BUILT_TOOLS}
+  RUNTIME DESTINATION bin COMPONENT applications
+)
