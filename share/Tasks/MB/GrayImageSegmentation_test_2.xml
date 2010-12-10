@@ -4,7 +4,7 @@
 	<Components>
         <Seq1 type="CameraUniCap" thread="Exec1" group="s1">
         	<dev>
-				<device>/dev/video1</device>
+				<device>/dev/video0</device>
 			</dev>
 		</Seq1>
 
@@ -39,6 +39,19 @@
 		<OriginalPicture type="CvWindow" thread="Exec1" group="s1">
 			<title>OriginalPicture</title>
 		</OriginalPicture>
+		
+		<ContourWnd type="CvWindow" thread="Exec1" group="s1">
+			<title>Contour </title>
+		</ContourWnd>
+		
+		
+		<LineSegments type="LineSegments" thread="Exec1" group="s1">
+		</LineSegments>
+		
+		<LineSegmentsWnd type="CvWindow" thread="Exec1" group="s1">
+			<title>LineSegments </title>
+		</LineSegmentsWnd>
+		
 	</Components>
 
 	<!-- Threads of execution -->
@@ -60,6 +73,11 @@
 		<Event source="GrayImageSegmentation.onSegmented" destination="EdgeDetectorForSegmentedImage.onSegmented"/>
 		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="ConvertSegmentsForEdgeImage.onSegmented"/>
 		<Event source="ConvertSegmentsForEdgeImage.onNewImage" destination="EdgeWnd.onNewImage"/>
+		
+		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="ContourWnd.onNewImage"/>
+		
+		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="LineSegments.onEdgesDetected"/>
+		<Event source="LineSegments.lineSegmentsEstimated" destination="LineSegmentsWnd.onNewImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -93,6 +111,7 @@
 		<EdgeDetectorForSegmentedImage>
 			<in_segmented type="in" group="Segmented"/>
 			<out_edgesDetected type="out" group="EdgesDetected"/>
+			<out_contours type="out" group="Contours"/>
 		</EdgeDetectorForSegmentedImage>
 		
 		<ConvertSegmentsForEdgeImage>
@@ -103,6 +122,21 @@
 		<EdgeWnd>
 			<in_img  type="in" group="EdgesDetectedImage"/>
 		</EdgeWnd>
+		
+		<ContourWnd>
+			<in_img type="in" group="ColorImageDataStream"/>
+			<in_draw type="in" group="Contours"/>
+		</ContourWnd>
+		
+		<LineSegments>
+			<in_edgesDetected type="in" group="EdgesDetected"/>
+			<out_lineSegments type="out" group="LineSegments"/>
+		</LineSegments>
+		
+		<LineSegmentsWnd>
+			<in_img type="in" group="ColorImageDataStream"/>
+			<in_draw type="in" group="LineSegments"/>
+		</LineSegmentsWnd>
 	</DataStreams>
 
 </Task>
