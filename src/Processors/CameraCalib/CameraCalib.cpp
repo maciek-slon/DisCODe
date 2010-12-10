@@ -5,15 +5,19 @@
  *      Author: konradb3
  */
 
-#include "CameraCalib.h"
+#include <boost/filesystem.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <highgui.h>
+
+#include "CameraCalib.h"
 
 namespace Processors {
 namespace CameraCalib {
 
 using namespace cv;
 using namespace std;
+using namespace boost::posix_time;
 
 CameraCalib_Processor::CameraCalib_Processor(const std::string & name) :
 	Base::Component(name)
@@ -37,6 +41,10 @@ bool CameraCalib_Processor::onInit()
 	registerHandler("onSequenceEnd", &h_onSequenceEnd);
 
 	registerStream("in_img", &in_img);
+	registerStream("out_chessboard", &out_chessboard);
+
+	chessboardFound = registerEvent("chessboardFound");
+	chessboardNotFound = registerEvent("chessboardNotFound");
 
 	chessboardModelPoints.clear();
 	objectPoints.clear();
@@ -50,6 +58,13 @@ bool CameraCalib_Processor::onInit()
 		}
 	}
 
+	lastImageAlreadySaved = true;
+
+	return true;
+}
+
+bool CameraCalib_Processor::onStart()
+{
 	return true;
 }
 
@@ -71,7 +86,7 @@ bool CameraCalib_Processor::onStop()
 void CameraCalib_Processor::onNewImage()
 {
 	try {
-		Mat image = in_img.read();
+		image = in_img.read().clone();
 		if (objectPoints.size() == 0) {
 			imageSize = image.size();
 		}
@@ -87,11 +102,15 @@ void CameraCalib_Processor::onNewImage()
 			LOG(LTRACE) << "chessboard found\n";
 
 			if (props.findSubpix) {
-				cornerSubPix(image, lastImagePoints, Size(5, 5), Size(1, 1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 50, 1e-3));
+				cornerSubPix(image, lastImagePoints, Size(5, 5), Size(1, 1), TermCriteria(CV_TERMCRIT_EPS
+						| CV_TERMCRIT_ITER, 50, 1e-3));
 			}
 
-			if(props.storeOnNewImage){
+			if (props.storeOnNewImage) {
 				addImageToSet();
+				lastImageAlreadySaved = true;
+			} else {
+				lastImageAlreadySaved = false;
 			}
 
 			Types::Objects3D::Chessboard chessboard(props.patternSize, props.squareSize);
@@ -109,38 +128,102 @@ void CameraCalib_Processor::onNewImage()
 	} catch (const Exception& e) {
 		LOG(LERROR) << e.what() << "\n";
 	}
-
-	if (props.storeOnNewImage) {
-
-	}
 }
 
 void CameraCalib_Processor::onStoreLastImage()
 {
+	if (lastImageAlreadySaved) {
+		LOG(LFATAL) << "CameraCalib_Processor::onStoreLastImage(): image already saved.\n";
+		return;
+	}
+
+	LOG(LFATAL) << "CameraCalib_Processor::onStoreLastImage(): saving image.\n";
 	addImageToSet();
+	lastImageAlreadySaved = true;
 }
 
 void CameraCalib_Processor::addImageToSet()
 {
+	LOG(LFATAL) << "CameraCalib_Processor::addImageToSet()\n";
 	if (lastImagePoints.size() != chessboardModelPoints.size() || lastImagePoints.size() == 0) {
 		LOG(LERROR) << "CameraCalib_Processor::addImageToSet() nothing to add to set.\n";
 		return;
 	}
 	imagePoints.push_back(lastImagePoints);
 	objectPoints.push_back(chessboardModelPoints);
+
+	if (props.saveImages) {
+		if (imagePoints.size() == 1) { // we're saving first image. Create directory
+
+			stringstream ss;
+
+			ptime now(second_clock::local_time());
+
+			ss << props.imagesBaseDirectory << "/CameraCalib_";
+
+			time_facet* facet(new time_facet("%Y%m%d%H%M%S"));
+			ss.imbue(std::locale(std::cout.getloc(), facet));
+			ss << now;
+
+			currentDirectory = ss.str();
+			LOG(LFATAL) << "CameraCalib_Processor::addImageToSet(): creating directory: \"" << currentDirectory
+					<< "\"\n";
+			if (!boost::filesystem::create_directory(currentDirectory)) {
+				LOG(LFATAL) << "Couldn't create directory \"" << currentDirectory << "\" for storing images.\n";
+			}
+		}
+
+		stringstream ss;
+
+		ss << currentDirectory << "/CalibrationImage_";
+		ss.fill('0');
+		ss.width(4);
+		ss << imagePoints.size() << ".png";
+
+		LOG(LFATAL) << "Saving image \"" << ss.str() << "\"\n";
+
+		imwrite(ss.str().c_str(), image);
+	}
 }
 
 void CameraCalib_Processor::onSequenceEnd()
 {
-	if(imagePoints.size() < 3){
+	if (imagePoints.size() < 3) {
 		LOG(LERROR) << "CameraCalib_Processor::onSequenceEnd(): imagePoints.size() < 3\n";
+		return;
 	}
-	Mat cameraMatrix;
-	Mat distCoeffs;
-	Mat rvecs;
-	Mat tvecs;
-	int flags;
-//	double ret = calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs, flags);
+	Mat cameraMatrix = Mat::eye(Size(3, 3), CV_64F);
+	Mat distCoeffs = Mat::zeros(Size(8, 1), CV_64F);
+	vector <Mat> rvecs;
+	vector <Mat> tvecs;
+
+	LOG(LFATAL) << "CameraCalib_Processor::onSequenceEnd(): running calibrateCamera()\n";
+	double reprojectionError =
+			calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs);
+	LOG(LFATAL) << "CameraCalib_Processor::onSequenceEnd(): calibrateCamera() finished\n";
+
+	stringstream ss;
+	ss << "reprojectionError = " << reprojectionError << endl;
+	ss << "cameraMatrix = [\n\t";
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			ss << cameraMatrix.at <double> (i, j) << "\t";
+		}
+		if (i < 2) {
+			ss << ";\n\t";
+		}
+	}
+	ss << "\n]\n";
+
+	ss << "distCoeffs = [";
+	for (int i = 0; i < distCoeffs.cols; ++i) {
+		ss << distCoeffs.at <double> (i, 0);
+		if (i < distCoeffs.cols - 1) {
+			ss << "\t";
+		}
+	}
+	ss << "]\n";
+	LOG(LFATAL) << ss.str();
 }
 
 } // namespace CameraCalib

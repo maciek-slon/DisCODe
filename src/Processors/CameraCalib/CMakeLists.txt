@@ -9,6 +9,6 @@ FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
 add_library(procCameraCalib SHARED ${files})
-target_link_libraries(procCameraCalib ${OpenCV_LIBRARIES} ${DisCODe_LIBRARIES})
+target_link_libraries(procCameraCalib ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
 
 INSTALL_PROCESSOR(procCameraCalib)

@@ -20,26 +20,54 @@ namespace CameraCalib {
 
 struct CameraCalib_Props: public Base::Props
 {
-	std::string outputFilename;
+	/**
+	 * Specifies whether imagesBaseDirectory is valid.
+	 */
+	bool saveImages;
 
-	cv::Size patternSize;
-	float squareSize;
-	bool findSubpix;
+	/**
+	 * If specified, store all calibration images to this imagesBaseDirectory + "/CameraCalib_DATETIME/".
+	 */
+	std::string imagesBaseDirectory;
 
+	/**
+	 * Where to put calibration results.
+	 */
+	std::string resultsFilename;
+
+	/**
+	 * If true, store every image read from data stream.
+	 */
 	bool storeOnNewImage;
+
+	/**
+	 *
+	 */
+	cv::Size patternSize;
+	/**
+	 *
+	 */
+	float squareSize;
+	/**
+	 *
+	 */
+	bool findSubpix;
 
 	virtual void load(const ptree & pt)
 	{
-		outputFilename = pt.get <std::string> ("outputFilename");
+		imagesBaseDirectory = pt.get <std::string> ("imagesBaseDirectory");
+		saveImages = imagesBaseDirectory.size() > 0;
+		resultsFilename = pt.get <std::string> ("resultsFilename");
 		patternSize.width = pt.get <int> ("width");
 		patternSize.height = pt.get <int> ("height");
 		squareSize = pt.get <float> ("squareSize");
 		findSubpix = pt.get <bool> ("findSubpix");
-		storeOnNewImage = pt.get<bool>("storeOnNewImage");
+		storeOnNewImage = pt.get <bool> ("storeOnNewImage");
 	}
 	virtual void save(ptree & pt)
 	{
-		pt.put("outputFilename", outputFilename);
+		pt.put("imagesBaseDirectory", imagesBaseDirectory);
+		pt.put("resultsFilename", resultsFilename);
 		pt.put("width", patternSize.width);
 		pt.put("height", patternSize.height);
 		pt.put("squareSize", squareSize);
@@ -109,13 +137,20 @@ private:
 
 	std::vector <std::vector <cv::Point3f> > objectPoints;
 	std::vector <std::vector <cv::Point2f> > imagePoints;
+
 	std::vector <cv::Point2f> lastImagePoints;
-	std::vector<cv::Point3f> chessboardModelPoints;
+	bool lastImageAlreadySaved;
+
+	std::vector <cv::Point3f> chessboardModelPoints;
+
 	cv::Size imageSize;
 	CameraCalib_Props props;
 
 	int findChessboardCornersFlags;
 
+	std::string currentDirectory;
+
+	cv::Mat image;
 };
 
 } // namespace CameraCalib
