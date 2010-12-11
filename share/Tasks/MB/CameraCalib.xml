@@ -16,8 +16,8 @@
 		-->
 		
 		<ImageSource type="Sequence" thread="MainExecutor" group="s1">
-			<directory>/home/mateusz/CameraCalib/1/</directory>
-			<triggered>true</triggered>
+			<directory>/home/mateusz/CameraCalib/2/</directory>
+			<triggered>false</triggered>
 			<sort>true</sort>
 		</ImageSource>
 
@@ -28,10 +28,10 @@
 		<CameraCalib type="CameraCalib" thread="MainExecutor" group="s1">
 			<imagesBaseDirectory>/home/mateusz/CameraCalib/Results</imagesBaseDirectory>
 			<resultsFilename>/home/mateusz/CameraCalib/Results.txt</resultsFilename>
-			<storeOnNewImage>false</storeOnNewImage>
+			<storeOnNewImage>true</storeOnNewImage>
 			<width>7</width>
 			<height>5</height>
-			<squareSize>0.02</squareSize>
+			<squareSize>2.54</squareSize>
 			<findSubpix>true</findSubpix>
 		</CameraCalib>
 
@@ -61,8 +61,15 @@
 
 	<!-- Event connections -->
 	<Events>
+		<!-- 
 		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
 		<Event source="BGRToGray.newImage" destination="CameraCalib.onNewImage"/>
+		-->
+		
+		<Event source="ImageSource.newImage" destination="CameraCalib.onNewImage"/>
+		
+		<Event source="ImageSource.endOfSequence" destination="CameraCalib.onSequenceEnd"/>
+		
 		<Event source="CameraCalib.chessboardFound" destination="Preview.onNewImage"/>
 		<Event source="CameraCalib.chessboardNotFound" destination="Preview.onNewImage"/>
 		<Event source="Keyboard.t_Pressed" destination="ImageSource.onTrigger"/>
@@ -76,15 +83,24 @@
 			<out_img type="out" group="ColorImageDS"/>
 		</ImageSource>
 		
+		<!-- 
 		<BGRToGray>
 			<in_img  type="in" group="ColorImageDS"/>
 			<out_img type="out" group="GrayImageDS"/>
 		</BGRToGray>
 		
+		
 		<CameraCalib>
 			<in_img type="in" group="GrayImageDS"/>
 			<out_chessboard type="out" group="ChessboardDS"/>
 		</CameraCalib>
+		-->
+		
+		<CameraCalib>
+			<in_img type="in" group="ColorImageDS"/>
+			<out_chessboard type="out" group="ChessboardDS"/>
+		</CameraCalib>
+		
 		
 		<Preview>
 			<in_img  type="in" group="ColorImageDS"/>

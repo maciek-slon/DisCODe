@@ -7,6 +7,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <fstream>
 
 #include <highgui.h>
 
@@ -54,7 +55,9 @@ bool CameraCalib_Processor::onInit()
 
 	for (int i = 0; i < props.patternSize.height; ++i) {
 		for (int j = 0; j < props.patternSize.width; ++j) {
-			chessboardModelPoints.push_back(Point3f(-j * props.squareSize, -i * props.squareSize, 0));
+			Point3f p(j * props.squareSize, i * props.squareSize, 0);
+			chessboardModelPoints.push_back(p);
+			LOG(LINFO) << "\t" << p.x << "\t" << p.y;
 		}
 	}
 
@@ -133,18 +136,18 @@ void CameraCalib_Processor::onNewImage()
 void CameraCalib_Processor::onStoreLastImage()
 {
 	if (lastImageAlreadySaved) {
-		LOG(LFATAL) << "CameraCalib_Processor::onStoreLastImage(): image already saved.\n";
+		LOG(LWARNING) << "CameraCalib_Processor::onStoreLastImage(): image already saved.\n";
 		return;
 	}
 
-	LOG(LFATAL) << "CameraCalib_Processor::onStoreLastImage(): saving image.\n";
+	LOG(LTRACE) << "CameraCalib_Processor::onStoreLastImage(): saving image.\n";
 	addImageToSet();
 	lastImageAlreadySaved = true;
 }
 
 void CameraCalib_Processor::addImageToSet()
 {
-	LOG(LFATAL) << "CameraCalib_Processor::addImageToSet()\n";
+	LOG(LTRACE) << "CameraCalib_Processor::addImageToSet()\n";
 	if (lastImagePoints.size() != chessboardModelPoints.size() || lastImagePoints.size() == 0) {
 		LOG(LERROR) << "CameraCalib_Processor::addImageToSet() nothing to add to set.\n";
 		return;
@@ -154,22 +157,17 @@ void CameraCalib_Processor::addImageToSet()
 
 	if (props.saveImages) {
 		if (imagePoints.size() == 1) { // we're saving first image. Create directory
-
-			stringstream ss;
-
-			ptime now(second_clock::local_time());
-
-			ss << props.imagesBaseDirectory << "/CameraCalib_";
-
-			time_facet* facet(new time_facet("%Y%m%d%H%M%S"));
-			ss.imbue(std::locale(std::cout.getloc(), facet));
-			ss << now;
-
-			currentDirectory = ss.str();
-			LOG(LFATAL) << "CameraCalib_Processor::addImageToSet(): creating directory: \"" << currentDirectory
+			currentDirectory = props.imagesBaseDirectory + "/CameraCalib_" + getTimeAsString();
+			LOG(LNOTICE) << "CameraCalib_Processor::addImageToSet(): creating directory: \"" << currentDirectory
 					<< "\"\n";
-			if (!boost::filesystem::create_directory(currentDirectory)) {
-				LOG(LFATAL) << "Couldn't create directory \"" << currentDirectory << "\" for storing images.\n";
+			try {
+				if (!boost::filesystem::create_directory(currentDirectory)) {
+					LOG(LERROR) << "Couldn't create directory \"" << currentDirectory << "\" for storing images.\n";
+					LOG(LNOTICE) << "Check imagesBaseDirectory property.\n";
+				}
+			} catch (const exception &ex) {
+				LOG(LERROR) << "Couldn't create directory \"" << currentDirectory << "\" for storing images.\n";
+				LOG(LNOTICE) << "Check imagesBaseDirectory property.\n";
 			}
 		}
 
@@ -180,7 +178,7 @@ void CameraCalib_Processor::addImageToSet()
 		ss.width(4);
 		ss << imagePoints.size() << ".png";
 
-		LOG(LFATAL) << "Saving image \"" << ss.str() << "\"\n";
+		LOG(LNOTICE) << "Saving image \"" << ss.str() << "\"\n";
 
 		imwrite(ss.str().c_str(), image);
 	}
@@ -197,12 +195,32 @@ void CameraCalib_Processor::onSequenceEnd()
 	vector <Mat> rvecs;
 	vector <Mat> tvecs;
 
-	LOG(LFATAL) << "CameraCalib_Processor::onSequenceEnd(): running calibrateCamera()\n";
+	LOG(LNOTICE) << "CameraCalib_Processor::onSequenceEnd(): running calibrateCamera() with " << imagePoints.size()
+			<< " data items\n";
 	double reprojectionError =
 			calibrateCamera(objectPoints, imagePoints, imageSize, cameraMatrix, distCoeffs, rvecs, tvecs);
-	LOG(LFATAL) << "CameraCalib_Processor::onSequenceEnd(): calibrateCamera() finished\n";
+	LOG(LNOTICE) << "CameraCalib_Processor::onSequenceEnd(): calibrateCamera() finished\n";
+	saveResults(cameraMatrix, distCoeffs, reprojectionError);
 
+	imagePoints.clear();
+	objectPoints.clear();
+}
+
+std::string CameraCalib_Processor::getTimeAsString()
+{
 	stringstream ss;
+	ptime now(second_clock::local_time());
+	time_facet* facet(new time_facet("%Y%m%d%H%M%S"));
+	ss.imbue(std::locale(std::cout.getloc(), facet));
+	ss << now;
+	//delete facet;
+	return ss.str();
+}
+
+void CameraCalib_Processor::saveResults(cv::Mat cameraMatrix, cv::Mat distCoeffs, double reprojectionError)
+{
+	stringstream ss;
+	ss << "calculationFinishedAt = " << getTimeAsString() << endl;
 	ss << "reprojectionError = " << reprojectionError << endl;
 	ss << "cameraMatrix = [\n\t";
 	for (int i = 0; i < 3; ++i) {
@@ -223,7 +241,15 @@ void CameraCalib_Processor::onSequenceEnd()
 		}
 	}
 	ss << "]\n";
-	LOG(LFATAL) << ss.str();
+	LOG(LNOTICE) << ss.str();
+
+	try {
+		ofstream of(props.resultsFilename);
+		of << ss.str();
+		of.close();
+	} catch (const exception &ex) {
+		LOG(LERROR) << "Error writing to file resultsFilename \"" << props.resultsFilename << "\"\n";
+	}
 }
 
 } // namespace CameraCalib

@@ -151,6 +151,11 @@ private:
 	std::string currentDirectory;
 
 	cv::Mat image;
+
+
+	std::string getTimeAsString();
+
+	void saveResults(cv::Mat cameraMatrix, cv::Mat distCoeffs, double reprojectionError);
 };
 
 } // namespace CameraCalib
