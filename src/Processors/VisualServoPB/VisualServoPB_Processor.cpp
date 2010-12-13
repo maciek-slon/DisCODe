@@ -67,7 +67,7 @@ bool VisualServoPB_Processor::onStart()
 
 void VisualServoPB_Processor::onObjectLocated()
 {
-	LOG(LFATAL) << "VisualServoPB_Processor::onObjectLocated()\n";
+	LOG(LTRACE) << "VisualServoPB_Processor::onObjectLocated()\n";
 	PBReading pbr;
 	pbr.objectVisible = true;
 	pbr.objectPosition = in_position.read();
@@ -78,7 +78,7 @@ void VisualServoPB_Processor::onObjectLocated()
 
 void VisualServoPB_Processor::onObjectNotFound()
 {
-	LOG(LFATAL) << "VisualServoPB_Processor::onObjectNotFound()\n";
+	LOG(LTRACE) << "VisualServoPB_Processor::onObjectNotFound()\n";
 	PBReading pbr;
 	pbr.objectVisible = false;
 	for (int i = 0; i < 3; ++i) {

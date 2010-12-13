@@ -19,6 +19,7 @@ namespace CameraCalib {
 using namespace cv;
 using namespace std;
 using namespace boost::posix_time;
+using namespace boost::interprocess;
 
 CameraCalib_Processor::CameraCalib_Processor(const std::string & name) :
 	Base::Component(name)
@@ -57,11 +58,21 @@ bool CameraCalib_Processor::onInit()
 		for (int j = 0; j < props.patternSize.width; ++j) {
 			Point3f p(j * props.squareSize, i * props.squareSize, 0);
 			chessboardModelPoints.push_back(p);
-			LOG(LINFO) << "\t" << p.x << "\t" << p.y;
+			LOG(LDEBUG) << "\t" << p.x << "\t" << p.y;
 		}
 	}
 
 	lastImageAlreadySaved = true;
+
+	try {
+		if (props.saveImages) {
+			if (boost::filesystem::create_directories(props.imagesBaseDirectory)) {
+				LOG(LNOTICE) << "Directory \"" << props.imagesBaseDirectory << "\" has been created.\n";
+			}
+		}
+	} catch (exception &e) {
+		LOG(LERROR) << "Couldn't create directory \"" << props.imagesBaseDirectory << "\": " << e.what() << "\n";
+	}
 
 	return true;
 }
@@ -88,6 +99,7 @@ bool CameraCalib_Processor::onStop()
 
 void CameraCalib_Processor::onNewImage()
 {
+	scoped_lock<interprocess_mutex> lock(eventsMutex);
 	try {
 		image = in_img.read().clone();
 		if (objectPoints.size() == 0) {
@@ -99,14 +111,17 @@ void CameraCalib_Processor::onNewImage()
 			return;
 		}
 
+		lastImagePoints.clear();
 		bool found = findChessboardCorners(image, props.patternSize, lastImagePoints, findChessboardCornersFlags);
+		LOG(LDEBUG) << "lastImagePoints.size()=" << lastImagePoints.size();
 
 		if (found) {
-			LOG(LTRACE) << "chessboard found\n";
+			LOG(LINFO) << "chessboard found\n";
 
 			if (props.findSubpix) {
 				cornerSubPix(image, lastImagePoints, Size(5, 5), Size(1, 1), TermCriteria(CV_TERMCRIT_EPS
 						| CV_TERMCRIT_ITER, 50, 1e-3));
+				LOG(LDEBUG) << "lastImagePoints.size()=" << lastImagePoints.size();
 			}
 
 			if (props.storeOnNewImage) {
@@ -124,7 +139,7 @@ void CameraCalib_Processor::onNewImage()
 
 			chessboardFound->raise();
 		} else {
-			LOG(LTRACE) << "chessboard not found\n";
+			LOG(LINFO) << "chessboard not found\n";
 
 			chessboardNotFound->raise();
 		}
@@ -135,6 +150,7 @@ void CameraCalib_Processor::onNewImage()
 
 void CameraCalib_Processor::onStoreLastImage()
 {
+	scoped_lock<interprocess_mutex> lock(eventsMutex);
 	if (lastImageAlreadySaved) {
 		LOG(LWARNING) << "CameraCalib_Processor::onStoreLastImage(): image already saved.\n";
 		return;
@@ -150,6 +166,8 @@ void CameraCalib_Processor::addImageToSet()
 	LOG(LTRACE) << "CameraCalib_Processor::addImageToSet()\n";
 	if (lastImagePoints.size() != chessboardModelPoints.size() || lastImagePoints.size() == 0) {
 		LOG(LERROR) << "CameraCalib_Processor::addImageToSet() nothing to add to set.\n";
+		LOG(LDEBUG) << "lastImagePoints.size(): " << lastImagePoints.size();
+		LOG(LDEBUG) << "chessboardModelPoints.size(): " << chessboardModelPoints.size();
 		return;
 	}
 	imagePoints.push_back(lastImagePoints);
@@ -162,8 +180,8 @@ void CameraCalib_Processor::addImageToSet()
 					<< "\"\n";
 			try {
 				if (!boost::filesystem::create_directory(currentDirectory)) {
-					LOG(LERROR) << "Couldn't create directory \"" << currentDirectory << "\" for storing images.\n";
-					LOG(LNOTICE) << "Check imagesBaseDirectory property.\n";
+					LOG(LWARNING) << "Directory \"" << currentDirectory
+							<< "\" already exists. Data will be overwritten.\n";
 				}
 			} catch (const exception &ex) {
 				LOG(LERROR) << "Couldn't create directory \"" << currentDirectory << "\" for storing images.\n";
@@ -186,6 +204,7 @@ void CameraCalib_Processor::addImageToSet()
 
 void CameraCalib_Processor::onSequenceEnd()
 {
+	scoped_lock<interprocess_mutex> lock(eventsMutex);
 	if (imagePoints.size() < 3) {
 		LOG(LERROR) << "CameraCalib_Processor::onSequenceEnd(): imagePoints.size() < 3\n";
 		return;

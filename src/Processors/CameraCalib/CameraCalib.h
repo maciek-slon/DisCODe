@@ -10,6 +10,8 @@
 
 #include <cv.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
 
 #include "Component_Aux.hpp"
 #include "Panel_Empty.hpp"
@@ -156,6 +158,8 @@ private:
 	std::string getTimeAsString();
 
 	void saveResults(cv::Mat cameraMatrix, cv::Mat distCoeffs, double reprojectionError);
+
+	boost::interprocess::interprocess_mutex eventsMutex;
 };
 
 } // namespace CameraCalib
