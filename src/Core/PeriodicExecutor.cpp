@@ -58,7 +58,7 @@ void PeriodicExecutor::run() {
 				loops++;
 				double spl = elapsed/loops;
 				double lps = 1.0 / spl;
-				LOG(LDEBUG) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+				LOG(LTRACE) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 			} else {
 				Common::Thread::msleep(50);
 			}
@@ -68,7 +68,7 @@ void PeriodicExecutor::run() {
 
 			to_sleep += interval - timer.elapsed();
 			timer.restart();
-			LOG(LINFO) << "Thread " << name() << " is going asleep for " << to_sleep;
+			LOG(LTRACE) << "Thread " << name() << " is going asleep for " << to_sleep;
 
 		}
 		try {

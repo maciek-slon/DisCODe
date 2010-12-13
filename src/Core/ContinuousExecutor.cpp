@@ -52,7 +52,7 @@ void ContinuousExecutor::run() {
 			loops++;
 			double spl = elapsed/loops;
 			double lps = 1.0 / spl;
-			LOG(LDEBUG) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
+			LOG(LTRACE) << "Executor " << name() << ": " << loops << " loops in " << elapsed << " seconds (" << spl << "spl = " << lps << "lps)";
 
 		} else {
 			Common::Thread::msleep(50);
