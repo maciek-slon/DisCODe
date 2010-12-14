@@ -27,28 +27,7 @@ The structure of the ImageBlurer task is shown below.
 
 \section ts_component_blur The ImageBlurer component
 \subsection component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile.
-Select your operating system:
-\htmlonly
-<table style="border: 0px;">
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/linux_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
-\endhtmlonly
-\ref linux_sdk_new_comp
-\htmlonly
-</td>
-<td>
-Describes how to utilize the SDK in order to create and compile new component under Ubuntu OS.
-</td>
-</tr>
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
-\endhtmlonly
-\ref win_sdk_new_comp
-\htmlonly
-</td>
-<td>
-Describes how to utilize the SDK in order to create and compile new component under Windows OS (32bit).
-</td></tr>
-</table>
-\endhtmlonly
+\lin_win_create_component
 
 \subsection blurer_hpp_edit Edit the header file ImageBlurer.hpp
 Edit the component header and perform changes listed below.

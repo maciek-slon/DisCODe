@@ -15,45 +15,25 @@ the result (a set of image points containing corners and adequate object points)
 
 - Calibration computations. \n
 The <b>c_Pressed</b> event should trigger the <b>onCalibration()</b> handler of the <b>ChessboardComponent</b>, which should perform the calibration parameters computation
-(on the base of gathered calibration set) and save the result to a file. 
+(on the base of gathered calibration set) and save the result to a file.
 
-Because calibration patterns might differ (e.g. different number of squares or square sizes) it is 
+Because calibration patterns might differ (e.g. different number of squares or square sizes) it is
 required to create the possibility for changing their parameters without code recompilation.
 That is the reason why adequate component properties should be added, offering the possibility to change those values via the configuration file modification.
 
 \section ts_structure Task structure
 The task should consist of four components - three existing and one new, implemented during this tutorial.
+
 \htmlonly
 <img src="images/beginner_CameraCalibration.png" style="margin: 5px; width: 500px;" alt="CameraCalibration"/>
 \endhtmlonly
 
 \note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
-\section ts_component_chess The CameraCalibration component
+\section ts_component_cam_calib The CameraCalibration component
 
 \subsection component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile.
-Select your operating system:
-\htmlonly
-<table style="border: 0px;">
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/linux_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
-\endhtmlonly
-\ref linux_sdk_new_comp
-\htmlonly
-</td>
-<td>
-Describes how to utilize the SDK in order to create and compile new component under Ubuntu OS.
-</td>
-</tr>
-<tr><td style="padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;"><img src="logos/windows_logo.png"></td><td style="padding: 4px; text-align: left; vertical-align: middle">
-\endhtmlonly
-\ref win_sdk_new_comp
-\htmlonly
-</td>
-<td>
-Describes how to utilize the SDK in order to create and compile new component under Windows OS (32bit).
-</td></tr>
-</table>
-\endhtmlonly
+\lin_win_create_component
 
 \subsection beg_cam_calib_properties Create component properties
  - Edit the component header (CameraCalibration.hpp), find the <b>Props</b> structure and add following fields to the structure.
@@ -94,7 +74,7 @@ Describes how to utilize the SDK in order to create and compile new component un
     }
 \endcode
 
-\subsection beg_cam_calib_declarations Add required fields and methods to the declaration of the ChessboardComponent class.
+\subsection beg_cam_calib_declarations Add required fields and methods to the declaration of the CameraCalibration class.
  - Enter the <b>protected</b> section of the class and add fields related to data stored between frames.
 \code
      // Size of the image.
@@ -146,7 +126,7 @@ Describes how to utilize the SDK in order to create and compile new component un
     void saveParameters(Mat& cameraMatrix_, Mat& distCoeffs_);
 \endcode
 
-\subsection beg_cam_calib_definitions Add definitions of ChessboardComponent class methods.
+\subsection beg_cam_calib_definitions Add definitions of CameraCalibration class methods (CameraCalibration_Processor.cpp).
 - In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
 \code
     // Register handlers.
@@ -311,8 +291,8 @@ Create a new CameraCalibration.xml file (e.g. on the base of the RefreshedTrigge
         </Wnd1>
 \endcode
 
-- Create new connections between event emitters and handlers: 
-<b>Kbd1.c_Pressed</b> -> <b>Calib1.onCalibrate</b>, <b>Kbd1.t_Pressed</b> -> <b>Seq1.onTrigger</b>, 
+- Create new connections between event emitters and handlers:
+<b>Kbd1.c_Pressed</b> -> <b>Calib1.onCalibrate</b>, <b>Kbd1.t_Pressed</b> -> <b>Seq1.onTrigger</b>,
 <b>Seq1.NewImage</b> -> <b>Calib1.onNewImage</b> and <b>Calib1.imageProcessed</b> -> <b>Wnd1.onNewImage</b>.
 \code
 		<Event source="Kbd1.t_Pressed" destination="Seq1.onTrigger"/>
@@ -329,7 +309,6 @@ Create a new CameraCalibration.xml file (e.g. on the base of the RefreshedTrigge
  - Create task file on the base of the <b>ImageBlurer.xml</b> file.
  - Use the OpenCV <b>findChessboardCorners()</b> for chessboard localization.
  - Utilize the <b>drawChessboardCorners()</b> for drawing of chessboard corners on output image.
-
 
 \section ts_result Result
 In result a calibration a sequence of images will be displayed - with located corners on every image containing chessboard.

@@ -1,0 +1,78 @@
+/*!
+\page intermediate_structural_analysis_tutorials Shape Descripton and Structural Analysis
+<div class="center">[Intermediate level]</div>
+\prev_top{intermediate_camera_calibration_tutorials}
+The tutorial focuses on the structural analysis of images and recognition of simple shapes - handwritten letters.
+It is required to create a component responsible for performing many diverse operations, from image processing to shape-based object recognition.
+Letter shapes should be described by moments computed on the base of contours.
+
+The developed component should draw extracted contour and display the classification results in the console.
+
+
+
+
+\section ts_structure Task structure
+The task should consist of four components.
+
+\htmlonly
+<img src="images/LetterRecognizer.png" style="margin: 5px; width: 500px;" alt="LetterRecognizer"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+\section ts_component_let_reg The LetterRecognizer component
+
+\subsection let_reg_component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile
+\lin_win_create_component
+
+\subsection let_reg_state_diagram The letter recognition algorithm
+Major blocks of the algorithm are presented on the state diagram below.
+
+\htmlonly
+<img src="images/LetterRecognizer_sd.png" style="margin: 5px; width: 700px;" alt="LetterRecognizer state diagram"/>
+\endhtmlonly
+
+\note It is worth notting that in order to reach the desired recognition capabilites some additional operatios can be performed, e.g., processing of binary image with some morphological operators.
+
+\subsection let_reg_binarization Binarization
+The goal of the binarization is to separate pixels belonging to the object (foreground) from the background's pixels.
+OpenCV offers many functions able to create a binary image ouf a grayscale or color one, e.g., <b>threshold()</b> , <b>adaptiveThreshold()</b> , <b>Canny()</b>.
+
+\subsection let_reg_coutour Contour extraction
+Pixels belonging to edges (found for example by Sobel or Canny edge detectors) do not tell anything about that edges as entities in themselves - and in particular to
+which object edge given pixel belongs. The goal of countour extraction is to gather pixels belonging to different curves. in OpenCV contours are represented as sequences in
+which every entry the sequence encodes information about the location of the next point on the curve. The function <b>findContours()</b> as input takes binary image (
+images containing edges extracted by the edge detectors, as well as binary images created by some thresholding functions).
+
+\note Utilize the <b>drawContours()</b> function to draw the extracted contour on the output image.
+
+\subsection let_reg_moments Moments computation
+Contours describe geometry (shapes) of image segments, thus are candidates for features that might bu usefull during objects identification. The most obvious method of identification
+is to match a computed contour and with another one or with some abstract template. One of the simplest ways to compare two contours is to compute countour moments.
+The moments are features of the object, which allow a geometrical reconstruction of the object. They do not have a direct understandable geometrical meaning, but usual geometrical parameters can be derived from them.
+Utilize the class <b>Moments</b> and the <b>HuMoments()</b> function to extract different moments.
+
+\note To the first parameter of the <b>moments(const Mat& array, bool binaryImage=false)</b> constructor a sequcence containing extracted contour should be passed.
+
+\subsection let_reg_classification Letter classifitacion
+
+Create a simple classifier based on selection of the computed moments. Basic solution includes implementation of a set of rules in the form:
+\code
+if ((mxy >= X_letter_mxy_lower) and (mxy <= X_letter_mxy_upper) and ...) then letter = X;
+else if ...
+\endcode
+
+\section ts_report Final report
+Prepare final report containing the description of implemented algorithm, ranges of computed moments for letters of the given set, moments selected for the classification purposes
+with reasons for the made choice, and validation of the correctness of classification.
+
+\section ts_lectures Materials
+1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
+2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n
+3) Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
+4) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
+5) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/features2d__feature_detection_and_descriptor_extraction.html">Features2d: Feature Detection and Descriptor Extraction</a>.\n
+
+\prev_bottom{intermediate_camera_calibration_tutorials}
+
+*/
