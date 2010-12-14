@@ -4,9 +4,9 @@
 \up_next_top{beginner_camera_calibration_tutorials, beginner_camera_calibration_02_undistortion}
 
 \section ts_objectives Tutorial objectives
-The goal of this tutorial is to create a task responsible for chessboard localization and performing the calibration computations.
+The goal of this tutorial is to create a task responsible for chessboard localization and for performing calibration computations.
 
-The main challeng is to implement the <b>ChessboardComponent</b> component, which will offer two major functionalities:
+The main challenge is to implement the <b>ChessboardComponent</b> component, which will implement two major functions:
 - Localization of chessboard. \n
 The <b>t_Pressed</b> event should trigger the <b>Sequence</b> to load next image from file, pass it to the output data port <b>out_img</b> and emit the <b>newImage</b> event.
 The attached <b>ChessboardComponent</b> event handler <b>onNewImage()</b> is responsible for localization and - in the case of success - it should remember
@@ -14,16 +14,15 @@ the result (a set of image points containing corners and adequate object points)
 <b>out_img</b> output data port and related <b>imageProcesed</b> event should be emitted.
 
 - Calibration computations. \n
-The <b>c_Pressed</b> event should trigger the <b>onCalibration()</b> handler of the <b>ChessboardComponent</b>, which should perform the calibration parameters computation (
-on the base of gathered calibration set) and save the result to a file. 
+The <b>c_Pressed</b> event should trigger the <b>onCalibration()</b> handler of the <b>ChessboardComponent</b>, which should perform the calibration parameters computation
+(on the base of gathered calibration set) and save the result to a file. 
 
-Because the calibration patterns might differ (e.g. different number of squares or square sizes) it is 
+Because calibration patterns might differ (e.g. different number of squares or square sizes) it is 
 required to create the possibility for changing their parameters without code recompilation.
-That is the reason why the component properties should be implemented, offering the possibility to change values of component 
-parameters in the configuration file.
+That is the reason why adequate component properties should be added, offering the possibility to change those values via the configuration file modification.
 
 \section ts_structure Task structure
-The task should consist of four components - three existing and a one new, implemented during this tutorial.
+The task should consist of four components - three existing and one new, implemented during this tutorial.
 \htmlonly
 <img src="images/beginner_CameraCalibration.png" style="margin: 5px; width: 500px;" alt="CameraCalibration"/>
 \endhtmlonly
@@ -57,7 +56,7 @@ Describes how to utilize the SDK in order to create and compile new component un
 \endhtmlonly
 
 \subsection beg_cam_calib_properties Create component properties
- - Edit the component header, find the <b>Props</b> structure and add following fields to the structure.
+ - Edit the component header (CameraCalibration.hpp), find the <b>Props</b> structure and add following fields to the structure.
 \code
 	// Size of chessboard - number of inner corners in both board dimensions.
 	cv::Size patternSize;
@@ -82,7 +81,7 @@ Describes how to utilize the SDK in order to create and compile new component un
 	}
 \endcode
 
-\note The default values are passed as second parameters to the <b>get</b> template method.
+\note The default values are passed as second parameters to the <b>get()</b> template method.
 
 - Implement the method responsible for properties save.
 \code
