@@ -1,7 +1,7 @@
 /*!
 \page intermediate_structural_analysis_tutorials Shape Descripton and Structural Analysis
 <div class="center">[Intermediate level]</div>
-\prev_top{intermediate_camera_calibration_tutorials}
+\prev_top{intermediate_feature_extraction_tutorials}
 The tutorial focuses on the structural analysis of images and recognition of simple shapes - handwritten letters.
 It is required to create a component responsible for performing many diverse operations, from image processing to shape-based object recognition.
 Letter shapes should be described by moments computed on the base of contours.
@@ -73,6 +73,6 @@ with reasons for the made choice, and validation of the correctness of classific
 4) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
 5) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/features2d__feature_detection_and_descriptor_extraction.html">Features2d: Feature Detection and Descriptor Extraction</a>.\n
 
-\prev_bottom{intermediate_camera_calibration_tutorials}
+\prev_bottom{intermediate_feature_extraction_tutorials}
 
 */

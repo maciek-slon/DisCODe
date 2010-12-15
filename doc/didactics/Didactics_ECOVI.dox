@@ -40,7 +40,10 @@ The tutorial contains a step-by-step introduction to DisCODe.
 - Tutorial 1: \ref beginner_camera_calibration_tutorials [Beginner level]\n
 The tutorial regards the problem of camera calibration.
 
-- Tutorial 2: \ref intermediate_structural_analysis_tutorials [Intermediate level]\n
+- Tutorial 2: \ref intermediate_feature_extraction_tutorials [Intermediate level]\n
+The tutorial focuses on the extraction of features from images.
+
+- Tutorial 3 (Project): \ref intermediate_structural_analysis_tutorials [Intermediate level]\n
 The tutorial focuses on the structural analysis of images and recognition of simple shapes - handwritten letters.
 
 \endlinklist

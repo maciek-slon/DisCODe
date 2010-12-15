@@ -1,0 +1,17 @@
+/*!
+\page intermediate_feature_extraction_tutorials Feature extraction
+<div class="center">[Intermediate level]</div>
+\prevnext_top{intermediate_camera_calibration_tutorials, intermediate_structural_analysis_tutorials}
+
+The tutorial focuses on the extraction of features from images.
+
+\beginlinklist
+
+Image processing: mean filters, medium filters, color space transformations, histogram operations, binarization, color classification, morphological operations.
+
+Feature extraction: characteristic poins detection (Harris, SIFT, SURF), features normalization.
+
+\endlinklist
+
+\prevnext_bottom{intermediate_camera_calibration_tutorials, intermediate_structural_analysis_tutorials}
+*/
