@@ -1,0 +1,59 @@
+/*!
+\page intermediate_structural_analysis_01_training Training of the classifier
+<div class="center">[Intermediate level]</div>
+\up_next_top{intermediate_structural_analysis_tutorials, intermediate_structural_analysis_02_test}
+
+\section ts_structure Task structure
+\htmlonly
+<img src="images/LetterRecognition_training.png" style="margin: 5px; width: 700px;" alt="LetterRecognition_training"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+\section let_reg_train_fex The FeatureExtractor component
+The goal of this component is to:
+- perform image processing,
+- extract contours, draw them on the input image, pass it to the <b>outImage</b> dataport and raise adequate event,
+- compute moments, pass them (in the form of a vector) to the <b>outFeatures</b> dataport and raise related event.
+
+Please consider performing some additional image processing operations (e.g. morphological dilation).
+
+Other issue regards the feature selection - please try to select the minimal set of features (moments) that differentiate
+the classes of your letters.
+
+\note Utilize the <b>drawContours()</b> to draw contours on image.
+
+\section let_reg_train_bay1 The Bayes classifier component
+- The component encapsulating the OpenCV's Bayes classifier should work in two modes and it is required that the mode
+should be switched through the configuration file, thus an adequate <b>property</b> must be created, e.g.:
+\code
+<Bay1 type="BayesClassifier" thread="Exec1" group="s1">
+    <mode>training</mode>
+</Bay1>
+\endcode
+\note An alternative to the work modes is simply to create two components - first responsible for training and second for recognition.
+
+- The learning process requires the information regarding the class (letter) of object from which current features
+were extracted, thus multiple handlers, each regarding different class should be created (e.g. <b>onTrain_a</b>,
+<b>onTrain_b</b>, <b>onTrain_c</b>, ...).
+
+- After the user decides that the classifier is trained its parameters should be saved to file (the <b>onSave</b> event) - the filename can be stored in another property.
+\code
+<Bay1 type="BayesClassifier" thread="Exec1" group="s1">
+    <filename>bayesparams.txt</filename>
+</Bay1>
+\endcode
+
+\section ts_materials Materials
+1) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
+2) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>.\n
+3) C++ <a href="http://www.cplusplus.com/reference/stl/vector/">Vector</a> reference manual.\n
+
+\section ts_sections Related sections
+1) \ref manuals_components : Description of components\n
+2) Tutorial regarding the component properties: \ref beginner_discode_08_component_properties\n
+3) Manuals describing the process of component creation. \lin_win_create_component
+
+\up_next_bottom{intermediate_structural_analysis_tutorials, intermediate_structural_analysis_02_test}
+
+*/

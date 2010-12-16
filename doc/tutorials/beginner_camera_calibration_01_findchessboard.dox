@@ -313,10 +313,12 @@ Create a new CameraCalibration.xml file (e.g. on the base of the RefreshedTrigge
 \section ts_result Result
 In result a calibration a sequence of images will be displayed - with located corners on every image containing chessboard.
 
+\section ts_materials Materials
+1) OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.\n
+
 \section ts_sections Related sections
-\see OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.
-\see A <a href="http://www.youtube.com/watch?v=DrXIQfQHFv0">movie</a> presenting the OpenCV-based chessboard localization.
-\see \ref manuals_components : Description of components
+1) \ref manuals_components : Description of components.\n
+2) Manuals describing the process of component creation. \lin_win_create_component
 
 \up_next_bottom{beginner_camera_calibration_tutorials, beginner_camera_calibration_02_undistortion}
 */

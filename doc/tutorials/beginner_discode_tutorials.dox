@@ -3,8 +3,10 @@
 <div class="center">[Beginner level]</div>
 \next_top{beginner_camera_calibration_tutorials}
 
+\section sec_description Description
 The tutorial contains a step-by-step introduction to DisCODe.
 
+\section sec_tutorials Tutorials
 \beginlinklist
 - \ref beginner_discode_00_description\n
 Describes common sections, from which every tutorial is built.
@@ -35,7 +37,6 @@ The goal is to add properties to component, which can be set in the configuratio
 
 - \ref beginner_discode_09_using_logger\n
 Tired of printf'ing and commenting out old debugs?
-
 
 \endlinklist
 

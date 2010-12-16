@@ -2,30 +2,35 @@
 \page intermediate_structural_analysis_tutorials Shape Descripton and Structural Analysis
 <div class="center">[Intermediate level]</div>
 \prev_top{intermediate_feature_extraction_tutorials}
+
+\section sec_description Description
 The tutorial focuses on the structural analysis of images and recognition of simple shapes - handwritten letters.
-It is required to create a component responsible for performing many diverse operations, from image processing to shape-based object recognition.
+It is required to create two components:
+ - a component performing required preprocessing and feature extraction,
+ - a component responsible for feature-based object recognition.
 Letter shapes should be described by moments computed on the base of contours.
 
-The developed component should draw extracted contour and display the classification results in the console.
+\section let_reg_major Major tasks
+ - Create (or find in the internet) a dataset containing required letters (at least 20 of each),
+ - divide the created dataset into two - training and test datasets (in 3:1 proportion),
+ - create a component utilized for preprocessing and features extraction,
+ - create a component containing classifier, that can work in <b>two modes</b>: training and recognition mode,
+ - train the classifier with letters from the training dataset,
+ - test the trained classifier with test dataset.
+ - prepare a final report.
 
+\section sec_tutorials Tutorials
+\beginlinklist
 
+- \ref intermediate_structural_analysis_01_training\n
+The goal of this tutorial is to create a task responsible for training of the classifier.
 
+- \ref intermediate_structural_analysis_02_test\n
+The aim is to create a task responsible for letters classification.
 
-\section ts_structure Task structure
-The task should consist of four components.
+\endlinklist
 
-\htmlonly
-<img src="images/LetterRecognizer.png" style="margin: 5px; width: 500px;" alt="LetterRecognizer"/>
-\endhtmlonly
-
-\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
-
-\section ts_component_let_reg The LetterRecognizer component
-
-\subsection let_reg_component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile
-\lin_win_create_component
-
-\subsection let_reg_state_diagram The letter recognition algorithm
+\section let_reg_state_diagram The letter recognition algorithm
 Major blocks of the algorithm are presented on the state diagram below.
 
 \htmlonly
@@ -54,24 +59,23 @@ Utilize the class <b>Moments</b> and the <b>HuMoments()</b> function to extract 
 
 \note To the first parameter of the <b>moments(const Mat& array, bool binaryImage=false)</b> constructor a sequcence containing extracted contour should be passed.
 
-\subsection let_reg_classification Letter classifitacion
-
-Create a simple classifier based on selection of the computed moments. Basic solution includes implementation of a set of rules in the form:
-\code
-if ((mxy >= X_letter_mxy_lower) and (mxy <= X_letter_mxy_upper) and ...) then letter = X;
-else if ...
-\endcode
+\subsection let_reg_classification Letter classification
+Utilize the <b>CvNormalBayesClassifier</b> for the purposes of letter classification.
 
 \section ts_report Final report
-Prepare final report containing the description of implemented algorithm, ranges of computed moments for letters of the given set, moments selected for the classification purposes
-with reasons for the made choice, and validation of the correctness of classification.
+Prepare final report containing:
+ - the description of implemented algorithm,
+ - ranges of computed moments for letters of the given set,
+ - discussion regarding moments which were best suitable for the classification of given set of letters,
+ - validation of classification - what is the correctness of implemented solution, which examples weren't correctly classified and why, etc.
 
-\section ts_lectures Materials
+\section sec_materials Materials
 1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
 2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n
 3) Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
-4) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
-5) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/features2d__feature_detection_and_descriptor_extraction.html">Features2d: Feature Detection and Descriptor Extraction</a>.\n
+4) Bayes Classifier (pages 483-486), Chapter 13: "Machine Learning" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
+5) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
+6) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>.\n
 
 \prev_bottom{intermediate_feature_extraction_tutorials}
 
