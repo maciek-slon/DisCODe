@@ -20,6 +20,7 @@
 #include "Configurator.hpp"
 #include "Executor.hpp"
 #include "Logger.hpp"
+#include "CommandInterpreter.hpp"
 
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -211,6 +212,8 @@ int main(int argc, char* argv[])
 	configurator.setExecutorManager(&em);
 	configurator.setComponentManager(&km);
 	configurator.setConnectionManager(&cm);
+
+	CommandInterpreter interpreter;
 
 	try {
 		Task task;
