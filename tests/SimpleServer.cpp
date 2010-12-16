@@ -1,16 +1,21 @@
-#include "TCPServer.hpp"
+#include "Network/TCPServer.hpp"
 
 #include <boost/lexical_cast.hpp>
+#include <iostream>
 
-std::string service(const std::string & s, int c)
+int service(const char * msg, int msg_size, char * reply, int reply_limit)
 {
-	return boost::lexical_cast <std::string>(c) + " : " +  s;
+	std::cout << msg << std::endl;
+	return 0;
 }
 
 int main()
 {
 	Common::TCPServer server;
 	server.setupHook(service);
-	server.run();
+	server.start();
+	while(1) {
+		sleep(1);
+	}
 	return 0;
 }

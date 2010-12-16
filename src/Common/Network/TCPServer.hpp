@@ -13,20 +13,34 @@
 
 namespace Common {
 
+struct DataBuffer {
+	int size;
+	char * buf;
+};
+
 class TCPServer : public Thread
 {
 public:
-	TCPServer(int port = 30000, int max_cons = 10);
+	typedef boost::function<int (const char *, int, char *, int)> service_hook_t;
+	typedef boost::function<int (const char *, int)> completion_hook_t;
+
+	TCPServer(int port = 30000, int max_cons = 10, int buffer_size = 20000);
 
 	virtual ~TCPServer();
 
 
-	void setupHook(boost::function<std::string (const std::string &, int)> h);
+	void setupHook(service_hook_t h);
 
 	void stop();
 
 protected:
 	void run();
+
+	void prepareNewClient(int client_sock);
+
+	void acceptNewClient();
+
+	void handleClient(int i);
 
 private:
 	void setNonBlocking(bool b);
@@ -48,10 +62,23 @@ private:
 	int m_maxfd;
 
 	/// Function called when new data comes
-	boost::function<std::string (const std::string &, int)> m_service_hook;
+	service_hook_t m_service_hook;
+
+	///
+	completion_hook_t m_completion_hook;
 
 	/// Flag indicating server state
 	volatile bool m_running;
+
+	/// Maximum size of buffer for single client
+	int m_buffer_size;
+
+	/// Buffers for all clients
+	std::map<int, DataBuffer> m_buffers;
+
+	char * m_reply_buffer;
+
+	char * m_tmp_buffer;
 };
 
 }

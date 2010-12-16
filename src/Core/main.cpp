@@ -259,7 +259,7 @@ int main(int argc, char* argv[])
 	interpreter.addHandler("printExecutors", boost::bind(&TaskInformator::listExecutors, &informator, _1));
 
 	TCPServer server;
-	server.setupHook(boost::bind(&CommandInterpreter::execute, &interpreter, _1));
+	//server.setupHook(boost::bind(&CommandInterpreter::execute, &interpreter, _1));
 
 
 	try {

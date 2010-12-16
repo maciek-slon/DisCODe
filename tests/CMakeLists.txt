@@ -12,14 +12,17 @@ ADD_TEST(CommandInterpreter_test ${EXECUTABLE_OUTPUT_PATH}/CommandInterpreter_te
 add_executable(SimpleClient SimpleClient.cpp)
 target_link_libraries(SimpleClient Network)
 
-SET_TARGET_PROPERTIES(SimpleClient PROPERTIES
+add_executable(SimpleServer SimpleServer.cpp)
+target_link_libraries(SimpleServer Network)
+
+SET_TARGET_PROPERTIES(SimpleClient SimpleServer PROPERTIES
    BUILD_WITH_INSTALL_RPATH ON
    INSTALL_RPATH_USE_LINK_PATH 1
    INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib
 )
 
 install(
-  TARGETS SimpleClient
+  TARGETS SimpleClient SimpleServer
   RUNTIME DESTINATION bin COMPONENT applications
   LIBRARY DESTINATION lib COMPONENT applications
   ARCHIVE DESTINATION lib COMPONENT sdk

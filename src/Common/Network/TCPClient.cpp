@@ -78,26 +78,15 @@ std::string TCPClient::recv()
 	return std::string(buf + 2);
 }
 
-void TCPClient::send(const std::string & msg)
-{
-	/// \todo Maybe XDR here?
-
-	buf[0] = msg.length() & 0xFF;
-	buf[1] = (msg.length() >> 8) & 0xFF;
-	memcpy(buf + 2, msg.c_str(), msg.length());
-
-	sendall(buf, msg.length() + 2);
-}
-
-int TCPClient::sendall(char *buf, int len)
+int TCPClient::send(const char * msg, int size)
 {
 	int total = 0;
 	// how many bytes we've sent
-	int bytesleft = len; // how many we have left to send
+	int bytesleft = size; // how many we have left to send
 	int n;
 
-	while (total < len) {
-		n = ::send(m_sock, buf + total, bytesleft, 0);
+	while (total < size) {
+		n = ::send(m_sock, msg + total, bytesleft, 0);
 		if (n == -1) {
 			break;
 		}

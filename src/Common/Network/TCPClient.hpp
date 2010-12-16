@@ -23,14 +23,12 @@ public:
 	bool connect(const std::string & host, const std::string & port);
 
 	std::string recv();
-	void send(const std::string & msg);
+	int send(const char * msg, int size);
 
 private:
 	int m_sock;
 
 	char buf[BUF_SIZE];
-
-	int sendall(char *buf, int len);
 };
 
 }
