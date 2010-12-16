@@ -63,6 +63,8 @@ SET(GUI_UI
 # Generate UI include files
 QT4_WRAP_UI(GUI_CXX_SRCS ${GUI_UI})
 
+QT4_ADD_RESOURCES(GUI_CXX_SRCS gui.qrc)
+
 # Create GUI executable
 ADD_EXECUTABLE(discode_gui ${GUI_CXX_SRCS})
 

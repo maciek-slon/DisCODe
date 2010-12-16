@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class QTreeWidgetItem;
+
 namespace Ui {
     class MainWindow;
 }
@@ -13,7 +15,11 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    virtual ~MainWindow();
+
+public slots:
+    void on_tabWidget_tabCloseRequested(int index);
+    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem * item, int column);
 
 private:
     Ui::MainWindow *ui;
