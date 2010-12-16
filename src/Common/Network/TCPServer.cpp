@@ -64,7 +64,9 @@ void TCPServer::run()
 	char buf[256];
 	char remoteIP[INET6_ADDRSTRLEN];
 
-	while (1) {
+	m_running = true;
+
+	while (m_running) {
 		tv.tv_sec = 0;
 		tv.tv_usec = 250000;
 		read_fds = m_socks;
@@ -119,10 +121,13 @@ void TCPServer::run()
 					} else {
 						// we got some data from a client
 						buf[nbytes] = 0;
-						std::string query = buf;
-						std::cout << "Received: " << buf << std::endl;
+						std::string query = buf+2;
+						std::cout << "Received: " << buf+2 << std::endl;
 						query = m_service_hook(query, i);
-						send(i, query.c_str(), query.length(), MSG_NOSIGNAL);
+						buf[0] = query.size() & 0xFF;
+						buf[1] = (query.size() >> 8) & 0xFF;
+						memcpy(buf+2, query.c_str(), query.size());
+						send(i, buf, query.length()+2, MSG_NOSIGNAL);
 					}
 				} // END handle data from client
 			} // END got new incoming connection
@@ -130,6 +135,10 @@ void TCPServer::run()
 		}
 	}
 
+}
+
+void TCPServer::stop() {
+	m_running = false;
 }
 
 void TCPServer::setupHook(boost::function <std::string(const std::string &, int)> h)

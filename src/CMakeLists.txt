@@ -90,7 +90,7 @@ SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Common)
 add_subdirectory(Base)
 SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Base)
 
-SET(DisCODe_Core_LIBRARIES ${DisCODe_LIBRARIES})
+SET(DisCODe_Core_LIBRARIES ${DisCODe_LIBRARIES} Network)
 
 # Create Types library
 add_subdirectory(Types)

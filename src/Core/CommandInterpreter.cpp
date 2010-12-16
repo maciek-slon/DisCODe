@@ -13,6 +13,8 @@
 #include <boost/tokenizer.hpp>
 #include <boost/foreach.hpp>
 
+#include "DisCODeException.hpp"
+
 namespace Core {
 
 void Command::print() {
@@ -51,7 +53,7 @@ std::string CommandInterpreter::execute(const std::string & str)
 		return handlers[cmd.command](cmd.arguments);
 	}
 
-	throw "hhh";
+	throw Common::DisCODeException(cmd.command + " have no assigned handler.");
 }
 
 Command CommandInterpreter::parse(const std::string & str)

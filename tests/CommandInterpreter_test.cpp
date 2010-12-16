@@ -1,7 +1,8 @@
 #define BOOST_TEST_MODULE CommandInterpreter_test
 #include <boost/test/included/unit_test.hpp>
 
-#include "../src/Core/CommandInterpreter.hpp"
+#include "CommandInterpreter.hpp"
+#include "DisCODeException.hpp"
 
 #include <vector>
 #include <string>
@@ -24,5 +25,5 @@ BOOST_AUTO_TEST_CASE( test ) {
 
 	interpreter.addHandler("print", print);
 	BOOST_CHECK(interpreter.execute("print:ala:ma:kota") == "ala,ma,kota,");
-	BOOST_CHECK_THROW(interpreter.execute("print3:ala:ma:kota"), const char *);
+	BOOST_CHECK_THROW(interpreter.execute("print3:ala:ma:kota"), Common::DisCODeException);
 }

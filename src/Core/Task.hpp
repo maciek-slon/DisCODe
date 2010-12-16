@@ -63,6 +63,10 @@ public:
 	 */
 	Task & operator += (Executor * ex);
 
+	std::vector<std::string> listSubtasks();
+
+	std::vector<std::string> listExecutors();
+
 private:
 	/// All subtasks
 	std::map<std::string, Subtask> subtasks;

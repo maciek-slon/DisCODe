@@ -9,7 +9,7 @@ INSTALL(FILES ${h_files}
 )
 
 # Create library Common
-SET(files TCPServer.cpp)
+SET(files TCPServer.cpp TCPClient.cpp)
 ADD_LIBRARY(Network SHARED ${files})
 SET_TARGET_PROPERTIES (Network PROPERTIES DEFINE_SYMBOL  "COMPILING_DLL" )
 TARGET_LINK_LIBRARIES(Network ${DisCODe_LIBRARIES})
@@ -21,5 +21,3 @@ install(
   ARCHIVE DESTINATION lib COMPONENT sdk
 )
 
-#ADD_EXECUTABLE(SimpleServer SimpleServer.cpp TCPServer.cpp)
-#ADD_EXECUTABLE(SimpleClient SimpleClient.cpp)
