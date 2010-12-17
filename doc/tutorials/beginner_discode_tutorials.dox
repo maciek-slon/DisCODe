@@ -40,6 +40,20 @@ Tired of printf'ing and commenting out old debugs?
 
 \endlinklist
 
+\section sec_datasets Datasets
+Datasets can be downloaded, as well as used externally.
+
+- Movies containing road signs.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a>
+
+- Images used commonly in computer vision (Lena, etc.).\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
+
+ - Some other images from the OpenCV examples.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
+
 \next_bottom{beginner_camera_calibration_tutorials}
 
 */

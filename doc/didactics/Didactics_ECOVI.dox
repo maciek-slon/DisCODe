@@ -7,31 +7,6 @@ Please refer to the \ref installation. Please perform the following steps:
  - install both the developement environment and SDK,
  - create a test component and configure its makefile.
 
-\section ecovi_discode_datasets Required datasets
-Datasets can be downloaded, as well as used externally.
-
-- Movies containing road signs.\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a>
-
-- Images used commonly in computer vision (Lena, etc.).\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
-Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
-
- - Some other images from the OpenCV examples.\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
-Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
-
-- Calibration: chessboard pictures from the OpenCV examples.\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a>\n
-Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv.rar">calibration_opencv.rar</a>\n
-Note: The size from the OpenCV example chessboard is 9 (width) x 6 (height).
-
-- Calibration: chessboard pictures taken with the use camera from the Robotics Lab at the ICCE.\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a>\n
-Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab.rar">calibration_robotics_lab.rar</a>\n
-Note: The size of our chessboard is 8 (width) x 6 (height).
-
-
 \section ecovi_tutorials Tutorials
 \beginlinklist
 - Tutorial 0: \ref beginner_discode_tutorials [Beginner level]\n

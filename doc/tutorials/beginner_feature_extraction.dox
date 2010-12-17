@@ -22,6 +22,17 @@ Shape classfication with Bayes classifier.
 
 \endlinklist
 
+\section sec_datasets Datasets
+Datasets can be downloaded, as well as used externally.
+
+- Images used commonly in computer vision (Lena, etc.).\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
+
+ - Some other images from the OpenCV examples.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
+
 \section sec_materials Materials
 1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
 2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n

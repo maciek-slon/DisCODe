@@ -69,6 +69,9 @@ Prepare final report containing:
  - discussion regarding moments which were best suitable for the classification of given set of letters,
  - validation of classification - what is the correctness of implemented solution, which examples weren't correctly classified and why, etc.
 
+\section sec_datasets Datasets
+Datasets can be downloaded, as well as used externally.
+
 \section sec_materials Materials
 1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
 2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n
