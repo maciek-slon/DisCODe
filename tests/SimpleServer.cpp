@@ -12,7 +12,7 @@ int service(const char * msg, int msg_size, char * reply, int reply_limit)
 int main()
 {
 	Common::TCPServer server;
-	server.setupHook(service);
+	server.setServiceHook(service);
 	server.start();
 	while(1) {
 		sleep(1);

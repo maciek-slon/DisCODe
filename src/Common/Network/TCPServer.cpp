@@ -41,8 +41,6 @@ TCPServer::TCPServer(int port, int max_cons, int buffer_size) : m_buffer_size(bu
 		return;
 	}
 
-	//setNonBlocking(true);
-
 	FD_SET(m_sock, &m_socks);
 	m_maxfd = m_sock;
 
@@ -144,7 +142,7 @@ void TCPServer::handleClient(int i) {
 	}
 }
 
-void TCPServer::run()
+void TCPServer::start()
 {
 
 	struct timeval tv;
@@ -188,9 +186,14 @@ void TCPServer::stop() {
 	m_running = false;
 }
 
-void TCPServer::setupHook(service_hook_t h)
+void TCPServer::setServiceHook(service_hook_t h)
 {
 	m_service_hook = h;
+}
+
+void TCPServer::setCompletionHook(completion_hook_t h)
+{
+	m_completion_hook = h;
 }
 
 void TCPServer::setNonBlocking(bool b)
