@@ -16,6 +16,43 @@
 
 #include "SegmentExtractor.hpp"
 
+/**
+ * \defgroup GrayImageSegmentation GrayImageSegmentation
+ * \ingroup Processors
+ *
+ * Segmentation of grayscale image.
+ *
+ * \par Data streams:
+ * \streamin{in_img,cv::Mat}
+ * \streamout{out_segmented,Types::Segmentation::SegmentedImage}
+ * \par Events:
+ *
+ * \event{onSegmented}
+ * Image has been segmented.
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onNewImage}
+ * New image arrived
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{type,int,"minSegmentArea"}
+ * Minimal segment size in pixels.
+ *
+ * \prop{type,double,"minVariance"}
+ * Between 0 and 1, typically . Minimum variance in pixels value.
+ * If variance is greater than this threshold for a segment, this segment is thresholded.
+ *
+ *
+ * @{
+ *
+ * @}
+ *
+ */
+
 namespace Processors {
 namespace GrayImageSegmentation {
 
@@ -25,6 +62,9 @@ namespace GrayImageSegmentation {
 struct GrayImageSegmentation_Props: public Base::Props
 {
 	int minSegmentArea;
+	/**
+	 * If segment variance is greater than this, segment is thresholded.
+	 */
 	double minVariance;
 
 	/*!

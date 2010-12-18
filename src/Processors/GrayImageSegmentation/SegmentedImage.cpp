@@ -17,6 +17,7 @@ void SegmentedImage::detectEdges()
 
 	for (int y = 0; y < h; ++y) {
 		for (int x = 0; x < w; ++x) {
+			// check neighbors, if they are different, there is edge.
 			MaskType m = image.at <MaskType> (y, x);
 			MaskType dstMask = 0;
 			if ((y > 0 && image.at <MaskType> (y - 1, x) != m) || // upper
