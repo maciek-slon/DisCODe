@@ -17,6 +17,7 @@
 #include "EventHandler.hpp"
 #include "DataStream.hpp"
 #include "Objects3D/Object3D.hpp"
+#include "HomogMatrix.hpp"
 
 
 /**
@@ -160,7 +161,7 @@ private:
 	CvSolvePnPProps props;
 
 	Base::DataStreamInPtr <Types::Objects3D::Object3D> in_object3d;
-	Base::DataStreamOut <Types::Objects3D::Object3D> out_object3d;
+	Base::DataStreamOut <Types::HomogMatrix> out_homogMatrix;
 
 	Base::EventHandler <CvSolvePnP_Processor> h_onNewObject3D;
 	Base::Event *objectLocated;

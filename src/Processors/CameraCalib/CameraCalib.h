@@ -8,63 +8,164 @@
 #ifndef CAMERACALIB_H_
 #define CAMERACALIB_H_
 
-#include "Kernel_Aux.hpp"
-#include "Kernel.hpp"
-#include "Panel_Empty.hpp"
-#include "DataStream.hpp"
-#include "Props.hpp"
-#include "Logger.hpp"
-
 #include <cv.h>
+#include <boost/shared_ptr.hpp>
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
+
+#include "Component_Aux.hpp"
+#include "Panel_Empty.hpp"
+#include "Objects3D/Chessboard.hpp"
 
 namespace Processors {
-
 namespace CameraCalib {
 
-using namespace cv;
-
-class CameraCalib_Processor: public Base::Kernel
+struct CameraCalib_Props: public Base::Props
 {
-public:
-	CameraCalib_Processor();
-	virtual ~CameraCalib_Processor();
-
-	/*!
-	 * Processor initialization
+	/**
+	 * Specifies whether imagesBaseDirectory is valid.
 	 */
-	bool initialize();
+	bool saveImages;
 
-	/*!
-	 * Release all resources
+	/**
+	 * If specified, store all calibration images to this imagesBaseDirectory + "/CameraCalib_DATETIME/".
 	 */
-	bool finish();
+	std::string imagesBaseDirectory;
 
-	/*!
-	 * Processes given frame.
+	/**
+	 * Where to put calibration results.
 	 */
-	int step();
+	std::string resultsFilename;
 
-protected:
-	/*!
-	 * Event handler function.
+	/**
+	 * If true, store every image read from data stream.
 	 */
-	void onNewImage();
+	bool storeOnNewImage;
 
-	/// Event handler.
-	Base::EventHandler<CameraCalib_Processor> h_onNewImage;
+	/**
+	 *
+	 */
+	cv::Size patternSize;
+	/**
+	 *
+	 */
+	float squareSize;
+	/**
+	 *
+	 */
+	bool findSubpix;
 
-	/// Input data stream
-	Base::DataStreamIn<Mat> in_img;
-
-private:
-	Mat frame;
-
+	virtual void load(const ptree & pt)
+	{
+		imagesBaseDirectory = pt.get <std::string> ("imagesBaseDirectory");
+		saveImages = imagesBaseDirectory.size() > 0;
+		resultsFilename = pt.get <std::string> ("resultsFilename");
+		patternSize.width = pt.get <int> ("width");
+		patternSize.height = pt.get <int> ("height");
+		squareSize = pt.get <float> ("squareSize");
+		findSubpix = pt.get <bool> ("findSubpix");
+		storeOnNewImage = pt.get <bool> ("storeOnNewImage");
+	}
+	virtual void save(ptree & pt)
+	{
+		pt.put("imagesBaseDirectory", imagesBaseDirectory);
+		pt.put("resultsFilename", resultsFilename);
+		pt.put("width", patternSize.width);
+		pt.put("height", patternSize.height);
+		pt.put("squareSize", squareSize);
+		pt.put("findSubpix", findSubpix);
+		pt.put("storeOnNewImage", storeOnNewImage);
+	}
 };
 
-}
+class CameraCalib_Processor: public Base::Component
+{
+public:
+	CameraCalib_Processor(const std::string & name);
+	virtual ~CameraCalib_Processor();
 
-}
+	Base::Props * getProperties()
+	{
+		return &props;
+	}
+protected:
+	/*!
+	 * Method called when component is started
+	 * \return true on success
+	 */
+	virtual bool onStart();
 
-REGISTER_PROCESSOR_KERNEL("CameraCalib", Processors::CameraCalib::CameraCalib_Processor, Common::Panel_Empty);
+	/*!
+	 * Method called when component is stopped
+	 * \return true on success
+	 */
+	virtual bool onStop();
+
+	/*!
+	 * Method called when component is initialized
+	 * \return true on success
+	 */
+	virtual bool onInit();
+
+	/*!
+	 * Method called when component is finished
+	 * \return true on success
+	 */
+	virtual bool onFinish();
+
+	/*!
+	 * Method called when step is called
+	 * \return true on success
+	 */
+	virtual bool onStep();
+private:
+	void onNewImage();
+	void onStoreLastImage();
+	void onSequenceEnd();
+
+	void addImageToSet();
+
+	Base::EventHandler <CameraCalib_Processor> h_onNewImage;
+	Base::EventHandler <CameraCalib_Processor> h_onStoreLastImage;
+	Base::EventHandler <CameraCalib_Processor> h_onSequenceEnd;
+
+	Base::DataStreamIn <cv::Mat> in_img;
+	Base::DataStreamOut <Types::Objects3D::Chessboard> out_chessboard;
+
+	/** Raised when chessboard has been located on the image. */
+	Base::Event *chessboardFound;
+	/** Raised when chessboard has not been located on the image. */
+	Base::Event *chessboardNotFound;
+
+	std::vector <std::vector <cv::Point3f> > objectPoints;
+	std::vector <std::vector <cv::Point2f> > imagePoints;
+
+	std::vector <cv::Point2f> lastImagePoints;
+	bool lastImageAlreadySaved;
+
+	std::vector <cv::Point3f> chessboardModelPoints;
+
+	cv::Size imageSize;
+	CameraCalib_Props props;
+
+	int findChessboardCornersFlags;
+
+	std::string currentDirectory;
+
+	cv::Mat image;
+
+
+	std::string getTimeAsString();
+
+	void saveResults(cv::Mat cameraMatrix, cv::Mat distCoeffs, double reprojectionError);
+
+	boost::interprocess::interprocess_mutex eventsMutex;
+};
+
+} // namespace CameraCalib
+
+} // namespace Processors
+
+REGISTER_PROCESSOR_COMPONENT("CameraCalib", Processors::CameraCalib::CameraCalib_Processor, Common::Panel_Empty)
 
 #endif /* CAMERACALIB_H_ */

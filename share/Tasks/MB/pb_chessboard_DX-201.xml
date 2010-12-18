@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<Components>
+		<Mrrocpp type="Mrrocpp" thread="MrrocProxyThread" group="s1">
+			<port>8888</port>
+			<rpcMode>1</rpcMode>
+		</Mrrocpp>
+		<VisualServoPB type="VisualServoPB" thread="ImageSourceThread" group="s1">
+			
+		</VisualServoPB>
+		<PositionEstimator type="CvSolvePnP" thread="ImageSourceThread" group="s1">
+			<cameraMatrix>
+				[3,3](
+					(647.07647705, 0., 383.50000000),
+					(0., 632.76348877, 287.50000000),
+					(0, 0, 1)
+				)
+			</cameraMatrix>
+			<distCoeffs>
+				[1,5](
+					(-0.51084775, 0.23313555, 4.50637517e-03, -6.86281081e-03, 4.94365674e-03)
+				)
+			</distCoeffs>
+		</PositionEstimator>
+		<Window type="CvWindow" thread="ImageSourceThread" group="s1">
+			<title>Preview</title>
+		</Window>
+		<FindChessboard type="CvFindChessboardCorners" thread="ImageSourceThread" group="s1">
+			<width>4</width>
+			<height>3</height>
+			<squareSize>0.02</squareSize>
+			<findSubpix>1</findSubpix>
+		</FindChessboard>
+		<BGRToGray type="CvColorConv" thread="ImageSourceThread" group="s1">
+			<type>BGR2GRAY</type>
+		</BGRToGray>
+		<ImageSource type="CameraUniCap" thread="ImageSourceThread" group="s1">
+			<dev>
+				<device>/dev/video0</device>
+			</dev>
+		</ImageSource>
+	</Components>
+
+	<Executors>
+		<MrrocProxyThread type="periodic">
+			<main_component>Mrrocpp</main_component>
+			<interval>0.02</interval>
+		</MrrocProxyThread>
+		<ImageSourceThread type="continuous">
+			<main_component>ImageSource</main_component>
+		</ImageSourceThread>
+	</Executors>
+
+	<Events>
+		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
+		<Event source="BGRToGray.newImage" destination="FindChessboard.onNewImage"/>
+		<Event source="FindChessboard.chessboardFound" destination="PositionEstimator.onNewObject3D"/>
+		<Event source="FindChessboard.chessboardFound" destination="Window.onNewImage"/>
+		<Event source="FindChessboard.chessboardNotFound" destination="Window.onNewImage"/>
+		<Event source="PositionEstimator.objectLocated" destination="VisualServoPB.onObjectLocated"/>
+		<Event source="FindChessboard.chessboardNotFound" destination="VisualServoPB.onObjectNotFound"/>
+		<Event source="VisualServoPB.readingReady" destination="Mrrocpp.onNewReading"/>
+	</Events>
+
+	<DataStreams>
+		<ImageSource>
+			<out_img type="out" group="OriginalImage"/>
+		</ImageSource>
+		
+		<BGRToGray>
+			<in_img  type="in" group="OriginalImage"/>
+			<out_img type="out" group="GrayImage"/>
+		</BGRToGray>
+		
+		<FindChessboard>
+			<in_img type="in" group="GrayImage"/>
+			<out_chessboard type="out" group="Chessboard"/>
+		</FindChessboard>
+		
+		<Window>
+			<in_draw type="in" group="Chessboard"/>
+			<in_img type="in" group="OriginalImage"/>
+		</Window>
+		
+		<PositionEstimator>
+			<in_object3d type="in" group="Chessboard"/>
+			<out_homogMatrix typr="out" group="position"/>
+		</PositionEstimator>
+		
+		<VisualServoPB>
+			<in_position type="in" group="position"/>
+			<out_reading type="out" group="reading"/>
+		</VisualServoPB>
+		
+		<Mrrocpp>
+			<reading type="in" group="reading"/>
+		</Mrrocpp>
+	</DataStreams>
+</Task>

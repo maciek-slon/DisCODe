@@ -47,13 +47,13 @@ bool CvFindChessboardCorners_Processor::onInit()
 	chessboardFound = registerEvent("chessboardFound");
 	chessboardNotFound = registerEvent("chessboardNotFound");
 
-	LOG(LINFO) << "CvFindChessboardCorners_Processor: width: "<< props.patternSize.width << "\n";
-	LOG(LINFO) << "CvFindChessboardCorners_Processor: height: "<< props.patternSize.height << "\n";
-	LOG(LINFO) << "CvFindChessboardCorners_Processor: squareSize: "<< props.squareSize << "\n";
+	LOG(LINFO) << "CvFindChessboardCorners_Processor: width: " << props.patternSize.width << "\n";
+	LOG(LINFO) << "CvFindChessboardCorners_Processor: height: " << props.patternSize.height << "\n";
+	LOG(LINFO) << "CvFindChessboardCorners_Processor: squareSize: " << props.squareSize << "\n";
 
-	chessboard = boost::shared_ptr<Chessboard>(new Chessboard(props.patternSize, props.squareSize));
+	chessboard = boost::shared_ptr <Chessboard>(new Chessboard(props.patternSize, props.squareSize));
 
-	vector<Point3f> modelPoints;
+	vector <Point3f> modelPoints;
 	for (int i = 0; i < props.patternSize.height; ++i) {
 		for (int j = 0; j < props.patternSize.width; ++j) {
 			modelPoints.push_back(Point3f(-j * props.squareSize, -i * props.squareSize, 0));
@@ -79,19 +79,21 @@ bool CvFindChessboardCorners_Processor::onStep()
 void CvFindChessboardCorners_Processor::onNewImage()
 {
 	LOG(LTRACE) << "void CvFindChessboardCorners_Processor::onNewImage() begin\n";
-	try{
+	try {
 		Mat image = in_img.read();
 
 		timer.restart();
 
 		bool found = findChessboardCorners(image, props.patternSize, corners, findChessboardCornersFlags);
 
-		LOG(LINFO) << "findChessboardCorners() execution time: "<< timer.elapsed() << " s\n";
+		LOG(LINFO) << "findChessboardCorners() execution time: " << timer.elapsed() << " s\n";
 
-		if(found){
+		if (found) {
 			LOG(LTRACE) << "chessboard found\n";
 
-			//cornerSubPix(image, corners, Size(5, 5), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 50, 1e-3));
+			if (props.findSubpix) {
+				cornerSubPix(image, corners, Size(5, 5), Size(1, 1), TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 50, 1e-3));
+			}
 
 			chessboard->setImagePoints(corners);
 			out_chessboard.write(*chessboard);
@@ -109,5 +111,4 @@ void CvFindChessboardCorners_Processor::onNewImage()
 }
 
 } // namespace CvFindChessboardCorners {
-
 } // namespace Processors {

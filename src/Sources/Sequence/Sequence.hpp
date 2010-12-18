@@ -87,7 +87,7 @@ struct Props : public Base::Props {
 
 	void load(const ptree & pt) {
 		directory = pt.get("directory", ".");
-		pattern = pt.get("pattern", ".*\\.jpg");
+		pattern = pt.get("pattern", ".*\\.(jpg|png|bmp)");
 
 		sort = pt.get("sort", true);
 		prefetch = pt.get("prefetch", false);

@@ -1,5 +1,5 @@
 # Include the directory itself as a path to include directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Find OpenCV library files
 FIND_PACKAGE( OpenCV REQUIRED )
@@ -8,7 +8,7 @@ FIND_PACKAGE( OpenCV REQUIRED )
 FILE(GLOB files *.cpp)
 
 # Create an executable file from sources:
-add_library(procCameraCalib SHARED ${files})
-target_link_libraries(procCameraCalib ${OpenCV_LIBS} ${DisCODe_LIBRARIES})
+ADD_LIBRARY(ConvertSegments SHARED ${files})
+TARGET_LINK_LIBRARIES(ConvertSegments ${OpenCV_LIBS} ${DisCODe_LIBRARIES} GrayImageSegmentation)
 
-INSTALL_PROCESSOR(procCameraCalib)
+INSTALL_PROCESSOR(ConvertSegments)
