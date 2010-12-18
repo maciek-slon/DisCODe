@@ -1,0 +1,50 @@
+/*!
+\page intermediate_camera_calibration_01_findchessboard Localize the calibration pattern
+
+\up_next_top{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_02_calibration}
+
+\section ts_objectives Tutorial objectives
+The goal of this tutorial is to create a task responsible for chessboard localization.
+
+\note The chessboard is utilized as a calibration pattern due to its clear structure.
+
+\section ts_structure Task structure
+The task should consist of four components - three existing and a one new, implemented during this tutorial.
+\htmlonly
+<img src="images/ChessboardLocator.png" style="margin: 5px; width: 500px;" alt="ChessboardLocator"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+\section ts_component_chess The ChessboardLocator component
+The <b>Chess1</b> component has two major functions:
+ - localization of chessboard in the input image received through the <b>In</b> data stream,
+ - painting it on the output image and sending it through the <b>Out</b> data stream.
+
+Those operations should be implemented in the body of the <b>onNewImage()</b> event handler.
+The handler should also emit an event related to the fact that a chessboard was localized.
+
+
+\section ts_hints Hints
+ - Select one of the two available calibration datasets.
+ - Create task file on the base of the <b>ImageBlurer.xml</b> file.
+ - Use the OpenCV <b>findChessboardCorners()</b> for chessboard localization.
+ - Utilize the <b>drawChessboardCorners()</b> for drawing of chessboard corners on output image.
+
+
+\section ts_result Result
+In result a calibration a sequence of images will be displayed - with located corners on every image containing chessboard.
+
+\section ts_materials Materials
+1) OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.\n
+
+\section ts_sections Related sections
+1) \ref manuals_components : Description of components\n
+2) Tutorial regarding the component properties: \ref beginner_discode_08_component_properties\n
+3) Manuals describing the process of component creation. \lin_win_create_component
+
+\section ts_sections Related sections
+3) \ref manuals_components : Description of components
+
+\up_next_bottom{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_02_calibration}
+*/

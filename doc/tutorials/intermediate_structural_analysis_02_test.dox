@@ -1,0 +1,30 @@
+/*!
+\page intermediate_structural_analysis_02_test Letters classification
+<div class="center">[Intermediate level]</div>
+\up_prev_top{intermediate_structural_analysis_tutorials, intermediate_structural_analysis_01_training}
+
+\section ts_structure Task structure
+\htmlonly
+<img src="images/LetterRecognition_test.png" style="margin: 5px; width: 700px;" alt="LetterRecognition_test"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+\section let_reg_train_bay1 The Bayes classifier component
+- In this case the component should work in the classification mode:
+\code
+<Bay1 type="BayesClassifier" thread="Exec1" group="s1">
+    <mode>classification</mode>
+</Bay1>
+\endcode
+
+- During the component initialization Bayes Classifier should load it parameters from file.
+
+- After determinating to which class given character belongs component should write adequate comment (class, probability, etc.).
+
+\section ts_lectures Materials
+1) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>.\n
+
+\up_prev_bottom{intermediate_structural_analysis_tutorials, intermediate_structural_analysis_01_training}
+
+*/

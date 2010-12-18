@@ -1,47 +1,26 @@
 /*!
 \page didactics_ecovi ECOVI - Computer Vision
 
-\section ecovi_discode_installation Install the DisCODe
-Please refer to the \ref installation.
+\section ecovi_discode_installation The DisCODe installation
+Please refer to the \ref installation. Please perform the following steps:
+ - select the SDK for Windows (32bit),
+ - install both the developement environment and SDK,
+ - create a test component and configure its makefile.
 
-\subsection ecovi_discode_datasets The Datasets
-Datasets can be downloaded, as well as used externally.
-
-Movies:
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a> - Movies containing road signs.
-
-Images:
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a> - images used commonly in computer vision (Lena, etc.).
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a> - some other images from the OpenCV examples.
-
-Calibration:
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a> - chessboard pictures from the OpenCV examples.
- - <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a> - chessboard pictures taken with the use camera from the Robotics Lab.
-
-
-\section ecovi_t0 Tutorial 0: Introduction to DisCODe
+\section ecovi_tutorials Tutorials
 \beginlinklist
-- \ref discode_00_description
-- \ref discode_01_parameters
-- \ref discode_02_moviereader
-- \ref discode_03_moviereader_changeparameter
-- \ref discode_04_sequencereader
-- \ref discode_05_trigerred_sequencereader
-- \ref discode_06_refreshedtriggered_sequencereader
-- \ref discode_07_component_images_blurer
-- \ref discode_08_component_properties
-\endlinklist
+- Tutorial 0: \ref beginner_discode_tutorials [Beginner level]\n
+The tutorial contains a step-by-step introduction to DisCODe.
 
-\subsection ecovi_t0_files Additional files
- - <a href="/home/discode/public_html/TriggeredSequenceViewer.xml">TriggeredSequenceViewer.xml</a> - Task file related to the 5th part of tutorial.
+- Tutorial 1: \ref beginner_camera_calibration_tutorials [Beginner level]\n
+The tutorial regards the problem of camera calibration.
 
+- Tutorial 2: \ref intermediate_feature_extraction_tutorials [Intermediate level]\n
+The tutorial focuses on the extraction of features from images.
 
-\section ecovi_t1 Tutorial 1: Camera calibration
+- Tutorial 3 (Project): \ref intermediate_structural_analysis_tutorials [Intermediate level]\n
+The tutorial focuses on the structural analysis of images and recognition of simple shapes - handwritten letters.
 
-\beginlinklist
- - \ref camera_calibration_01_findchessboard
- - \ref camera_calibration_02_calibration
- - \ref camera_calibration_03_undistortion
 \endlinklist
 
 */

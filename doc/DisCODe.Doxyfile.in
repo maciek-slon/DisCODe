@@ -22,6 +22,7 @@
 
 DOXYFILE_ENCODING      = UTF-8
 
+
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded
 # by quotes) that should identify the project.
 
@@ -198,6 +199,14 @@ ALIASES                = "linkimage{2}=<div class=\"linkimage\">\image html \1 \
                          "event{1}=\li \b \1 <br>" \
                          "handler{1}=\li \b \1 <br>" \
                          "prop{3}=\li \b \1 <tt>(\2=\3)</tt><br>" \
+                         "up_top{1}=\htmlonly <table style=\"width: 100%; border-bottom: 1px solid #cccccc\"><tr><td style=\"text-align: center\">&uarr; \endhtmlonly \ref \1 \htmlonly</td></tr></table> \endhtmlonly" \
+                         "up_bottom{1}=\htmlonly <table style=\"width: 100%; border-top: 1px solid #cccccc\"><tr><td style=\"text-align: center\">&uarr; \endhtmlonly \ref \1 \htmlonly</td></tr></table> \endhtmlonly" \
+                         "up_prevnext_top{3}=\htmlonly <table style=\"width: 100%; border-bottom: 1px solid #cccccc\"><tr><td colspan="2" style=\"text-align: center\">&uarr; \endhtmlonly \ref \1 \htmlonly</td></tr><tr><td style=\"text-align: left; width: 50%\">&larr; \endhtmlonly \ref \2 \htmlonly </td><td style=\"text-align: right\"> \endhtmlonly \ref \3 \htmlonly &rarr;</td></tr></table> \endhtmlonly" \
+                         "up_prev_top{2}=\htmlonly <table style=\"width: 100%; border-bottom: 1px solid #cccccc\"><tr><td colspan="2" style=\"text-align: center\">&uarr; \endhtmlonly \ref \1 \htmlonly</td></tr><tr><td style=\"text-align: left\">&larr; \endhtmlonly \ref \2 \htmlonly </td></tr></table> \endhtmlonly" \
+                         "up_next_top{2}=\htmlonly <table style=\"width: 100%; border-bottom: 1px solid #cccccc\"><tr><td colspan="2" style=\"text-align: center\">&uarr; \endhtmlonly \ref \1 \htmlonly</td></tr><tr><td style=\"text-align: right\"> \endhtmlonly \ref \2 \htmlonly &rarr;</td></tr></table> \endhtmlonly" \
+                         "up_prevnext_bottom{3}=\htmlonly <table style=\"width: 100%; border-top: 1px solid #cccccc\"><tr><td colspan="2" style=\"text-align: center\">&uarr; \endhtmlonly \ref \1 \htmlonly</td></tr><tr><td style=\"text-align: left; width: 50%\">&larr; \endhtmlonly \ref \2 \htmlonly </td><td style=\"text-align: right\"> \endhtmlonly \ref \3 \htmlonly &rarr;</td></tr></table> \endhtmlonly" \
+                         "up_prev_bottom{2}=\htmlonly <table style=\"width: 100%; border-top: 1px solid #cccccc\"><tr><td colspan="2" style=\"text-align: center\">&uarr; \endhtmlonly \ref \1 \htmlonly</td></tr><tr><td style=\"text-align: left\">&larr; \endhtmlonly \ref \2 \htmlonly </td></tr></table> \endhtmlonly" \
+                         "up_next_bottom{2}=\htmlonly <table style=\"width: 100%; border-top: 1px solid #cccccc\"><tr><td colspan="2" style=\"text-align: center\">&uarr; \endhtmlonly \ref \1 \htmlonly</td></tr><tr><td style=\"text-align: right\"> \endhtmlonly \ref \2 \htmlonly &rarr;</td></tr></table> \endhtmlonly" \
                          "prevnext_top{2}=\htmlonly <table style=\"width: 100%; border-bottom: 1px solid #cccccc\"><tr><td style=\"text-align: left; width: 50%\">&larr; \endhtmlonly \ref \1 \htmlonly </td><td style=\"text-align: right\"> \endhtmlonly \ref \2 \htmlonly &rarr;</td></table> \endhtmlonly" \
                          "prev_top{1}=\htmlonly <table style=\"width: 100%; border-bottom: 1px solid #cccccc\"><tr><td style=\"text-align: left\">&larr; \endhtmlonly \ref \1 \htmlonly </td></table> \endhtmlonly" \
                          "next_top{1}=\htmlonly <table style=\"width: 100%; border-bottom: 1px solid #cccccc\"><tr><td style=\"text-align: right\"> \endhtmlonly \ref \1 \htmlonly &rarr;</td></table> \endhtmlonly" \
@@ -207,7 +216,8 @@ ALIASES                = "linkimage{2}=<div class=\"linkimage\">\image html \1 \
                          "lightrule=\htmlonly <hr style=\"color: #cccccc; background-color: #cccccc;height:1px;border:none;\"/>\endhtmlonly" \
                          "beginlinklist=\htmlonly <div class=\"linklist\">\endhtmlonly" \
                          "endlinklist=\htmlonly </div>\endhtmlonly" \
-			 "lin_win_command{2}=\htmlonly <table style=\"border: 0px; margin-left: 20px; width: 720px\"><tr><td style=\"padding: 4px 0; width: 30px; text-align: center; vertical-align: middle;\"><img src=\"images/UbuntuLogo.png\" style=\"width: 20px;\"></td><td style=\"width: 690px\"><pre class=\"console\" style=\"width: 670px\">\endhtmlonly \1 \htmlonly</pre></td> </tr> <tr><td style=\"padding: 4px 0; width: 30px; text-align: center; vertical-align: middle;\"><img src=\"images/WindowsLogo.jpg\" style=\"width: 20px;\"></td><td><pre class=\"console\" style=\"width: 670px\">\endhtmlonly \2 \htmlonly</pre></td></tr> </table> \endhtmlonly" \
+                         "lin_win_command{2}=\htmlonly <table style=\"border: 0px; margin-left: 20px; width: 720px\"><tr><td style=\"padding: 4px 0; width: 30px; text-align: center; vertical-align: middle;\"><img src=\"logos/linux_logo.png\" style=\"width: 20px;\"></td><td style=\"width: 690px\"><pre class=\"console\" style=\"width: 670px\">\endhtmlonly \1 \htmlonly</pre></td> </tr> <tr><td style=\"padding: 4px 0; width: 30px; text-align: center; vertical-align: middle;\"><img src=\"logos/windows_logo.png\" style=\"width: 20px;\"></td><td><pre class=\"console\" style=\"width: 670px\">\endhtmlonly \2 \htmlonly</pre></td></tr> </table> \endhtmlonly" \
+                         "lin_win_create_component=Select your operating system: \htmlonly <table style=\"border: 0px;\"><tr><td style=\"padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;\"><img src=\"logos/linux_logo.png\"></td><td style=\"padding: 4px; text-align: left; vertical-align: middle\">\endhtmlonly \ref linux_sdk_new_comp \htmlonly </td><td>Describes how to utilize the SDK in order to create and compile new component under Ubuntu OS.</td></tr><tr><td style=\"padding: 4px 0; width: 60px; text-align: center; vertical-align: middle;\"><img src=\"logos/windows_logo.png\"></td><td style=\"padding: 4px; text-align: left; vertical-align: middle\"> \endhtmlonly \ref win_sdk_new_comp \htmlonly </td><td>Describes how to utilize the SDK in order to create and compile new component under Windows OS (32bit).</td></tr> </table> \endhtmlonly" \
 
 # Set the OPTIMIZE_OUTPUT_FOR_C tag to YES if your project consists of C
 # sources only. Doxygen will then generate output that is more tailored for C.

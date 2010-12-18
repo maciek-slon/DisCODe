@@ -1,7 +1,7 @@
 /*!
-\page discode_00_description How to read the tutorials
+\page beginner_discode_00_description How to read the tutorials
 
-\next_top{discode_01_parameters}
+\up_next_top{beginner_discode_tutorials, beginner_discode_01_parameters}
 
 \section ts_objectives Tutorial objectives
 Contains small description of the problem.
@@ -35,5 +35,5 @@ Describes the results of the given tutorial.
 \section ts_sections Related sections
 List of useful links.
 
-\next_bottom{discode_01_parameters}
+\up_next_bottom{beginner_discode_tutorials, beginner_discode_01_parameters}
 */

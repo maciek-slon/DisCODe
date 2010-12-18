@@ -1,0 +1,18 @@
+/*!
+\page gentoo_sdk_installation Gentoo SDK
+
+\up_top{installation}
+
+\section gentoo_dis_The DisCODe SDK
+- The latest SDK prepared for machines working under the control of the Ubuntu network Linux (Segomo Server)
+can be downloaded from: <a href="https://segomo.elka.pw.edu.pl/~discode/DisCODe-1.0.0-Linux.sh">DisCODe-1.0.0-Linux.sh</a>.
+
+- Run the SDK installator. Read and accept the license agreement.
+\cons
+./DisCODe-1.0.0-Linux.sh
+\endcons
+
+\note The <b>--prefix</b> parameter can be utilized to set the target directory in which SDK will be installed.
+
+*/
+

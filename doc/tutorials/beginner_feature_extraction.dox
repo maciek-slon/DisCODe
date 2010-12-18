@@ -1,0 +1,44 @@
+/*!
+\page beginner_feature_extraction_tutorials_xxx Feature extraction
+<div class="center">[Beginner level]</div>
+\prev_top{beginner_camera_calibration_tutorials}
+
+\section sec_description Description
+The tutorial focuses on the extraction of features from images.
+
+\section sec_tutorials Tutorials
+\beginlinklist
+
+IMAGE PROCESSING
+Image processing (preprocessing) - image processing: mean filters, medium filters, color space transformations, histogram operations, binarization, color classification, morphological operations.
+
+TEXTURE CLASSIFICATION
+Feature extraction, characteristic poins detection (Harris, SIFT, SURF), features normalization.
+Texture detection and classification (knn)
+
+OBJECT CLASSIFICATION
+Edge extraction, thinning, Lines and shape detectors (Hough). Chain approximation. Segmentation
+Shape classfication with Bayes classifier.
+
+\endlinklist
+
+\section sec_datasets Datasets
+Datasets can be downloaded, as well as used externally.
+
+- Images used commonly in computer vision (Lena, etc.).\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
+
+ - Some other images from the OpenCV examples.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
+
+\section sec_materials Materials
+1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
+2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n
+3) Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
+4) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
+
+\prev_bottom{beginner_camera_calibration_tutorials}
+
+*/

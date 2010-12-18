@@ -1,0 +1,155 @@
+/*!
+\page beginner_camera_calibration_02_undistortion Display the undistorted images
+
+\up_prev_top{beginner_camera_calibration_tutorials, beginner_camera_calibration_01_findchessboard}
+
+\section ts_objectives Tutorial objectives
+The goal is to display a calibration sequence processed by the component responsible for image distortion removal.
+The component should load the distortion coefficients computed by the component created in the previous tutorial.
+
+\section ts_structure Task structure
+
+\htmlonly
+<img src="images/UndistortedImagesViewer.png" style="margin: 5px; width: 500px;" alt="UndistortedImagesViewer"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+\section ts_component_undis The ImageUndistortion component
+The component should perform the undistortion operation on received image and pass it to output data stream.
+
+\section ts_component_undisotr The Undistort component
+
+\subsection component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile.
+\lin_win_create_component
+
+\subsection beg_cam_undistort_properties Create component properties
+ - Edit the component header (Undistort_Processor.hpp), find the <b>Props</b> structure and add following field to the structure.
+\code
+	// Name of file to in which calibration results are stored.
+	string calibrationResults;
+\endcode
+
+- Implement the method responsible for properties load.
+\code
+	void load(const ptree & pt)
+	{
+         calibrationResults = pt.get<string>("calibrationResults", "calibration_results.xml");
+	}
+\endcode
+
+\note The default values are passed as second parameters to the <b>get()</b> template method.
+
+- Implement the method responsible for properties save.
+\code
+	void save(ptree & pt)
+	{
+         pt.put("calibrationResults", calibrationResults);
+	}
+\endcode
+
+\subsection beg_undistort_declarations Add required fields and methods to the declaration of the Undistort class.
+ - Enter the <b>protected</b> section of the class and add fields related to data stored between frames.
+\code
+     // Size of the image.
+    Size imageSize;
+
+    // The 3x3 camera matrix containing focal lengths fx,fy and displacement of the center of coordinates cx,cy.
+    Mat cameraMatrix;
+
+    // Vector with distortion coefficients k_1, k_2, p_1, p_2, k_3.
+    Mat distCoeffs;
+
+    // Matrices storing partial undistortion results.
+    Mat map1, map2;
+\endcode
+
+- Add input and output data ports.
+\code
+    // Input stream containing input.
+    Base::DataStreamIn <cv::Mat> in_img;
+
+    // Output image - with chessboard drawn if located.
+    Base::DataStreamOut <cv::Mat> out_img;
+\endcode
+
+ - Add event emited after the undistortion is completed.
+\code
+    // Event emited when image is undistorted
+    Base::Event * imageUndistorted;
+\endcode
+
+ - Add event handlers and methods utilized when a new image is received.
+\code
+    // "OnNewImage" event handler
+    Base::EventHandler <Undistort_Processor> h_onNewImage;
+
+    // Method related to the event h_onNewImage handler.
+    void onNewImage();
+\endcode
+
+\subsection beg_cam_calib_definitions Add definitions of Undistort class methods (Undistort_Processor.cpp).
+- In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
+\code
+    // Register handlers.
+    h_onNewImage.setup(this, &Undistort_Processor::onNewImage);
+    registerHandler("onNewImage", &h_onNewImage);
+
+    // Register event.
+    imageUndistorted = registerEvent("imageUndistorted");
+
+    // Register data streams.
+    registerStream("in_img", &in_img);
+    registerStream("out_img", &out_img);
+
+    // Load parameters from file.
+	return loadParameters();
+\endcode
+
+- Implement the <b>onNewImage()</b> method - localize the chessboard.
+\code
+void Undistort_Processor::onNewImage()
+{
+	LOG(LTRACE) << "Undistort_Processor::onNewImage()";
+
+    static bool initialized = false;
+    // Read image from input data stream.
+    Mat in = in_img.read();
+    Mat out;
+
+    // Initialize the undistortion matrices.
+    if (!initialized) {
+        LOG(LNOTICE) << "Initializing undistortion maps";
+        imageSize = in.size();
+        // Create undistortion maps.
+        initUndistortRectifyMap(cameraMatrix, distCoeffs, Mat(), getOptimalNewCameraMatrix(cameraMatrix, distCoeffs, imageSize, 1, imageSize, 0), imageSize, CV_32FC1, map1, map2);
+        initialized = true;
+    }
+    // Undistort using previously.
+    remap(in, out, map1, map2, INTER_LINEAR);
+
+    // The above can be simply replaced with undistort:
+//    undistort(in, out, cameraMatrix, distCoeffs);
+
+    // Write image to output data stream.
+    out_img.write(out);
+    // Raise event.
+    imageUndistorted->raise();
+}
+\endcode
+
+\note Please notice that in order to reduce the processing time instead of the <b>undistort()</b> function two other functions were used:
+<b>initUndistortRectifyMap()</b> which computes rectifying maps, and <b>remap()</b> for image undistortion.
+
+
+\section ts_materials Materials
+1) OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.\n
+
+\section ts_sections Related sections
+1) \ref manuals_components : Description of components\n
+2) Tutorial regarding the component properties: \ref beginner_discode_08_component_properties\n
+3) Manuals describing the process of component creation. \lin_win_create_component
+
+
+\up_prev_bottom{beginner_camera_calibration_tutorials, beginner_camera_calibration_01_findchessboard}
+*/

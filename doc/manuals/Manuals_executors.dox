@@ -1,47 +1,48 @@
 /*!
 \page manuals_executors Executors - task 'engines'
-<center> [\ref manuals] </center> 
+
+\up_prev_top{manuals, manuals_events}
 
 \section executors_desc Introduction
 The \link Core::Executor Executors\endlink are responsible for activation of components of given processing stream.
 Executor object holds \ref Base::Component "components" and implements a message queue.
 
-It is quite important that every executor (besides the executors working in the passive mode) should have a main component set. 
-The most important thing regarding the main component is that it will be executed first. 
+It is quite important that every executor (besides the executors working in the passive mode) should have a main component set.
+The most important thing regarding the main component is that it will be executed first.
 
 \section executors_class Class diagram
 
 <img src="images/class_executor.png" style="margin: 5px;" alt="Events"/>
 
 \section executors_structure Executor structure
-The structure of an exemplary executor is shown below. 
+The structure of an exemplary executor is shown below.
 
 \htmlonly
 <img src="images/Executor.png" style="margin: 5px; width: 350px;" alt="Executor structure"/>
 \endhtmlonly
 
 The component with ❶ is set as the main (of first to be executed).
-\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.   
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
 \section executors_types Executor types
 
-Currently there are three main types of executors: 
- - \link Core::ContinousExecutor ContinousExecutor\endlink - Calls step() method from it's main component continuously. Other components can activate 
- by receiving and handling events (that e.g. their input datastreams are prepared).    
+Currently there are three main types of executors:
+ - \link Core::ContinousExecutor ContinousExecutor\endlink - Calls step() method from it's main component continuously. Other components can activate
+ by receiving and handling events (that e.g. their input datastreams are prepared).
  - \link Core::PeriodicExecutor PeriodicExecutor\endlink - Executes main component periodically by calling its step() method with given interval.
- - \link Core::PassiveExecutor PassiveExecutor\endlink - This executor doesn't call any methods from it's components explicitly, but only 
+ - \link Core::PassiveExecutor PassiveExecutor\endlink - This executor doesn't call any methods from it's components explicitly, but only
  process events and calls connected handlers.
 
 For a single-threaded application only one executor is required.
 
-The PassiveExecutor should be used in tasks, which contain components that can activate by they own. For example, 
-the goal of \link Sources::CameraUniCap::CameraUniCap_Source unicap\endlink camera source is the retrieval of images from framegrabber. 
-The source can activate on its own when a hardware interrupt will be received.    
+The PassiveExecutor should be used in tasks, which contain components that can activate by they own. For example,
+the goal of \link Sources::CameraUniCap::CameraUniCap_Source unicap\endlink camera source is the retrieval of images from framegrabber.
+The source can activate on its own when a hardware interrupt will be received.
 
 PassiveExecutor can also be utilized for control of a single thread in multi-threaded applications.
 
 The list of executors isn't complete - and it can be expanded f.e. by a cyclic component, that will execute
-the step method of all related components (the most simplest is a round-robin based algorithm). 
+the step method of all related components (the most simplest is a round-robin based algorithm).
 
-\prev{manuals_events}
+\up_prev_bottom{manuals, manuals_events}
 */

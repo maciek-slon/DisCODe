@@ -1,7 +1,7 @@
 /*!
-\page discode_01_parameters Display DisCODe parameters
+\page beginner_discode_01_parameters Display DisCODe parameters
 
-\prevnext_top{discode_00_description, discode_02_moviereader}
+\up_prevnext_top{beginner_discode_tutorials, beginner_discode_00_description, beginner_discode_02_moviereader}
 
 \section ts_objectives Tutorial objectives
 Familiarize yourself with DisCODe parameters.
@@ -26,5 +26,5 @@ Additional options:
   - <b>--create-task</b>                     Create a default task file.
   - <b>--unstoppable</b>                     Process cannot be stopped by SIGINT (CTRL+C) signal. MWAHAHAHA!
 
-\prevnext_bottom{discode_00_description, discode_02_moviereader}
+\up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_00_description, beginner_discode_02_moviereader}
 */
