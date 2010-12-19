@@ -141,6 +141,14 @@ protected:
 	virtual bool onStep();
 private:
 	/**
+	 * MPS (short form of MrrocppProxyState)
+	 */
+	enum MrrocppProxyState {
+		MPS_NOT_INITIALIZED, MPS_LISTENING, MPS_CONNECTED, MPS_WAITING_FOR_READING, MPS_WAITING_FOR_RPC_RESULT
+	};
+
+	MrrocppProxyState state;
+	/**
 	 * Event handler called when new reading is ready.
 	 */
 	void onNewReading();
@@ -181,14 +189,17 @@ private:
 
 	Mrrocpp_ProxyProps props;
 
-	bool clientConnected;
-	bool msgSet;
-	bool getReadingReceived;
+	void tryAcceptConnection();
+	void tryReceiveFromMrrocpp();
 
-	enum
-	{
-		PROXY_NOT_CONFIGURED, PROXY_WAITING_FOR_COMMAND, PROXY_WAITING_FOR_READING, PROXY_WAITING_FOR_RPC_RESULT
-	} proxyState;
+//	bool clientConnected;
+//	bool msgSet;
+//	bool getReadingReceived;
+
+//	enum
+//	{
+//		PROXY_NOT_CONFIGURED, PROXY_WAITING_FOR_COMMAND, PROXY_WAITING_FOR_READING, PROXY_WAITING_FOR_RPC_RESULT
+//	} proxyState;
 
 	size_t initiate_message_header_size;
 
