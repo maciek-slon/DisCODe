@@ -1,8 +1,9 @@
-/*
- * Mrrocpp_Proxy.cpp
+/*!
+ * \file Mrrocpp_Proxy.cpp
+ * \brief MRROC++ Proxy.
  *
- *  Created on: 15-10-2010
- *      Author: mateusz
+ * \date 15-10-2010
+ * \author Mateusz Boryn
  */
 
 #include <cstdio>

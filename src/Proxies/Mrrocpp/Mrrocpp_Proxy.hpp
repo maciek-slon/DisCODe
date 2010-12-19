@@ -23,6 +23,51 @@
 #include "headers.h"
 #include "Reading.hpp"
 
+/**
+ * \defgroup Mrrocpp Proxy
+ * \ingroup Proxies
+ *
+ * Proxy to the mrrocpp system.
+ *
+ * \par Data streams:
+ *
+ * \streamin{reading,Reading}
+ * Reading to send to mrrocpp as soon as mrroc asks for it.
+ *
+ * \streamin{rpcResult,Reading}
+ * RPC result send in response to RPC param
+ *
+ * \streamout{rpcParam,xdr_iarchive <> }
+ * RPC param received from mrrocpp
+ *
+ * \par Events:
+ *
+ * \event{rpcCall}
+ * RPC called. rpcParam datastream should be read.
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onNewReading}
+ * New reading is ready to be read from reading data stream.
+ *
+ * \handler{onRpcResult}
+ * RPC result is ready.
+ *
+ * \par Properties:
+ *
+ * \prop{port,port,&nbsp;}
+ * Port on which to listen.
+ *
+ *
+ * \see http://www.youtube.com/watch?v=sKxy5Vst7Mo&feature=player_embedded
+ * \see http://robotyka.ia.pw.edu.pl/twiki/bin/view/Projects/Mrrocpp
+ *
+ * @{
+ *
+ * @}
+ */
+
 namespace Proxies {
 namespace Mrrocpp {
 
@@ -32,7 +77,6 @@ struct Mrrocpp_ProxyProps: public Base::Props
 {
 	int port;
 
-	bool rpcMode;
 	/*!
 	 * Load settings
 	 *
@@ -41,7 +85,6 @@ struct Mrrocpp_ProxyProps: public Base::Props
 	virtual void load(const ptree & pt)
 	{
 		port = pt.get <int> ("port");
-		rpcMode = pt.get <bool> ("rpcMode");
 	}
 
 	/*!
@@ -52,7 +95,6 @@ struct Mrrocpp_ProxyProps: public Base::Props
 	virtual void save(ptree & pt)
 	{
 		pt.put("port", port);
-		pt.put("rpcMode", rpcMode);
 	}
 };
 
