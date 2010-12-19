@@ -11,8 +11,9 @@
 #include "Mrrocpp_Proxy.hpp"
 
 namespace Proxies {
-
 namespace Mrrocpp {
+
+using namespace boost::interprocess;
 
 Mrrocpp_Proxy::Mrrocpp_Proxy(const std::string & name) :
 	Base::Component(name), clientConnected(false)
@@ -91,6 +92,7 @@ bool Mrrocpp_Proxy::onFinish()
 
 bool Mrrocpp_Proxy::onStep()
 {
+	scoped_lock<interprocess_mutex> lock(eventsMutex);
 	LOG(LTRACE) << "Mrrocpp_Proxy::onStep\n";
 
 	if (clientConnected) {
@@ -141,6 +143,7 @@ bool Mrrocpp_Proxy::onStep()
 
 void Mrrocpp_Proxy::onNewReading()
 {
+	scoped_lock<interprocess_mutex> lock(eventsMutex);
 	LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading ehehehehehehs\n";
 	readingMessage = reading.read();
 	readingMessage->printInfo();
@@ -162,6 +165,7 @@ void Mrrocpp_Proxy::onNewReading()
 
 void Mrrocpp_Proxy::onRpcResult()
 {
+	scoped_lock<interprocess_mutex> lock(eventsMutex);
 	LOG(LTRACE) << "Mrrocpp_Proxy::onRpcResult\n";
 	rpcResultMessage = rpcResult.read();
 

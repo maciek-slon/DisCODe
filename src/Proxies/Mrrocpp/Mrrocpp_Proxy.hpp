@@ -11,6 +11,8 @@
 
 #include <cv.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -147,6 +149,8 @@ private:
 	} proxyState;
 
 	size_t initiate_message_header_size;
+
+	boost::interprocess::interprocess_mutex eventsMutex;
 };
 
 } // namespace Mrrocpp {
