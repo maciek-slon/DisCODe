@@ -1,18 +1,18 @@
 /*!
- * \file Proxies.hpp
- * \brief Documentation file for Proxies namespace.
- * \author Mateusz Boryn
- * \date 19.12.2010
+ * \file Processors.hpp
+ * \brief Documentation file for Processors namespace.
+ * \author mstefanc
+ * \date 26.04.2010
  */
 
 /*!
- * \namespace Proxies
- * \brief The Proxies namespace contains classes and structures responsible
- * for exchanging data between other systems
+ * \namespace Processors
+ * \brief The Processors namespace contains classes and structures responsible
+ * for data processing (from simple filters to complex recognition-modules).
  * \author mstefanc
  */
 
 /**
- * \defgroup Proxies Proxies
- * All implemented proxies goes here
+ * \defgroup Processors Processors
+ * All implemented processors goes here
  */
