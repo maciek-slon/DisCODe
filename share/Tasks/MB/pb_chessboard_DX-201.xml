@@ -36,7 +36,7 @@
 		</BGRToGray>
 		<ImageSource type="CameraUniCap" thread="ImageSourceThread" group="s1">
 			<dev>
-				<device>/dev/video0</device>
+				<device>/dev/video1</device>
 			</dev>
 		</ImageSource>
 	</Components>

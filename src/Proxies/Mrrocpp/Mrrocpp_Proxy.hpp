@@ -11,8 +11,7 @@
 
 #include <cv.h>
 #include <boost/shared_ptr.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
-#include <boost/interprocess/sync/scoped_lock.hpp>
+#include <boost/thread/mutex.hpp>
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -182,8 +181,6 @@ private:
 	initiate_message_header imh;
 	reading_message_header rmh;
 
-	void receiveCommand();
-
 	Socket serverSocket;
 	boost::shared_ptr <Socket> clientSocket;
 
@@ -203,7 +200,7 @@ private:
 
 	size_t initiate_message_header_size;
 
-	boost::interprocess::interprocess_mutex eventsMutex;
+	boost::mutex eventsMutex;
 };
 
 } // namespace Mrrocpp {
