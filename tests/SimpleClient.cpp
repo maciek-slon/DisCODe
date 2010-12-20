@@ -1,6 +1,7 @@
 #include "Network/TCPClient.hpp"
 
 #include <cstring>
+#include <iostream>
 
 int main(int argc, char* argv[])
 {
@@ -12,9 +13,10 @@ int main(int argc, char* argv[])
 	else
 		client.send(argv[1], strlen(argv[1])+1);
 
-	//std::string reply = client.recv();
+	char buf[256];
+	client.recv(buf, 3);
 
-	//std::cout << reply;
+	std::cout << buf << std::endl;
 
 	return 0;
 }

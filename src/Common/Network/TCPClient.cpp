@@ -1,5 +1,11 @@
 #include "TCPClient.hpp"
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+
 #include <cstring>
 #include <iostream>
 
@@ -13,14 +19,15 @@ void *get_in_addr(struct sockaddr *sa)
 	return &(((struct sockaddr_in6*) sa)->sin6_addr);
 }
 
-TCPClient::TCPClient()
+TCPClient::TCPClient(int buffer_size) : m_sock(-1), m_buffer_size(buffer_size), m_buf(NULL), m_size(0)
 {
-
+	m_buf = new char[m_buffer_size];
 }
 
 TCPClient::~TCPClient()
 {
-
+	close(m_sock);
+	delete [] m_buf;
 }
 
 bool TCPClient::connect(const std::string & host, const std::string & port)
@@ -63,19 +70,34 @@ bool TCPClient::connect(const std::string & host, const std::string & port)
 	return true;
 }
 
-std::string TCPClient::recv()
+int TCPClient::recv(char * buf, int buf_size, int msec_timeout)
 {
-	int size, recvd;
-	recvd = ::recv(m_sock, buf, BUF_SIZE, NULL);
+	/// \todo Block on select instead of recv.
+	int recvd = 0, res;
 
-	size = buf[0] + buf[1] * 256;
-	buf[recvd] = 0;
-
-	if (recvd != size + 2) {
-		std::cout << "Sie zepsulo\n";
+	struct timeval tv, ttv;
+	if (msec_timeout >= 0) {
+		tv.tv_sec = msec_timeout / 1000;
+		tv.tv_usec = msec_timeout % 1000 * 1000;
 	}
 
-	return std::string(buf + 2);
+	while (recvd < buf_size) {
+		res = ::recv(m_sock, buf+recvd, buf_size-recvd, NULL);
+		if (res < 0) {
+			// recv error
+			break;
+		} else if (!res) {
+			// disconnected
+			break;
+		} else {
+			// received some data
+			recvd += res;
+			if (recvd >= buf_size)
+				break;
+		}
+	}
+
+	return recvd;
 }
 
 int TCPClient::send(const char * msg, int size)

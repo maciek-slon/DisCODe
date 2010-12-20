@@ -6,7 +6,10 @@
 int service(const char * msg, int msg_size, char * reply, int reply_limit)
 {
 	std::cout << msg << std::endl;
-	return 0;
+	reply[0] = 'O';
+	reply[1] = 'K';
+	reply[2] = '\0';
+	return 3;
 }
 
 int main()
@@ -14,8 +17,5 @@ int main()
 	Common::TCPServer server;
 	server.setServiceHook(service);
 	server.start();
-	while(1) {
-		sleep(1);
-	}
 	return 0;
 }
