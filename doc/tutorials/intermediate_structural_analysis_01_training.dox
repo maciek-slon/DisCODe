@@ -35,7 +35,7 @@ should be switched through the configuration file, thus an adequate <b>property<
 \note An alternative to the work modes is simply to create two components - first responsible for training and second for recognition.
 
 - The learning process requires the information regarding the class (letter) of object from which current features
-were extracted, thus multiple handlers, each regarding different class should be created (e.g. <b>onTrain_a</b>,
+were extracted, thus multiple handlers, each related to different class should be created (e.g. <b>onTrain_a</b>,
 <b>onTrain_b</b>, <b>onTrain_c</b>, ...).
 
 - After the user decides that the classifier is trained its parameters should be saved to file (the <b>onSave</b> event) - the filename can be stored in another property.
