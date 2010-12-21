@@ -1,7 +1,8 @@
 /*!
 \page beginner_camera_calibration_tutorials Camera calibration
-<div class="center">[Beginner level]</div>
-\prevnext_top{beginner_discode_tutorials, beginner_feature_extraction_tutorials}
+<div class="beginner">[Beginner level]</div>
+
+\prev_top{beginner_discode_tutorials}
 
 \section sec_description Description
 The tutorial regards the problem of camera calibration. The camera calibration is a process in which camera indrinsic parameters and distortion parameters are computed.
@@ -19,24 +20,21 @@ The goal is to display a calibration sequence after performing the undistortion 
 \endlinklist
 
 \section sec_datasets Datasets
-Datasets can be downloaded, as well as used externally.
-
-- Calibration: chessboard pictures from the OpenCV examples.\n
-- Calibration: chessboard pictures from the OpenCV examples.\n
+- Calibration: chessboard pictures from the OpenCV examples\n
 Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a>\n
 Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv.rar">calibration_opencv.rar</a>\n
-Note: The size from the OpenCV example chessboard is 9 (width) x 6 (height).
+Note: The size from the OpenCV example chessboard is 9 (width) x 6 (height)
 
-- Calibration: chessboard pictures taken with the use camera from the Robotics Lab at the ICCE.\n
+- Calibration: chessboard pictures taken from camera mounted on the IRp-6's gripper (Robotics Lab, ICCE, WUT)\n
 Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a>\n
 Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab.rar">calibration_robotics_lab.rar</a>\n
-Note: The size of our chessboard is 8 (width) x 6 (height).
+Note: The size of our chessboard is 8 (width) x 6 (height)
 
 \section sec_materials Materials
-1) Chapter 11: "Camera models and calibration" (pages 270-404) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
-2) OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.\n
-3) A <a href="http://www.youtube.com/watch?v=DrXIQfQHFv0">movie</a> presenting the OpenCV-based chessboard localization.\n
+- Chapter 11: "Camera models and calibration" (pages 270-404) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008
+- OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem
+- A <a href="http://www.youtube.com/watch?v=DrXIQfQHFv0">movie</a> presenting the OpenCV-based chessboard localization
 
-\prevnext_bottom{beginner_discode_tutorials, beginner_feature_extraction_tutorials}
+\prev_bottom{beginner_discode_tutorials}
 
 */

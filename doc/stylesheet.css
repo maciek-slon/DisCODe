@@ -393,6 +393,24 @@ div.center {
         padding: 0px;
 }
 
+
+div.beginner {
+	text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    color: green;
+}
+
+div.intermediate {
+	text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+    color: red;
+}
+
+
 div.center img {
 	border: 0px;
 }

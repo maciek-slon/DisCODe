@@ -1,6 +1,7 @@
 /*!
 \page beginner_discode_tutorials The introduction to DisCODe
-<div class="center">[Beginner level]</div>
+<div class="beginner">[Beginner level]</div>
+
 \next_top{beginner_camera_calibration_tutorials}
 
 \section sec_description Description
@@ -43,14 +44,14 @@ Tired of printf'ing and commenting out old debugs?
 \section sec_datasets Datasets
 Datasets can be downloaded, as well as used externally.
 
-- Movies containing road signs.\n
+- Movies containing road signs\n
 Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a>
 
-- Images used commonly in computer vision (Lena, etc.).\n
+- Images used commonly in computer vision (Lena, etc.)\n
 Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
 Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
 
- - Some other images from the OpenCV examples.\n
+ - Some other images from the OpenCV examples\n
 Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
 Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
 

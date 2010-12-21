@@ -1,6 +1,7 @@
 /*!
 \page intermediate_structural_analysis_tutorials Shape Descripton and Structural Analysis
-<div class="center">[Intermediate level]</div>
+<div class="intermediate">[Intermediate level]</div>
+
 \prev_top{intermediate_feature_extraction_tutorials}
 
 \section sec_description Description
@@ -41,7 +42,9 @@ Major blocks of the algorithm are presented on the state diagram below.
 
 \subsection let_reg_binarization Binarization
 The goal of the binarization is to separate pixels belonging to the object (foreground) from the background's pixels.
-OpenCV offers many functions able to create a binary image ouf a grayscale or color one, e.g., <b>threshold()</b> , <b>adaptiveThreshold()</b> , <b>Canny()</b>.
+OpenCV offers many functions able to create a binary image ouf a grayscale or color one, e.g., <b>threshold()</b> , <b>adaptiveThreshold()</b> ,
+<b>Canny()</b> (which in fact creates an image containing only edges, but the OpenCV's contour extracion function can also work with this 
+type of images).
 
 \subsection let_reg_coutour Contour extraction
 Pixels belonging to edges (found for example by Sobel or Canny edge detectors) do not tell anything about that edges as entities in themselves - and in particular to
@@ -70,15 +73,16 @@ Prepare final report containing:
  - validation of classification - what is the correctness of implemented solution, which examples weren't correctly classified and why, etc.
 
 \section sec_datasets Datasets
-Datasets can be downloaded, as well as used externally.
+Required datasets should be created (e.g. with camera) or found in the internet.
 
 \section sec_materials Materials
-1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
-2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n
-3) Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
-4) Bayes Classifier (pages 483-486), Chapter 13: "Machine Learning" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
-5) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
-6) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>.\n
+- ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Wlodzimierz Kasprzak, ICCE, 2010
+- ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Wlodzimierz Kasprzak, ICCE, 2010
+- Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008
+- Bayes Classifier (pages 483-486), Chapter 13: "Machine Learning" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc__image_processing.html">Image Processing</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>
 
 \prev_bottom{intermediate_feature_extraction_tutorials}
 

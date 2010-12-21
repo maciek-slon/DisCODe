@@ -1,28 +1,30 @@
 /*!
 \page beginner_camera_calibration_01_findchessboard Localize the calibration pattern
+<div class="beginner">[Beginner level]</div>
 
 \up_next_top{beginner_camera_calibration_tutorials, beginner_camera_calibration_02_undistortion}
 
 \section ts_objectives Tutorial objectives
-The goal of this tutorial is to create a task responsible for chessboard localization and for performing calibration computations.
+The goal of this tutorial is to create a task responsible for localization of calibration pattern and for performing required
+computations - after the calibration data is successful gathered.
 
-The main challenge is to implement the <b>ChessboardComponent</b> component, which will implement two major functions:
-- Localization of chessboard. \n
+In order to achieve the above the <b>ChessboardComponent</b> component, offering two major functions described below, should be created:
+- Chessboard localization\n
 The <b>t_Pressed</b> event should trigger the <b>Sequence</b> to load next image from file, pass it to the output data port <b>out_img</b> and emit the <b>newImage</b> event.
-The attached <b>ChessboardComponent</b> event handler <b>onNewImage()</b> is responsible for localization and - in the case of success - it should remember
-the result (a set of image points containing corners and adequate object points). Afterwards the chessboard should be drawn on the output image, passed to the
+The related <b>ChessboardComponent</b> event handler <b>onNewImage()</b> is responsible for chessboard localization and - in the case of success - it should remember
+the result (a set of corner points in both image and object-related reference frames). Afterwards, the chessboard should be drawn on the output image, passed to the
 <b>out_img</b> output data port and related <b>imageProcesed</b> event should be emitted.
 
-- Calibration computations. \n
-The <b>c_Pressed</b> event should trigger the <b>onCalibration()</b> handler of the <b>ChessboardComponent</b>, which should perform the calibration parameters computation
+- Calibration computations\n
+The <b>c_Pressed</b> event should trigger the <b>onCalibration()</b> handler of the <b>ChessboardComponent</b>, which should compute the calibration parameters
 (on the base of gathered calibration set) and save the result to a file.
 
 Because calibration patterns might differ (e.g. different number of squares or square sizes) it is
 required to create the possibility for changing their parameters without code recompilation.
-That is the reason why adequate component properties should be added, offering the possibility to change those values via the configuration file modification.
+That is the reason why adequate component properties should be added, offering the possibility to change those values via the configuration file.
 
 \section ts_structure Task structure
-The task should consist of four components - three existing and one new, implemented during this tutorial.
+The task should consist of four components - three existing and a one new, implemented during this tutorial.
 
 \htmlonly
 <img src="images/beginner_CameraCalibration.png" style="margin: 5px; width: 500px;" alt="CameraCalibration"/>
@@ -259,7 +261,17 @@ void CameraCalibration_Processor::saveParameters(Mat& cameraMatrix_, Mat& distCo
 
 \section ts_file Task file
 Create a new CameraCalibration.xml file (e.g. on the base of the RefreshedTriggeredSequenceViewer.xml).
-- Add the <b>Calib1</b> component to the list of components, set its executor to <b>Exec1</b>
+- Add new <b>c</b> key to list active keys in the <b>Kbd1</b> component.
+\code
+              <keys>ct</keys>
+\endcode
+
+- In the case of OpenCV's calibration dataset add the adequte regex pattern to the <b>Seq1</b> component for loading files acquisited from the "left" camera.
+\code
+			<pattern>left.*\.jpg</pattern>
+\endcode
+
+- Add the <b>Calib1</b> component to the list of components, set its executor to <b>Exec1</b>.
 \code
         <Calib1 type="CameraCalibration" thread="Exec1" group="s1">
 			<width>9</width>
@@ -267,28 +279,6 @@ Create a new CameraCalibration.xml file (e.g. on the base of the RefreshedTrigge
 			<squareSize>0.02</squareSize>
 			<calibrationResults>left_calibration_results.xml</calibrationResults>
         </Calib1>
-\endcode
-
-- Add new <b>c</b> key to list active keys in the <b>Keyboard</b> component.
-\code
-			<keys>ct</keys>
-\endcode
-
-- Connect data pipes between: <b>Seq1.Out</b> -> <b>Calib1.In</b> and <b>Calib1.Out</b> -> <b>Wnd1.In</b>.
-\code
-        <Seq1>
-            <out_img type="out" group="Con1"/>
-        </Seq1>
-        <Calib1>
-            <in_img  type="in" group="Con1"/>
-        </Calib1>
-
-        <Calib1>
-            <out_img type="out" group="Con2"/>
-        </Calib1>
-        <Wnd1>
-            <in_img  type="in" group="Con2"/>
-        </Wnd1>
 \endcode
 
 - Create new connections between event emitters and handlers:
@@ -301,8 +291,21 @@ Create a new CameraCalibration.xml file (e.g. on the base of the RefreshedTrigge
         <Event source="Calib1.imageProcessed" destination="Wnd1.onNewImage"/>
 \endcode
 
-\note For more task file details please refer to the previous tutorials.
+- Connect data pipes between: <b>Seq1.Out</b> -> <b>Calib1.In</b> and <b>Calib1.Out</b> -> <b>Wnd1.In</b>.
+\code
+        <Seq1>
+            <out_img type="out" group="Con1"/>
+        </Seq1>
+        <Calib1>
+            <in_img  type="in" group="Con1"/>
+            <out_img type="out" group="Con2"/>
+        </Calib1>
+        <Wnd1>
+            <in_img  type="in" group="Con2"/>
+        </Wnd1>
+\endcode
 
+\note For more task file details please refer to the previous tutorials.
 
 \section ts_hints Hints
  - Select one of the two available calibration datasets.
@@ -311,14 +314,15 @@ Create a new CameraCalibration.xml file (e.g. on the base of the RefreshedTrigge
  - Utilize the <b>drawChessboardCorners()</b> for drawing of chessboard corners on output image.
 
 \section ts_result Result
-In result a calibration a sequence of images will be displayed - with located corners on every image containing chessboard.
+In result a calibration a sequence of images will be displayed - with located corners on every image containing chessboard. 
+After the calibration computations will be performed results should be both displayed on the console and written to output file.
 
 \section ts_materials Materials
-1) OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.\n
+- OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem
 
 \section ts_sections Related sections
-1) \ref manuals_components : Description of components.\n
-2) Manuals describing the process of component creation. \lin_win_create_component
+- \ref manuals_components : Description of components
+- Manuals describing the process of component creation. \lin_win_create_component
 
 \up_next_bottom{beginner_camera_calibration_tutorials, beginner_camera_calibration_02_undistortion}
 */

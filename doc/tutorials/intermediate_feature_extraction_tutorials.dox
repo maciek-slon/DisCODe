@@ -1,39 +1,46 @@
 /*!
 \page intermediate_feature_extraction_tutorials Image processing and feature extraction
-<div class="center">[Intermediate level]</div>
+<div class="intermediate">[Intermediate level]</div>
+
 \prevnext_top{intermediate_camera_calibration_tutorials, intermediate_structural_analysis_tutorials}
 
 \section sec_description Description
-The tutorial focuses on the extraction of features from images.
+The tutorial focuses on the comparison of different features extracted from images.
 
 \section ts_structure Task structure
 General structure of tasks required by this tutorial is presented on the diagram below.
 
 \htmlonly
-<img src="images/FeatureExtraction.png" style="margin: 5px; width: 400px;" alt="FeatureExtraction"/>
+<img src="images/FeatureComparer.png" style="margin: 5px; width: 650px;" alt="FeatureComparer"/>
 \endhtmlonly
 
 \note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
-The FeatureExtractor component should perform a simple operation required by given tutorial - e.g. processing image with mean filter.
+The FeatureComparer component after receiving new image should perform two sets of operations and pass 
+results to two outputs, so the difference could be displayed on the screen by two instances 
+of the cvWindow component. After the results will be computed an event should be emited.
 
 \section sec_tutorials Tutorials
-\beginlinklist
-
 - Image processing: Compare mean and medium filter.\n
+OpenCV functions: 
+      <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-blur">cv::blur</a>,
+      <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-medianblur">cv::medianBlur</a>
 
-- Image processing: Perform binarization.\n
-
-- Image processing: Compare morphological dilation end erosion.\n
-
-- Feature extraction: Compare image histograms in the BGR and HSV spaces.\n
-\note Hisfograms should be displayed in a separate cvWindow.
+- Image processing: Perform thresholding and compare (on the result binary image) morphological dilation end erosion.\n
+OpenCV functions:
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_miscellaneous_image_transformations.html#cv-threshold">cv::threshold</a>,
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-dilate">cv::dilate</a>,
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-erode">cv::erode</a>
 
 - Feature extraction: Compare Sobel and Canny edges detectors.\n
+OpenCV functions:
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-sobel">cv::Sobel</a>,
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_feature_detection.html#cv-canny">cv::Canny</a>
 
-- Feature extraction: Compute SIFT and SURF features.\n
-
-\endlinklist
+- *Feature extraction: Compute SIFT and SURF features.\n
+OpenCV functions:
+       <a href="http://opencv.willowgarage.com/documentation/cpp/features2d_feature_detection_and_description.html#sift">SIFT</a>,
+       <a href="http://opencv.willowgarage.com/documentation/cpp/features2d_feature_detection_and_description.html#surf">SURF</a>
 
 \section sec_descr_ip Image processing
 Image processing (called low-level processing) is characterized by the fact that both its inputs and outputs are images.
@@ -42,7 +49,6 @@ Image processing algorithms can be divided into two classes, taking into conside
 \subsection sec_descr_ip_geometric Geometric transformations
 Most common examples of spatial transformations that change the position of pixels are geometric: translation, rotation, scaling, etc.
 Besides those, a quite important one is related to the camera distortion correction.
-
 
 \subsection sec_descr_ip_non_geometric Non-geometric transformations
 The other group of spatial transformations (that don't change pixel coordinates) is the most important from the image preprocessing
@@ -87,7 +93,7 @@ detect intensity changes in two different directions - each partial result is eq
 Operators utilizing three or more (and bigger) masks are Robinsons and Nevatia-Babu.
 Edge detection can also be realized with the consideration of second derivatives (so called Laplacians).
 - Characteristic points (points of interests, salient points) detectors, which work is similar to edge operators, but they consider the difference between
-given pixel and its whole neighborhood, not only few directions. Examples include Moravec, Harris, Haralick or {SUSAN} detectors.
+given pixel and its whole neighborhood, not only few directions. Examples include Moravec, Harris, Haralick or SUSAN detectors.
 
 \section sec_descr_fe Feature extraction
 Algorithms belonging to the feature extraction class are characterized by the fact that on the base of input image they compute some features describing parts of image,
@@ -106,26 +112,29 @@ On the base of extracted segments many different features can be computed, e.g. 
 Edges can be utilized for computation of partial description of shapes (e.g. Hough transform).
 
 \section sec_datasets Datasets
-Datasets can be downloaded, as well as used externally.
-- Images used commonly in computer vision (Lena, etc.).\n
+- Images used commonly in computer vision (Lena, etc.)\n
 Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
 Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
 
- - Some other images from the OpenCV examples.\n
+ - Some other images from the OpenCV examples\n
 Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
 Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
 
 \section sec_materials Materials
-1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
-2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n
-3) Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
-4) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
+- ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Wlodzimierz Kasprzak, ICCE, 2010
+- ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Wlodzimierz Kasprzak, ICCE, 2010
+- "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html">Image Filtering</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_feature_detection.html">Feature Detection</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/features2d_feature_detection_and_description.html">Feature detection and description</a>
+
 
 \section ts_sections Related sections
-1) \ref manuals_components : Description of components\n
-2) Manuals describing the process of component creation. \lin_win_create_component
+- \ref manuals_components : Description of components
+- Manuals describing the process of component creation. \lin_win_create_component
 
 \prevnext_bottom{intermediate_camera_calibration_tutorials, intermediate_structural_analysis_tutorials}
 */
 
 
+//- Feature extraction: Compare image histograms in the BGR and HSV spaces.\n

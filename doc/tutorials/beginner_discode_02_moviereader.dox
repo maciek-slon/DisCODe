@@ -1,5 +1,6 @@
 /*!
 \page beginner_discode_02_moviereader Run a simple task
+<div class="beginner">[Beginner level]</div>
 
 \up_prevnext_top{beginner_discode_tutorials, beginner_discode_01_parameters,beginner_discode_03_moviereader_changeparameter}
 
@@ -24,11 +25,15 @@ A movie will be displayed frame by frame.
 
 \note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
 
+\section sec_datasets Datasets
+- Movies containing road signs\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a>
+
 \section ts_sections Related sections
-\see \ref manuals_tasks : Description of tasks
-\see \ref manuals_components : Description of components
-\see \ref Movie : Source responsible for loading frames from movie
-\see \ref CvWindow : Sink responsible for displaying images
+- \ref manuals_tasks : Description of tasks
+- \ref manuals_components : Description of components
+- \ref Movie : Source responsible for loading frames from movie
+- \ref CvWindow : Sink responsible for displaying images
 
 \up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_01_parameters,beginner_discode_03_moviereader_changeparameter}
 */

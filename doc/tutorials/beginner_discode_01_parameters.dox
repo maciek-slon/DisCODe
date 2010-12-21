@@ -1,5 +1,6 @@
 /*!
 \page beginner_discode_01_parameters Display DisCODe parameters
+<div class="beginner">[Beginner level]</div>
 
 \up_prevnext_top{beginner_discode_tutorials, beginner_discode_00_description, beginner_discode_02_moviereader}
 
@@ -14,7 +15,7 @@ From the <b>bin</b> directory execute the discode with option that lists possibl
 DisCODe parameters will be listed.
 
 Basic options:
-  - <b>--help</b>                            Produce the help message.
+  - <b>--help</b>                            Displays help.
   - <b>-T [ --task ] arg</b>                 Choose task file to be loaded and executed.
   - <b>-L [ --log-level ] arg (=3)</b>       Set log severity level.
   - <b>-S [ --set ] arg</b>                  Override one or more of task settings.
@@ -23,7 +24,6 @@ Additional options:
   - <b>-C [ --config ] arg (=config.xml)</b> Choose another config file.
   - <b>--create-task</b>                     Create a default task file.
   - <b>-D [ --create-config ]</b>            Create default configuration file.
-  - <b>--create-task</b>                     Create a default task file.
   - <b>--unstoppable</b>                     Process cannot be stopped by SIGINT (CTRL+C) signal. MWAHAHAHA!
 
 \up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_00_description, beginner_discode_02_moviereader}

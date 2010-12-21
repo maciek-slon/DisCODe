@@ -1,5 +1,6 @@
 /*!
 \page beginner_discode_04_sequencereader Create a new task
+<div class="beginner">[Beginner level]</div>
 
 \up_prevnext_top{beginner_discode_tutorials, beginner_discode_03_moviereader_changeparameter, beginner_discode_05_trigerred_sequencereader}
 
@@ -21,7 +22,7 @@ The structure of the SequenceViewer task is shown below.
 
 \section ts_file Task file
 Create a new SequenceViewer.xml file on the base of the existing MovieViewer.xml.
-Modify required parts:
+Perform listed below modifications:
 - Replace the <b>Mov1</b> component with the <b>Seq1</b> component.
 \code
 	<Components>
@@ -68,12 +69,21 @@ A sequence of images  will be displayed image after image.
 
 \note To break the program execution press <b>CTRL+C</b> (the SIGINT signal will be sent).
 
+\section sec_datasets Datasets
+- Images used commonly in computer vision (Lena, etc.)\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
+
+ - Some other images from the OpenCV examples\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
+
 \section ts_sections Related sections
-\see \ref manuals_tasks : Description of tasks
-\see \ref manuals_components : Description of components
-\see \ref manuals_executors : Description of executors
-\see \ref Sequence : Source responsible for loading image sequence from files.
-\see \ref CvWindow : Sink responsible for displaying images
+- \ref manuals_tasks : Description of tasks
+- \ref manuals_components : Description of components
+- \ref manuals_executors : Description of executors
+- \ref Sequence : Source responsible for loading image sequence from files
+- \ref CvWindow : Sink responsible for displaying images
 
 \up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_03_moviereader_changeparameter, beginner_discode_05_trigerred_sequencereader}
 
