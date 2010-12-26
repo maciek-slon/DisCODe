@@ -38,14 +38,12 @@
 #include <PvApi.h>
 
 /**
- * \defgroup Sequence Sequence
+ * \defgroup CameraGigE CameraGigE
  * \ingroup Sources
  *
- * \brief Image sequence provider.
+ * \brief ATV GigE camera driver.
  *
- * At the moment there is only one type of sequences
- * available, based on image filename pattern (regular expression) and directory,
- * in which files will be searched.
+ * Provide access to GieE Vision cameras.
  *
  *
  * \par Data streams:
@@ -58,32 +56,57 @@
  *
  * \event{newImage}
  * New image is ready
- * \event{endOfSequence}
- * Sequence has ended
  *
  *
  * \par Event handlers:
  *
  * \handler{onTrigger}
- * Trigger new frame
+ * Trigger new frame in SoftTrigger mode
  *
  *
  * \par Properties:
  *
- * \prop{directory,string,"."}
- * Directory, where fils will be searched
- * \prop{pattern,string,".*\.jpg"}
- * Regex pattern used for searching files
- * \prop{sort,bool,true}
- * If set, then found siles will be sorted in ascending order
- * \prop{prefetch,bool,false}
- * If set, all files will be loaded beforehand, otherwise images are loaded just before they are needed.
- * \prop{triggered,bool,false}
- * If set, new frames will be produced only after onTrigger event
+ * \prop{Adress,string,"192.168.1.2"}
+ * IP address of camera.
+ * \prop{UID,int,"0"}
+ * UID of camera.
  *
+ * \prop{Exposure.Mode,string,"Auto"}
+ * Control exposure mode, available modes : Manual, Auto, AutoOnce, External.
+ * \prop{Exposure.Value,double,0.01}
+ * Exposure time in seconds used in Manual mode.
  *
- * \see \ref regex_basics
+ * \prop{Gain.Mode,string,"Auto"}
+ * Control gain mode, available modes : Manual, Auto, AutoOnce.
+ * \prop{Gain.Value,int,0}
+ * Sensor gain in dB used in Manual mode.
  *
+ * \prop{Whitebal.Mode,string,"Auto"}
+ * Control White Balance mode, available modes : Manual, Auto, AutoOnce.
+ * \prop{Whitebal.ValueRed,int,50}
+ * Red gain expressed as a percentage of the camera default setting.
+ * \prop{Whitebal.ValueBlue,int,50}
+ * Blue gain expressed as a percentage of the camera default setting.
+ *
+ * \prop{ImageFormat.PixelFormat,string,"RGB24"}
+ * Pixel format, available formats : mono8, RGB24.
+ *
+ * \prop{ImageFormat.MirrorX,bool,false}
+ * Enable horizontal mirroring of the image.
+ * \prop{ImageFormat.ROI.Height,int,480}
+ * The vertical size of the rectangle that defines the ROI.
+ * \prop{ImageFormat.ROI.Width,int,640}
+ * The horizontal size of the rectangle that defines the ROI.
+ * \prop{ImageFormat.ROI.RegionX,int,0}
+ * The X position of the top-left corner of the ROI.
+ * \prop{ImageFormat.ROI.RegionY,int,0}
+ * The Y position of the top-left corner of the ROI.
+ *
+ * \prop{ImageMode.BinningX,int,0}
+ * The horizontal binning factor.
+ * Binning is the summing of charge of adjacent pixels on a sensor, to give a lower resolution but more sensitive image.
+ * \prop{ImageMode.BinningY,int,0}
+ * The vertical binning factor.
  *
  * @{
  *
@@ -146,8 +169,8 @@ struct Props : public Base::Props {
 		regionX = pt.get("ImageFormat.ROI.RegionX", 0);
 		regionY = pt.get("ImageFormat.ROI.RegionY", 0);
 
-		binningX = pt.get("ImageMode.BinningX", 1);
-		binningY = pt.get("ImageMode.BinningY", 1);
+		binningX = pt.get("ImageMode.BinningX", 0);
+		binningY = pt.get("ImageMode.BinningY", 0);
 
 	}
 
