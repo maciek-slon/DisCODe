@@ -77,7 +77,7 @@ bool CameraGigE::onInit() {
 				}
 			}
 		} else {
-			LOG(LWARNING) << "sfdfsdfsdsd";
+			LOG(LWARNING) << "Unable to set ExposureMode \n";
 		}
 	}
 	/// Gain
@@ -98,7 +98,7 @@ bool CameraGigE::onInit() {
 				}
 			}
 		} else {
-			LOG(LWARNING) << "sfdfsdfsdsd";
+			LOG(LWARNING) << "Unable to set GainMode \n";
 		}
 	}
 	///	White Balance
@@ -135,7 +135,7 @@ bool CameraGigE::onInit() {
 				}
 			}
 		} else {
-			LOG(LWARNING) << "sfdfsdfsdsd";
+			LOG(LWARNING) << "Unable to set WhitebalMode" << err << "\n";
 		}
 	}
 
@@ -146,7 +146,7 @@ bool CameraGigE::onInit() {
 
 	if ((err = PvAttrEnumSet(cHandle, "PixelFormat", props.pixelFormat.c_str()))
 			!= ePvErrSuccess) {
-
+		LOG(LERROR) << "Unable to set pixelformat " << err;
 	}
 
 	if ((err = PvAttrUint32Set(cHandle, "Height", props.height))
@@ -156,7 +156,7 @@ bool CameraGigE::onInit() {
 			PvAttrRangeUint32(cHandle, "Height", &min, &max);
 			LOG(LWARNING) << "Height : " << props.height
 					<< " is out of range, valid range [ " << (double) min
-					<< " , " << (double) max << " ]\n";
+					<< " , " << (double) max << " ]";
 		}
 	}
 
@@ -232,7 +232,7 @@ bool CameraGigE::onInit() {
 
 bool CameraGigE::onFinish() {
 	LOG(LTRACE) << "CameraGigE::finish\n";
-
+	PvCameraClose(cHandle);
 	return true;
 }
 

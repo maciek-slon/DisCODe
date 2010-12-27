@@ -88,8 +88,8 @@
  * \prop{Whitebal.ValueBlue,int,50}
  * Blue gain expressed as a percentage of the camera default setting.
  *
- * \prop{ImageFormat.PixelFormat,string,"RGB24"}
- * Pixel format, available formats : mono8, RGB24.
+ * \prop{ImageFormat.PixelFormat,string,"Bgr24"}
+ * Pixel format, available formats : Mono8, Bgr24.
  *
  * \prop{ImageFormat.MirrorX,bool,false}
  * Enable horizontal mirroring of the image.
@@ -152,18 +152,18 @@ struct Props : public Base::Props {
 		address = pt.get("Address", "");
 		uid = pt.get("UID", 0);
 
-		exposureMode = pt.get("Controls.Exposure.Mode", "auto");
+		exposureMode = pt.get("Controls.Exposure.Mode", "Auto");
 		exposureValue = pt.get("Controls.Exposure.Value", 0.05);
 
-		gainMode = pt.get("Controls.Gain.Mode", "auto");
+		gainMode = pt.get("Controls.Gain.Mode", "Auto");
 		gainValue = pt.get("Controls.Gain.Value", 0);
 
-		whitebalMode = pt.get("Controls.WhiteBalance.Mode", "auto");
+		whitebalMode = pt.get("Controls.WhiteBalance.Mode", "Auto");
 		whitebalValueRed = pt.get("Controls.WhiteBalance.ValueRed", 50);
 		whitebalValueBlue = pt.get("Controls.WhiteBalance.ValueBlue", 50);
 
 		mirrorX = pt.get("ImageFormat.MirrorX", false);
-		pixelFormat = pt.get("ImageFormat.PixelFormat", "RGB24");
+		pixelFormat = pt.get("ImageFormat.PixelFormat", "Bgr24");
 		height = pt.get("ImageFormat.ROI.Height", 480);
 		width = pt.get("ImageFormat.ROI.Width", 640);
 		regionX = pt.get("ImageFormat.ROI.RegionX", 0);
