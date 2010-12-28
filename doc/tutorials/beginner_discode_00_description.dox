@@ -1,5 +1,6 @@
 /*!
 \page beginner_discode_00_description How to read the tutorials
+<div class="beginner">[Beginner level]</div>
 
 \up_next_top{beginner_discode_tutorials, beginner_discode_01_parameters}
 
@@ -32,8 +33,14 @@ Contains informations related to given component.
 \section ts_result Result
 Describes the results of the given tutorial.
 
+\section sec_datasets Datasets
+Datasets that might be required in given tutorial.
+
+\section ts_materials Materials
+Suggested lectures and useful materials.
+
 \section ts_sections Related sections
-List of useful links.
+Links to useful sections.
 
 \up_next_bottom{beginner_discode_tutorials, beginner_discode_01_parameters}
 */

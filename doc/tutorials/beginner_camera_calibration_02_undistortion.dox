@@ -1,11 +1,13 @@
 /*!
 \page beginner_camera_calibration_02_undistortion Display the undistorted images
+<div class="beginner">[Beginner level]</div>
 
 \up_prev_top{beginner_camera_calibration_tutorials, beginner_camera_calibration_01_findchessboard}
 
 \section ts_objectives Tutorial objectives
 The goal is to display a calibration sequence processed by the component responsible for image distortion removal.
-The component should load the distortion coefficients computed by the component created in the previous tutorial.
+The component should load the distortion coefficients computed by the component created in the previous tutorial,
+perform the undistortion operation on received image and pass it to output data stream.
 
 \section ts_structure Task structure
 
@@ -15,16 +17,13 @@ The component should load the distortion coefficients computed by the component 
 
 \note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
-\section ts_component_undis The ImageUndistortion component
-The component should perform the undistortion operation on received image and pass it to output data stream.
-
 \section ts_component_undisotr The Undistort component
 
 \subsection component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile.
 \lin_win_create_component
 
 \subsection beg_cam_undistort_properties Create component properties
- - Edit the component header (Undistort_Processor.hpp), find the <b>Props</b> structure and add following field to the structure.
+ - Edit the component header (Undistort_Processor.hpp), find the <b>Undistort_Props</b> structure and add the following field.
 \code
 	// Name of file to in which calibration results are stored.
 	string calibrationResults;
@@ -86,6 +85,9 @@ The component should perform the undistortion operation on received image and pa
 
     // Method related to the event h_onNewImage handler.
     void onNewImage();
+
+    // Load calibration parameters from file.
+    bool loadParameters();
 \endcode
 
 \subsection beg_cam_calib_definitions Add definitions of Undistort class methods (Undistort_Processor.cpp).
@@ -104,6 +106,33 @@ The component should perform the undistortion operation on received image and pa
 
     // Load parameters from file.
 	return loadParameters();
+\endcode
+
+- Implement the <b>loadParameters()</b> method responsible for load of the camera parameters and distortion coefficients.
+\code
+bool Undistort_Processor::loadParameters()
+{
+	LOG(LTRACE) << "Undistort_Processor::loadParameters()";
+
+    FileStorage fs(props.calibrationResults, FileStorage::READ);
+    if (!fs.isOpened())
+    {
+        LOG(LERROR) << "Coudn't open file "<<props.calibrationResults<< " with calibration parameters.";
+        return false;
+    }
+
+    fs["camera_matrix"] >> cameraMatrix;
+    fs["distortion_coefficients"] >> distCoeffs;
+
+    LOG(LNOTICE) << "Loaded camera matrix";
+    LOG(LNOTICE) << cameraMatrix.at<double>(0,0) <<" "<< cameraMatrix.at<double>(0,1) <<" "<< cameraMatrix.at<double>(0,2);
+    LOG(LNOTICE) << cameraMatrix.at<double>(1,0) <<" "<< cameraMatrix.at<double>(1,1) <<" "<< cameraMatrix.at<double>(1,2);
+    LOG(LNOTICE) << cameraMatrix.at<double>(2,0) <<" "<< cameraMatrix.at<double>(2,1) <<" "<< cameraMatrix.at<double>(2,2);
+    LOG(LNOTICE) << "Loaded distortion coefficients";
+    LOG(LNOTICE) << distCoeffs.at<double>(0,0) <<" "<< distCoeffs.at<double>(1,0) <<" "<< distCoeffs.at<double>(2,0) <<" "<< distCoeffs.at<double>(3,0)
+                 <<" "<< distCoeffs.at<double>(4,0) <<" "<< distCoeffs.at<double>(5,0) <<" "<< distCoeffs.at<double>(6,0) <<" "<< distCoeffs.at<double>(7,0);
+    return true;
+}
 \endcode
 
 - Implement the <b>onNewImage()</b> method - localize the chessboard.
@@ -142,13 +171,43 @@ void Undistort_Processor::onNewImage()
 <b>initUndistortRectifyMap()</b> which computes rectifying maps, and <b>remap()</b> for image undistortion.
 
 
+\section ts_file Task file
+Create a new Undistort.xml file (e.g. on the base of the CameraCalibration.xml - if so, remember to remove the <b>Calib1</b> component).
+- Add the <b>Undist1</b> component to the list of components, set its executor to <b>Exec1</b>.
+\code
+        <Undis1 type="Undistort" thread="Exec1" group="s1">
+            <calibrationResults>left_calibration_results.xml</calibrationResults>
+        </Undis1>
+\endcode
+
+- Create connections between event emitters and handlers.
+\code
+		<Event source="Kbd1.t_Pressed" destination="Seq1.onTrigger"/>
+        <Event source="Seq1.newImage" destination="Undis1.onNewImage"/>
+        <Event source="Undis1.imageUndistorted" destination="Wnd1.onNewImage"/>
+\endcode
+
+- Connect data pipes between: <b>Seq1.Out</b> -> <b>Undis1.In</b> and <b>Undis1.Out</b> -> <b>Wnd1.In</b>.
+\code
+        <Seq1>
+            <out_img type="out" group="Con1"/>
+        </Seq1>
+        <Undis1>
+            <in_img  type="in" group="Con1"/>
+            <out_img type="out" group="Con2"/>
+        </Undis1>
+        <Wnd1>
+            <in_img  type="in" group="Con2"/>
+        </Wnd1>
+\endcode
+
 \section ts_materials Materials
-1) OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.\n
+- OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem
 
 \section ts_sections Related sections
-1) \ref manuals_components : Description of components\n
-2) Tutorial regarding the component properties: \ref beginner_discode_08_component_properties\n
-3) Manuals describing the process of component creation. \lin_win_create_component
+- \ref manuals_components : Description of components
+- Tutorial regarding the component properties: \ref beginner_discode_08_component_properties
+- Manuals describing the process of component creation. \lin_win_create_component
 
 
 \up_prev_bottom{beginner_camera_calibration_tutorials, beginner_camera_calibration_01_findchessboard}

@@ -1,5 +1,6 @@
 /*!
 \page beginner_discode_06_refreshedtriggered_sequencereader Move one of the components to another thread
+<div class="beginner">[Beginner level]</div>
 
 \up_prevnext_top{beginner_discode_tutorials, beginner_discode_05_trigerred_sequencereader,beginner_discode_07_component_images_blurer}
 
@@ -16,7 +17,7 @@ The structure of the RefreshedTriggeredSequenceViewer task is shown below.
 \note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 
 \section ts_file Task file
-Create a new RefreshedTriggeredSequenceViewer.xml file on the base of the previously created TriggeredSequenceViewer.xml.
+Create new RefreshedTriggeredSequenceViewer.xml task configuration file on the base of the previously created TriggeredSequenceViewer.xml.
 Modify required parts:
 - Move the <b>Wnd1</b> component to a separate <b>Exec3</b> executor.
 \code
@@ -46,10 +47,10 @@ to enter the 't' (must be followed by <enter>) to load and display another. Besi
 images will be refreshed every 0.2s.
 
 \section ts_sections Related sections
-\see \ref manuals_components : Description of components
-\see \ref manuals_executors : Description of executors
-\see \ref Core::PeriodicExecutor : Periodic executor
-\see \ref CvWindow : Sink responsible for displaying images
+- \ref manuals_components : Description of components
+- \ref manuals_executors : Description of executors
+- \ref Core::PeriodicExecutor : Periodic executor
+- \ref CvWindow : Sink responsible for displaying images
 
 \up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_05_trigerred_sequencereader,beginner_discode_07_component_images_blurer}
 */

@@ -1,5 +1,6 @@
 /*!
 \page intermediate_camera_calibration_01_findchessboard Localize the calibration pattern
+<div class="intermediate">[Intermediate level]</div>
 
 \up_next_top{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_02_calibration}
 
@@ -46,5 +47,4 @@ In result a calibration a sequence of images will be displayed - with located co
 \section ts_sections Related sections
 3) \ref manuals_components : Description of components
 
-\up_next_bottom{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_02_calibration}
 */

@@ -1,5 +1,6 @@
 /*!
 \page intermediate_camera_calibration_03_undistortion Display the undistorted images
+<div class="intermediate">[Intermediate level]</div>
 
 \up_prev_top{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_02_calibration}
 

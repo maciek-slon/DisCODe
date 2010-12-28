@@ -1,22 +1,24 @@
 /*!
 \page intermediate_structural_analysis_tutorials Shape Descripton and Structural Analysis
-<div class="center">[Intermediate level]</div>
+<div class="intermediate">[Intermediate level]</div>
+
 \prev_top{intermediate_feature_extraction_tutorials}
 
 \section sec_description Description
 The tutorial focuses on the structural analysis of images and recognition of simple shapes - handwritten letters.
-It is required to create two components:
- - a component performing required preprocessing and feature extraction,
+Creation of two different components is required:
+ - a component performing necessary preprocessing and feature extraction,
  - a component responsible for feature-based object recognition.
+
 Letter shapes should be described by moments computed on the base of contours.
 
 \section let_reg_major Major tasks
- - Create (or find in the internet) a dataset containing required letters (at least 20 of each),
+ - Create (or find in the internet) a dataset containing required letters (at least 20 letters of each class),
  - divide the created dataset into two - training and test datasets (in 3:1 proportion),
  - create a component utilized for preprocessing and features extraction,
  - create a component containing classifier, that can work in <b>two modes</b>: training and recognition mode,
  - train the classifier with letters from the training dataset,
- - test the trained classifier with test dataset.
+ - test the trained classifier with test dataset,
  - prepare a final report.
 
 \section sec_tutorials Tutorials
@@ -37,17 +39,19 @@ Major blocks of the algorithm are presented on the state diagram below.
 <img src="images/LetterRecognizer_sd.png" style="margin: 5px; width: 700px;" alt="LetterRecognizer state diagram"/>
 \endhtmlonly
 
-\note It is worth notting that in order to reach the desired recognition capabilites some additional operatios can be performed, e.g., processing of binary image with some morphological operators.
+\note It is worth notting that in order to reach the desired recognition capabilites performing of some additional operations might be required, e.g., processing of binary image with some morphological operators.
 
 \subsection let_reg_binarization Binarization
-The goal of the binarization is to separate pixels belonging to the object (foreground) from the background's pixels.
-OpenCV offers many functions able to create a binary image ouf a grayscale or color one, e.g., <b>threshold()</b> , <b>adaptiveThreshold()</b> , <b>Canny()</b>.
+The goal of the binarization is to separate pixels belonging to the object (foreground) from the background pixels.
+OpenCV offers many functions able to create a binary image ouf a grayscale or color one, e.g., <b>threshold()</b>, <b>adaptiveThreshold()</b>,
+<b>Canny()</b> (which in fact creates an image containing only edges, but the OpenCV's contour extracion function can also work with this 
+type of images).
 
 \subsection let_reg_coutour Contour extraction
 Pixels belonging to edges (found for example by Sobel or Canny edge detectors) do not tell anything about that edges as entities in themselves - and in particular to
-which object edge given pixel belongs. The goal of countour extraction is to gather pixels belonging to different curves. in OpenCV contours are represented as sequences in
-which every entry the sequence encodes information about the location of the next point on the curve. The function <b>findContours()</b> as input takes binary image (
-images containing edges extracted by the edge detectors, as well as binary images created by some thresholding functions).
+which object edge given pixel belongs. The goal of contour extraction is to gather pixels belonging to different curves. In OpenCV contours are represented as sequences in
+which every entry of the sequence encodes information about the location of the next point on the curve. The function <b>findContours()</b> as input takes binary image
+(images containing edges extracted by the edge detectors, as well as binary images created by thresholding functions).
 
 \note Utilize the <b>drawContours()</b> function to draw the extracted contour on the output image.
 
@@ -57,7 +61,7 @@ is to match a computed contour and with another one or with some abstract templa
 The moments are features of the object, which allow a geometrical reconstruction of the object. They do not have a direct understandable geometrical meaning, but usual geometrical parameters can be derived from them.
 Utilize the class <b>Moments</b> and the <b>HuMoments()</b> function to extract different moments.
 
-\note To the first parameter of the <b>moments(const Mat& array, bool binaryImage=false)</b> constructor a sequcence containing extracted contour should be passed.
+\note To the first parameter of the <b>moments(const Mat& array, bool binaryImage=false)</b> constructor a sequence containing extracted contour should be passed.
 
 \subsection let_reg_classification Letter classification
 Utilize the <b>CvNormalBayesClassifier</b> for the purposes of letter classification.
@@ -67,18 +71,19 @@ Prepare final report containing:
  - the description of implemented algorithm,
  - ranges of computed moments for letters of the given set,
  - discussion regarding moments which were best suitable for the classification of given set of letters,
- - validation of classification - what is the correctness of implemented solution, which examples weren't correctly classified and why, etc.
+ - validation of classification results - what is the efficiency of the implemented solution, which examples weren't correctly classified and why, etc.
 
 \section sec_datasets Datasets
-Datasets can be downloaded, as well as used externally.
+Required datasets should be created (e.g. with camera) or found in the internet.
 
 \section sec_materials Materials
-1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
-2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n
-3) Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
-4) Bayes Classifier (pages 483-486), Chapter 13: "Machine Learning" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
-5) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
-6) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>.\n
+- ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Wlodzimierz Kasprzak, ICCE, 2010
+- ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Wlodzimierz Kasprzak, ICCE, 2010
+- Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008
+- Bayes Classifier (pages 483-486), Chapter 13: "Machine Learning" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc__image_processing.html">Image Processing</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>
 
 \prev_bottom{intermediate_feature_extraction_tutorials}
 

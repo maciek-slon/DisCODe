@@ -1,6 +1,7 @@
 /*!
 \page intermediate_structural_analysis_01_training Training of the classifier
-<div class="center">[Intermediate level]</div>
+<div class="intermediate">[Intermediate level]</div>
+
 \up_next_top{intermediate_structural_analysis_tutorials, intermediate_structural_analysis_02_test}
 
 \section ts_structure Task structure
@@ -34,7 +35,7 @@ should be switched through the configuration file, thus an adequate <b>property<
 \note An alternative to the work modes is simply to create two components - first responsible for training and second for recognition.
 
 - The learning process requires the information regarding the class (letter) of object from which current features
-were extracted, thus multiple handlers, each regarding different class should be created (e.g. <b>onTrain_a</b>,
+were extracted, thus multiple handlers, each related to different class should be created (e.g. <b>onTrain_a</b>,
 <b>onTrain_b</b>, <b>onTrain_c</b>, ...).
 
 - After the user decides that the classifier is trained its parameters should be saved to file (the <b>onSave</b> event) - the filename can be stored in another property.
@@ -45,14 +46,14 @@ were extracted, thus multiple handlers, each regarding different class should be
 \endcode
 
 \section ts_materials Materials
-1) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
-2) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>.\n
-3) C++ <a href="http://www.cplusplus.com/reference/stl/vector/">Vector</a> reference manual.\n
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/normal_bayes_classifier.html">Normal Bayes Classifier</a>
+- C++ <a href="http://www.cplusplus.com/reference/stl/vector/">Vector</a> reference manual
 
 \section ts_sections Related sections
-1) \ref manuals_components : Description of components\n
-2) Tutorial regarding the component properties: \ref beginner_discode_08_component_properties\n
-3) Manuals describing the process of component creation. \lin_win_create_component
+- \ref manuals_components : Description of components
+- Tutorial regarding the component properties: \ref beginner_discode_08_component_properties
+- Manuals describing the process of component creation. \lin_win_create_component
 
 \up_next_bottom{intermediate_structural_analysis_tutorials, intermediate_structural_analysis_02_test}
 

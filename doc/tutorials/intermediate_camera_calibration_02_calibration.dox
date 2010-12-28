@@ -1,5 +1,6 @@
 /*!
 \page intermediate_camera_calibration_02_calibration Perform the calibration computations
+<div class="intermediate">[Intermediate level]</div>
 
 \up_prevnext_top{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_01_findchessboard, intermediate_camera_calibration_03_undistortion}
 

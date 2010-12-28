@@ -1,5 +1,6 @@
 /*!
 \page beginner_discode_05_trigerred_sequencereader Expand task by a new component
+<div class="beginner">[Beginner level]</div>
 
 \up_prevnext_top{beginner_discode_tutorials, beginner_discode_04_sequencereader, beginner_discode_06_refreshedtriggered_sequencereader}
 
@@ -67,9 +68,9 @@ to enter the 't' (must be followed by <enter>) to load and display another.
 \note Notice the problem of image refreshment - this will be solved in the next tutorial.
 
 \section ts_sections Related sections
-\see \ref manuals_components : Description of components
-\see \ref manuals_executors : Description of executors
-\see \ref Keyboard : Source responsible for raising events related to keystrokes
+- \ref manuals_components : Description of components
+- \ref manuals_executors : Description of executors
+- \ref Keyboard : Source responsible for raising events related to keystrokes
 
 \up_prevnext_bottom{beginner_discode_tutorials, beginner_discode_04_sequencereader, beginner_discode_06_refreshedtriggered_sequencereader}
 
