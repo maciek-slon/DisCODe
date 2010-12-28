@@ -22,12 +22,14 @@ void *get_in_addr(struct sockaddr *sa)
 TCPClient::TCPClient(int buffer_size) : m_sock(-1), m_buffer_size(buffer_size), m_buf(NULL), m_size(0)
 {
 	m_buf = new char[m_buffer_size];
+	m_tmp_buf = new char[m_buffer_size];
 }
 
 TCPClient::~TCPClient()
 {
 	close(m_sock);
 	delete [] m_buf;
+	delete [] m_tmp_buf;
 }
 
 bool TCPClient::connect(const std::string & host, const std::string & port)
@@ -70,31 +72,72 @@ bool TCPClient::connect(const std::string & host, const std::string & port)
 	return true;
 }
 
-int TCPClient::recv(char * buf, int buf_size, int msec_timeout)
+int TCPClient::recv(int msec_timeout)
 {
 	/// \todo Block on select instead of recv.
 	int recvd = 0, res;
+	bool ready = false;
+	int select_return;
+	fd_set sock;
 
-	struct timeval tv, ttv;
+	struct timeval tv, *ptv;
 	if (msec_timeout >= 0) {
 		tv.tv_sec = msec_timeout / 1000;
 		tv.tv_usec = msec_timeout % 1000 * 1000;
+		ptv = &tv;
+	} else {
+		ptv = NULL;
 	}
 
-	while (recvd < buf_size) {
-		res = ::recv(m_sock, buf+recvd, buf_size-recvd, NULL);
-		if (res < 0) {
-			// recv error
-			break;
-		} else if (!res) {
-			// disconnected
-			break;
-		} else {
-			// received some data
-			recvd += res;
-			if (recvd >= buf_size)
-				break;
+
+	while (!ready) {
+		FD_ZERO(&sock);
+		FD_SET(m_sock, &sock);
+		select_return = select(m_sock, &sock, NULL, NULL, ptv);
+
+		if (select_return == -1) {
+			perror("Select failed!");
+			return -1;
 		}
+		if (select_return == 0) {
+			// select timed out.
+			return m_size;
+		}
+
+		if (FD_ISSET(m_sock, &sock)) {
+			recvd = ::recv(m_sock, m_buf+m_size, m_buffer_size - m_size, NULL);
+			m_size += recvd;
+
+			int expected_packet_size = m_completion_hook(m_buf, m_size);
+			int skip = 0;
+
+			// handle all completed packets from buffer
+			while (expected_packet_size <= m_size) {
+
+				m_service_hook(m_buf+skip, expected_packet_size);
+				skip += expected_packet_size;
+				m_size -= expected_packet_size;
+
+				expected_packet_size = m_completion_hook(m_buf+skip, m_size);
+			}
+
+			// check, if any packet was processed
+			if (skip > 0) {
+				// copy remaining portion of packet to the begining of buffer
+				// it's safer to copy it to temporary buffer and then exchange
+				// buffers than just calling memcpy, because source and destination
+				// can be overlapped (memmove would work, but it's much slower)
+
+				// copy remaining data to the temporary buffer
+				memcpy(m_tmp_buf, m_buf+skip, m_size);
+
+				// exchange temporary buffer with client buffer
+				char * tmp = m_buf;
+				m_buf = m_tmp_buf;
+				m_tmp_buf = tmp;
+			}
+		}
+
 	}
 
 	return recvd;
@@ -116,6 +159,15 @@ int TCPClient::send(const char * msg, int size)
 		bytesleft -= n;
 	}
 	return n == -1 ? -1 : 0; // return -1 on failure, 0 on success
+}
+
+void TCPClient::setServiceHook(service_hook_t h)
+{
+	m_service_hook = h;
+}
+
+void TCPClient::setCompletionHook(completion_hook_t h) {
+	m_completion_hook = h;
 }
 
 }
