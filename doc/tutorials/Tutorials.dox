@@ -11,6 +11,9 @@ The tutorial contains a step-by-step introduction to DisCODe.
 - \ref beginner_camera_calibration_tutorials \n
 A step-by-step instruction describing the implementation of components responsible fod camera calibration and distortion removal.
 
+- \ref beginner_feature_extraction_tutorials\n
+The tutorial focuses on the extraction of features from images.
+
 \endlinklist
 
 \section tut_intermediate [Intermediate level]
@@ -18,6 +21,12 @@ A step-by-step instruction describing the implementation of components responsib
 \beginlinklist
 - \ref intermediate_camera_calibration_tutorials \n
 The tutorial contains instruction regarding the solution of the camera calibration problem.
+
+- \ref intermediate_feature_extraction_tutorials\n
+The tutorial focuses on the extraction of features from images.
+
+- \ref intermediate_structural_analysis_tutorials\n
+The tutorial focuses on the structural analysis of images and recognition of simple shapes - handwritten letters.
 
 \endlinklist
 

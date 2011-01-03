@@ -3,8 +3,10 @@
 <div class="center">[Beginner level]</div>
 \next_top{beginner_camera_calibration_tutorials}
 
+\section sec_description Description
 The tutorial contains a step-by-step introduction to DisCODe.
 
+\section sec_tutorials Tutorials
 \beginlinklist
 - \ref beginner_discode_00_description\n
 Describes common sections, from which every tutorial is built.
@@ -36,8 +38,21 @@ The goal is to add properties to component, which can be set in the configuratio
 - \ref beginner_discode_09_using_logger\n
 Tired of printf'ing and commenting out old debugs?
 
-
 \endlinklist
+
+\section sec_datasets Datasets
+Datasets can be downloaded, as well as used externally.
+
+- Movies containing road signs.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a>
+
+- Images used commonly in computer vision (Lena, etc.).\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
+
+ - Some other images from the OpenCV examples.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
 
 \next_bottom{beginner_camera_calibration_tutorials}
 

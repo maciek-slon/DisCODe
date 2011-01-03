@@ -1,0 +1,131 @@
+/*!
+\page intermediate_feature_extraction_tutorials Image processing and feature extraction
+<div class="center">[Intermediate level]</div>
+\prevnext_top{intermediate_camera_calibration_tutorials, intermediate_structural_analysis_tutorials}
+
+\section sec_description Description
+The tutorial focuses on the extraction of features from images.
+
+\section ts_structure Task structure
+General structure of tasks required by this tutorial is presented on the diagram below.
+
+\htmlonly
+<img src="images/FeatureExtraction.png" style="margin: 5px; width: 400px;" alt="FeatureExtraction"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+The FeatureExtractor component should perform a simple operation required by given tutorial - e.g. processing image with mean filter.
+
+\section sec_tutorials Tutorials
+\beginlinklist
+
+- Image processing: Compare mean and medium filter.\n
+
+- Image processing: Perform binarization.\n
+
+- Image processing: Compare morphological dilation end erosion.\n
+
+- Feature extraction: Compare image histograms in the BGR and HSV spaces.\n
+\note Hisfograms should be displayed in a separate cvWindow.
+
+- Feature extraction: Compare Sobel and Canny edges detectors.\n
+
+- Feature extraction: Compute SIFT and SURF features.\n
+
+\endlinklist
+
+\section sec_descr_ip Image processing
+Image processing (called low-level processing) is characterized by the fact that both its inputs and outputs are images.
+Image processing algorithms can be divided into two classes, taking into consideration the fact whether they change pixels image coordinates or not.
+
+\subsection sec_descr_ip_geometric Geometric transformations
+Most common examples of spatial transformations that change the position of pixels are geometric: translation, rotation, scaling, etc.
+Besides those, a quite important one is related to the camera distortion correction.
+
+
+\subsection sec_descr_ip_non_geometric Non-geometric transformations
+The other group of spatial transformations (that don't change pixel coordinates) is the most important from the image preprocessing
+point of view and it can be also divided into two classes: context transformations and context-free transformations.
+
+\subsection sec_descr_ip_context_free Context-free transformations
+Context-free (point) transformations process given input image pixel into output image pixel independently of its neighbors.
+Examples of point  transformations include negative, image brightening or darkening.
+A very important class of point transformations are color space transformations, which transform image from one into another.
+Besides the RGB color space, commonly used are HSV and YUV.
+
+Another quite important point transformation is color classification (color slicing) - pixels, basing on their component values,
+are classified into one of predefined classes. This operation can be fastened with the use of Look-Up-Tables (LUTs), which can be
+very efficiently implemented and can simplify the further processing, thus it is well used in robotics.
+
+There is also a special case of color classification called image binarization, where pixels are classified into one of two classes:
+object and background.
+
+\subsection sec_descr_ip_context Context transformations
+Context transformations (filters) compute the value of given output image pixel on the base of its neighbors and a mask.
+Their disadvantage is that the increasing size of neighborhood (size of mask) implies the exponential increase of processing
+time, thus in practice only filters with small masks (e.g. 3x3 or 5x5) are used.
+
+A special case of context transformation is a group of operations based on image histogram, where the whole image belongs to the
+context. However, the histogram is computed only once, at the start. Examples include histogram equalization or color
+classification, where classes are not predefined, instead they are computed on the base of histogram.
+
+Context filters can later be divided into two main groups: linear and non--linear, regarding the type of operations performed on the pixels belonging to the mask.
+
+\subsection sec_descr_ip_linear Linear filters
+In linear filters the output pixel value is a result of a linear combination of input pixels below the mask
+(typically a multiplication of the mask and the input pixels below the mask).
+Commonly used class of linear filter are low-pass filters (and mean filters amongst them).
+
+In case of non-linear filters the result is a non-linear combination of input pixels, for example there can be a non-linear
+operator working on the results of few linear context transformations. Most important non-linear transformations are:
+- Minimum, median and maximum filters, which select the given (minimum, median or maximum) value of pixels belonging to the mask.
+- A group of morphological transformations, which change the structure or form of an object in the image. Most basic ones are erosion, dilation and skeletonization.
+- High-pass filters can be used for sharpening and as well utilized for detection of the pixels intensity changes (edge detection).
+Basic high-pass filters are Roberts Cross, Sobel, Prewitt and Scharr operators. They process image with two 3x3 masks masks which
+detect intensity changes in two different directions - each partial result is equivalent of the first derivative thus they are called gradient operators.
+Operators utilizing three or more (and bigger) masks are Robinsons and Nevatia-Babu.
+Edge detection can also be realized with the consideration of second derivatives (so called Laplacians).
+- Characteristic points (points of interests, salient points) detectors, which work is similar to edge operators, but they consider the difference between
+given pixel and its whole neighborhood, not only few directions. Examples include Moravec, Harris, Haralick or {SUSAN} detectors.
+
+\section sec_descr_fe Feature extraction
+Algorithms belonging to the feature extraction class are characterized by the fact that on the base of input image they compute some features describing parts of image,
+thus the size of retrieved information regarding the image content is significantly reduced. Features can be computed from:
+- image segments - coherent areas of the image with respect to a given criterion, e.g. color,
+- image blocks - in this case image is can divided into blocks of the same size, disregarding this information.
+
+Examples of features computed from blocks are Gabor filters or Haar-like features utilized by the Haar classifier - one of the most common hierarchical classfier used for
+face recognition.
+
+The process of extraction of segments from image is called segmentation and in order to divide imaga into segments two major approaches can be taken:
+- segmentation based on the image content,
+- segmentation based on detected fragment of edges.
+
+On the base of extracted segments many different features can be computed, e.g. areas, means colors, histograms.
+Edges can be utilized for computation of partial description of shapes (e.g. Hough transform).
+
+\section sec_datasets Datasets
+Datasets can be downloaded, as well as used externally.
+- Images used commonly in computer vision (Lena, etc.).\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
+
+ - Some other images from the OpenCV examples.\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
+
+\section sec_materials Materials
+1) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Włodzimierz Kasprzak, ICCE, 2010.\n
+2) ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Włodzimierz Kasprzak, ICCE, 2010.\n
+3) Chapter 8: "Contours" (pages 222-265) from "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008.\n
+4) OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/structural_analysis_and_shape_descriptors.html">Structural Analysis and Shape Descriptors</a>.\n
+
+\section ts_sections Related sections
+1) \ref manuals_components : Description of components\n
+2) Manuals describing the process of component creation. \lin_win_create_component
+
+\prevnext_bottom{intermediate_camera_calibration_tutorials, intermediate_structural_analysis_tutorials}
+*/
+
+

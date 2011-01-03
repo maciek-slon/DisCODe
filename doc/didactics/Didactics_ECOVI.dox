@@ -7,31 +7,6 @@ Please refer to the \ref installation. Please perform the following steps:
  - install both the developement environment and SDK,
  - create a test component and configure its makefile.
 
-\section ecovi_discode_datasets Required datasets
-Datasets can be downloaded, as well as used externally.
-
-- Movies containing road signs.\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/movies_sign">/home/discode/public_html/datasets/movies_sign</a>
-
-- Images used commonly in computer vision (Lena, etc.).\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
-Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
-
- - Some other images from the OpenCV examples.\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
-Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
-
-- Calibration: chessboard pictures from the OpenCV examples.\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv">/home/discode/public_html/datasets/calibration_opencv</a>\n
-Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_opencv.rar">calibration_opencv.rar</a>\n
-Note: The size from the OpenCV example chessboard is 9 (width) x 6 (height).
-
-- Calibration: chessboard pictures taken with the use camera from the Robotics Lab at the ICCE.\n
-Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab">/home/discode/public_html/datasets/calibration_robotics_lab</a>\n
-Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/calibration_robotics_lab.rar">calibration_robotics_lab.rar</a>\n
-Note: The size of out chessboard is 8 (width) x 6 (height).
-
-
 \section ecovi_tutorials Tutorials
 \beginlinklist
 - Tutorial 0: \ref beginner_discode_tutorials [Beginner level]\n
@@ -40,8 +15,11 @@ The tutorial contains a step-by-step introduction to DisCODe.
 - Tutorial 1: \ref beginner_camera_calibration_tutorials [Beginner level]\n
 The tutorial regards the problem of camera calibration.
 
-- Tutorial 2: \ref beginner_feature_extraction_tutorials [Beginner level]\n
+- Tutorial 2: \ref intermediate_feature_extraction_tutorials [Intermediate level]\n
 The tutorial focuses on the extraction of features from images.
+
+- Tutorial 3 (Project): \ref intermediate_structural_analysis_tutorials [Intermediate level]\n
+The tutorial focuses on the structural analysis of images and recognition of simple shapes - handwritten letters.
 
 \endlinklist
 

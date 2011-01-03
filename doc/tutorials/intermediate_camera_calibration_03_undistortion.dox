@@ -24,8 +24,14 @@ The component should perform the undistortion operation on received image and pa
 \section ts_result Result
 A set of undistorted images will be displayed.
 
+\section ts_materials Materials
+1) OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.\n
+
 \section ts_sections Related sections
-\see OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.
+1) \ref manuals_components : Description of components\n
+2) Tutorial regarding the component properties: \ref beginner_discode_08_component_properties\n
+3) Manuals describing the process of component creation. \lin_win_create_component
+
 
 \up_prev_bottom{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_02_calibration}
 */

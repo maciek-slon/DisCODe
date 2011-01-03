@@ -18,19 +18,20 @@ The task consists of five components. Besides the implementation of new componen
 
 \section ts_component_kbd The Keyboard component
 The component should emit two events, related to two different keys:
- - the 't' key should emit an event handled by the <b>OnTrigger</b> handler of the <b>Seq1</b> component,
- - the 'c' key should raise an event handled by the  <b>OnCalibration</b> handler of the <b>Clbr1</b> component.
+ - the 't' key should emit an event handled by the <b>OnTrigger()</b> handler of the <b>Seq1</b> component,
+ - the 'c' key should raise an event handled by the  <b>OnCalibration()</b> handler of the <b>Clbr1</b> component.
 
 \section ts_component_chess The ChessboardLocator component
 The <b>Chess1</b> should be expanded by new output data port and raised event.
 
 When a chessboard is properly detected a structure containing data related to its corners should be send through the <b>Outboard</b> out data stream and a <b>NewBoard</b> event should be emited.
 
-\note Think about the form of the structure - it should be the template parameter of both <b>Outboard</b> and <b>Inboard</b> data streams.
+\note The \ref Types::Objects3D::Chessboard can be utilized for passing the detected chessboard points from the <b>ChessboardsLocator</b> to <b>CameraCalibration</b> component.
 
 \section ts_component_calib The CameraCalibration component
 The component is responsible for storing data delivered by the <b>Chess1</b> component.
-After the last image from the calibration set is processed the user should press the 'c' key in order to send a command to <b>Clbr1</b> component that it should perform the calibration computations.
+After the last image from the calibration set is processed the user should press the 'c' key in order to send a command to <b>Clbr1</b> component, which is supposed to trigger
+the calibration computations.
 
 \section ts_hints Hints
  - Utilize the OpenCV <b>calibrateCamera()</b> function to perform calibration computations.
@@ -39,12 +40,13 @@ After the last image from the calibration set is processed the user should press
 \section ts_result Result
 Calibration parameters will be computed.
 
+\section ts_materials Materials
+1) OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.\n
+
 \section ts_sections Related sections
-\see OpenCV reference manual regarding the <a href="http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html">calibration</a> problem.
-\see \ref Keyboard : Source responsible for raising events related to keystrokes
-\see \ref manuals_components : Description of components
-\see \ref manuals_datastreams : Description of data streams
-\see \ref manuals_events : Description of events
+1) \ref manuals_components : Description of components\n
+2) Tutorial regarding the component properties: \ref beginner_discode_08_component_properties\n
+3) Manuals describing the process of component creation. \lin_win_create_component
 
 
 \up_prevnext_bottom{intermediate_camera_calibration_tutorials, intermediate_camera_calibration_01_findchessboard, intermediate_camera_calibration_03_undistortion}
