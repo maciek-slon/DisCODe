@@ -19,9 +19,9 @@ namespace Sinks {
 namespace CvWindow {
 
 CvWindow_Sink::CvWindow_Sink(const std::string & name) : Base::Component(name),
-		title("title", name),
-		count("count", 1) {
-
+		title("title", boost::bind(&CvWindow_Sink::onTitleCahnged, this, _1), name),
+		count("count", 1)
+{
 	LOG(LTRACE)<<"Hello CvWindow_Sink\n";
 
 	registerProperty(title);
@@ -131,6 +131,10 @@ void CvWindow_Sink::onNewImageN(int n) {
 	catch(...) {
 		LOG(LERROR) << "CvWindow::onNewImage failed\n";
 	}
+}
+
+void CvWindow_Sink::onTitleCahnged(const std::string & new_title) {
+	std::cout << "onTitleChanged: " << new_title << std::endl;
 }
 
 

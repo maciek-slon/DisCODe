@@ -20,8 +20,8 @@
 #include "Configurator.hpp"
 #include "Executor.hpp"
 #include "Logger.hpp"
-#include "CommandInterpreter.hpp"
-#include "Network/TCPServer.hpp"
+
+#include "CommandServer.hpp"
 
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -43,7 +43,7 @@ bool unstoppable = false;
 
 std::string print(std::vector<std::string> args) {
 	std::stringstream ss;
-	for (int i = 0; i < args.size(); ++i) {
+	for (unsigned int i = 0; i < args.size(); ++i) {
 		ss << args[i] << ",";
 	}
 
@@ -52,24 +52,7 @@ std::string print(std::vector<std::string> args) {
 	return ss.str();
 }
 
-class TaskInformator {
-public:
-	TaskInformator(Core::Task & t) : task(t) {
 
-	}
-
-	std::string listExecutors(std::vector<std::string> args) {
-		std::string ret;
-		std::vector<std::string> tmp = task.listExecutors();
-		BOOST_FOREACH(std::string s, tmp) {
-			ret += s + "\n";
-		}
-		return ret;
-	}
-
-private:
-	Core::Task & task;
-};
 
 
 
@@ -248,18 +231,12 @@ int main(int argc, char* argv[])
 
 	Task task;
 
-	TaskInformator informator(task);
-
 	configurator.setExecutorManager(&em);
 	configurator.setComponentManager(&km);
 	configurator.setConnectionManager(&cm);
 
-	CommandInterpreter interpreter;
-	interpreter.addHandler("print", print);
-	interpreter.addHandler("printExecutors", boost::bind(&TaskInformator::listExecutors, &informator, _1));
+	CommandServer server(task);
 
-	TCPServer server;
-	//server.setupHook(boost::bind(&CommandInterpreter::execute, &interpreter, _1));
 
 
 	try {
@@ -288,7 +265,7 @@ int main(int argc, char* argv[])
 
 		km.deactivateComponentList();
 
-		server.stop();
+		//server.stop();
 	}//: try
 
 	// =========================================================================

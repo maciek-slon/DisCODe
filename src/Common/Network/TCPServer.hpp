@@ -45,7 +45,7 @@ public:
 	 * Start server, create socket and start listening.
 	 *
 	 * \param port port number to listen on
-	 * \param max_cons maximum numbers of simultanous connections allowed
+	 * \param max_cons maximum numbers of simultaneous connections allowed
 	 * \param buffer_size size of input buffers for each client
 	 */
 	TCPServer(int port = 30000, int max_cons = 10, int buffer_size = 20000);

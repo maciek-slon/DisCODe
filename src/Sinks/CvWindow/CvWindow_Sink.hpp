@@ -143,6 +143,11 @@ protected:
 	 */
 	void onNewImageN(int n);
 
+	/*!
+	 * Callback called when title is changed
+	 */
+	void onTitleCahnged(const std::string & new_title);
+
 	/// Event handlers
 	std::vector< Base::EventHandler2* > handlers;
 

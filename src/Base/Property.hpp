@@ -9,6 +9,7 @@
 #include <string>
 
 #include <boost/lexical_cast.hpp>
+#include <boost/function.hpp>
 
 namespace Base {
 
@@ -60,6 +61,13 @@ class Property : public PropertyInterface
 public:
 	Property(const std::string& name, const T & initializer = T()) : PropertyInterface(name), data(initializer)
 	{
+	}
+
+	Property(const std::string& name, boost::function<void(T)> callback, const T & initializer = T()) : PropertyInterface(name), data(initializer), m_onChange(callback) {
+	}
+
+	void setCallback(boost::function<void(T)> callback) {
+		m_onChange = callback;
 	}
 
 	/*!
@@ -115,6 +123,8 @@ public:
 	 */
 	virtual void retrieve(const std::string & str) {
 		data = boost::lexical_cast<T>(str);
+		if (m_onChange)
+			m_onChange(data);
 	}
 
 
@@ -122,11 +132,15 @@ public:
 	/// Might be useful for template deductions
 	typedef T value_type;
 
-private:
+protected:
 	/// actual data
 	T data;
 
+	/// callback on data change
+	boost::function<void(T)> m_onChange;
+
 };
+
 
 }
 
