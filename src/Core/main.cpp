@@ -105,6 +105,7 @@ int main(int argc, char* argv[])
 		("log-level,L", po::value<int>(&log_lvl)->default_value(3), "set log severity level")
 		("unstoppable","MWAHAHAHA!")
 		("set,S",po::value< vector<string> >(&task_overrides),"override task settings")
+		("interactive,I", "interactive mode")
 	;
 
 	po::variables_map vm;
@@ -200,6 +201,7 @@ int main(int argc, char* argv[])
 			LOG(LNOTICE) << "Quick fixes:";
 			LOG(LNOTICE) << "   specify task name using -T switch";
 			LOG(LNOTICE) << "   set default task name in config file";
+			LOG(LNOTICE) << "   run DisCODe in interactive mode (-I)";
 			exit(EXIT_FAILURE);
 		} else {
 			task_name = conf.get<std::string>("DisCODe.task");
@@ -265,7 +267,7 @@ int main(int argc, char* argv[])
 
 		km.deactivateComponentList();
 
-		//server.stop();
+		server.stop();
 	}//: try
 
 	// =========================================================================

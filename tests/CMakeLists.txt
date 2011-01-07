@@ -3,6 +3,7 @@ INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} ../src/Common ../src/Base ../src/Core)
 
 # Create an executable file from sources
 ADD_EXECUTABLE(CommandInterpreter_test CommandInterpreter_test.cpp ../src/Core/CommandInterpreter.cpp)
+TARGET_LINK_LIBRARIES(CommandInterpreter_test Common)
 
 ADD_TEST(CommandInterpreter_test ${EXECUTABLE_OUTPUT_PATH}/CommandInterpreter_test)
 

@@ -74,7 +74,6 @@ bool TCPClient::connect(const std::string & host, const std::string & port)
 
 int TCPClient::recv(int msec_timeout)
 {
-	/// \todo Block on select instead of recv.
 	int recvd = 0, res;
 	bool ready = false;
 	int select_return;
@@ -93,7 +92,8 @@ int TCPClient::recv(int msec_timeout)
 	while (!ready) {
 		FD_ZERO(&sock);
 		FD_SET(m_sock, &sock);
-		select_return = select(m_sock, &sock, NULL, NULL, ptv);
+//		std::cout << "Waiting on select...\n";
+		select_return = select(m_sock+1, &sock, NULL, NULL, ptv);
 
 		if (select_return == -1) {
 			perror("Select failed!");
@@ -104,6 +104,7 @@ int TCPClient::recv(int msec_timeout)
 			return m_size;
 		}
 
+//		std::cout << "Got sth...\n";
 		if (FD_ISSET(m_sock, &sock)) {
 			recvd = ::recv(m_sock, m_buf+m_size, m_buffer_size - m_size, NULL);
 			m_size += recvd;
@@ -119,6 +120,8 @@ int TCPClient::recv(int msec_timeout)
 				m_size -= expected_packet_size;
 
 				expected_packet_size = m_completion_hook(m_buf+skip, m_size);
+
+				ready = true;
 			}
 
 			// check, if any packet was processed

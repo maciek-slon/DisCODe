@@ -15,6 +15,8 @@
 
 #include "DisCODeException.hpp"
 
+#include "Logger.hpp"
+
 namespace Core {
 
 void Command::print() {
@@ -43,6 +45,8 @@ std::string CommandInterpreter::execute(const std::string & str)
 {
 	Command cmd;
 
+	LOG(LINFO) << "Executing " << str;
+
 	try {
 		cmd = parse(str);
 	} catch(...) {
@@ -53,7 +57,9 @@ std::string CommandInterpreter::execute(const std::string & str)
 		return handlers[cmd.command](cmd.arguments);
 	}
 
-	throw Common::DisCODeException(cmd.command + " have no assigned handler.");
+	LOG(LWARNING) << cmd.command << " has no assigned handler.";
+	//throw Common::DisCODeException(cmd.command + " has no assigned handler.");
+	return "Unknown command";
 }
 
 Command CommandInterpreter::parse(const std::string & str)

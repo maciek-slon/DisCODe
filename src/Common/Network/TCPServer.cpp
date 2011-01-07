@@ -104,7 +104,7 @@ void TCPServer::handleClient(int i) {
 		close(i); // bye!
 		FD_CLR(i, &m_socks); // remove from master set
 	} else {
-		std::cout << "Read " << nbytes << " bytes." << std::endl;
+		//std::cout << "Read " << nbytes << " bytes." << std::endl;
 		// we got some data from a client
 		buffer.size += nbytes;
 
@@ -116,6 +116,10 @@ void TCPServer::handleClient(int i) {
 		while (expected_packet_size <= buffer.size) {
 
 			if ( (reply_size = m_service_hook(buffer.buf+skip, expected_packet_size, m_reply_buffer, m_buffer_size)) > 0) {
+//				std::cout << "Got reply in TCPServer. Sending...\n";
+//				int ss = m_reply_buffer[0] * 256 + m_reply_buffer[1];
+//				std::cout << ss << std::endl;
+//				std::cout << m_reply_buffer+2 << std::endl;
 				send(i, m_reply_buffer, reply_size, MSG_NOSIGNAL);
 			}
 			skip += expected_packet_size;
