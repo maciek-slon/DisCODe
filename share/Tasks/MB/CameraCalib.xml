@@ -35,7 +35,7 @@
 			<imagesBaseDirectory>/home/mboryn/CameraCalib/Results</imagesBaseDirectory>
 			<resultsFilename>/home/mboryn/CameraCalib/Results.txt</resultsFilename>
 			
-			<storeOnNewImage>false</storeOnNewImage>
+			<storeOnNewImage>true</storeOnNewImage>
 			<width>9</width>
 			<height>6</height>
 			<squareSize>0.028</squareSize>
