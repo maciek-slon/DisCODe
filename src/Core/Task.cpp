@@ -66,6 +66,22 @@ bool Task::finish() {
 	return true;
 }
 
+std::vector<std::string> Task::listSubtasks() {
+	std::vector<std::string> ret;
+	BOOST_FOREACH(SubtaskPair sp, subtasks) {
+		ret.push_back(sp.first);
+	}
+	return ret;
+}
+
+std::vector<std::string> Task::listExecutors() {
+	std::vector<std::string> ret;
+	BOOST_FOREACH(ExecutorPair ep, executors) {
+		ret.push_back(ep.first);
+	}
+	return ret;
+}
+
 
 } //: namespace Core
 

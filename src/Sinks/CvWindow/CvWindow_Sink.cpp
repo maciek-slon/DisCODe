@@ -18,8 +18,14 @@
 namespace Sinks {
 namespace CvWindow {
 
-CvWindow_Sink::CvWindow_Sink(const std::string & name) : Base::Component(name) {
+CvWindow_Sink::CvWindow_Sink(const std::string & name) : Base::Component(name),
+		title("title", boost::bind(&CvWindow_Sink::onTitleCahnged, this, _1), name),
+		count("count", 1)
+{
 	LOG(LTRACE)<<"Hello CvWindow_Sink\n";
+
+	registerProperty(title);
+	registerProperty(count);
 }
 
 CvWindow_Sink::~CvWindow_Sink() {
@@ -30,7 +36,7 @@ bool CvWindow_Sink::onInit() {
 	LOG(LTRACE) << "CvWindow_Sink::initialize\n";
 
 	Base::EventHandler2 * hand;
-	for (int i = 0; i < props.count; ++i) {
+	for (int i = 0; i < count; ++i) {
 		char id = '0'+i;
 		hand = new Base::EventHandler2;
 		hand->setup(boost::bind(&CvWindow_Sink::onNewImageN, this, i));
@@ -44,6 +50,7 @@ bool CvWindow_Sink::onInit() {
 		registerStream(std::string("in_draw")+id, in_draw[i]);
 
 		//cv::namedWindow(props.title + id);
+
 	}
 	//waitKey( 1000 );
 
@@ -52,8 +59,8 @@ bool CvWindow_Sink::onInit() {
 	registerStream("in_img", in_img[0]);
 	registerStream("in_draw", in_draw[0]);
 
-	img.resize(props.count);
-	to_draw.resize(props.count);
+	img.resize(count);
+	to_draw.resize(count);
 
 	return true;
 }
@@ -69,7 +76,7 @@ bool CvWindow_Sink::onStep()
 	LOG(LTRACE)<<"CvWindow_Sink::step\n";
 
 	try {
-		for (int i = 0; i < props.count; ++i) {
+		for (int i = 0; i < count; ++i) {
 			char id = '0' + i;
 
 			if (img[i].empty()) {
@@ -77,7 +84,7 @@ bool CvWindow_Sink::onStep()
 			}
 
 			// Refresh image.
-			imshow( props.title + id, img[i] );
+			imshow( std::string(title) + id, img[i] );
 		}
 
 		waitKey( 10 );
@@ -124,6 +131,10 @@ void CvWindow_Sink::onNewImageN(int n) {
 	catch(...) {
 		LOG(LERROR) << "CvWindow::onNewImage failed\n";
 	}
+}
+
+void CvWindow_Sink::onTitleCahnged(const std::string & new_title) {
+	std::cout << "onTitleChanged: " << new_title << std::endl;
 }
 
 

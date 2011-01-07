@@ -10,8 +10,18 @@
 
 #include <vector>
 #include <string>
+#include <map>
+
+#include <boost/function.hpp>
 
 namespace Core {
+
+struct Command {
+	std::string command;
+	std::vector<std::string> arguments;
+
+	void print();
+};
 
 /*!
  * \brief Command interpreter
@@ -19,6 +29,9 @@ namespace Core {
 class CommandInterpreter
 {
 public:
+
+	typedef boost::function<std::string(std::vector<std::string>)> handler;
+
 	CommandInterpreter();
 	virtual ~CommandInterpreter();
 
@@ -28,7 +41,9 @@ public:
 	 * @param cmd command to execute
 	 * @return true on success
 	 */
-	bool execute(const std::string & cmd);
+	std::string execute(const std::string & cmd);
+
+	void addHandler(const std::string & cmd, handler h);
 
 protected:
 	/*!
@@ -37,7 +52,10 @@ protected:
 	 * @param cmd command to parse
 	 * @return list of tokens
 	 */
-	std::vector<std::string> parse(const std::string & cmd);
+	Command parse(const std::string & cmd);
+
+
+	std::map<std::string, handler > handlers;
 };
 
 }
