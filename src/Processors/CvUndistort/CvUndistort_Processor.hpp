@@ -45,10 +45,11 @@
  * \prop{cameraMatrix,boost::numeric::ublas::matrix <double> 3x3,}
  * Camera matrix.
  * For example:
- * \verbatim
+ *
+\verbatim
 [3,3](
-	(647.07647705, 0., 383.50000000),
-	(0., 632.76348877, 287.50000000),
+	(647.07647705, 0, 383.50000000),
+	(0, 632.76348877, 287.50000000),
 	(0, 0, 1)
 )
 \endverbatim
