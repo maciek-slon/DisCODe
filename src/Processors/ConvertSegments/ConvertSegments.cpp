@@ -44,7 +44,7 @@ bool ConvertSegments_Processor::onInit()
 	registerStream("in_segmented", &in_segmented);
 
 	registerStream("out_img", &out_img);
-	onNewImage = registerEvent("onNewImage");
+	newImage = registerEvent("newImage");
 
 	return true;
 }
@@ -106,7 +106,7 @@ void ConvertSegments_Processor::onSegmented()
 	}
 
 	out_img.write(image);
-	onNewImage->raise();
+	newImage->raise();
 }
 
 }//: namespace ConvertSegments
