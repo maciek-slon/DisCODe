@@ -80,10 +80,10 @@ void EdgeDetectorForSegmentedImage_Processor::onSegmented()
 		Contour *c = new Contour;
 		c->setContours(*si.segments[i].getContours());
 
-		if (si.segments[i].getContours()->size() > 1) {
-			LOG (LFATAL) << "si.segments[" << i << "].getContours()->size() = "
-					<< si.segments[i].getContours()->size() << endl;
-		}
+//		if (si.segments[i].getContours()->size() > 1) {
+//			LOG (LFATAL) << "si.segments[" << i << "].getContours()->size() = "
+//					<< si.segments[i].getContours()->size() << endl;
+//		}
 		dc.add(c);
 	}
 

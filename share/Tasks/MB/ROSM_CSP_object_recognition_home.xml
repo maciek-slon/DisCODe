@@ -7,7 +7,7 @@
 		</Keyboard>
 		
         <ImageSource type="Sequence" thread="MainExecutor" group="s1">
-			<directory>/home/mateusz/segomo_mboryn/ROSM/dane_testowe/kwadrat</directory>
+			<directory>/home/mateusz/segomo_mboryn/ROSM/dane_testowe/nie-kwadrat</directory>
 			<triggered>true</triggered>
 			<sort>true</sort>
 		</ImageSource>
@@ -39,6 +39,10 @@
 		
 		<LineSegments type="LineSegments" thread="MainExecutor" group="s1">
 		</LineSegments>
+		
+		<CspObjectRecognize type="CspObjectRecognize" thread="MainExecutor" group="s1">
+		
+		</CspObjectRecognize>
 	</Components>
 
 	<!-- Threads of execution -->
@@ -70,6 +74,7 @@
 		<Event source="ConvertSegmentsForEdgeImage.newImage" destination="Preview.onNewImage3"/>
 		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="LineSegments.onEdgesDetected"/>
 		<Event source="LineSegments.lineSegmentsEstimated" destination="Preview.onNewImage4"/>
+		<Event source="LineSegments.lineSegmentsEstimated" destination="CspObjectRecognize.onSegmentedImage"/>
 	</Events>
 
 	<!-- Data stream assignments -->
