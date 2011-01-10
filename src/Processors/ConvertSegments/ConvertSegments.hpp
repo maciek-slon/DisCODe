@@ -105,7 +105,7 @@ private:
 	Base::EventHandler <ConvertSegments_Processor> h_onSegmented;
 
 	Base::DataStreamOut <cv::Mat> out_img;
-	Base::Event* onNewImage;
+	Base::Event* newImage;
 
 	static const int colorsSize = 16;
 	u_int8_t colors[colorsSize];
