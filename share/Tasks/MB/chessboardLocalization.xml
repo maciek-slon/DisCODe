@@ -2,17 +2,31 @@
 <Task>
 	<Components>
 		
-		<ImageSource type="Sequence" thread="Thread1" group="s1">
-			<directory>../../calibration_opencv</directory>
+		<ImageSource type="CameraGigE" thread="Thread1" group="s1">
+			<Address>192.168.1.2</Address>
+			<Controls>
+				<Exposure>
+					<Mode>Manual</Mode>
+					<Value>15000</Value>
+				</Exposure>
+			</Controls>
+			<ImageFormat>
+				<PixelFormat>Mono8</PixelFormat>
+				<!--  <ROI>
+					<Width>1280</Width>
+					<Height>960</Height>
+				</ROI> -->
+			</ImageFormat>
+			<ImageMode>
+				<BinningX>4</BinningX>
+				<BinningY>4</BinningY>
+			</ImageMode>
 		</ImageSource>
 		
-		<BGRToGray type="CvColorConv" thread="Thread1" group="s1">
-			<type>BGR2GRAY</type>
-		</BGRToGray>
-		
 		<FindChessboard type="CvFindChessboardCorners" thread="Thread1" group="s1">
-			<width>7</width>
-			<height>5</height>
+			<width>6</width>
+			<height>9</height>
+			<findSubpix>false</findSubpix>
 			<squareSize>0.02</squareSize>
 		</FindChessboard>
 		
@@ -41,7 +55,7 @@
 	</Components>
 
 	<Executors>
-		<Thread1 type="periodic">
+		<Thread1 type="continuous">
 			<main_component>ImageSource</main_component>
 			<interval>1.0</interval>
 		</Thread1>

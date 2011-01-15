@@ -22,7 +22,7 @@
 				)
 			</distCoeffs>
 		</PositionEstimator>
-		<Window type="CvWindow" thread="ImageSourceThread" group="s1">
+		<Window type="CvWindow" thread="PreviewExecutor" group="s1">
 			<title>Preview</title>
 		</Window>
 		<FindChessboard type="CvFindChessboardCorners" thread="ImageSourceThread" group="s1">
@@ -49,6 +49,10 @@
 		<ImageSourceThread type="continuous">
 			<main_component>ImageSource</main_component>
 		</ImageSourceThread>
+		<PreviewExecutor type="periodic">
+			<main_component>Window</main_component>
+			<interval>0.02</interval>
+		</PreviewExecutor>
 	</Executors>
 
 	<Events>
