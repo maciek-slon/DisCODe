@@ -38,7 +38,7 @@ bool GrayImageSegmentation_Processor::onInit()
 	registerStream("in_img", &in_img);
 
 	registerStream("out_segmented", &out_segmented);
-	onSegmented = registerEvent("onSegmented");
+	segmented = registerEvent("segmented");
 
 	segmentExtractor.setMinSegmentArea(props.minSegmentArea);
 	segmentExtractor.setMinVariance(props.minVariance);
@@ -80,7 +80,7 @@ void GrayImageSegmentation_Processor::onNewImage()
 	LOG(LDEBUG) << "GrayImageSegmentation_Processor::onNewImage(): si.segments.size()=" << si.segments.size();
 
 	out_segmented.write(si);
-	onSegmented->raise();
+	segmented->raise();
 }
 
 }//: namespace GrayImageSegmentation

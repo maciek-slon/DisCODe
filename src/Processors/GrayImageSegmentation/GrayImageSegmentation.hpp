@@ -153,7 +153,7 @@ private:
 
 	Base::DataStreamOut <Types::Segmentation::SegmentedImage> out_segmented;
 
-	Base::Event * onSegmented;
+	Base::Event * segmented;
 
 	SegmentExtractor segmentExtractor;
 };

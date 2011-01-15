@@ -11,18 +11,18 @@
 		<PositionEstimator type="CvSolvePnP" thread="ImageSourceThread" group="s1">
 			<cameraMatrix>
 				[3,3](
-					(1894.4, 0, 376.832),
-					(0,	1903.15, 194.57),
+					(1794.47, 0, 319.5),
+					(0, 1809.86, 239.5),
 					(0, 0, 1)	
 				)
 			</cameraMatrix>
 			<distCoeffs>
 				[1,5](
-					(-6.87764436e-02, 8.20148945e+00, 7.74234859e-03, 2.96020857e-03, -1.36298920e+02)
+					(0, 1, 6.91793e-310, 4.94066e-324, 6.91791e-310)
 				)
 			</distCoeffs>
 		</PositionEstimator>
-		<Window type="CvWindow" thread="ImageSourceThread" group="s1">
+		<Window type="CvWindow" thread="PreviewExecutor" group="s1">
 			<title>Preview</title>
 		</Window>
 		<FindChessboard type="CvFindChessboardCorners" thread="ImageSourceThread" group="s1">
@@ -49,6 +49,10 @@
 		<ImageSourceThread type="continuous">
 			<main_component>ImageSource</main_component>
 		</ImageSourceThread>
+		<PreviewExecutor type="periodic">
+			<main_component>Window</main_component>
+			<interval>0.02</interval>
+		</PreviewExecutor>
 	</Executors>
 
 	<Events>

@@ -2,38 +2,34 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-         
+        <!--  
         <ImageSource type="CameraUniCap" thread="MainExecutor" group="s1">
         	<dev>
 				<device>/dev/video0</device>
 			</dev>
 		</ImageSource>
-		
-		<!-- 
-		<ImageSource type="CameraOpenCV" thread="Exec1" group="s1">
+		 -->
+		<!--  
+		<ImageSource type="CameraOpenCV" thread="MainExecutor" group="s1">
 		</ImageSource>  
-		-->
+		 -->
 		
-		<!-- 
+		 
 		<ImageSource type="Sequence" thread="MainExecutor" group="s1">
-			<directory>/home/mateusz/CameraCalib/2/</directory>
+			<directory>CameraCalib/Results/CameraCalib_20110109123509</directory>
 			<triggered>false</triggered>
 			<sort>true</sort>
 		</ImageSource>
-		 -->
+		
 
 		<BGRToGray type="CvColorConv" thread="MainExecutor" group="s1">
 			<type>BGR2GRAY</type>
 		</BGRToGray>
 
 		<CameraCalib type="CameraCalib" thread="MainExecutor" group="s1">
-			<!-- 
-			<imagesBaseDirectory>/home/mateusz/CameraCalib/Results</imagesBaseDirectory>
-			<resultsFilename>/home/mateusz/CameraCalib/Results.txt</resultsFilename>
-			 -->
-			
-			<imagesBaseDirectory>/home/mboryn/CameraCalib/Results</imagesBaseDirectory>
-			<resultsFilename>/home/mboryn/CameraCalib/Results.txt</resultsFilename>
+			<!-- <imagesBaseDirectory>~/CameraCalib/Results</imagesBaseDirectory>  -->
+			<imagesBaseDirectory></imagesBaseDirectory>
+			<resultsFilename>CameraCalib/Results.txt</resultsFilename>
 			
 			<storeOnNewImage>true</storeOnNewImage>
 			<width>9</width>
@@ -72,13 +68,9 @@
 		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
 		<Event source="BGRToGray.newImage" destination="CameraCalib.onNewImage"/>
 		
-		<!-- 
-		<Event source="ImageSource.newImage" destination="CameraCalib.onNewImage"/>
-		 -->
 		 
-		<!--
+		<Event source="ImageSource.newImage" destination="CameraCalib.onNewImage"/>
 		<Event source="ImageSource.endOfSequence" destination="CameraCalib.onSequenceEnd"/>
-		!-->
 		
 		<Event source="CameraCalib.chessboardFound" destination="Preview.onNewImage"/>
 		<Event source="CameraCalib.chessboardNotFound" destination="Preview.onNewImage"/>
