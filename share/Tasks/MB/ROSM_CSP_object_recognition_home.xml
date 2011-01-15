@@ -56,7 +56,7 @@
 		</KeyboardExecutor>
 		<PreviewExecutor type="periodic">
 			<main_component>Preview</main_component>
-			<interval>0.02</interval>
+			<interval>0.1</interval>
 		</PreviewExecutor>
 	</Executors>
 	
@@ -121,7 +121,12 @@
 		<LineSegments>
 			<in_edgesDetected type="in" group="EdgesDetected"/>
 			<out_lineSegments type="out" group="LineSegments"/>
+			<out_lineSegmentsEstimated type="out" group="LineSegmentsEstimated"/>
 		</LineSegments>
+		
+		<CspObjectRecognize>
+			<in_segmentedImage type="in" group="LineSegmentsEstimated"/>
+		</CspObjectRecognize>
 	</DataStreams>
 
 </Task>

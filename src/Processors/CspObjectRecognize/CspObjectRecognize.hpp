@@ -10,8 +10,11 @@
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
-#include "Props.hpp"
+#include "Property.hpp"
 #include "../GrayImageSegmentation/SegmentedImage.hpp"
+
+#include "ShapeRecognize.hpp"
+#include "ModelsFactory.hpp"
 
 namespace Processors {
 namespace CspObjectRecognize {
@@ -63,7 +66,10 @@ private:
 	void onSegmentedImage();
 	Base::DataStreamIn <Types::Segmentation::SegmentedImage> in_segmentedImage;
 	Base::EventHandler <CspObjectRecognize_Processor> h_onSegmentedImage;
+	boost::shared_ptr<ShapeRecognize> shapeRegognize;
+	boost::shared_ptr<ModelsFactory> modelsFactory;
 
+	Base::Property<std::string> modelsFilename;
 };
 
 }//: namespace CspObjectRecognize

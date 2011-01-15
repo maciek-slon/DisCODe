@@ -13,9 +13,13 @@ namespace Processors {
 namespace CspObjectRecognize {
 
 CspObjectRecognize_Processor::CspObjectRecognize_Processor(const std::string & name) :
-	Base::Component(name)
+	Base::Component(name), modelsFilename("modelsFilename")
 {
 	LOG(LTRACE) << "Hello CspObjectRecognize_Processor\n";
+	shapeRegognize = boost::shared_ptr <ShapeRecognize>(new ShapeRecognize);
+	modelsFactory = boost::shared_ptr <ModelsFactory>(new ModelsFactory);
+
+	registerProperty(modelsFilename);
 }
 
 CspObjectRecognize_Processor::~CspObjectRecognize_Processor()
@@ -32,6 +36,11 @@ bool CspObjectRecognize_Processor::onInit()
 
 	h_onSegmentedImage.setup(this, &CspObjectRecognize_Processor::onSegmentedImage);
 	registerHandler("onSegmentedImage", &h_onSegmentedImage);
+
+	//read models database
+	modelsFactory->setModelsFilename(modelsFilename);
+	shapeRegognize->setModels(modelsFactory->loadModels());
+
 	return true;
 }
 
@@ -60,7 +69,24 @@ bool CspObjectRecognize_Processor::onStart()
 
 void CspObjectRecognize_Processor::onSegmentedImage()
 {
-	LOG(LFATAL) << "CspObjectRecognize_Processor::onSegmentedImage()\n";
+	try {
+		LOG(LFATAL) << "CspObjectRecognize_Processor::onSegmentedImage()\n";
+
+		if (in_segmentedImage.empty()) {
+			LOG(LWARNING) << "CspObjectRecognize_Processor::onSegmentedImage(): buffer empty.\n";
+			return;
+		}
+
+		Types::Segmentation::SegmentedImage si = in_segmentedImage.read();
+
+		shapeRegognize->recognize(si);
+
+	} catch (exception& e) {
+		LOG(LFATAL) << "CspObjectRecognize_Processor::onSegmentedImage(): exception: " << e.what();
+	} catch (const char * e) {
+		LOG(LFATAL) << "CspObjectRecognize_Processor::onSegmentedImage(): WTF exception: " << e;
+	}
+
 }
 
 }//: namespace CspObjectRecognize
