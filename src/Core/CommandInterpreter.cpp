@@ -98,4 +98,11 @@ void CommandInterpreter::addHandler(const std::string & cmd, handler h) {
 }
 
 
+void CommandInterpreter::printCommands() {
+	BOOST_FOREACH(handler_pair hp, handlers) {
+		std::cout << hp.first << std::endl;
+	}
+}
+
+
 }

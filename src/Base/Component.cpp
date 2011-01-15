@@ -241,6 +241,14 @@ void Component::printProperties() {
 	}
 }
 
+std::string Component::listProperties() {
+	std::string ret;
+	BOOST_FOREACH(PropertyPair prop, properties) {
+		ret += prop.first + "\n";
+	}
+	return ret;
+}
+
 PropertyInterface * Component::getProperty(const std::string& name) {
 	if (properties.count(name) > 0) {
 		return properties[name];

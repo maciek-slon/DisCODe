@@ -63,10 +63,10 @@ public:
 	{
 	}
 
-	Property(const std::string& name, boost::function<void(T)> callback, const T & initializer = T()) : PropertyInterface(name), data(initializer), m_onChange(callback) {
+	Property(const std::string& name, boost::function<void(T, T)> callback, const T & initializer = T()) : PropertyInterface(name), data(initializer), m_onChange(callback) {
 	}
 
-	void setCallback(boost::function<void(T)> callback) {
+	void setCallback(boost::function<void(T, T)> callback) {
 		m_onChange = callback;
 	}
 
@@ -122,12 +122,11 @@ public:
 	 * @param str string to retrieve value from.
 	 */
 	virtual void retrieve(const std::string & str) {
+		T old = data;
 		data = boost::lexical_cast<T>(str);
 		if (m_onChange)
-			m_onChange(data);
+			m_onChange(old, data);
 	}
-
-
 
 	/// Might be useful for template deductions
 	typedef T value_type;
@@ -137,7 +136,7 @@ protected:
 	T data;
 
 	/// callback on data change
-	boost::function<void(T)> m_onChange;
+	boost::function<void(T, T)> m_onChange;
 
 };
 

@@ -158,6 +158,8 @@ public:
 	 */
 	void printProperties();
 
+	std::string listProperties();
+
 	/*!
 	 * Returns property with specified name if registered or NULL.
 	 * \param name property name

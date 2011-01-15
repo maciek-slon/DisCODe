@@ -21,6 +21,7 @@
 #include "Executor.hpp"
 #include "Logger.hpp"
 
+#include "CommandInterpreter.hpp"
 #include "CommandServer.hpp"
 
 #include <boost/program_options.hpp>
@@ -28,6 +29,9 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
+
+#include "TaskInformer.hpp"
+#include "ComponentInformer.hpp"
 
 using namespace std;
 using namespace Common;
@@ -237,8 +241,14 @@ int main(int argc, char* argv[])
 	configurator.setComponentManager(&km);
 	configurator.setConnectionManager(&cm);
 
-	CommandServer server(task);
+	TaskInformer task_informer(task);
+	ComponentInformer component_informer(km);
 
+	CommandServer server;
+
+	server.addInformer(&task_informer);
+	server.addInformer(&component_informer);
+	server.printCommands();
 
 
 	try {
