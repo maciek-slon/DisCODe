@@ -15,6 +15,9 @@ public:
 	void registerHandlers(CommandInterpreter & ci) {
 		ci.addHandler("listExecutors", boost::bind(&TaskInformer::listExecutors, this, _1));
 		ci.addHandler("listSubtasks",  boost::bind(&TaskInformer::listSubtasks,  this, _1));
+
+		ci.addHandler("start", boost::bind(&TaskInformer::start, this, _1));
+		ci.addHandler("stop",  boost::bind(&TaskInformer::stop,  this, _1));
 	}
 
 	std::string listExecutors(std::vector<std::string> args) {
@@ -33,6 +36,16 @@ public:
 			ret += s + "\n";
 		}
 		return ret;
+	}
+
+	std::string stop(std::vector<std::string> args) {
+		task.stop();
+		return "OK";
+	}
+
+	std::string start(std::vector<std::string> args) {
+		task.start();
+		return "OK";
 	}
 
 private:

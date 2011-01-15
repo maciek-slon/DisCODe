@@ -32,6 +32,7 @@
 
 #include "TaskInformer.hpp"
 #include "ComponentInformer.hpp"
+#include "SystemInformer.hpp"
 
 using namespace std;
 using namespace Common;
@@ -243,11 +244,13 @@ int main(int argc, char* argv[])
 
 	TaskInformer task_informer(task);
 	ComponentInformer component_informer(km);
+	SystemInformer system_informer(running);
 
 	CommandServer server;
 
 	server.addInformer(&task_informer);
 	server.addInformer(&component_informer);
+	server.addInformer(&system_informer);
 	server.printCommands();
 
 
