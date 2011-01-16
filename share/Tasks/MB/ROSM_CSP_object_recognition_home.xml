@@ -41,7 +41,7 @@
 		</LineSegments>
 		
 		<CspObjectRecognize type="CspObjectRecognize" thread="MainExecutor" group="s1">
-		
+			<modelsFilename>/home/mateusz/workspace/DisCODe/share/Tasks/MB/ROSM_models.xml</modelsFilename>		
 		</CspObjectRecognize>
 	</Components>
 

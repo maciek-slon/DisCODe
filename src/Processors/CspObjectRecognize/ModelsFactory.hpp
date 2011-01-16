@@ -17,6 +17,19 @@
 namespace Processors {
 namespace CspObjectRecognize {
 
+/**
+ * Read model description from a file.
+ * Model file has the following form.
+ * <models>
+ * 	<model1 numberOfVertices="3">
+ *		<monstraints>
+ *		<c1 type="" v1="0" v2="1"/>
+ *		</monstraints>
+ * 	</model1>
+ * 	<model2>
+ * 	</model2>
+ * </models>
+ */
 class ModelsFactory
 {
 public:

@@ -38,8 +38,13 @@ bool CspObjectRecognize_Processor::onInit()
 	registerHandler("onSegmentedImage", &h_onSegmentedImage);
 
 	//read models database
-	modelsFactory->setModelsFilename(modelsFilename);
-	shapeRegognize->setModels(modelsFactory->loadModels());
+	try {
+		modelsFactory->setModelsFilename(modelsFilename);
+		shapeRegognize->setModels(modelsFactory->loadModels());
+	} catch (exception& e) {
+		LOG(LFATAL) << "Error loading models from " << string(modelsFilename) << ": " << e.what() << "\n";
+		return false;
+	}
 
 	return true;
 }
