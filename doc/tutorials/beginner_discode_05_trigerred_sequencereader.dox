@@ -57,7 +57,7 @@ Modify required parts:
 \code
 	<Events>
 		...
-		<Event source="Kbd.t_Pressed" destination="Sequence.onTrigger"/>
+		<Event source="Kbd1.t_Pressed" destination="Seq1.onTrigger"/>
 		...
 \endcode
 

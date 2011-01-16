@@ -8,7 +8,7 @@
 The goal is to add properties to component, which can be set in the configuration file.
 
 \section blurer_hpp_edit Edit the header file ImageBlurer.hpp
-Edit the <b>ImageBlur_props</b> class and perform changes listed below.
+Edit the <b>Props</b> class and perform changes listed below.
 - Add the parameter related to the size of blur mask (width and height).
 \code
      // Size of mask.
@@ -30,7 +30,7 @@ Edit the <b>ImageBlur_props</b> class and perform changes listed below.
 \section blurer_cpp_edit Edit the source file ImageBlurer.cpp
 Find the code related to the bluring and substitute it with the following.
 \code
-        blur(img, img, cv::Size(props.maskSize.width, props.maskSize.height));
+        blur(img, img, props.maskSize);
 \endcode
 
 \note Compile and copy the result to the <b>bin</b> directory.

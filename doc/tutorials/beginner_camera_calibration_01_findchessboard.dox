@@ -128,7 +128,7 @@ The task should consist of four components - three existing and a one new, imple
     void saveParameters(Mat& cameraMatrix_, Mat& distCoeffs_);
 \endcode
 
-\subsection beg_cam_calib_definitions Add definitions of CameraCalibration class methods (CameraCalibration_Processor.cpp).
+\subsection beg_cam_calib_definitions Add definitions of CameraCalibration class methods (CameraCalibration.cpp).
 - In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
 \code
     // Register handlers.

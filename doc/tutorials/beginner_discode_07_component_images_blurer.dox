@@ -8,7 +8,7 @@
 The goal is to create a component responsible for bluring of the images.
 Utilize the standard mean filter with 3-by-3 kernel. 
 
-Instead of implementing the blue operation on your own please use the <a href="http://opencv.willowgarage.com/documentation/cpp/image_filtering.html?highlight=blur#blur">cv::blur</a> function from the OpenCV.
+Instead of implementing the blur operation on your own please use the <a href="http://opencv.willowgarage.com/documentation/cpp/image_filtering.html?highlight=blur#blur">cv::blur</a> function from the OpenCV.
 
 \section ts_structure Task structure
 The structure of the ImageBlurer task is shown below.
