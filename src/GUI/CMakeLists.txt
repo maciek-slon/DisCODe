@@ -45,11 +45,13 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 SET(GUI_CXX_SRCS
     main.cpp
     mainwindow.cpp
+	ComponentWidget.cpp
 )
 
 # Class headers that have to be MOCed (i.e. classes derived from QObject)
 SET(GUI_MOC_SRCS
     mainwindow.h
+	ComponentWidget.hpp
 )
 
 # Generate MOC files
@@ -57,7 +59,7 @@ QT4_WRAP_CPP(GUI_CXX_SRCS ${GUI_MOC_SRCS})
 
 # UI files
 SET(GUI_UI
-    mainwindow.ui
+	mainwindow.ui
 )
 
 # Generate UI include files
@@ -69,7 +71,7 @@ QT4_ADD_RESOURCES(GUI_CXX_SRCS gui.qrc)
 ADD_EXECUTABLE(discode_gui ${GUI_CXX_SRCS})
 
 # Link executable with QT libraries
-TARGET_LINK_LIBRARIES(discode_gui ${QT_LIBRARIES})
+TARGET_LINK_LIBRARIES(discode_gui ${QT_LIBRARIES} DisCODeClient Network)
 
 
 SET_TARGET_PROPERTIES(discode_gui PROPERTIES

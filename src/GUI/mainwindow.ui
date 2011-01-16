@@ -14,38 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <property name="margin">
-     <number>2</number>
-    </property>
-    <property name="spacing">
-     <number>2</number>
-    </property>
-    <item row="0" column="0">
-     <widget class="QTabWidget" name="tabWidget">
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
-      </property>
-      <property name="documentMode">
-       <bool>false</bool>
-      </property>
-      <property name="tabsClosable">
-       <bool>true</bool>
-      </property>
-      <property name="movable">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Strona</string>
-       </attribute>
-      </widget>
-     </widget>
-    </item>
-   </layout>
+   <layout class="QVBoxLayout" name="verticalLayout_3"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -53,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>1157</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">
@@ -109,6 +78,9 @@
        <property name="itemsExpandable">
         <bool>true</bool>
        </property>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
+       </property>
        <column>
         <property name="text">
          <string>Name</string>
@@ -128,53 +100,44 @@
         </property>
         <item>
          <property name="text">
-          <string>Subtask</string>
+          <string>Exec1</string>
          </property>
          <property name="text">
-          <string/>
+          <string>Continuous</string>
          </property>
          <item>
           <property name="text">
-           <string>Exec1</string>
+           <string>Kbd1</string>
           </property>
           <property name="text">
-           <string>Continuous</string>
+           <string>Keyboard</string>
           </property>
-          <item>
-           <property name="text">
-            <string>Kbd1</string>
-           </property>
-           <property name="text">
-            <string>Keyboard</string>
-           </property>
-          </item>
-         </item>
-         <item>
-          <property name="text">
-           <string>Exec2</string>
-          </property>
-          <property name="text">
-           <string>Periodic</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>Wnd1</string>
-           </property>
-           <property name="text">
-            <string>CvWindow</string>
-           </property>
-          </item>
          </item>
         </item>
         <item>
          <property name="text">
-          <string>Subtask</string>
+          <string>Exec2</string>
          </property>
          <property name="text">
-          <string/>
+          <string>Periodic</string>
          </property>
+         <item>
+          <property name="text">
+           <string>Wnd1</string>
+          </property>
+          <property name="text">
+           <string>CvWindow</string>
+          </property>
+         </item>
         </item>
        </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
       </widget>
      </item>
     </layout>

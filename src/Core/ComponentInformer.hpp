@@ -23,6 +23,9 @@ public:
 	std::string getProperty(std::vector<std::string> args);
 	std::string setProperty(std::vector<std::string> args);
 
+	std::string listHandlers(std::vector<std::string> args);
+	std::string triggerHandler(std::vector<std::string> args);
+
 
 private:
 	ComponentManager & m_component_manager;

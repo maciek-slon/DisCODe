@@ -191,6 +191,14 @@ void Component::printHandlers() {
 	}
 }
 
+std::string Component::listHandlers() {
+	std::string ret;
+	BOOST_FOREACH(HandlerPair handler, handlers) {
+		ret += handler.first + "\n";
+	}
+	return ret;
+}
+
 EventHandlerInterface * Component::getHandler(const std::string& name) {
 	if (handlers.count(name) > 0) {
 		return handlers[name];

@@ -3,6 +3,12 @@
 
 #include <QMainWindow>
 
+
+#include "../Client/TaskProxy.hpp"
+#include "../Client/ExecutorProxy.hpp"
+#include "../Client/ComponentProxy.hpp"
+#include "../Client/DisCODeClient.hpp"
+
 class QTreeWidgetItem;
 
 namespace Ui {
@@ -19,11 +25,14 @@ public:
 
 public slots:
     void on_tabWidget_tabCloseRequested(int index);
-    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem * item, int column);
+	void on_treeWidget_itemClicked(QTreeWidgetItem * item, int column);
 
 private:
     Ui::MainWindow *ui;
 
+
+	DisCODe::Client * client;
+	DisCODe::TaskProxy * task;
 };
 
 #endif // MAINWINDOW_H
