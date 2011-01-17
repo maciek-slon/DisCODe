@@ -2,5 +2,6 @@
     <qresource prefix="/icons">
         <file alias="play">resources/Play-1-Hot-icon.png</file>
         <file alias="stop">resources/player_stop.png</file>
+        <file alias="refresh">resources/refresh.png</file>
     </qresource>
 </RCC>

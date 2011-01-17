@@ -34,6 +34,8 @@ public slots:
     void on_tabWidget_tabCloseRequested(int index);
 	void on_treeWidget_itemClicked(QTreeWidgetItem * item, int column);
 
+	void on_actionRefresh_triggered(bool checked);
+
 private:
     Ui::MainWindow *ui;
 

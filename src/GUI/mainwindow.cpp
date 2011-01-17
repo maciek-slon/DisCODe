@@ -68,3 +68,7 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int column) {
 		ui->scrollArea->setWidget(component_props[item->text(0)]);
 	}
 }
+
+void MainWindow::on_actionRefresh_triggered(bool checked) {
+
+}
