@@ -20,7 +20,12 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 
 		for (int i = 0; i < pc; ++i) {
 			QLineEdit * edit = new QLineEdit(proxy->getPropertyValue(i).c_str());
-			edit->setObjectName(proxy->getPropertyName(i).c_str());
+			QString prop_name = proxy->getPropertyName(i).c_str();
+			edit->setObjectName(prop_name);
+
+			edit->setToolTip(prop_name);
+			edit->setStatusTip(prop_name);
+
 			layout->addWidget(new QLabel(proxy->getPropertyName(i).c_str()), i, 0);
 			layout->addWidget(edit, i, 1);
 			signalMapper->setMapping(edit, i);

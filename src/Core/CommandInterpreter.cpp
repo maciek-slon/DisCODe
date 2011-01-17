@@ -99,8 +99,9 @@ void CommandInterpreter::addHandler(const std::string & cmd, handler h) {
 
 
 void CommandInterpreter::printCommands() {
+	LOG(LINFO) << "Registered commands:";
 	BOOST_FOREACH(handler_pair hp, handlers) {
-		std::cout << hp.first << std::endl;
+		LOG(LINFO) << "\t" << hp.first;
 	}
 }
 

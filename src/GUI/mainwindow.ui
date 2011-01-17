@@ -34,8 +34,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>891</width>
-         <height>329</height>
+         <width>896</width>
+         <height>344</height>
         </rect>
        </property>
       </widget>
@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>1157</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">
@@ -159,13 +159,6 @@
          </item>
         </item>
        </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
       </widget>
      </item>
     </layout>

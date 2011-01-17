@@ -27,8 +27,8 @@ void MainWindow::setup(DisCODe::Client * c) {
 	ui->treeWidget->clear();
 
 	QTreeWidgetItem * i_task = new QTreeWidgetItem;
-	i_task->setText(0, "Task name");
-	i_task->setText(1, "adres IP");
+	i_task->setText(0, client->host().c_str());
+	i_task->setText(1, client->port().c_str());
 
 	for (int i = 0; i < task->countExecutors(); ++i) {
 		DisCODe::ExecutorProxy * ex = task->getExecutor(i);
@@ -51,19 +51,10 @@ void MainWindow::setup(DisCODe::Client * c) {
 	ui->treeWidget->expandAll();
 }
 
-void MainWindow::on_tabWidget_tabCloseRequested ( int index ) {
-	//ui->tabWidget->removeTab(index);
-}
-
 void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int column) {
-	//ui->tabWidget->addTab(new QWidget, item->text(column));
-
 	if (!item->parent()) { // Task
-		ui->label->setText("Task");
 	} else if (!item->parent()->parent()) { // Executor
-		ui->label->setText(QString("Executor: ") + item->text(0));
 	} else { // Component
-		ui->label->setText(QString("Component: ") + item->text(0));
 		ui->scrollArea->takeWidget();
 		ui->scrollArea->setWidget(component_props[item->text(0)]);
 	}
