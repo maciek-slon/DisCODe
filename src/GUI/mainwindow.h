@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMap>
 
 
 #include "../Client/TaskProxy.hpp"
@@ -23,6 +24,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     virtual ~MainWindow();
 
+    void setClient(DisCODe::Client * c) {
+    	client = c;
+    }
+
+    void setup(DisCODe::Client * c);
+
 public slots:
     void on_tabWidget_tabCloseRequested(int index);
 	void on_treeWidget_itemClicked(QTreeWidgetItem * item, int column);
@@ -33,6 +40,8 @@ private:
 
 	DisCODe::Client * client;
 	DisCODe::TaskProxy * task;
+
+	QMap<QString, QWidget*> component_props;
 };
 
 #endif // MAINWINDOW_H

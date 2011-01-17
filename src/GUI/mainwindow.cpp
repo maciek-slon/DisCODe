@@ -12,9 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-	ui->treeWidget->expandAll();
+}
 
-	client = new DisCODe::Client;
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::setup(DisCODe::Client * c) {
+	client = c;
 	task = new DisCODe::TaskProxy(client);
 	task->refresh();
 
@@ -35,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 			i_cp->setText(0, cp->name().c_str());
 			i_ex->addChild(i_cp);
 
-			ui->centralWidget->layout()->addWidget(new ComponentWidget(cp, ui->centralWidget));
+			component_props[cp->name().c_str()] = new ComponentWidget(cp);
 		}
 
 		i_task->addChild(i_ex);
@@ -43,11 +49,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->treeWidget->addTopLevelItem(i_task);
 	ui->treeWidget->expandAll();
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::on_tabWidget_tabCloseRequested ( int index ) {
@@ -63,5 +64,7 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int column) {
 		ui->label->setText(QString("Executor: ") + item->text(0));
 	} else { // Component
 		ui->label->setText(QString("Component: ") + item->text(0));
+		ui->scrollArea->takeWidget();
+		ui->scrollArea->setWidget(component_props[item->text(0)]);
 	}
 }

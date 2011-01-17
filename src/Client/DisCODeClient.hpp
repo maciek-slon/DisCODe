@@ -33,10 +33,10 @@ public:
 	typedef boost::function<void(std::string, std::vector<std::string>)> list_properties_t;
 	typedef boost::function<void(std::string, std::string, std::string)> get_property_t;
 
-	Client() {
+	Client(const std::string host = "localhost", const std::string port = "30000") {
 		m_client.setServiceHook(boost::bind(&Client::service, this, _1, _2));
 		m_client.setCompletionHook(boost::bind(&Client::check, this, _1, _2));
-		m_client.connect("localhost", "30000");
+		m_connected = m_client.connect(host, port);
 	}
 
 	std::string send(const std::string & msg) {
@@ -60,6 +60,10 @@ public:
 
 	void setGetPropertyHandler(get_property_t h) {
 		m_get_property_handler = h;
+	}
+
+	bool connected() const {
+		return m_connected;
 	}
 
 protected:
@@ -99,6 +103,7 @@ private:
 	list_properties_t m_list_properties_handler;
 	get_property_t m_get_property_handler;
 
+	bool m_connected;
 };
 
 }

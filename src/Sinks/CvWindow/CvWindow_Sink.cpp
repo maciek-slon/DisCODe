@@ -136,6 +136,9 @@ void CvWindow_Sink::onNewImageN(int n) {
 void CvWindow_Sink::onTitleCahnged(const std::string & old_title, const std::string & new_title) {
 	std::cout << "onTitleChanged: " << new_title << std::endl;
 
+#if OpenCV_MAJOR<2 || OpenCV_MINOR<2
+	std::cout << "Changing window title not supported\n";
+#else
 	for (int i = 0; i < count; ++i) {
 		char id = '0' + i;
 		try {
@@ -143,7 +146,7 @@ void CvWindow_Sink::onTitleCahnged(const std::string & old_title, const std::str
 		}
 		catch(...) {}
 	}
-
+#endif
 }
 
 

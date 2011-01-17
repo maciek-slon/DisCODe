@@ -20,6 +20,8 @@ void ComponentProxy::refresh() {
 
 	std::string tmp;
 
+	properties.clear();
+
 	while (end != std::string::npos) {
 		end = str.find(separator, start);
 
@@ -29,17 +31,16 @@ void ComponentProxy::refresh() {
 		if (tmp.empty())
 			break;
 
-		if (!properties.count(tmp))
-			properties[tmp] = "";
+		properties.push_back(tmp);
 
-		request = "getProperty";
+		/*request = "getProperty";
 		request += ":";
 		request += m_name;
 		request += ":";
 		request += tmp;
 
 		std::string val = m_client->send(request);
-		properties[tmp] = val;
+		properties[tmp] = val;*/
 
 		// If at end, use start=maxSize.  Else use start=end+delimiter.
 		start = ((end > (std::string::npos - separator.size())) ? std::string::npos : end + separator.size());
@@ -83,8 +84,8 @@ void ComponentProxy::print(int indent) {
 
 	pref += "\t";
 
-	BOOST_FOREACH(PropertyPair pp, properties) {
-		std::cout << pref << "[P] " << pp.first << "=" << pp.second << std::endl;
+	BOOST_FOREACH(std::string pp, properties) {
+		std::cout << pref << "[P] " << pp << std::endl;
 	}
 
 	BOOST_FOREACH(std::string h, handlers) {
@@ -109,6 +110,27 @@ void ComponentProxy::triggerHandler(int i) {
 	req += handlers[i];
 
 	m_client->send(req);
+}
+
+std::string ComponentProxy::getPropertyValue(int i) {
+	std::string req = "getProperty:";
+	req += m_name + ":";
+	req += properties[i];
+
+	std::string val = m_client->send(req);
+
+	return val;
+}
+
+std::string ComponentProxy::setPropertyValue(int i, const std::string & val) {
+	std::string req = "setProperty:";
+	req += m_name + ":";
+	req += properties[i] + ":";
+	req += val;
+
+	std::string ret = m_client->send(req);
+
+	return ret;
 }
 
 }

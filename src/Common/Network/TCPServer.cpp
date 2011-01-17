@@ -15,6 +15,11 @@ int defaultCompletionHook(const char *, int size) {
 
 TCPServer::TCPServer(int port, int max_cons, int buffer_size) : m_buffer_size(buffer_size)
 {
+
+
+	m_reply_buffer = NULL;
+	m_tmp_buffer = NULL;
+
 	memset(&m_addr, 0, sizeof(m_addr));
 
 	m_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -59,6 +64,9 @@ TCPServer::~TCPServer()
 
 	delete [] m_reply_buffer;
 	delete [] m_tmp_buffer;
+
+	m_reply_buffer = NULL;
+	m_tmp_buffer = NULL;
 }
 
 void TCPServer::acceptNewClient() {

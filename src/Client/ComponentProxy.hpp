@@ -19,10 +19,31 @@ public:
 
 	void print(int indent = 0);
 
-	int countHandlers() const;
+	int countHandlers() const {
+		return handlers.size();
+	}
+
+	std::string getHandler(int i) {
+		return handlers[i];
+	}
 
 	void triggerHandler(int i);
 	void triggerHandler(const std::string & handler);
+
+
+
+
+	int countProperties() const {
+		return properties.size();
+	}
+
+	std::string getPropertyName(int i) {
+		return properties[i];
+	}
+
+	std::string getPropertyValue(int i);
+	std::string setPropertyValue(int i, const std::string & val);
+
 
 	std::string name() const {
 		return m_name;
@@ -33,9 +54,11 @@ private:
 
 	std::string m_name;
 
-	typedef std::pair<std::string, std::string> PropertyPair;
+	//typedef std::pair<std::string, std::string> PropertyPair;
 
-	std::map<std::string, std::string> properties;
+	//std::map<std::string, std::string> properties;
+
+	std::vector<std::string> properties;
 
 	std::vector<std::string> handlers;
 };

@@ -46,12 +46,14 @@ SET(GUI_CXX_SRCS
     main.cpp
     mainwindow.cpp
 	ComponentWidget.cpp
+	HostSelector.cpp
 )
 
 # Class headers that have to be MOCed (i.e. classes derived from QObject)
 SET(GUI_MOC_SRCS
     mainwindow.h
 	ComponentWidget.hpp
+	HostSelector.hpp
 )
 
 # Generate MOC files
@@ -60,6 +62,7 @@ QT4_WRAP_CPP(GUI_CXX_SRCS ${GUI_MOC_SRCS})
 # UI files
 SET(GUI_UI
 	mainwindow.ui
+	HostSelector.ui
 )
 
 # Generate UI include files
