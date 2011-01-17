@@ -123,14 +123,38 @@ std::string ComponentProxy::getPropertyValue(int i) {
 }
 
 std::string ComponentProxy::setPropertyValue(int i, const std::string & val) {
+	return setPropertyValue(properties[i], val);
+}
+
+std::string ComponentProxy::setPropertyValue(const std::string & name, const std::string & val) {
 	std::string req = "setProperty:";
 	req += m_name + ":";
-	req += properties[i] + ":";
+	req += name + ":";
 	req += val;
 
 	std::string ret = m_client->send(req);
 
 	return ret;
+}
+
+std::string ComponentProxy::getPropertyType(int i) {
+	std::string req = "getPropertyType:";
+	req += m_name + ":";
+	req += properties[i];
+
+	std::string val = m_client->send(req);
+
+	return val;
+}
+
+std::string ComponentProxy::getPropertyToolTip(int i) {
+	std::string req = "getPropertyToolTip:";
+	req += m_name + ":";
+	req += properties[i];
+
+	std::string val = m_client->send(req);
+
+	return val;
 }
 
 }

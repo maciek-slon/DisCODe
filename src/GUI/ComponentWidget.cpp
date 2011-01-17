@@ -3,6 +3,8 @@
 #include <QtGui>
 #include <iostream>
 
+#include <boost/lexical_cast.hpp>
+
 ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *parent) :
 	QWidget(parent),
 	m_proxy(proxy)
@@ -19,21 +21,38 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 		QGridLayout * layout = new QGridLayout;
 
 		for (int i = 0; i < pc; ++i) {
-			QLineEdit * edit = new QLineEdit(proxy->getPropertyValue(i).c_str());
-			QString prop_name = proxy->getPropertyName(i).c_str();
-			edit->setObjectName(prop_name);
+			QString ptype = proxy->getPropertyType(i).c_str();
+			QString pname = proxy->getPropertyName(i).c_str();
+			QString pttip = proxy->getPropertyToolTip(i).c_str();
 
-			edit->setToolTip(prop_name);
-			edit->setStatusTip(prop_name);
+			QWidget * widget;
 
-			layout->addWidget(new QLabel(proxy->getPropertyName(i).c_str()), i, 0);
-			layout->addWidget(edit, i, 1);
-			signalMapper->setMapping(edit, i);
-			connect(edit, SIGNAL(returnPressed()), signalMapper, SLOT (map()));
-			m_prop_edits[i] = edit;
+			if (ptype == "i") {
+				QSpinBox * spin = new QSpinBox;
+				spin->setValue(boost::lexical_cast<int>(proxy->getPropertyValue(i)));
+
+				connect(spin, SIGNAL(valueChanged(int)), signalMapper, SLOT(map()));
+
+				widget = spin;
+			} else {
+				QLineEdit * edit = new QLineEdit(proxy->getPropertyValue(i).c_str());
+
+				connect(edit, SIGNAL(returnPressed()), signalMapper, SLOT (map()));
+
+				widget = edit;
+			}
+
+			widget->setObjectName(pname);
+			widget->setToolTip(pttip);
+			widget->setStatusTip(pttip);
+
+			layout->addWidget(new QLabel(pname), i, 0);
+			layout->addWidget(widget, i, 1);
+
+			signalMapper->setMapping(widget, widget);
 		}
 
-		connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(setProperty(int)));
+		connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(setProperty(QWidget*)));
 
 		group_box->setLayout(layout);
 		top_layout->addWidget(group_box);
@@ -73,8 +92,17 @@ void ComponentWidget::triggerHandler(const QString & name) {
 	//std::cout << name.toStdString() << std::endl;
 }
 
-void ComponentWidget::setProperty(int i) {
-	m_proxy->setPropertyValue(i, m_prop_edits[i]->text().toStdString());
+void ComponentWidget::setProperty(QWidget * widget) {
+	QString val;
+	if (widget->inherits("QLineEdit")) {
+		QLineEdit * edit = qobject_cast<QLineEdit*>(widget);
+		val = edit->text();
+	} else if (widget->inherits("QSpinBox")) {
+		QSpinBox * spin = qobject_cast<QSpinBox*>(widget);
+		val = spin->text();
+	}
+
+	m_proxy->setPropertyValue(widget->objectName().toStdString(), val.toStdString());
 	//std::cout << name.toStdString() << std::endl;
 }
 

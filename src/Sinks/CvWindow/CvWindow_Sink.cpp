@@ -26,6 +26,8 @@ CvWindow_Sink::CvWindow_Sink(const std::string & name) : Base::Component(name),
 
 	registerProperty(title);
 	registerProperty(count);
+
+	count.setToolTip("Total number of displayed windows");
 }
 
 CvWindow_Sink::~CvWindow_Sink() {

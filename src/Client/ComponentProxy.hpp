@@ -43,6 +43,10 @@ public:
 
 	std::string getPropertyValue(int i);
 	std::string setPropertyValue(int i, const std::string & val);
+	std::string setPropertyValue(const std::string & name, const std::string & val);
+
+	std::string getPropertyType(int i);
+	std::string getPropertyToolTip(int i);
 
 
 	std::string name() const {

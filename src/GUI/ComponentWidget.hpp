@@ -18,12 +18,12 @@ public:
 public slots:
 	void triggerHandler(const QString & name);
 
-	void setProperty(int i);
+	void setProperty(QWidget * widget);
 
 private:
 	DisCODe::ComponentProxy * m_proxy;
 
-	QMap<int, QLineEdit *> m_prop_edits;
+	QMap<QString, QString> m_prop_edits;
 };
 
 #endif // COMPONENTWIDGET_HPP

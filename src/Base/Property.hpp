@@ -11,12 +11,14 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/function.hpp>
 
+#include <typeinfo>
+
 namespace Base {
 
 class PropertyInterface {
 public:
 
-	PropertyInterface(const std::string & n) : name_(n), persistent(true) {}
+	PropertyInterface(const std::string & n) : name_(n), persistent(true), m_tool_tip(n) {}
 
 	/*
 	template <typename T>
@@ -45,11 +47,23 @@ public:
 		return name_;
 	}
 
+	virtual std::string type() const = 0;
+
+	std::string toolTip() {
+		return m_tool_tip;
+	}
+
+	void setToolTip(const std::string & tool_tip) {
+		m_tool_tip = tool_tip;
+	}
+
 private:
 	/// property name
 	std::string name_;
 
 	bool persistent;
+
+	std::string m_tool_tip;
 };
 
 /*!
@@ -59,11 +73,11 @@ template < class T >
 class Property : public PropertyInterface
 {
 public:
-	Property(const std::string& name, const T & initializer = T()) : PropertyInterface(name), data(initializer)
+	Property(const std::string& name, const T & initializer = T(), std::string type = typeid(T).name() ) : PropertyInterface(name), data(initializer), m_type(type)
 	{
 	}
 
-	Property(const std::string& name, boost::function<void(T, T)> callback, const T & initializer = T()) : PropertyInterface(name), data(initializer), m_onChange(callback) {
+	Property(const std::string& name, boost::function<void(T, T)> callback, const T & initializer = T(), std::string type = typeid(T).name()) : PropertyInterface(name), data(initializer), m_onChange(callback),  m_type(type) {
 	}
 
 	void setCallback(boost::function<void(T, T)> callback) {
@@ -128,6 +142,10 @@ public:
 			m_onChange(old, data);
 	}
 
+	std::string type() const {
+		return m_type;
+	}
+
 	/// Might be useful for template deductions
 	typedef T value_type;
 
@@ -137,6 +155,8 @@ protected:
 
 	/// callback on data change
 	boost::function<void(T, T)> m_onChange;
+
+	std::string m_type;
 
 };
 

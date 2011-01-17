@@ -16,6 +16,9 @@ void ComponentInformer::registerHandlers(CommandInterpreter & ci) {
 	ci.addHandler("getProperty", boost::bind(&ComponentInformer::getProperty,  this, _1));
 	ci.addHandler("setProperty", boost::bind(&ComponentInformer::setProperty,  this, _1));
 
+	ci.addHandler("getPropertyType", boost::bind(&ComponentInformer::getPropertyType,  this, _1));
+	ci.addHandler("getPropertyToolTip", boost::bind(&ComponentInformer::getPropertyToolTip,  this, _1));
+
 	ci.addHandler("listHandlers", boost::bind(&ComponentInformer::listHandlers,  this, _1));
 	ci.addHandler("triggerHandler", boost::bind(&ComponentInformer::triggerHandler,  this, _1));
 }
@@ -63,6 +66,52 @@ std::string ComponentInformer::getProperty(std::vector<std::string> args) {
 	}
 
 	return prop->store();
+}
+
+std::string ComponentInformer::getPropertyType(std::vector<std::string> args) {
+	if (args.size() != 2) {
+		return "No component name specified.";
+	}
+
+	Base::Component * component;
+	Base::PropertyInterface * prop;
+
+	try {
+		component = m_component_manager.getComponent(args[0]);
+	}
+	catch(...) {
+		return "Component not found";
+	}
+
+	prop = component->getProperty(args[1]);
+	if (!prop) {
+		return "Unknown property";
+	}
+
+	return prop->type();
+}
+
+std::string ComponentInformer::getPropertyToolTip(std::vector<std::string> args) {
+	if (args.size() != 2) {
+		return "No component name specified.";
+	}
+
+	Base::Component * component;
+	Base::PropertyInterface * prop;
+
+	try {
+		component = m_component_manager.getComponent(args[0]);
+	}
+	catch(...) {
+		return "Component not found";
+	}
+
+	prop = component->getProperty(args[1]);
+	if (!prop) {
+		return "Unknown property";
+	}
+
+	return prop->toolTip();
 }
 
 std::string ComponentInformer::setProperty(std::vector<std::string> args) {
