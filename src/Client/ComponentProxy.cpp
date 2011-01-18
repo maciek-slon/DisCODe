@@ -7,6 +7,43 @@ ComponentProxy::ComponentProxy(Client * client, const std::string & name) : m_cl
 
 }
 
+void ComponentProxy::refreshPropertyConstraints(int i) {
+	std::string request;
+	request += "getPropertyConstraints";
+	request += ":";
+	request += m_name + ":";
+	request += properties[i];
+
+	std::vector<std::string> consts;
+
+	std::string str = m_client->send(request);
+
+	size_t start = 0, end = 0;
+	std::string separator = "\n";
+
+	std::string tmp;
+
+	while (end != std::string::npos) {
+		end = str.find(separator, start);
+
+		// If at end, use length=maxLength.  Else use length=end-start.
+		tmp = str.substr(start, (end == std::string::npos) ? std::string::npos : end - start);
+
+		if (tmp.empty())
+			break;
+
+		consts.push_back(tmp);
+
+		std::cout << tmp << "\n";
+
+
+		// If at end, use start=maxSize.  Else use start=end+delimiter.
+		start = ((end > (std::string::npos - separator.size())) ? std::string::npos : end + separator.size());
+	}
+
+	constraints.push_back(consts);
+}
+
 void ComponentProxy::refresh() {
 	std::string request;
 	request += "listProperties";
@@ -21,6 +58,7 @@ void ComponentProxy::refresh() {
 	std::string tmp;
 
 	properties.clear();
+	constraints.clear();
 
 	while (end != std::string::npos) {
 		end = str.find(separator, start);
@@ -33,14 +71,7 @@ void ComponentProxy::refresh() {
 
 		properties.push_back(tmp);
 
-		/*request = "getProperty";
-		request += ":";
-		request += m_name;
-		request += ":";
-		request += tmp;
-
-		std::string val = m_client->send(request);
-		properties[tmp] = val;*/
+		refreshPropertyConstraints(properties.size()-1);
 
 		// If at end, use start=maxSize.  Else use start=end+delimiter.
 		start = ((end > (std::string::npos - separator.size())) ? std::string::npos : end + separator.size());

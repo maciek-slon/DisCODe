@@ -27,6 +27,8 @@ public:
 
 	std::string getPropertyToolTip(std::vector<std::string> args);
 
+	std::string getPropertyConstraints(std::vector<std::string> args);
+
 	std::string listHandlers(std::vector<std::string> args);
 	std::string triggerHandler(std::vector<std::string> args);
 

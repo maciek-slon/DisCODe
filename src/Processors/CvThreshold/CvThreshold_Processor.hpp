@@ -13,6 +13,7 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
+#include "Property.hpp"
 
 #include <cv.h>
 #include <highgui.h>
@@ -157,10 +158,10 @@ public:
 	/*!
 	 * Return window properties
 	 */
-	Base::Props * getProperties()
-	{
-		return &props;
-	}
+//	Base::Props * getProperties()
+//	{
+//		return &props;
+//	}
 
 protected:
 
@@ -209,6 +210,50 @@ protected:
 
 	/// Threshold properties
 	ThresholdProps props;
+
+private:
+	int m_type;
+
+	void onTypeChanged(const std::string & old_type, const std::string & new_type);
+
+	int str2type(const std::string & s)
+	{
+		if (s == "binary")
+			return THRESH_BINARY;
+		else if (s == "inv_binary")
+			return THRESH_BINARY_INV;
+		else if (s == "trunc")
+			return THRESH_TRUNC;
+		else if (s == "zero")
+			return THRESH_TOZERO;
+		else if (s == "inv_zero")
+			return THRESH_TOZERO_INV;
+		else
+			return THRESH_BINARY;
+	}
+
+	std::string type2str(int t)
+	{
+		switch (t)
+		{
+			case THRESH_BINARY:
+				return "binary";
+			case THRESH_BINARY_INV:
+				return "inv_binary";
+			case THRESH_TRUNC:
+				return "trunc";
+			case THRESH_TOZERO:
+				return "zero";
+			case THRESH_TOZERO_INV:
+				return "inv_zero";
+			default:
+				return "binary";
+		}
+	}
+
+	Base::Property<std::string> m_type_str;
+	Base::Property<double> m_thresh;
+	Base::Property<double> m_maxval;
 };
 
 }//: namespace CvThreshold

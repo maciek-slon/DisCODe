@@ -48,6 +48,9 @@ public:
 	std::string getPropertyType(int i);
 	std::string getPropertyToolTip(int i);
 
+	std::vector<std::string> getPropertyConstraints(int i) {
+		return constraints[i];
+	}
 
 	std::string name() const {
 		return m_name;
@@ -65,6 +68,10 @@ private:
 	std::vector<std::string> properties;
 
 	std::vector<std::string> handlers;
+
+	void refreshPropertyConstraints(int i);
+
+	std::vector<std::vector<std::string> > constraints;
 };
 
 }

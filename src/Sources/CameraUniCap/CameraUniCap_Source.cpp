@@ -18,8 +18,12 @@ namespace CameraUniCap {
 #define MAX_FORMATS 64
 #define MAX_PROPERTIES 64
 
-CameraUniCap_Source::CameraUniCap_Source(const std::string & name) : Base::Component(name) {
-
+CameraUniCap_Source::CameraUniCap_Source(const std::string & name) : Base::Component(name),
+	m_buffer_type("buffer/type", boost::bind(&CameraUniCap_Source::onBufferTypeCahnged, this, _1, _2), "SYSTEM", "combo")
+{
+	m_buffer_type.addConstraint("SYSTEM");
+	m_buffer_type.addConstraint("USER");
+	m_buffer_type.setToolTip("Buffer type");
 }
 
 CameraUniCap_Source::~CameraUniCap_Source() {
@@ -39,6 +43,8 @@ bool CameraUniCap_Source::onInit() {
 	bool device_found = false;
 
 	unicap_status_t status = STATUS_SUCCESS;
+
+	registerProperty(m_buffer_type);
 
 	LOG(LINFO) << "CameraUniCap_Source::initialize()\n";
 	newImage = registerEvent("newImage");
@@ -248,8 +254,6 @@ bool CameraUniCap_Source::onFinish() {
 }
 
 bool CameraUniCap_Source::onStep() {
-	unicap_queue_buffer(handle, &buffer); // (4)
-
 	unicap_data_buffer_t * returned_buffer;
 
 	//LOG(LNOTICE) << "1";
@@ -294,6 +298,11 @@ bool CameraUniCap_Source::onStart() {
 		LOG(LERROR) << "Failed to start capture on device: "	<< device.identifier << '\n';
 		return false;
 	}
+
+
+	unicap_queue_buffer(handle, &buffer); // (4)
+
+
 	return true;
 }
 
@@ -330,6 +339,11 @@ void CameraUniCap_Source::new_frame_cb(unicap_event_t event,
 
 }
 
-}
+void CameraUniCap_Source::onBufferTypeCahnged(const std::string & old_type, const std::string & new_type) {
 
 }
+
+
+} //: CameraUniCap
+
+} //: Sources

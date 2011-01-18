@@ -19,6 +19,8 @@ void ComponentInformer::registerHandlers(CommandInterpreter & ci) {
 	ci.addHandler("getPropertyType", boost::bind(&ComponentInformer::getPropertyType,  this, _1));
 	ci.addHandler("getPropertyToolTip", boost::bind(&ComponentInformer::getPropertyToolTip,  this, _1));
 
+	ci.addHandler("getPropertyConstraints", boost::bind(&ComponentInformer::getPropertyConstraints,  this, _1));
+
 	ci.addHandler("listHandlers", boost::bind(&ComponentInformer::listHandlers,  this, _1));
 	ci.addHandler("triggerHandler", boost::bind(&ComponentInformer::triggerHandler,  this, _1));
 }
@@ -38,6 +40,39 @@ std::string ComponentInformer::listProperties(std::vector<std::string> args) {
 	}
 
 	std::string rep = component->listProperties();
+
+	if (rep.empty())
+		rep = "\n";
+
+	return rep;
+}
+
+std::string ComponentInformer::getPropertyConstraints(std::vector<std::string> args) {
+	if (args.size() != 2) {
+		return "No component name specified.";
+	}
+
+	Base::Component * component;
+	Base::PropertyInterface * prop;
+
+	try {
+		component = m_component_manager.getComponent(args[0]);
+	}
+	catch(...) {
+		return "Component not found";
+	}
+
+	prop = component->getProperty(args[1]);
+	if (!prop) {
+		return "Unknown property";
+	}
+
+	std::string rep;
+
+	int cc = prop->countConstraints();
+	for (int i = 0; i < cc; ++i) {
+		rep += prop->getConstraint(i) + "\n";
+	}
 
 	if (rep.empty())
 		rep = "\n";

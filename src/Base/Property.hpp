@@ -57,6 +57,18 @@ public:
 		m_tool_tip = tool_tip;
 	}
 
+	void addConstraint(const std::string & str) {
+		m_constraints.push_back(str);
+	}
+
+	int countConstraints() const {
+		return m_constraints.size();
+	}
+
+	std::string getConstraint(int i) const {
+		return m_constraints[i];
+	}
+
 private:
 	/// property name
 	std::string name_;
@@ -64,6 +76,8 @@ private:
 	bool persistent;
 
 	std::string m_tool_tip;
+
+	std::vector<std::string> m_constraints;
 };
 
 /*!
