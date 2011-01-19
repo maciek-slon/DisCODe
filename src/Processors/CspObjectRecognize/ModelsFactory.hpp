@@ -22,9 +22,9 @@ namespace CspObjectRecognize {
  * Model file has the following form.
  * <models>
  * 	<model1 numberOfVertices="3">
- *		<monstraints>
+ *		<constraints>
  *		<c1 type="" v1="0" v2="1"/>
- *		</monstraints>
+ *		</constraints>
  * 	</model1>
  * 	<model2>
  * 	</model2>
@@ -40,6 +40,8 @@ public:
 	std::vector<boost::shared_ptr<ObjectModel> > loadModels();
 private:
 	std::string modelsFilename;
+
+	boost::shared_ptr<ObjectModel> buildObjectModel(const boost::property_tree::ptree& node);
 
 };
 

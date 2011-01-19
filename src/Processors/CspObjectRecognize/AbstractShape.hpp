@@ -17,6 +17,7 @@ class AbstractShape
 public:
 	AbstractShape();
 	virtual ~AbstractShape();
+	int getType();
 };
 
 }

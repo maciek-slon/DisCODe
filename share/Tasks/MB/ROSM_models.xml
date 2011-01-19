@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <models>
-	<modelik1>
+	<modelik1 numberOfVertices="4">
 	asdf
 	</modelik1>
-	<modelik2>
+	<modelik2 numberOfVertices="3">
 	qwer
 	</modelik2>
 	<!-- -->

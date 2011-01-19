@@ -8,7 +8,6 @@
 #include "AbstractShape.hpp"
 
 namespace Processors {
-
 namespace CspObjectRecognize {
 
 AbstractShape::AbstractShape()
@@ -22,6 +21,9 @@ AbstractShape::~AbstractShape()
 	// TODO Auto-generated destructor stub
 }
 
+int AbstractShape::getType(){
+	return 0;
 }
 
-}
+} // namespace CspObjectRecognize
+} // namespace Processors

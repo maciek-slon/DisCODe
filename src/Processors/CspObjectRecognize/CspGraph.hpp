@@ -62,7 +62,12 @@ class AbstractConstraint;
 class AbstractShape;
 
 // TODO: replace it with something reasonable
-class ShapeSegments;
+//class ShapeSegments;
+typedef std::deque<AbstractShape *> ShapeSegments;
+//typedef deque<AbstractShape *>::iterator ShapesQueueIterator;
+//typedef vector<ShapeSegments *> ShapeSegmentsVector;
+
+
 typedef std::vector<AbstractShape *> ShapeVector;
 
 typedef std::vector <AbstractConstraint *> ConstraintVector;
@@ -122,7 +127,7 @@ public:
 	CspGraph();
 	virtual ~CspGraph();
 
-	bool Init(int mandatoryVertex, int obligatoryVertex, bool empty);
+	bool Init(int mandatoryVertexNum, int optionalVertex, bool empty);
 	//przeszukiwanie grafu
 	bool InitSearchGraph();
 	//mapa krawedzi wychodzacych i przychodzacaych do wezla
@@ -160,13 +165,13 @@ public:
 	void Clear(uint from, uint to);
 	int NumEmptyMandatoryVertices();
 	int NumMandatoryVertices();
-	int NumEmptyObligatoryVertices();
-	int NumObligatoryVertices();
+	int NumEmptyOptionalVertices();
+	int NumOptionalVertices();
 	ShapeVector &GetUsedShapesVector();
 	ShapeVector &GetAllUsedShapesVector();
 	bool FindInMandatory(Vertex u);
-	bool FindInObligatory(Vertex u);
-	bool CheckConstraint(AbstractConstraint *constraint, Vertex u, AbstractShape *shape);
+	bool FindInOptional(Vertex u);
+	bool checkConstraint(AbstractConstraint *constraint, Vertex u, AbstractShape *shape);
 	VertexVector GetMandatoryVertexFrom(uint u, uint v);
 	VertexQueue GetMandatoryVertexFrom(Vertex start, Vertex stop, AbstractConstraint *constraint);
 	static bool ContainsElement(ShapesStack shapes, AbstractShape *);
@@ -174,10 +179,10 @@ public:
 	bool GetEmpty();
 	void Show();
 	void ShowMandatory();
-	void ShowObligatory();
+	void ShowOptional();
 	void ReturnObjects(ShapeSegments *shapeSegments);
 	int GetDomainParent();
-	bool CheckConstraints(Vertex u, AbstractShape *shape);
+	bool checkConstraints(Vertex u, AbstractShape *shape);
 private:
 	Graph g;
 	VertexVector vertices;
@@ -194,8 +199,8 @@ private:
 	EdgeMap outputEdgeMap;
 	EdgeMap inputEdgeMap;
 	int numOfVertex;
-	bool CheckConstraint(Vertex u, Vertex v, Edge e);
-	bool CheckConstraint(AbstractShape *first, AbstractShape *second, Edge e);
+	bool checkConstraint(Vertex u, Vertex v, Edge e);
+	bool checkConstraint(AbstractShape *first, AbstractShape *second, Edge e);
 	ShapeVector usedShapes;
 	//zmienna informujac czy wstawiamy do grafu zaslepki
 	bool empty;
@@ -208,7 +213,7 @@ private:
 	EdgeVector outputEdgeVector;
 	EdgeVector inputEdgeVector;
 	VertexVector returnedMandatoryVertex;
-	VertexVector returnedObligatoryVertex;
+	VertexVector returnedOptionalVertex;
 	VertexVector returnedVertex;
 };
 

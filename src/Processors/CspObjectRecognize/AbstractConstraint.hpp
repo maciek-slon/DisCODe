@@ -8,19 +8,22 @@
 #ifndef ABSTRACTCONSTRAINT_HPP_
 #define ABSTRACTCONSTRAINT_HPP_
 
-namespace Processors {
+#include "AbstractShape.hpp"
 
+namespace Processors {
 namespace CspObjectRecognize {
+
+class AbstractShape;
 
 class AbstractConstraint
 {
 public:
 	AbstractConstraint();
 	virtual ~AbstractConstraint();
+	bool isSatisifed(AbstractShape *first,AbstractShape *second);
 };
 
-}
-
-}
+} // namespace Processors
+} // namespace CspObjectRecognize
 
 #endif /* ABSTRACTCONSTRAINT_HPP_ */

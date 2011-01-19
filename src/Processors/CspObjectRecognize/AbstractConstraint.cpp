@@ -22,6 +22,9 @@ AbstractConstraint::~AbstractConstraint()
 	// TODO Auto-generated destructor stub
 }
 
+bool AbstractConstraint::isSatisifed(AbstractShape *first,AbstractShape *second){
+	return false;
 }
 
-}
+} // namespace Processors
+} // namespace CspObjectRecognize

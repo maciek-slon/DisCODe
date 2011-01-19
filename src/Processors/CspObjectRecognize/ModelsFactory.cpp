@@ -42,13 +42,31 @@ std::vector <boost::shared_ptr <ObjectModel> > ModelsFactory::loadModels()
 	LOG(LFATAL) << "ModelsFactory::createModels(): " << modelsFilename << " method not yet implemented.\n";
 
 	ptree pt;
-    read_xml(modelsFilename, pt);
+	read_xml(modelsFilename, pt, boost::property_tree::xml_parser::no_comments);
 
-    BOOST_FOREACH(ptree::value_type &v, pt.get_child("models")){
-    	LOG(LFATAL) << "ModelsFactory::loadModels(): " << v.second.data();
-    }
+	BOOST_FOREACH(ptree::value_type &v, pt.get_child("models"))
+				{
+					string name = v.first;
+					ptree node = v.second;
+					LOG(LTRACE) << "Loading model " << name << endl;
+					models.push_back(buildObjectModel(node));
+					LOG(LTRACE) << "Model " << name << " loaded.\n";
+				}
 
 	return models;
+}
+
+boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const ptree& node)
+{
+	boost::shared_ptr <ObjectModel> model = boost::shared_ptr <ObjectModel>(new ObjectModel);
+	int numberOfVertices = node.get<int>("<xmlattr>.numberOfVertices");
+	if(numberOfVertices < 2){
+		throw runtime_error("ModelsFactory::buildObjectModel(): numberOfVertices < 2");
+	}
+
+	LOG(LTRACE) << "numberOfVertices="<<numberOfVertices<<endl;
+
+	return model;
 }
 
 } // namespace CspObjectRecognize
