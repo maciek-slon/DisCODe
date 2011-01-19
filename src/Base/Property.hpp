@@ -12,6 +12,7 @@
 #include <boost/function.hpp>
 
 #include <typeinfo>
+#include <vector>
 
 namespace Base {
 

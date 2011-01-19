@@ -56,7 +56,7 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 			} else if (ptype == "range") {
 				QWidget * w = new QWidget;
 				QHBoxLayout * lay = new QHBoxLayout;
-				lay->setSpacing(2);
+				lay->setSpacing(3);
 				lay->setMargin(0);
 
 				QSlider * slider = new QSlider;
@@ -85,6 +85,10 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 
 				connect(slider, SIGNAL(valueChanged(int)), signalMapper, SLOT (map()));
 
+				QFrame * line = new QFrame;
+				line->setFrameShape(QFrame::VLine);
+				line->setFrameShape(QFrame::Sunken);
+				lay->addWidget(line);
 				lay->addWidget(spin);
 
 				w->setLayout(lay);
