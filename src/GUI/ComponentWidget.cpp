@@ -87,7 +87,7 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 
 				QFrame * line = new QFrame;
 				line->setFrameShape(QFrame::VLine);
-				line->setFrameShape(QFrame::Sunken);
+				line->setFrameStyle(QFrame::Sunken);
 				lay->addWidget(line);
 				lay->addWidget(spin);
 
