@@ -6,7 +6,7 @@
 		</Source>
 		
 		<Proc type="CvThreshold" thread="Thread1" group="s1">
-			<type>binary</type>
+			<type>trunc</type>
 			<maxval>192</maxval>
 			<thresh>128</thresh>	
 		</Proc>

@@ -80,10 +80,22 @@ private:
 	std::vector<std::string> m_constraints;
 };
 
+template <typename T>
+class LexicalTranslator {
+public:
+	static std::string toStr(const T & val) {
+		return boost::lexical_cast<std::string>(val);
+	}
+
+	static T fromStr(const std::string & str) {
+		return boost::lexical_cast<T>(str);
+	}
+};
+
 /*!
  *
  */
-template < class T >
+template < class T , class Translator = LexicalTranslator<T> >
 class Property : public PropertyInterface
 {
 public:
@@ -141,7 +153,7 @@ public:
 	 * @return string representation of current value.
 	 */
 	virtual std::string store() {
-		return boost::lexical_cast<std::string>(data);
+		return Translator::toStr(data);
 	}
 
 	/*!
@@ -151,7 +163,7 @@ public:
 	 */
 	virtual void retrieve(const std::string & str) {
 		T old = data;
-		data = boost::lexical_cast<T>(str);
+		data = Translator::fromStr(str);
 		if (m_onChange)
 			m_onChange(old, data);
 	}

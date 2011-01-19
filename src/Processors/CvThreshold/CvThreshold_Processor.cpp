@@ -32,6 +32,10 @@ CvThreshold_Processor::CvThreshold_Processor(const std::string & name) : Base::C
 
 	m_maxval.addConstraint("0");
 	m_maxval.addConstraint("255");
+
+	registerProperty(m_type_str);
+	registerProperty(m_thresh);
+	registerProperty(m_maxval);
 }
 
 CvThreshold_Processor::~CvThreshold_Processor()
@@ -53,9 +57,6 @@ bool CvThreshold_Processor::onInit()
 	registerStream("out_img", &out_img);
 
 
-	registerProperty(m_type_str);
-	registerProperty(m_thresh);
-	registerProperty(m_maxval);
 
 	return true;
 }

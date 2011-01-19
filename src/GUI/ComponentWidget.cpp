@@ -49,6 +49,8 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 
 				combo->addItems(consts);
 
+				combo->setCurrentIndex(combo->findText(proxy->getPropertyValue(i).c_str()));
+
 				connect(combo, SIGNAL(currentIndexChanged(int)), signalMapper, SLOT (map()));
 				widget = combo;
 			} else if (ptype == "range") {

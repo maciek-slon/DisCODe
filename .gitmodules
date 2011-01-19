@@ -3,4 +3,4 @@
 	url = http://github.com/mateuszpruchniak/gpuprocessor.git
 [submodule "src/Processors/MS"]
 	path = src/Processors/MS
-	url = git@github.com:maciek-slon/DisCODe-components.git
+	url = https://maciek-slon@github.com/maciek-slon/DisCODe-components.git
