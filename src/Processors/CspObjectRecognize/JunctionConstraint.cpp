@@ -12,8 +12,9 @@
 namespace Processors {
 namespace CspObjectRecognize {
 
-JunctionConstraint::JunctionConstraint()
+JunctionConstraint::JunctionConstraint(const boost::property_tree::ptree& node)
 {
+	maxDistance = node.get<double>("maxDistance", 5.0);
 }
 
 JunctionConstraint::~JunctionConstraint()
@@ -27,8 +28,6 @@ bool JunctionConstraint::isSatisifed(boost::shared_ptr<AbstractShape> first, boo
 	if (firstLine == NULL || secondLine == NULL) {
 		return false;
 	}
-
-	double maxDistance = 5.0;
 
 	cv::Point line1p1 = firstLine->getLine().getP1();
 	cv::Point line1p2 = firstLine->getLine().getP2();

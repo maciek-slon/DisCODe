@@ -29,7 +29,7 @@ bool ObjectModel::findInstances(ShapeSegments* segments)
 {
 	bool found = false;
 	if (graph->FindCspShape(segments)) {
-		LOG(LFATAL) << "ObjectModel::findInstances(): something found.\n";
+		LOG(LFATAL) << "ObjectModel::findInstances(): something found.";
 		foundObject = graph->GetAllUsedShapesVector();
 		found = true;
 	} else {

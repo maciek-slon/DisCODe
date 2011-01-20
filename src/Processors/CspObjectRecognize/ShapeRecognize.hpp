@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <map>
 #include "ObjectModel.hpp"
 
 #include "../GrayImageSegmentation/SegmentedImage.hpp"
@@ -28,11 +29,11 @@ public:
 	 * Every model will be checked.s
 	 * @param models
 	 */
-	void setModels(std::vector<boost::shared_ptr<ObjectModel> > models);
+	void setModels(const std::map <std::string, boost::shared_ptr <ObjectModel> >& models);
 
 	void recognize(Types::Segmentation::SegmentedImage& si);
 private:
-	std::vector<boost::shared_ptr<ObjectModel> > models;
+	std::map <std::string, boost::shared_ptr <ObjectModel> > models;
 };
 
 } // namespace CspObjectRecognize

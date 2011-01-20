@@ -28,6 +28,8 @@ private:
 	ShapeVector foundObject;
 };
 
+typedef std::map <std::string, boost::shared_ptr <ObjectModel> > ModelsMap;
+
 }//: namespace CspObjectRecognize
 }//: namespace Processors
 

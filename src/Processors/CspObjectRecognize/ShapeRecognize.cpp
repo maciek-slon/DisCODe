@@ -27,7 +27,7 @@ ShapeRecognize::~ShapeRecognize()
 {
 }
 
-void ShapeRecognize::setModels(std::vector <boost::shared_ptr <ObjectModel> > models)
+void ShapeRecognize::setModels(const std::map <std::string, boost::shared_ptr <ObjectModel> >& models)
 {
 	this->models = models;
 }
@@ -43,13 +43,17 @@ void ShapeRecognize::recognize(Types::Segmentation::SegmentedImage& si)
 											boost::shared_ptr <AbstractShape>(new LineSegment(line));
 									segments.push_back(shape);
 								}
-					LOG(LFATAL) << "ShapeRecognize::recognize(): segments.size() = " << segments.size();
-					BOOST_FOREACH(boost::shared_ptr<ObjectModel> m, models)
+					LOG(LFATAL) << "ShapeRecognize::recognize(): trying to recognize segoment: segments.size() = "
+							<< segments.size();
+					//BOOST_FOREACH(boost::shared_ptr<ObjectModel> m, models)
+					BOOST_FOREACH(ModelsMap::value_type m, models )
 								{
-									if (m->findInstances(&segments)) {
-										ShapeVector shapeVector = m->getFoundObject();
-										LOG(LFATAL) << "ShapeRecognize::recognize(): shapeVector.size() = "
-												<< shapeVector.size();
+									string modelName = m.first;
+									boost::shared_ptr <ObjectModel> objectModel = m.second;
+									if (objectModel->findInstances(&segments)) {
+										ShapeVector shapeVector = objectModel->getFoundObject();
+										LOG(LFATAL) << "ShapeRecognize::recognize(): instance of " + modelName
+												+ " found: shapeVector.size() = " << shapeVector.size();
 									}
 								}
 				}

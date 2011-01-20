@@ -8,6 +8,7 @@
 #ifndef MODELSFACTORY_HPP_
 #define MODELSFACTORY_HPP_
 
+#include <map>
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
@@ -37,12 +38,12 @@ public:
 	virtual ~ModelsFactory();
 
 	void setModelsFilename(const std::string& modelsFilename);
-	std::vector<boost::shared_ptr<ObjectModel> > loadModels();
+	ModelsMap loadModels();
 private:
 	std::string modelsFilename;
 
 	boost::shared_ptr<ObjectModel> buildObjectModel(const boost::property_tree::ptree& node);
-
+	boost::shared_ptr<AbstractConstraint> buildConstraint(const boost::property_tree::ptree& node);
 };
 
 } // namespace CspObjectRecognize

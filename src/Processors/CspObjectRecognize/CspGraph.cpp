@@ -742,25 +742,25 @@ ShapeVector &CspGraph::GetUsedShapesVector()
  */
 ShapeVector &CspGraph::GetAllUsedShapesVector()
 {
-	LOG(LFATAL) << "\n\nCspGraph::GetAllUsedShapesVector() begin";
+//	LOG(LFATAL) << "\n\nCspGraph::GetAllUsedShapesVector() begin";
 	boost::shared_ptr <AbstractShape> tmp;
 	usedShapes.clear();
 
 	for (uint i = 0; i < mandatoryVertices.size(); i++) {
-		LOG(LFATAL) << "mandatoryVertices";
+//		LOG(LFATAL) << "mandatoryVertices";
 		if ((tmp = GetVertexValue(mandatoryVertices[i])) != NULL) {
-			LOG(LFATAL) << "mandatoryVertices ....";
+//			LOG(LFATAL) << "mandatoryVertices ....";
 			usedShapes.push_back(tmp);
 		}
 	}
 	for (uint i = 0; i < optionalVertices.size(); i++) {
-		LOG(LFATAL) << "optionalVertices";
+//		LOG(LFATAL) << "optionalVertices";
 		if ((tmp = GetVertexValue(optionalVertices[i])) != NULL) {
-			LOG(LFATAL) << "optionalVertices ....";
+//			LOG(LFATAL) << "optionalVertices ....";
 			usedShapes.push_back(tmp);
 		}
 	}
-	LOG(LFATAL) << "CspGraph::GetAllUsedShapesVector() end\n\n";
+//	LOG(LFATAL) << "CspGraph::GetAllUsedShapesVector() end\n\n";
 	return usedShapes;
 }
 /**
