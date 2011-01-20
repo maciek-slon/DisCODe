@@ -5,9 +5,10 @@
  *      Author: mateusz
  */
 
-#include "CspGraph.hpp"
-
 #include <iostream>
+
+#include "CspGraph.hpp"
+#include "Logger.hpp"
 
 namespace Processors {
 namespace CspObjectRecognize {
@@ -566,6 +567,7 @@ bool CspGraph::searchGraph(ShapeSegments *stack,SearchVector &searchVector)
 	else if(stack->empty()&&searchVector.size()>0)//jest za malo elementów niż wezlow w grafie
 	{
 //		sprawdzamy czy mamy jakies wymagane czy nie
+		returnedValue=true;
 		for(uint i=0;i<searchVector.size();i++)
 		{
 			PairSearch sv = searchVector[i];
@@ -576,7 +578,6 @@ bool CspGraph::searchGraph(ShapeSegments *stack,SearchVector &searchVector)
 				break;
 			}
 		}
-		returnedValue=true;
 	}
 	else//graf zostal wypelniony
 	{
@@ -836,23 +837,29 @@ ShapeVector &CspGraph::GetUsedShapesVector()
  */
 ShapeVector &CspGraph::GetAllUsedShapesVector()
 {
+	LOG(LFATAL) << "\n\nCspGraph::GetAllUsedShapesVector() begin";
 	boost::shared_ptr<AbstractShape> tmp;
 	usedShapes.clear();
 
 	for(uint i=0;i<mandatoryVertices.size();i++)
 	{
+		LOG(LFATAL) << "mandatoryVertices";
 		if((tmp = GetVertexValue(mandatoryVertices[i]))!=NULL)
 		{
+			LOG(LFATAL) << "mandatoryVertices ....";
 			usedShapes.push_back(tmp);
 		}
 	}
 	for(uint i=0;i<optionalVertices.size();i++)
 	{
+		LOG(LFATAL) << "optionalVertices";
 		if((tmp = GetVertexValue(optionalVertices[i]))!=NULL)
 		{
+			LOG(LFATAL) << "optionalVertices ....";
 			usedShapes.push_back(tmp);
 		}
 	}
+	LOG(LFATAL) << "CspGraph::GetAllUsedShapesVector() end\n\n";
 	return usedShapes;
 }
 /**

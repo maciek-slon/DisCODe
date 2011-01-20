@@ -64,44 +64,46 @@ boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const ptree& nod
 {
 	boost::shared_ptr <CspGraph> graph = boost::shared_ptr <CspGraph>(new CspGraph);
 
-		boost::shared_ptr<AbstractConstraint> junctionLine = boost::shared_ptr<AbstractConstraint>(new JunctionConstraint);
-		boost::shared_ptr<AbstractConstraint> perpendicularLine = boost::shared_ptr<AbstractConstraint>(new LinesAngleConstraint);
-		boost::shared_ptr<AbstractConstraint> parallelLine = boost::shared_ptr<AbstractConstraint>(new LinesAngleConstraint);
-		boost::shared_ptr<AbstractConstraint> lineLength = boost::shared_ptr<AbstractConstraint>(new LinesAngleConstraint);
+	boost::shared_ptr <AbstractConstraint> junctionLine =
+			boost::shared_ptr <AbstractConstraint>(new JunctionConstraint);
+//	boost::shared_ptr <AbstractConstraint> perpendicularLine =
+//			boost::shared_ptr <AbstractConstraint>(new LinesAngleConstraint);
+//	boost::shared_ptr <AbstractConstraint> parallelLine =
+//			boost::shared_ptr <AbstractConstraint>(new LinesAngleConstraint);
+//	boost::shared_ptr <AbstractConstraint> lineLength =
+//			boost::shared_ptr <AbstractConstraint>(new LinesAngleConstraint);
 
+	//graph->Clear();
+	graph->init(4, 0, true);
 
-		//graph->Clear();
-		graph->init(4, 0, true);
+	VertexVector vertexVector = graph->GetVertex();
 
-		VertexVector vertexVector = graph->GetVertex();
+	graph->AddEdge(vertexVector[0], vertexVector[1], junctionLine);
+//	graph->AddEdge(vertexVector[0], vertexVector[1], perpendicularLine);
 
-		graph->AddEdge(vertexVector[0], vertexVector[1], junctionLine);
-		graph->AddEdge(vertexVector[0], vertexVector[1], perpendicularLine);
+	graph->AddEdge(vertexVector[0], vertexVector[3], junctionLine);
+//	graph->AddEdge(vertexVector[0], vertexVector[3], perpendicularLine);
 
-		graph->AddEdge(vertexVector[0], vertexVector[3], junctionLine);
-		graph->AddEdge(vertexVector[0], vertexVector[3], perpendicularLine);
+//	graph->AddEdge(vertexVector[0], vertexVector[2], parallelLine);
+//	graph->AddEdge(vertexVector[0], vertexVector[2], lineLength);
 
-		graph->AddEdge(vertexVector[0], vertexVector[2], parallelLine);
-		graph->AddEdge(vertexVector[0], vertexVector[2], lineLength);
+	graph->AddEdge(vertexVector[1], vertexVector[2], junctionLine);
+//	graph->AddEdge(vertexVector[1], vertexVector[2], perpendicularLine);
 
-		graph->AddEdge(vertexVector[1], vertexVector[2], junctionLine);
-		graph->AddEdge(vertexVector[1], vertexVector[2], perpendicularLine);
+//	graph->AddEdge(vertexVector[1], vertexVector[3], parallelLine);
+//	graph->AddEdge(vertexVector[1], vertexVector[3], lineLength);
 
-		graph->AddEdge(vertexVector[1], vertexVector[3], parallelLine);
-		graph->AddEdge(vertexVector[1], vertexVector[3], lineLength);
+	graph->AddEdge(vertexVector[2], vertexVector[3], junctionLine);
+//	graph->AddEdge(vertexVector[2], vertexVector[3], perpendicularLine);
 
-		graph->AddEdge(vertexVector[2], vertexVector[3], junctionLine);
-		graph->AddEdge(vertexVector[2], vertexVector[3], perpendicularLine);
-
-		graph->InitInputOutputEdgeMap();
-		//przeszukiwanie grafu
-		graph->InitSearchGraph();
-		//pierwsza sciezka
-		graph->AddSearchVertex(vertexVector[0], true);
-		graph->AddSearchVertex(vertexVector[1], true);
-		graph->AddSearchVertex(vertexVector[2], true);
-		graph->AddSearchVertex(vertexVector[3], false);
-
+	graph->InitInputOutputEdgeMap();
+	//przeszukiwanie grafu
+	graph->InitSearchGraph();
+	//pierwsza sciezka
+	graph->AddSearchVertex(vertexVector[0], true);
+	graph->AddSearchVertex(vertexVector[1], true);
+	graph->AddSearchVertex(vertexVector[2], true);
+	graph->AddSearchVertex(vertexVector[3], true);
 
 	boost::shared_ptr <ObjectModel> model = boost::shared_ptr <ObjectModel>(new ObjectModel(graph));
 	int numberOfVertices = node.get <int> ("<xmlattr>.numberOfVertices");
@@ -110,7 +112,6 @@ boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const ptree& nod
 	}
 
 	LOG(LTRACE) << "numberOfVertices=" << numberOfVertices << endl;
-
 
 	return model;
 }

@@ -54,6 +54,14 @@ public:
 		return fabs(A * p.x + B * p.y + C) / sqrt(A * A + B * B);
 	}
 
+
+	cv::Point getP1(){
+		return p1;
+	}
+	cv::Point getP2(){
+		return p2;
+	}
+
 private:
 
 	void computeLineEquation()

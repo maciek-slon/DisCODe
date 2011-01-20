@@ -13,7 +13,8 @@ namespace Processors {
 
 namespace CspObjectRecognize {
 
-ObjectModel::ObjectModel(boost::shared_ptr<CspGraph> graph) : graph(graph)
+ObjectModel::ObjectModel(boost::shared_ptr <CspGraph> graph) :
+	graph(graph)
 {
 	// TODO Auto-generated constructor stub
 
@@ -24,11 +25,22 @@ ObjectModel::~ObjectModel()
 	// TODO Auto-generated destructor stub
 }
 
-void ObjectModel::findInstances(ShapeSegments* segments)
+bool ObjectModel::findInstances(ShapeSegments* segments)
 {
-	if(graph->FindCspShape(segments)){
+	bool found = false;
+	if (graph->FindCspShape(segments)) {
 		LOG(LFATAL) << "ObjectModel::findInstances(): something found.\n";
+		foundObject = graph->GetAllUsedShapesVector();
+		found = true;
+	} else {
+		LOG(LFATAL) << "ObjectModel::findInstances(): nothing found.\n";
 	}
+	return found;
+}
+
+ShapeVector ObjectModel::getFoundObject()
+{
+	return foundObject;
 }
 
 } // namespace CspObjectRecognize

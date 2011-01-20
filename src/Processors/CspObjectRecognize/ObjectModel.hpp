@@ -21,9 +21,11 @@ class ObjectModel
 public:
 	ObjectModel(boost::shared_ptr<CspGraph> graph);
 	virtual ~ObjectModel();
-	void findInstances(ShapeSegments* segments);
+	bool findInstances(ShapeSegments* segments);
+	ShapeVector getFoundObject();
 private:
 	boost::shared_ptr<CspGraph> graph;
+	ShapeVector foundObject;
 };
 
 }//: namespace CspObjectRecognize
