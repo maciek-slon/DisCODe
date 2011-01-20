@@ -10,7 +10,6 @@
 #include "../Client/ComponentProxy.hpp"
 #include "../Client/DisCODeClient.hpp"
 
-#include "HostSelector.hpp"
 #include "WelcomePage.h"
 
 class QTreeWidgetItem;
@@ -38,12 +37,13 @@ public slots:
 
 	void on_actionConnect_triggered(bool checked);
 
-	void do_connect();
+	void do_connect(const QString & host,const QString & port);
 	void do_disconnect();
 
 private:
     Ui::MainWindow *ui;
 
+	bool tryToConnect(const QString & host, const QString & port);
 
 	DisCODe::Client * client;
 	DisCODe::TaskProxy * task;
@@ -52,7 +52,6 @@ private:
 
 	bool m_connected;
 
-	HostSelector hs;
 	WelcomePage wp;
 };
 

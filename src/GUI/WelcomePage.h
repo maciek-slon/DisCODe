@@ -13,11 +13,16 @@ public:
     ~WelcomePage();
 
 signals:
-	void do_connect_sig();
+	void do_connect_sig(const QString & host, const QString & port);
 
 public slots:
 	void on_btnConnect_clicked();
+	void on_btnConnectOk_clicked();
+	void on_btnConnectCancel_clicked();
+
 	void on_btnSpawn_clicked();
+	void on_btnSpawnOk_clicked();
+	void on_btnSpawnCancel_clicked();
 
 private:
     Ui::WelcomePageClass ui;

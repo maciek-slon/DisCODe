@@ -7,5 +7,6 @@
         <file alias="connecting">resources/Connect_established.png</file>
         <file alias="disconnect">resources/Connect_no.png</file>
         <file alias="wizard">resources/Nuvola_actions_wizard.png</file>
+        <file alias="cancel">resources/Nuvola_actions_cancel.png</file>
     </qresource>
 </RCC>

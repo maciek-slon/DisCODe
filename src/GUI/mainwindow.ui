@@ -29,13 +29,16 @@
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
       <widget class="QWidget" name="scrollAreaWidgetContents">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>297</width>
-         <height>198</height>
+         <width>302</width>
+         <height>204</height>
         </rect>
        </property>
       </widget>
@@ -49,7 +52,7 @@
      <x>0</x>
      <y>0</y>
      <width>563</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">

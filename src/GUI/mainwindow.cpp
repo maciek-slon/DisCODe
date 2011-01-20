@@ -20,9 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui->dockWidget->hide();
 	ui->dockWidget_2->hide();
+	ui->mainToolBar->hide();
+	ui->menuBar->hide();
 	ui->scrollArea->setWidget(&wp);
 
-	connect(&wp, SIGNAL(do_connect_sig()), this, SLOT(do_connect()));
+	connect(&wp, SIGNAL(do_connect_sig(const QString &, const QString &)), this, SLOT(do_connect(const QString &, const QString &)));
 }
 
 MainWindow::~MainWindow()
@@ -30,16 +32,33 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::do_connect() {
-	int res = hs.exec();
+bool MainWindow::tryToConnect(const QString & host, const QString & port) {
+	client = new DisCODe::Client(host.toStdString(), port.toStdString());
+	if (client->connected())
+		return true;
+	else {
+		delete client;
+		client = NULL;
+		QMessageBox msgBox;
+		msgBox.setWindowTitle("Error");
+		msgBox.setText(host + ":" + port + " - connection refused.");
+		msgBox.setStandardButtons(QMessageBox::Ok);
+		msgBox.setDefaultButton(QMessageBox::Ok);
+		msgBox.exec();
+		return false;
+	}
+}
 
-	if (res == QDialog::Accepted) {
-		setup(hs.getClient());
+void MainWindow::do_connect(const QString & host, const QString & port) {
+	if (tryToConnect(host, port)) {
+		setup(client);
 		m_connected = true;
 		ui->actionConnect->setIcon(QIcon(":/icons/disconnect"));
 
 		ui->dockWidget->show();
 		ui->dockWidget_2->show();
+		ui->mainToolBar->show();
+		ui->menuBar->show();
 		ui->scrollArea->takeWidget();
 	}
 }
@@ -62,6 +81,8 @@ void MainWindow::do_disconnect() {
 
 	ui->dockWidget->hide();
 	ui->dockWidget_2->hide();
+	ui->mainToolBar->hide();
+	ui->menuBar->hide();
 	ui->scrollArea->setWidget(&wp);
 }
 
@@ -110,6 +131,6 @@ void MainWindow::on_actionConnect_triggered(bool checked) {
 	if (m_connected) {
 		do_disconnect();
 	} else {
-		do_connect();
+		//do_connect();
 	}
 }
