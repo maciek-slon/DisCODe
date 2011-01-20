@@ -80,7 +80,7 @@ bool CspObjectRecognize_Processor::onStart()
 void CspObjectRecognize_Processor::onSegmentedImage()
 {
 	try {
-		LOG(LFATAL) << "CspObjectRecognize_Processor::onSegmentedImage()\n";
+		LOG(LTRACE) << "CspObjectRecognize_Processor::onSegmentedImage()\n";
 
 		if (in_segmentedImage.empty()) {
 			LOG(LWARNING) << "CspObjectRecognize_Processor::onSegmentedImage(): buffer empty.\n";

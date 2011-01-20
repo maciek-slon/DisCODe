@@ -44,7 +44,7 @@ ObjectInstanceVector ShapeRecognize::recognize(Types::Segmentation::SegmentedIma
 											boost::shared_ptr <AbstractShape>(new LineSegment(line));
 									segments.push_back(shape);
 								}
-					LOG(LINFO) << "ShapeRecognize::recognize(): trying to recognize segoment: segments.size() = "
+					LOG(LDEBUG) << "ShapeRecognize::recognize(): trying to recognize segoment: segments.size() = "
 							<< segments.size();
 
 

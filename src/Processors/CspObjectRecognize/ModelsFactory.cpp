@@ -41,7 +41,6 @@ void ModelsFactory::setModelsFilename(const std::string& modelsFilename)
 ModelsMap ModelsFactory::loadModels()
 {
 	ModelsMap models;
-	LOG(LFATAL) << "ModelsFactory::createModels(): " << modelsFilename << " method not yet implemented.\n";
 
 	ptree pt;
 	read_xml(modelsFilename, pt, boost::property_tree::xml_parser::no_comments);
@@ -50,12 +49,12 @@ ModelsMap ModelsFactory::loadModels()
 				{
 					string name = v.first;
 					ptree node = v.second;
-					LOG(LTRACE) << "Loading model " << name << endl;
+					LOG(LDEBUG) << "Loading model " << name << endl;
 					if (models.find(name) != models.end()) {
 						throw runtime_error("Model " + name + " is duplicated.");
 					}
 					models[name] = buildObjectModel(node);
-					LOG(LTRACE) << "Model " << name << " loaded.\n";
+					LOG(LDEBUG) << "Model " << name << " loaded.\n";
 				}
 
 	return models;
@@ -68,7 +67,7 @@ boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const ptree& nod
 		throw runtime_error("ModelsFactory::buildObjectModel(): numberOfVertices < 2");
 	}
 
-	LOG(LFATAL) << "numberOfVertices=" << numberOfVertices << endl;
+	LOG(LDEBUG) << "numberOfVertices=" << numberOfVertices << endl;
 	boost::shared_ptr <CspGraph> graph = boost::shared_ptr <CspGraph>(new CspGraph);
 	graph->init(numberOfVertices, 0, true);
 	VertexVector vertexVector = graph->GetVertex();
@@ -78,7 +77,7 @@ boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const ptree& nod
 				{
 					string constraintName = v.first;
 					ptree constraintNode = v.second;
-					LOG(LFATAL) << "Loading constraint: " << constraintName;
+					LOG(LDEBUG) << "Loading constraint: " << constraintName;
 					int fromIdx = constraintNode.get <int> ("<xmlattr>.from");
 					int toIdx = constraintNode.get <int> ("<xmlattr>.to");
 					if (fromIdx < 0 || fromIdx >= numberOfVertices) {
