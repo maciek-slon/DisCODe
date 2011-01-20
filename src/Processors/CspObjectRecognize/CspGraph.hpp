@@ -62,14 +62,7 @@ namespace CspObjectRecognize {
 class AbstractConstraint;
 class AbstractShape;
 
-// TODO: replace it with something reasonable
-//class ShapeSegments;
 typedef std::deque <boost::shared_ptr <AbstractShape> > ShapeSegments;
-//typedef deque<AbstractShape *>::iterator ShapesQueueIterator;
-//typedef vector<ShapeSegments *> ShapeSegmentsVector;
-
-
-typedef std::vector <boost::shared_ptr <AbstractShape> > ShapeVector;
 
 typedef std::vector <boost::shared_ptr <AbstractConstraint> > ConstraintVector;
 typedef boost::adjacency_list <boost::listS, boost::vecS, boost::undirectedS, boost::property <boost::vertex_shape_t,

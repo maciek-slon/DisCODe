@@ -63,7 +63,7 @@
 	<!-- Event connections -->
 	<Events>
 		<Event source="Keyboard.n_Pressed" destination="ImageSource.onTrigger"/>
-		<Event source="ImageSource.newImage" destination="Preview.onNewImage0" />
+		
 		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
 		<Event source="BGRToGray.newImage" destination="Preview.onNewImage1"/>
 		<Event source="BGRToGray.newImage" destination="GrayImageSegmentation.onNewImage"/>
@@ -75,6 +75,7 @@
 		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="LineSegments.onEdgesDetected"/>
 		<Event source="LineSegments.lineSegmentsEstimated" destination="Preview.onNewImage4"/>
 		<Event source="LineSegments.lineSegmentsEstimated" destination="CspObjectRecognize.onSegmentedImage"/>
+		<Event source="CspObjectRecognize.recognized" destination="Preview.onNewImage0" />
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -90,6 +91,7 @@
 		
 		<Preview>
 			<in_img0 type="in" group="ColorImageDataStream"/>
+			<in_draw0 type="in" group="RecognizedDC"/>
 			<in_img1 type="in" group="GrayImageDataStream"/>
 			<in_img2 type="in" group="AfterSegmentation"/>
 			<in_img3 type="in" group="EdgesDetectedImage"/>
@@ -126,6 +128,7 @@
 		
 		<CspObjectRecognize>
 			<in_segmentedImage type="in" group="LineSegmentsEstimated"/>
+			<out_recognizedDrawableContainer type="out" group="RecognizedDC"/>
 		</CspObjectRecognize>
 	</DataStreams>
 

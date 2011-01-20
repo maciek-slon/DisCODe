@@ -27,5 +27,10 @@ Types::Line& LineSegment::getLine()
 	return line;
 }
 
+void LineSegment::draw(cv::Mat &image, CvScalar color)
+{
+	line.draw(image, color);
+}
+
 } // namespace CspObjectRecognize
 } // namespace Processors

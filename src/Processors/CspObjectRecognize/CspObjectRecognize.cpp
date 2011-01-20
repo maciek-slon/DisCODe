@@ -12,6 +12,8 @@
 namespace Processors {
 namespace CspObjectRecognize {
 
+using Types::DrawableContainer;
+
 CspObjectRecognize_Processor::CspObjectRecognize_Processor(const std::string & name) :
 	Base::Component(name), modelsFilename("modelsFilename")
 {
@@ -36,6 +38,9 @@ bool CspObjectRecognize_Processor::onInit()
 
 	h_onSegmentedImage.setup(this, &CspObjectRecognize_Processor::onSegmentedImage);
 	registerHandler("onSegmentedImage", &h_onSegmentedImage);
+
+	registerStream("out_recognizedDrawableContainer", &out_recognizedDrawableContainer);
+	recognized = registerEvent("recognized");
 
 	//read models database
 	try {
@@ -84,9 +89,14 @@ void CspObjectRecognize_Processor::onSegmentedImage()
 
 		Types::Segmentation::SegmentedImage si = in_segmentedImage.read();
 
+		ObjectInstanceVector instances = shapeRegognize->recognize(si);
 
-
-		shapeRegognize->recognize(si);
+		DrawableContainer dc;
+		BOOST_FOREACH(boost::shared_ptr<ObjectInstance> inst, instances){
+			dc.add(inst->clone());
+		}
+		out_recognizedDrawableContainer.write(dc);
+		recognized->raise();
 
 	} catch (exception& e) {
 		LOG(LFATAL) << "CspObjectRecognize_Processor::onSegmentedImage(): exception: " << e.what();

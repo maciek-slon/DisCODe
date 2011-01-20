@@ -32,8 +32,9 @@ void ShapeRecognize::setModels(const std::map <std::string, boost::shared_ptr <O
 	this->models = models;
 }
 
-void ShapeRecognize::recognize(Types::Segmentation::SegmentedImage& si)
+ObjectInstanceVector ShapeRecognize::recognize(Types::Segmentation::SegmentedImage& si)
 {
+	ObjectInstanceVector instances;
 	BOOST_FOREACH(Segment& s, si.segments)
 				{
 					ShapeSegments segments;
@@ -43,20 +44,27 @@ void ShapeRecognize::recognize(Types::Segmentation::SegmentedImage& si)
 											boost::shared_ptr <AbstractShape>(new LineSegment(line));
 									segments.push_back(shape);
 								}
-					LOG(LFATAL) << "ShapeRecognize::recognize(): trying to recognize segoment: segments.size() = "
+					LOG(LINFO) << "ShapeRecognize::recognize(): trying to recognize segoment: segments.size() = "
 							<< segments.size();
-					//BOOST_FOREACH(boost::shared_ptr<ObjectModel> m, models)
+
+
+
 					BOOST_FOREACH(ModelsMap::value_type m, models )
 								{
 									string modelName = m.first;
 									boost::shared_ptr <ObjectModel> objectModel = m.second;
 									if (objectModel->findInstances(&segments)) {
 										ShapeVector shapeVector = objectModel->getFoundObject();
-										LOG(LFATAL) << "ShapeRecognize::recognize(): instance of " + modelName
+										boost::shared_ptr<ObjectInstance> inst = boost::shared_ptr<ObjectInstance>(new ObjectInstance(objectModel, shapeVector));
+										instances.push_back(inst);
+										LOG(LINFO) << "ShapeRecognize::recognize(): instance of " + modelName
 												+ " found: shapeVector.size() = " << shapeVector.size();
 									}
 								}
 				}
+
+	LOG(LDEBUG) << "ShapeRecognize::recognize(): found " << instances.size() << " instances.\n";
+	return instances;
 }
 
 } // namespace CspObjectRecognize

@@ -27,13 +27,10 @@ using boost::property_tree::read_xml;
 
 ModelsFactory::ModelsFactory()
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 ModelsFactory::~ModelsFactory()
 {
-	// TODO Auto-generated destructor stub
 }
 
 void ModelsFactory::setModelsFilename(const std::string& modelsFilename)
@@ -54,7 +51,7 @@ ModelsMap ModelsFactory::loadModels()
 					string name = v.first;
 					ptree node = v.second;
 					LOG(LTRACE) << "Loading model " << name << endl;
-					if(models.find(name) != models.end()){
+					if (models.find(name) != models.end()) {
 						throw runtime_error("Model " + name + " is duplicated.");
 					}
 					models[name] = buildObjectModel(node);
@@ -103,52 +100,7 @@ boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const ptree& nod
 		graph->AddSearchVertex(vertexVector[i], true);
 	}
 
-	boost::shared_ptr <ObjectModel> model = boost::shared_ptr <ObjectModel>(new ObjectModel(graph));
-
-	//	boost::shared_ptr <CspGraph> graph = boost::shared_ptr <CspGraph>(new CspGraph);
-	//
-	//	boost::shared_ptr <AbstractConstraint> junctionLine =
-	//			boost::shared_ptr <AbstractConstraint>(new JunctionConstraint);
-	////	boost::shared_ptr <AbstractConstraint> perpendicularLine =
-	////			boost::shared_ptr <AbstractConstraint>(new LinesAngleConstraint);
-	////	boost::shared_ptr <AbstractConstraint> parallelLine =
-	////			boost::shared_ptr <AbstractConstraint>(new LinesAngleConstraint);
-	////	boost::shared_ptr <AbstractConstraint> lineLength =
-	////			boost::shared_ptr <AbstractConstraint>(new LinesAngleConstraint);
-	//
-	//	//graph->Clear();
-	//	graph->init(4, 0, true);
-	//
-	//	VertexVector vertexVector = graph->GetVertex();
-	//
-	//	graph->AddEdge(vertexVector[0], vertexVector[1], junctionLine);
-	////	graph->AddEdge(vertexVector[0], vertexVector[1], perpendicularLine);
-	//
-	//	graph->AddEdge(vertexVector[0], vertexVector[3], junctionLine);
-	////	graph->AddEdge(vertexVector[0], vertexVector[3], perpendicularLine);
-	//
-	////	graph->AddEdge(vertexVector[0], vertexVector[2], parallelLine);
-	////	graph->AddEdge(vertexVector[0], vertexVector[2], lineLength);
-	//
-	//	graph->AddEdge(vertexVector[1], vertexVector[2], junctionLine);
-	////	graph->AddEdge(vertexVector[1], vertexVector[2], perpendicularLine);
-	//
-	////	graph->AddEdge(vertexVector[1], vertexVector[3], parallelLine);
-	////	graph->AddEdge(vertexVector[1], vertexVector[3], lineLength);
-	//
-	//	graph->AddEdge(vertexVector[2], vertexVector[3], junctionLine);
-	////	graph->AddEdge(vertexVector[2], vertexVector[3], perpendicularLine);
-	//
-	//	graph->InitInputOutputEdgeMap();
-	//	//przeszukiwanie grafu
-	//	graph->InitSearchGraph();
-	//	//pierwsza sciezka
-	//	graph->AddSearchVertex(vertexVector[0], true);
-	//	graph->AddSearchVertex(vertexVector[1], true);
-	//	graph->AddSearchVertex(vertexVector[2], true);
-	//	graph->AddSearchVertex(vertexVector[3], true);
-	//
-	//	boost::shared_ptr <ObjectModel> model = boost::shared_ptr <ObjectModel>(new ObjectModel(graph));
+	boost::shared_ptr <ObjectModel> model = boost::shared_ptr <ObjectModel>(new ObjectModel(graph, node));
 
 	return model;
 }

@@ -13,11 +13,10 @@ namespace Processors {
 
 namespace CspObjectRecognize {
 
-ObjectModel::ObjectModel(boost::shared_ptr <CspGraph> graph) :
+ObjectModel::ObjectModel(boost::shared_ptr <CspGraph> graph, const boost::property_tree::ptree& node) :
 	graph(graph)
 {
-	// TODO Auto-generated constructor stub
-
+	drawColor = CV_RGB(node.get <int> ("drawColor.R"), node.get <int> ("drawColor.G"), node.get <int> ("drawColor.B"));
 }
 
 ObjectModel::~ObjectModel()
@@ -41,6 +40,11 @@ bool ObjectModel::findInstances(ShapeSegments* segments)
 ShapeVector ObjectModel::getFoundObject()
 {
 	return foundObject;
+}
+
+CvScalar ObjectModel::getDrawColor()
+{
+	return drawColor;
 }
 
 } // namespace CspObjectRecognize

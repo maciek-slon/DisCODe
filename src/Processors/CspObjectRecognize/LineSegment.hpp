@@ -23,6 +23,7 @@ public:
 	LineSegment(const Types::Line& line);
 	virtual ~LineSegment();
 	Types::Line& getLine();
+	virtual void draw(cv::Mat &image, CvScalar color);
 private:
 	Types::Line line;
 };

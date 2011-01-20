@@ -11,7 +11,9 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <map>
+
 #include "ObjectModel.hpp"
+#include "ObjectInstance.hpp"
 
 #include "../GrayImageSegmentation/SegmentedImage.hpp"
 
@@ -31,7 +33,7 @@ public:
 	 */
 	void setModels(const std::map <std::string, boost::shared_ptr <ObjectModel> >& models);
 
-	void recognize(Types::Segmentation::SegmentedImage& si);
+	ObjectInstanceVector recognize(Types::Segmentation::SegmentedImage& si);
 private:
 	std::map <std::string, boost::shared_ptr <ObjectModel> > models;
 };
