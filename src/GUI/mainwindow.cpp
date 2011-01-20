@@ -12,11 +12,57 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    m_connected = false;
+
+    client = NULL;
+	ui->treeWidget->clear();
+
+	ui->dockWidget->hide();
+	ui->dockWidget_2->hide();
+	ui->scrollArea->setWidget(&wp);
+
+	connect(&wp, SIGNAL(do_connect_sig()), this, SLOT(do_connect()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::do_connect() {
+	int res = hs.exec();
+
+	if (res == QDialog::Accepted) {
+		setup(hs.getClient());
+		m_connected = true;
+		ui->actionConnect->setIcon(QIcon(":/icons/disconnect"));
+
+		ui->dockWidget->show();
+		ui->dockWidget_2->show();
+		ui->scrollArea->takeWidget();
+	}
+}
+
+void MainWindow::do_disconnect() {
+	delete client;
+	delete task;
+	client = NULL;
+	ui->actionConnect->setIcon(QIcon(":/icons/connect"));
+
+	ui->treeWidget->clear();
+	ui->scrollArea->takeWidget();
+
+	foreach (QWidget * cw, component_props)
+		delete cw;
+
+	component_props.clear();
+
+	m_connected = false;
+
+	ui->dockWidget->hide();
+	ui->dockWidget_2->hide();
+	ui->scrollArea->setWidget(&wp);
 }
 
 void MainWindow::setup(DisCODe::Client * c) {
@@ -60,6 +106,10 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int column) {
 	}
 }
 
-void MainWindow::on_actionRefresh_triggered(bool checked) {
-
+void MainWindow::on_actionConnect_triggered(bool checked) {
+	if (m_connected) {
+		do_disconnect();
+	} else {
+		do_connect();
+	}
 }

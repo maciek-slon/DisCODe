@@ -10,6 +10,9 @@
 #include "../Client/ComponentProxy.hpp"
 #include "../Client/DisCODeClient.hpp"
 
+#include "HostSelector.hpp"
+#include "WelcomePage.h"
+
 class QTreeWidgetItem;
 
 namespace Ui {
@@ -33,7 +36,10 @@ public:
 public slots:
 	void on_treeWidget_itemClicked(QTreeWidgetItem * item, int column);
 
-	void on_actionRefresh_triggered(bool checked);
+	void on_actionConnect_triggered(bool checked);
+
+	void do_connect();
+	void do_disconnect();
 
 private:
     Ui::MainWindow *ui;
@@ -43,6 +49,11 @@ private:
 	DisCODe::TaskProxy * task;
 
 	QMap<QString, QWidget*> component_props;
+
+	bool m_connected;
+
+	HostSelector hs;
+	WelcomePage wp;
 };
 
 #endif // MAINWINDOW_H

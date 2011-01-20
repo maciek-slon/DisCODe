@@ -34,8 +34,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>302</width>
-         <height>204</height>
+         <width>297</width>
+         <height>198</height>
         </rect>
        </property>
       </widget>
@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>563</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">
@@ -74,6 +74,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionConnect"/>
+   <addaction name="separator"/>
    <addaction name="actionStart_all"/>
    <addaction name="actionStop_all"/>
    <addaction name="separator"/>
@@ -223,6 +225,18 @@
    </property>
    <property name="text">
     <string>Refresh</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="icon">
+    <iconset resource="gui.qrc">
+     <normaloff>:/icons/connect</normaloff>:/icons/connect</iconset>
+   </property>
+   <property name="text">
+    <string>Connect</string>
+   </property>
+   <property name="toolTip">
+    <string>Connect</string>
    </property>
   </action>
  </widget>
