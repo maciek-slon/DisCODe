@@ -14,6 +14,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/adjacency_matrix.hpp>
 #include <boost/property_map/property_map.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "AbstractConstraint.hpp"
 #include "AbstractShape.hpp"
@@ -63,21 +64,21 @@ class AbstractShape;
 
 // TODO: replace it with something reasonable
 //class ShapeSegments;
-typedef std::deque<AbstractShape *> ShapeSegments;
+typedef std::deque<boost::shared_ptr<AbstractShape> > ShapeSegments;
 //typedef deque<AbstractShape *>::iterator ShapesQueueIterator;
 //typedef vector<ShapeSegments *> ShapeSegmentsVector;
 
 
-typedef std::vector<AbstractShape *> ShapeVector;
+typedef std::vector<boost::shared_ptr<AbstractShape> > ShapeVector;
 
-typedef std::vector <AbstractConstraint *> ConstraintVector;
+typedef std::vector <boost::shared_ptr<AbstractConstraint> > ConstraintVector;
 typedef boost::adjacency_list <
 		boost::listS,
 		boost::vecS,
 		boost::undirectedS,
 		boost::property <
 			boost::vertex_shape_t,
-			AbstractShape*,
+			boost::shared_ptr<AbstractShape> ,
 			boost::property <
 				boost::vertex_status_t,
 				int,
@@ -106,8 +107,8 @@ typedef boost::property_map <Graph, boost::edge_constraint_t>::type edge_constra
 typedef boost::property_map <Graph, boost::vertex_shape_t>::type vertex_shape_map_t;
 typedef boost::property_map <Graph, boost::vertex_status_t>::type vertex_status_map_t;
 typedef boost::property_map <Graph, boost::vertex_type_t>::type vertex_type_map_t;
-typedef std::deque <AbstractShape *> ShapesStack;
-typedef std::deque <AbstractShape *>::iterator ShapesStackIterator;
+typedef std::deque <boost::shared_ptr<AbstractShape> > ShapesStack;
+typedef std::deque <boost::shared_ptr<AbstractShape> >::iterator ShapesStackIterator;
 typedef std::vector <ShapesStack> ShapesStackVector;
 
 //przeszukiwanie grafu
@@ -127,7 +128,7 @@ public:
 	CspGraph();
 	virtual ~CspGraph();
 
-	bool Init(int mandatoryVertexNum, int optionalVertex, bool empty);
+	bool init(int mandatoryVertexNum, int optionalVertex, bool empty);
 	//przeszukiwanie grafu
 	bool InitSearchGraph();
 	//mapa krawedzi wychodzacych i przychodzacaych do wezla
@@ -136,17 +137,17 @@ public:
 	void AddSearchVertex(Vertex numVertex, bool status);
 	void ClearSearchVectors();
 	VertexVector &GetVertex();
-	VertexVector &GetVertex(Vertex u, AbstractConstraint *constraint);
+	VertexVector &GetVertex(Vertex u, boost::shared_ptr<AbstractConstraint> constraint);
 	VertexVector &GetMandatoryVertex();
 	VertexVector &GetMandatoryVertex(bool empty);
-	VertexVector &GetMandatoryVertex(Vertex u, AbstractConstraint *constraint);
+	VertexVector &GetMandatoryVertex(Vertex u, boost::shared_ptr<AbstractConstraint> constraint);
 	VertexVector &GetOptionalVertex();
 	VertexVector &GetOptionalVertex(bool empty);
-	VertexVector &GetOptionalVertex(Vertex u, AbstractConstraint *constraint);
-	bool AddEdge(Vertex u, Vertex v, AbstractConstraint*);
+	VertexVector &GetOptionalVertex(Vertex u, boost::shared_ptr<AbstractConstraint> constraint);
+	bool AddEdge(Vertex u, Vertex v, boost::shared_ptr<AbstractConstraint> );
 	ConstraintVector &GetConstraints(Edge e);
-	void InsertVertexValue(AbstractShape *shape, Vertex v);
-	AbstractShape *GetVertexValue(Vertex v);
+	void InsertVertexValue(boost::shared_ptr<AbstractShape> shape, Vertex v);
+	boost::shared_ptr<AbstractShape> GetVertexValue(Vertex v);
 	void SetVertexStatus(int status, Vertex v);
 	int GetVertexStatus(Vertex v);
 	void SetVertexType(Vertex v, int kind);
@@ -155,12 +156,11 @@ public:
 	Vertex GetTargetEdge(Edge e);
 	EdgeVector &GetOutPutEdge(Vertex v);
 	EdgeVector &GetInPutEdge(Vertex v);
-	EdgeVector &GetOutPutEdge(Vertex v, AbstractConstraint *constraint);
-	EdgeVector &GetInPutEdge(Vertex v, AbstractConstraint *constraint);
+	EdgeVector &GetOutPutEdge(Vertex v, boost::shared_ptr<AbstractConstraint> constraint);
+	EdgeVector &GetInPutEdge(Vertex v, boost::shared_ptr<AbstractConstraint> constraint);
 	bool FindCspShape(ShapeSegments *stack);
 	bool FindCspShape(ShapeSegments *stack, SearchVector &searchVector);
 	Vertex &getVertex(int vertexNum);
-	void Clear();
 	void ClearAll();
 	void Clear(uint from, uint to);
 	int NumEmptyMandatoryVertices();
@@ -171,10 +171,10 @@ public:
 	ShapeVector &GetAllUsedShapesVector();
 	bool FindInMandatory(Vertex u);
 	bool FindInOptional(Vertex u);
-	bool checkConstraint(AbstractConstraint *constraint, Vertex u, AbstractShape *shape);
+	bool checkConstraint(boost::shared_ptr<AbstractConstraint> constraint, Vertex u, boost::shared_ptr<AbstractShape> shape);
 	VertexVector GetMandatoryVertexFrom(uint u, uint v);
-	VertexQueue GetMandatoryVertexFrom(Vertex start, Vertex stop, AbstractConstraint *constraint);
-	static bool ContainsElement(ShapesStack shapes, AbstractShape *);
+	VertexQueue GetMandatoryVertexFrom(Vertex start, Vertex stop, boost::shared_ptr<AbstractConstraint> constraint);
+	static bool ContainsElement(ShapesStack shapes, boost::shared_ptr<AbstractShape> );
 	void SetEmpty(bool empty);
 	bool GetEmpty();
 	void Show();
@@ -182,7 +182,7 @@ public:
 	void ShowOptional();
 	void ReturnObjects(ShapeSegments *shapeSegments);
 	int GetDomainParent();
-	bool checkConstraints(Vertex u, AbstractShape *shape);
+	bool checkConstraints(Vertex u, boost::shared_ptr<AbstractShape> shape);
 private:
 	Graph g;
 	VertexVector vertices;
@@ -200,7 +200,7 @@ private:
 	EdgeMap inputEdgeMap;
 	int numOfVertex;
 	bool checkConstraint(Vertex u, Vertex v, Edge e);
-	bool checkConstraint(AbstractShape *first, AbstractShape *second, Edge e);
+	bool checkConstraint(boost::shared_ptr<AbstractShape> first, boost::shared_ptr<AbstractShape> second, Edge e);
 	ShapeVector usedShapes;
 	//zmienna informujac czy wstawiamy do grafu zaslepki
 	bool empty;
@@ -208,13 +208,16 @@ private:
 	bool searchGraph(ShapeSegments *stack, SearchVector &searchVector);
 	bool checkConstraints(Vertex src, EdgeVector &edgeVector);
 	bool checkConstraints(Vertex src);
-	bool goToVertex(Vertex from, Vertex to, AbstractConstraint *constraint, VertexQueue &vector);
+	bool goToVertex(Vertex from, Vertex to, boost::shared_ptr<AbstractConstraint> constraint, VertexQueue &vector);
 	bool isVisited(VertexQueue &vector, Vertex u);
 	EdgeVector outputEdgeVector;
 	EdgeVector inputEdgeVector;
 	VertexVector returnedMandatoryVertex;
 	VertexVector returnedOptionalVertex;
 	VertexVector returnedVertex;
+
+
+	void Clear();
 };
 
 }

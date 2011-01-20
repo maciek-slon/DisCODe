@@ -9,7 +9,11 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
+#include "CspGraph.hpp"
+#include "ObjectModel.hpp"
 #include "ModelsFactory.hpp"
+#include "JunctionConstraint.hpp"
+#include "LinesAngleConstraint.hpp"
 
 #include "Logger.hpp"
 
@@ -58,13 +62,55 @@ std::vector <boost::shared_ptr <ObjectModel> > ModelsFactory::loadModels()
 
 boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const ptree& node)
 {
-	boost::shared_ptr <ObjectModel> model = boost::shared_ptr <ObjectModel>(new ObjectModel);
-	int numberOfVertices = node.get<int>("<xmlattr>.numberOfVertices");
-	if(numberOfVertices < 2){
+	boost::shared_ptr <CspGraph> graph = boost::shared_ptr <CspGraph>(new CspGraph);
+
+		boost::shared_ptr<AbstractConstraint> junctionLine = boost::shared_ptr<AbstractConstraint>(new JunctionConstraint);
+		boost::shared_ptr<AbstractConstraint> perpendicularLine = boost::shared_ptr<AbstractConstraint>(new LinesAngleConstraint);
+		boost::shared_ptr<AbstractConstraint> parallelLine = boost::shared_ptr<AbstractConstraint>(new LinesAngleConstraint);
+		boost::shared_ptr<AbstractConstraint> lineLength = boost::shared_ptr<AbstractConstraint>(new LinesAngleConstraint);
+
+
+		//graph->Clear();
+		graph->init(4, 0, true);
+
+		VertexVector vertexVector = graph->GetVertex();
+
+		graph->AddEdge(vertexVector[0], vertexVector[1], junctionLine);
+		graph->AddEdge(vertexVector[0], vertexVector[1], perpendicularLine);
+
+		graph->AddEdge(vertexVector[0], vertexVector[3], junctionLine);
+		graph->AddEdge(vertexVector[0], vertexVector[3], perpendicularLine);
+
+		graph->AddEdge(vertexVector[0], vertexVector[2], parallelLine);
+		graph->AddEdge(vertexVector[0], vertexVector[2], lineLength);
+
+		graph->AddEdge(vertexVector[1], vertexVector[2], junctionLine);
+		graph->AddEdge(vertexVector[1], vertexVector[2], perpendicularLine);
+
+		graph->AddEdge(vertexVector[1], vertexVector[3], parallelLine);
+		graph->AddEdge(vertexVector[1], vertexVector[3], lineLength);
+
+		graph->AddEdge(vertexVector[2], vertexVector[3], junctionLine);
+		graph->AddEdge(vertexVector[2], vertexVector[3], perpendicularLine);
+
+		graph->InitInputOutputEdgeMap();
+		//przeszukiwanie grafu
+		graph->InitSearchGraph();
+		//pierwsza sciezka
+		graph->AddSearchVertex(vertexVector[0], true);
+		graph->AddSearchVertex(vertexVector[1], true);
+		graph->AddSearchVertex(vertexVector[2], true);
+		graph->AddSearchVertex(vertexVector[3], false);
+
+
+	boost::shared_ptr <ObjectModel> model = boost::shared_ptr <ObjectModel>(new ObjectModel(graph));
+	int numberOfVertices = node.get <int> ("<xmlattr>.numberOfVertices");
+	if (numberOfVertices < 2) {
 		throw runtime_error("ModelsFactory::buildObjectModel(): numberOfVertices < 2");
 	}
 
-	LOG(LTRACE) << "numberOfVertices="<<numberOfVertices<<endl;
+	LOG(LTRACE) << "numberOfVertices=" << numberOfVertices << endl;
+
 
 	return model;
 }

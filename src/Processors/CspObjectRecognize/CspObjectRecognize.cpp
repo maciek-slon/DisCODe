@@ -84,6 +84,8 @@ void CspObjectRecognize_Processor::onSegmentedImage()
 
 		Types::Segmentation::SegmentedImage si = in_segmentedImage.read();
 
+
+
 		shapeRegognize->recognize(si);
 
 	} catch (exception& e) {

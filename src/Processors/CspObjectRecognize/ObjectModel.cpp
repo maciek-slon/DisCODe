@@ -7,11 +7,13 @@
 
 #include "ObjectModel.hpp"
 
+#include "Logger.hpp"
+
 namespace Processors {
 
 namespace CspObjectRecognize {
 
-ObjectModel::ObjectModel()
+ObjectModel::ObjectModel(boost::shared_ptr<CspGraph> graph) : graph(graph)
 {
 	// TODO Auto-generated constructor stub
 
@@ -22,9 +24,11 @@ ObjectModel::~ObjectModel()
 	// TODO Auto-generated destructor stub
 }
 
-void ObjectModel::findInstances(const Types::Segmentation::SegmentedImage& si)
+void ObjectModel::findInstances(ShapeSegments* segments)
 {
-
+	if(graph->FindCspShape(segments)){
+		LOG(LFATAL) << "ObjectModel::findInstances(): something found.\n";
+	}
 }
 
 } // namespace CspObjectRecognize

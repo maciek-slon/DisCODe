@@ -45,14 +45,14 @@ CspGraph::~CspGraph()
  * optionalNum - liczba wezlow opcjonalna
  * empty - czy graf ma wstawiac zaslepki
  */
-bool CspGraph::Init(int numMandatory,int numOptional,bool empty)
+bool CspGraph::init(int numMandatory,int numOptional,bool empty)
 {
 	ClearAll();
 	//dodawanie wezlow wymaganych
 	for(int i=0;i<numMandatory;i++)
 	{
 		Vertex tmp = add_vertex(g);
-		InsertVertexValue(NULL,tmp);
+		InsertVertexValue(boost::shared_ptr<AbstractShape>(),tmp);
 		SetVertexStatus(MANDATORY,tmp);
 		SetVertexType(tmp,Settings::NOT_DEFINED);
 		vertices.push_back(tmp);
@@ -62,7 +62,7 @@ bool CspGraph::Init(int numMandatory,int numOptional,bool empty)
 	for(int i=0;i<numOptional;i++)
 	{
 		Vertex tmp = add_vertex(g);
-		InsertVertexValue(NULL,tmp);
+		InsertVertexValue(boost::shared_ptr<AbstractShape>(),tmp);
 		SetVertexStatus(OPTIONAL,tmp);
 		SetVertexType(tmp,Settings::NOT_DEFINED);
 		vertices.push_back(tmp);
@@ -82,7 +82,7 @@ VertexVector &CspGraph::GetVertex()
 /**
  * Metoda zwraca wszystkie wezly spelniajace ograniczenie wzgledem wezla u
  */
-VertexVector &CspGraph::GetVertex(Vertex u,AbstractConstraint *constraint)
+VertexVector &CspGraph::GetVertex(Vertex u,boost::shared_ptr<AbstractConstraint> constraint)
 {
 	returnedVertex.clear();
 	//pobieramy krawedzie wychodzace od danego wezla
@@ -100,7 +100,7 @@ VertexVector &CspGraph::GetVertex(Vertex u,AbstractConstraint *constraint)
 			{
 				if(constraintVector[k]==constraint)
 				{
-					AbstractShape *abstractShape = GetVertexValue(dst);
+					boost::shared_ptr<AbstractShape> abstractShape = GetVertexValue(dst);
 					if(abstractShape!=NULL)
 					{
 						returnedVertex.push_back(dst);
@@ -127,7 +127,7 @@ VertexVector &CspGraph::GetMandatoryVertex(bool empty)
 	returnedMandatoryVertex.clear();
 	for(uint i=0;i<mandatoryVertices.size();i++)
 	{
-		AbstractShape *shape = GetVertexValue(mandatoryVertices[i]);
+		boost::shared_ptr<AbstractShape> shape = GetVertexValue(mandatoryVertices[i]);
 		if(empty&&shape==NULL)
 		{
 			returnedMandatoryVertex.push_back(mandatoryVertices[i]);
@@ -142,7 +142,7 @@ VertexVector &CspGraph::GetMandatoryVertex(bool empty)
 /**
  * Metoda zwraca wezly wymagane spelniajace podane ograniczenie
  */
-VertexVector &CspGraph::GetMandatoryVertex(Vertex u,AbstractConstraint *constraint)
+VertexVector &CspGraph::GetMandatoryVertex(Vertex u,boost::shared_ptr<AbstractConstraint> constraint)
 {
 	returnedMandatoryVertex.clear();
 	//pobieramy krawedzie wychodzace od danego wezla
@@ -183,7 +183,7 @@ VertexVector &CspGraph::GetOptionalVertex(bool empty)
 	returnedOptionalVertex.clear();
 	for(uint i=0;i<optionalVertices.size();i++)
 	{
-		AbstractShape *shape = GetVertexValue(optionalVertices[i]);
+		boost::shared_ptr<AbstractShape> shape = GetVertexValue(optionalVertices[i]);
 		if(empty&&shape==NULL)
 		{
 			returnedOptionalVertex.push_back(optionalVertices[i]);
@@ -199,7 +199,7 @@ VertexVector &CspGraph::GetOptionalVertex(bool empty)
 /**
  * Metoda zwraca opcjonalne wezly spelniajace podane ograniczenie
  */
-VertexVector &CspGraph::GetOptionalVertex(Vertex u,AbstractConstraint *constraint)
+VertexVector &CspGraph::GetOptionalVertex(Vertex u,boost::shared_ptr<AbstractConstraint> constraint)
 {
 	returnedOptionalVertex.clear();
 	//pobieramy krawedzie wychodzace od danego wezla
@@ -230,7 +230,7 @@ VertexVector &CspGraph::GetOptionalVertex(Vertex u,AbstractConstraint *constrain
 /**
  * Wstawienie krawedzie do grafu oraz nadanie jej ograniczen
  */
-bool CspGraph::AddEdge(Vertex u, Vertex v, AbstractConstraint *constraint)
+bool CspGraph::AddEdge(Vertex u, Vertex v, boost::shared_ptr<AbstractConstraint> constraint)
 {
 	bool inserted=false;
 	ConstraintVector constraintVector;
@@ -254,14 +254,14 @@ bool CspGraph::AddEdge(Vertex u, Vertex v, AbstractConstraint *constraint)
 /**
  * Wstawienie wartosci dla wybranego wezla
  */
-void CspGraph::InsertVertexValue(AbstractShape *shape, Vertex v)
+void CspGraph::InsertVertexValue(boost::shared_ptr<AbstractShape> shape, Vertex v)
 {
 	vertexShape[v] = shape;
 }
 /**
  * Metoda zwraca vartosc wezla
  */
-AbstractShape *CspGraph::GetVertexValue(Vertex v)
+boost::shared_ptr<AbstractShape> CspGraph::GetVertexValue(Vertex v)
 {
 	return vertexShape[v];
 }
@@ -338,7 +338,7 @@ EdgeVector &CspGraph::GetOutPutEdge(Vertex v)
  * Metoda zwraca krawedzie polaczone z danym wezlem, jako wychodzace polaczenia
  * spelniajace ograniczenie
  */
-EdgeVector &CspGraph::GetOutPutEdge(Vertex v,AbstractConstraint *constraint)
+EdgeVector &CspGraph::GetOutPutEdge(Vertex v,boost::shared_ptr<AbstractConstraint> constraint)
 {
 	OutEdgeIterator i,end;
 	outputEdgeVector.clear();
@@ -359,7 +359,7 @@ EdgeVector &CspGraph::GetOutPutEdge(Vertex v,AbstractConstraint *constraint)
 /**
  * Metoda zwraca krawedzie polaczone z danym wezlem jako przychodzace polaczenia
  */
-EdgeVector &CspGraph::GetInPutEdge(Vertex v,AbstractConstraint *constraint)
+EdgeVector &CspGraph::GetInPutEdge(Vertex v,boost::shared_ptr<AbstractConstraint> constraint)
 {
 	InEdgeIterator i,end;
 	inputEdgeVector.clear();
@@ -486,7 +486,7 @@ bool CspGraph::FindCspShape(ShapeSegments *stack,SearchVector &searchVector)
  */
 bool CspGraph::searchGraph(ShapeSegments *stack,SearchVector &searchVector)
 {
-	AbstractShape *shape;
+	boost::shared_ptr<AbstractShape> shape;
 	PairSearch pairSearch;
 	bool returnedValue=false;
 	bool status;
@@ -542,7 +542,7 @@ bool CspGraph::searchGraph(ShapeSegments *stack,SearchVector &searchVector)
 				{
 					returnedValue = false;
 				}
-				InsertVertexValue(NULL,src);
+				InsertVertexValue(boost::shared_ptr<AbstractShape>(),src);
 			}
 			stack->push_back(shape);
 		}
@@ -553,7 +553,7 @@ bool CspGraph::searchGraph(ShapeSegments *stack,SearchVector &searchVector)
 			if(!status)
 			{
 				//wstaawiamy zaslepke
-				InsertVertexValue(NULL,src);
+				InsertVertexValue(boost::shared_ptr<AbstractShape>(),src);
 				returnedValue=searchGraph(stack,searchVector);
 			}else//nie moznaq wstawic zaslepki
 			{
@@ -590,8 +590,8 @@ bool CspGraph::searchGraph(ShapeSegments *stack,SearchVector &searchVector)
  */
 bool CspGraph::checkConstraints(Vertex src, EdgeVector &edgeVector)
 {
-	AbstractShape *first=NULL;
-	AbstractShape *second=NULL;
+	boost::shared_ptr<AbstractShape> first;
+	boost::shared_ptr<AbstractShape> second;
 	first = GetVertexValue(src);
 	for(uint j=0;j<edgeVector.size();j++)
 	{
@@ -638,15 +638,15 @@ Vertex &CspGraph::getVertex(int numVertex)
  */
 bool CspGraph::checkConstraint(Vertex u,Vertex v, Edge e)
 {
-	AbstractShape *src = GetVertexValue(v);;
-	AbstractShape *dst = GetVertexValue(u);
+	boost::shared_ptr<AbstractShape> src = GetVertexValue(v);;
+	boost::shared_ptr<AbstractShape> dst = GetVertexValue(u);
 
 	return checkConstraint(src,dst,e);
 }
 /**
  * Metoda sprawdza czy wszystkie ograniczenia sa spelnione dla dwoch wezlow
  */
-bool CspGraph::checkConstraint(AbstractShape *first,AbstractShape *second, Edge e)
+bool CspGraph::checkConstraint(boost::shared_ptr<AbstractShape> first,boost::shared_ptr<AbstractShape> second, Edge e)
 {
 	ConstraintVector constraintVector = GetConstraints(e);
 	if(first!=NULL&&second!=NULL)//jak ktores jest nullem to zakladamy ze ograniczenia sa spelnione
@@ -666,7 +666,7 @@ void CspGraph::Clear()
 	VertexVector vector = GetVertex();
 	for(uint i=0;i<vector.size();i++)
 	{
-		vertexShape[vector[i]] = NULL;
+		vertexShape[vector[i]] = boost::shared_ptr<AbstractShape>();
 	}
 }
 /**
@@ -689,7 +689,7 @@ void CspGraph::Clear(uint from, uint to)
 	VertexVector vector = GetVertex();
 	for(uint i=from;i<to;i++)
 	{
-		InsertVertexValue(NULL, vector[i]);
+		InsertVertexValue(boost::shared_ptr<AbstractShape>(), vector[i]);
 	}
 }
 
@@ -706,7 +706,7 @@ VertexVector CspGraph::GetMandatoryVertexFrom(uint u, uint v)
 /**
  * Metoda przechodzi od wezla start do stop tworzac sciezke, wybierane wezly sa polaczone krawedziami zawierajacymi ograniczenie cosntraint
  */
-VertexQueue CspGraph::GetMandatoryVertexFrom(Vertex start,Vertex stop,AbstractConstraint *constraint)
+VertexQueue CspGraph::GetMandatoryVertexFrom(Vertex start,Vertex stop,boost::shared_ptr<AbstractConstraint> constraint)
 {
 	//TODO zle dziala nie mozna iterowac od poczatku w kolejnych zaglebieniach poniewaz powstanie blad za szybko sie skonczy
 	VertexQueue vector;
@@ -716,7 +716,7 @@ VertexQueue CspGraph::GetMandatoryVertexFrom(Vertex start,Vertex stop,AbstractCo
 /**
  * Metoda wyszukuje polaczen spelniajacych podane ograniczeni i probuje przejsc do wezla koncowego to
  */
-bool CspGraph::goToVertex(Vertex from,Vertex to,AbstractConstraint *constraint,VertexQueue &vertexQueue)
+bool CspGraph::goToVertex(Vertex from,Vertex to,boost::shared_ptr<AbstractConstraint> constraint,VertexQueue &vertexQueue)
 {
 	VertexVector vector = GetMandatoryVertex(from,constraint);
 	bool status = false;
@@ -772,7 +772,7 @@ bool CspGraph::isVisited(VertexQueue &queue,Vertex u)
 int CspGraph::NumEmptyMandatoryVertices()
 {
 	int count=0;
-	AbstractShape *tmp=NULL;
+	boost::shared_ptr<AbstractShape> tmp;
 	for(uint i=0;i<mandatoryVertices.size();i++)
 	{
 		tmp = GetVertexValue(mandatoryVertices[i]);
@@ -796,7 +796,7 @@ int CspGraph::NumMandatoryVertices()
 int CspGraph::NumEmptyOptionalVertices()
 {
 	int count=0;
-	AbstractShape *tmp=NULL;
+	boost::shared_ptr<AbstractShape> tmp;
 	for(uint i=0;i<optionalVertices.size();i++)
 	{
 		tmp = GetVertexValue(optionalVertices[i]);
@@ -819,7 +819,7 @@ int CspGraph::NumOptionalVertices()
  */
 ShapeVector &CspGraph::GetUsedShapesVector()
 {
-	AbstractShape *tmp=NULL;
+	boost::shared_ptr<AbstractShape> tmp;
 	usedShapes.clear();
 
 	for(uint i=0;i<mandatoryVertices.size();i++)
@@ -836,7 +836,7 @@ ShapeVector &CspGraph::GetUsedShapesVector()
  */
 ShapeVector &CspGraph::GetAllUsedShapesVector()
 {
-	AbstractShape *tmp=NULL;
+	boost::shared_ptr<AbstractShape> tmp;
 	usedShapes.clear();
 
 	for(uint i=0;i<mandatoryVertices.size();i++)
@@ -887,7 +887,7 @@ bool CspGraph::FindInOptional(Vertex u)
 /**
  * Metoda sprawdza czy ksztalt shape wstawiony do wezla u spelnia ograniczenie constraint
  */
-bool CspGraph::checkConstraint(AbstractConstraint *constraint, Vertex u, AbstractShape *shape)
+bool CspGraph::checkConstraint(boost::shared_ptr<AbstractConstraint> constraint, Vertex u, boost::shared_ptr<AbstractShape> shape)
 {
 	EdgeVector edgeVector = GetOutPutEdge(u,constraint);
 
@@ -904,7 +904,7 @@ bool CspGraph::checkConstraint(AbstractConstraint *constraint, Vertex u, Abstrac
 /**
  * Metoda sprawdza czy podsany element jest na liscie
  */
-bool CspGraph::ContainsElement(ShapesStack shapes, AbstractShape *shape)
+bool CspGraph::ContainsElement(ShapesStack shapes, boost::shared_ptr<AbstractShape> shape)
 {
 	ShapesStackIterator iter = find(shapes.begin(), shapes.end(), shape);
 
@@ -999,7 +999,7 @@ void CspGraph::ReturnObjects(ShapeSegments *shapeSegments)
 /**
  * Metoda sprawdza czy dany wezel spelnia ograniczenia
  */
-bool CspGraph::checkConstraints(Vertex src,AbstractShape *shape)
+bool CspGraph::checkConstraints(Vertex src,boost::shared_ptr<AbstractShape> shape)
 {
 	InsertVertexValue(shape,src);
 	EdgeVector edgeVector = GetOutPutEdge(src);
@@ -1013,7 +1013,7 @@ bool CspGraph::checkConstraints(Vertex src,AbstractShape *shape)
 		if(!checkConstraint(src,dst,edge))
 		{
 			passed = false;
-			InsertVertexValue(NULL,src);
+			InsertVertexValue(boost::shared_ptr<AbstractShape>(),src);
 			break;
 		}
 	}

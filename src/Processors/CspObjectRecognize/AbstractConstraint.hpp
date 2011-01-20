@@ -8,7 +8,11 @@
 #ifndef ABSTRACTCONSTRAINT_HPP_
 #define ABSTRACTCONSTRAINT_HPP_
 
+#include <boost/shared_ptr.hpp>
+#include <cv.h>
+
 #include "AbstractShape.hpp"
+
 
 namespace Processors {
 namespace CspObjectRecognize {
@@ -20,7 +24,9 @@ class AbstractConstraint
 public:
 	AbstractConstraint();
 	virtual ~AbstractConstraint();
-	bool isSatisifed(AbstractShape *first,AbstractShape *second);
+	virtual bool isSatisifed(boost::shared_ptr<AbstractShape> first, boost::shared_ptr<AbstractShape> second) = 0;
+protected:
+	double dist(cv::Point p1, cv::Point p2);
 };
 
 } // namespace Processors

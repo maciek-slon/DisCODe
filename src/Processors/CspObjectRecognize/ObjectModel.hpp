@@ -8,7 +8,10 @@
 #ifndef OBJECTMODEL_HPP_
 #define OBJECTMODEL_HPP_
 
+#include <boost/shared_ptr.hpp>
+
 #include "../GrayImageSegmentation/SegmentedImage.hpp"
+#include "CspGraph.hpp"
 
 namespace Processors {
 namespace CspObjectRecognize {
@@ -16,9 +19,11 @@ namespace CspObjectRecognize {
 class ObjectModel
 {
 public:
-	ObjectModel();
+	ObjectModel(boost::shared_ptr<CspGraph> graph);
 	virtual ~ObjectModel();
-	void findInstances(const Types::Segmentation::SegmentedImage& si);
+	void findInstances(ShapeSegments* segments);
+private:
+	boost::shared_ptr<CspGraph> graph;
 };
 
 }//: namespace CspObjectRecognize

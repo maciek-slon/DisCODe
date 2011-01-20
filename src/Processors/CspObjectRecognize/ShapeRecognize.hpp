@@ -30,7 +30,7 @@ public:
 	 */
 	void setModels(std::vector<boost::shared_ptr<ObjectModel> > models);
 
-	void recognize(const Types::Segmentation::SegmentedImage& si);
+	void recognize(Types::Segmentation::SegmentedImage& si);
 private:
 	std::vector<boost::shared_ptr<ObjectModel> > models;
 };

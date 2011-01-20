@@ -22,6 +22,11 @@ LinesLengthConstraint::~LinesLengthConstraint()
 	// TODO Auto-generated destructor stub
 }
 
+bool LinesLengthConstraint::isSatisifed(boost::shared_ptr <AbstractShape> first, boost::shared_ptr <AbstractShape> second)
+{
+	return false;
+}
+
 }
 
 }
