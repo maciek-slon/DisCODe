@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
-    <height>491</height>
+    <width>726</width>
+    <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +23,12 @@
     </property>
     <item>
      <widget class="QScrollArea" name="scrollArea">
+      <property name="minimumSize">
+       <size>
+        <width>400</width>
+        <height>350</height>
+       </size>
+      </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -37,8 +43,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>302</width>
-         <height>204</height>
+         <width>624</width>
+         <height>419</height>
         </rect>
        </property>
       </widget>
@@ -51,8 +57,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>563</width>
-     <height>21</height>
+     <width>726</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">

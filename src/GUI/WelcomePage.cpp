@@ -1,4 +1,4 @@
-#include "WelcomePage.h"
+#include "WelcomePage.hpp"
 #include <QProcess>
 #include <iostream>
 

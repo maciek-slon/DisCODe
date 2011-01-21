@@ -44,18 +44,20 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 # Source files
 SET(GUI_CXX_SRCS
     main.cpp
-    mainwindow.cpp
+    MainWindow.cpp
 	ComponentWidget.cpp
 	HostSelector.cpp
 	WelcomePage.cpp
+	TaskWidget.cpp
 )
 
 # Class headers that have to be MOCed (i.e. classes derived from QObject)
 SET(GUI_MOC_SRCS
-    mainwindow.h
+    MainWindow.hpp
 	ComponentWidget.hpp
 	HostSelector.hpp
-	WelcomePage.h
+	WelcomePage.hpp
+	TaskWidget.hpp
 )
 
 # Generate MOC files
@@ -63,9 +65,10 @@ QT4_WRAP_CPP(GUI_CXX_SRCS ${GUI_MOC_SRCS})
 
 # UI files
 SET(GUI_UI
-	mainwindow.ui
+	MainWindow.ui
 	HostSelector.ui
 	WelcomePage.ui
+	TaskWidget.ui
 )
 
 # Generate UI include files

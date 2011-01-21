@@ -10,7 +10,7 @@
 #include "../Client/ComponentProxy.hpp"
 #include "../Client/DisCODeClient.hpp"
 
-#include "WelcomePage.h"
+#include "WelcomePage.hpp"
 
 class QTreeWidgetItem;
 
