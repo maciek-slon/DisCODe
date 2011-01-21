@@ -191,6 +191,14 @@ void Component::printHandlers() {
 	}
 }
 
+std::string Component::listHandlers() {
+	std::string ret;
+	BOOST_FOREACH(HandlerPair handler, handlers) {
+		ret += handler.first + "\n";
+	}
+	return ret;
+}
+
 EventHandlerInterface * Component::getHandler(const std::string& name) {
 	if (handlers.count(name) > 0) {
 		return handlers[name];
@@ -235,10 +243,18 @@ DataStreamInterface * Component::registerStream(const std::string& name, DataStr
 //------------------------------------------------------------------------------------
 
 void Component::printProperties() {
-	LOG(LINFO) << "Registered properties:\n";
+	LOG(LINFO) << "Registered properties:";
 	BOOST_FOREACH(PropertyPair prop, properties) {
-		LOG(LINFO) << "\t" << prop.first << "\n";
+		LOG(LINFO) << "\t" << prop.first;
 	}
+}
+
+std::string Component::listProperties() {
+	std::string ret;
+	BOOST_FOREACH(PropertyPair prop, properties) {
+		ret += prop.first + "\n";
+	}
+	return ret;
 }
 
 PropertyInterface * Component::getProperty(const std::string& name) {

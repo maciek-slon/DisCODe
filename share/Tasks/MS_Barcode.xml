@@ -2,8 +2,8 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Movie type="Movie" thread="Thread1" group="s1">
-				<filename>output.avi</filename>
+		<Movie type="CameraUniCap" thread="Thread1" group="s1">
+				<filename>/tmp/output.avi</filename>
 		</Movie>
 
 		<ColorConv type="CvColorConv" thread="Thread1" group="s1">
@@ -124,8 +124,7 @@
 
 	<!-- Event connections -->
 	<Events>
-		<Event source="Movie.newImage"     destination="Timer.onStartExec"/>
-		<Event source="Timer.started"      destination="ColorConv.onNewImage"/>
+		<Event source="Movie.newImage"     destination="ColorConv.onNewImage"/>
 		<Event source="Movie.newImage"     destination="InWindow.onNewImage"/>
 
 		<Event source="ColorConv.newImage" destination="M1.onNewImage" type="async"/>
@@ -140,12 +139,10 @@
 
 		<Event source="Prep.newImage"      destination="Blob.onNewImage"/>
 		<Event source="Blob.newBlobs"      destination="Dec.onNewBlobs"/>
-		<Event source="Prep.newImage"      destination="Timer.onStopExec"/>
 <!--
 		<Event source="Prep.newImage"      destination="Window.onNewImage"/>
 -->
 
-		<Event source="Timer.stopped"      destination="Movie.onTrigger" type="async"/>
 	</Events>
 
 	<!-- Data stream assignments -->

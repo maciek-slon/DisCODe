@@ -5,54 +5,29 @@
 #include "Network/TCPServer.hpp"
 
 #include "CommandInterpreter.hpp"
-#include "Task.hpp"
 
 #include <boost/foreach.hpp>
 
 namespace Core {
 
-class TaskInformator {
-public:
-	TaskInformator(Core::Task & t) : task(t) {
-
-	}
-
-	std::string listExecutors(std::vector<std::string> args) {
-		std::string ret;
-		std::vector<std::string> tmp = task.listExecutors();
-		BOOST_FOREACH(std::string s, tmp) {
-			ret += s + "\n";
-		}
-		return ret;
-	}
-
-	std::string listSubtasks(std::vector<std::string> args) {
-		std::string ret;
-		std::vector<std::string> tmp = task.listSubtasks();
-		BOOST_FOREACH(std::string s, tmp) {
-			ret += s + "\n";
-		}
-		return ret;
-	}
-
-private:
-	Core::Task & task;
-};
-
-
-
 class CommandServer : public Common::Thread {
 public:
 
-	CommandServer(Core::Task & t) : m_informator(t) {
-		m_interpreter.addHandler("printExecutors", boost::bind(&TaskInformator::listExecutors, &m_informator, _1));
-		m_interpreter.addHandler("printSubtasks",  boost::bind(&TaskInformator::listSubtasks,  &m_informator, _1));
-
+	CommandServer() {
 		m_server.setServiceHook(boost::bind(&CommandServer::service, this, _1, _2, _3, _4));
+		m_server.setCompletionHook(boost::bind(&CommandServer::completion, this, _1, _2));
 	}
 
 	void stop() {
 		m_server.stop();
+	}
+
+	void addInformer(Informer * informer) {
+		m_interpreter.addInformer(informer);
+	}
+
+	void printCommands() {
+		m_interpreter.printCommands();
 	}
 
 protected:
@@ -85,8 +60,6 @@ protected:
 
 private:
 	Common::TCPServer m_server;
-
-	TaskInformator m_informator;
 
 	CommandInterpreter m_interpreter;
 };

@@ -134,6 +134,8 @@ public:
 	 */
 	void printHandlers();
 
+	std::string listHandlers();
+
 	/*!
 	 * Returns event handler with specified name if registered or NULL.
 	 * \param name event handler name
@@ -157,6 +159,8 @@ public:
 	 * Print list of all registered properties.
 	 */
 	void printProperties();
+
+	std::string listProperties();
 
 	/*!
 	 * Returns property with specified name if registered or NULL.

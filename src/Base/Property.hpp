@@ -11,12 +11,15 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/function.hpp>
 
+#include <typeinfo>
+#include <vector>
+
 namespace Base {
 
 class PropertyInterface {
 public:
 
-	PropertyInterface(const std::string & n) : name_(n), persistent(true) {}
+	PropertyInterface(const std::string & n) : name_(n), persistent(true), m_tool_tip(n) {}
 
 	/*
 	template <typename T>
@@ -45,28 +48,66 @@ public:
 		return name_;
 	}
 
+	virtual std::string type() const = 0;
+
+	std::string toolTip() {
+		return m_tool_tip;
+	}
+
+	void setToolTip(const std::string & tool_tip) {
+		m_tool_tip = tool_tip;
+	}
+
+	void addConstraint(const std::string & str) {
+		m_constraints.push_back(str);
+	}
+
+	int countConstraints() const {
+		return m_constraints.size();
+	}
+
+	std::string getConstraint(int i) const {
+		return m_constraints[i];
+	}
+
 private:
 	/// property name
 	std::string name_;
 
 	bool persistent;
+
+	std::string m_tool_tip;
+
+	std::vector<std::string> m_constraints;
+};
+
+template <typename T>
+class LexicalTranslator {
+public:
+	static std::string toStr(const T & val) {
+		return boost::lexical_cast<std::string>(val);
+	}
+
+	static T fromStr(const std::string & str) {
+		return boost::lexical_cast<T>(str);
+	}
 };
 
 /*!
  *
  */
-template < class T >
+template < class T , class Translator = LexicalTranslator<T> >
 class Property : public PropertyInterface
 {
 public:
-	Property(const std::string& name, const T & initializer = T()) : PropertyInterface(name), data(initializer)
+	Property(const std::string& name, const T & initializer = T(), std::string type = typeid(T).name() ) : PropertyInterface(name), data(initializer), m_type(type)
 	{
 	}
 
-	Property(const std::string& name, boost::function<void(T)> callback, const T & initializer = T()) : PropertyInterface(name), data(initializer), m_onChange(callback) {
+	Property(const std::string& name, boost::function<void(T, T)> callback, const T & initializer = T(), std::string type = typeid(T).name()) : PropertyInterface(name), data(initializer), m_onChange(callback),  m_type(type) {
 	}
 
-	void setCallback(boost::function<void(T)> callback) {
+	void setCallback(boost::function<void(T, T)> callback) {
 		m_onChange = callback;
 	}
 
@@ -113,7 +154,7 @@ public:
 	 * @return string representation of current value.
 	 */
 	virtual std::string store() {
-		return boost::lexical_cast<std::string>(data);
+		return Translator::toStr(data);
 	}
 
 	/*!
@@ -122,12 +163,15 @@ public:
 	 * @param str string to retrieve value from.
 	 */
 	virtual void retrieve(const std::string & str) {
-		data = boost::lexical_cast<T>(str);
+		T old = data;
+		data = Translator::fromStr(str);
 		if (m_onChange)
-			m_onChange(data);
+			m_onChange(old, data);
 	}
 
-
+	std::string type() const {
+		return m_type;
+	}
 
 	/// Might be useful for template deductions
 	typedef T value_type;
@@ -137,7 +181,9 @@ protected:
 	T data;
 
 	/// callback on data change
-	boost::function<void(T)> m_onChange;
+	boost::function<void(T, T)> m_onChange;
+
+	std::string m_type;
 
 };
 

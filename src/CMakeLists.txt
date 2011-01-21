@@ -101,6 +101,7 @@ add_subdirectory(Sources)
 add_subdirectory(Processors)
 add_subdirectory(Sinks)
 add_subdirectory(Proxies)
+add_subdirectory(Client)
 
 # User interface
 set(WITH_GUI ON CACHE BOOL "Build GUI")

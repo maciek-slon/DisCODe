@@ -6,42 +6,41 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1157</width>
-    <height>645</height>
+    <width>563</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <property name="margin">
-     <number>2</number>
-    </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <property name="spacing">
-     <number>2</number>
+     <number>0</number>
     </property>
-    <item row="0" column="0">
-     <widget class="QTabWidget" name="tabWidget">
-      <property name="styleSheet">
-       <string notr="true"/>
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
-      </property>
-      <property name="documentMode">
-       <bool>false</bool>
-      </property>
-      <property name="tabsClosable">
+      <property name="widgetResizable">
        <bool>true</bool>
       </property>
-      <property name="movable">
-       <bool>true</bool>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Strona</string>
-       </attribute>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>302</width>
+         <height>204</height>
+        </rect>
+       </property>
       </widget>
      </widget>
     </item>
@@ -52,8 +51,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1157</width>
-     <height>27</height>
+     <width>563</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">
@@ -78,9 +77,12 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionConnect"/>
+   <addaction name="separator"/>
    <addaction name="actionStart_all"/>
    <addaction name="actionStop_all"/>
    <addaction name="separator"/>
+   <addaction name="actionRefresh"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -109,6 +111,9 @@
        <property name="itemsExpandable">
         <bool>true</bool>
        </property>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
+       </property>
        <column>
         <property name="text">
          <string>Name</string>
@@ -128,51 +133,35 @@
         </property>
         <item>
          <property name="text">
-          <string>Subtask</string>
+          <string>Exec1</string>
          </property>
          <property name="text">
-          <string/>
+          <string>Continuous</string>
          </property>
          <item>
           <property name="text">
-           <string>Exec1</string>
+           <string>Kbd1</string>
           </property>
           <property name="text">
-           <string>Continuous</string>
+           <string>Keyboard</string>
           </property>
-          <item>
-           <property name="text">
-            <string>Kbd1</string>
-           </property>
-           <property name="text">
-            <string>Keyboard</string>
-           </property>
-          </item>
-         </item>
-         <item>
-          <property name="text">
-           <string>Exec2</string>
-          </property>
-          <property name="text">
-           <string>Periodic</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>Wnd1</string>
-           </property>
-           <property name="text">
-            <string>CvWindow</string>
-           </property>
-          </item>
          </item>
         </item>
         <item>
          <property name="text">
-          <string>Subtask</string>
+          <string>Exec2</string>
          </property>
          <property name="text">
-          <string/>
+          <string>Periodic</string>
          </property>
+         <item>
+          <property name="text">
+           <string>Wnd1</string>
+          </property>
+          <property name="text">
+           <string>CvWindow</string>
+          </property>
+         </item>
         </item>
        </item>
       </widget>
@@ -230,6 +219,27 @@
   <action name="actionUnload">
    <property name="text">
     <string>Unload</string>
+   </property>
+  </action>
+  <action name="actionRefresh">
+   <property name="icon">
+    <iconset resource="gui.qrc">
+     <normaloff>:/icons/refresh</normaloff>:/icons/refresh</iconset>
+   </property>
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="icon">
+    <iconset resource="gui.qrc">
+     <normaloff>:/icons/connect</normaloff>:/icons/connect</iconset>
+   </property>
+   <property name="text">
+    <string>Connect</string>
+   </property>
+   <property name="toolTip">
+    <string>Connect</string>
    </property>
   </action>
  </widget>

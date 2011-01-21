@@ -101,6 +101,9 @@ public:
 		return name_;
 	}
 
+
+	std::vector<std::string> listComponents();
+
 protected:
 
 	/**
@@ -119,6 +122,9 @@ protected:
 			h->execute();
 		}
 	}
+
+
+	typedef std::pair<std::string, Base::Component*> ComponentPair;
 
 	/// List of components managed by this Executor
 	std::map<std::string, Base::Component *> components;

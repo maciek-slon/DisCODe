@@ -14,6 +14,8 @@
 
 #include <boost/function.hpp>
 
+#include "Informer.hpp"
+
 namespace Core {
 
 struct Command {
@@ -45,6 +47,12 @@ public:
 
 	void addHandler(const std::string & cmd, handler h);
 
+	void addInformer(Informer * informer) {
+		informer->registerHandlers(*this);
+	}
+
+	void printCommands();
+
 protected:
 	/*!
 	 * Parse given command and return list of tokens.
@@ -54,6 +62,7 @@ protected:
 	 */
 	Command parse(const std::string & cmd);
 
+	typedef std::pair<std::string, handler> handler_pair;
 
 	std::map<std::string, handler > handlers;
 };

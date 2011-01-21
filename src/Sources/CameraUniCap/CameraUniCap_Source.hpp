@@ -12,6 +12,7 @@
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
+#include "Property.hpp"
 
 #include <unicap.h>
 #include <opencv/cv.h>
@@ -202,8 +203,10 @@ protected:
 	CameraUniCapProps props;
 
 private:
-	static void
-			new_frame_cb(unicap_event_t event, unicap_handle_t handle, unicap_data_buffer_t *buffer, void *usr_data);
+	static void	new_frame_cb(unicap_event_t event, unicap_handle_t handle, unicap_data_buffer_t *buffer, void *usr_data);
+
+	Base::Property<std::string> m_buffer_type;
+	void onBufferTypeCahnged(const std::string & old_type, const std::string & new_type);
 };
 
 }

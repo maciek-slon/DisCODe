@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Source type="CameraUniCap" thread="Thread1" group="s1">
+		</Source>
+		
+		<Proc type="CvThreshold" thread="Thread1" group="s1">
+			<type>TRUNC</type>
+			<maxval>192</maxval>
+			<thresh>128</thresh>	
+		</Proc>
+
+		<Window type="CvWindow" thread="Thread1" group="s1">
+			<title>Preview</title>
+		</Window>
+	</Components>
+
+	<!-- Threads of execution -->
+	<Executors>
+		<Thread1 type="continuous">
+			<main_component>Source</main_component>
+		</Thread1>
+	</Executors>
+
+	<!-- Event connections -->
+	<Events>
+		<Event source="Source.newImage" destination="Proc.onNewImage"/>
+		<Event source="Proc.newImage" destination="Window.onNewImage"/>
+	</Events>
+
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<Source>
+			<out_img type="out" group="Con"/>
+		</Source>
+
+		<Proc>
+			<in_img type="in" group="Con"/>
+			<out_img type="out" group="Con2"/>
+		</Proc>
+		
+		<Window>
+			<in_img type="in" group="Con2"/>
+		</Window>
+	</DataStreams>
+
+</Task>

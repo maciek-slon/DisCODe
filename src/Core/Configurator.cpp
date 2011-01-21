@@ -178,17 +178,17 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 			}
 		}
 
-		std::cout << name << " properties:\n";
+		//std::cout << name << " properties:\n";
 		kern->printProperties();
 
-		std::cout << name << " properties defined in xml:" << std::endl;
+		//std::cout << name << " properties defined in xml:" << std::endl;
 		BOOST_FOREACH( TreeNode nd2, tmp) {
-			std::cout << nd2.first << "=[" << tmp.get(nd2.first, "") << "]" << std::endl;
+			//std::cout << nd2.first << "=[" << tmp.get(nd2.first, "") << "]" << std::endl;
 			prop = kern->getProperty(nd2.first);
 			if (prop != NULL) {
-				std::cout << "\t- this property is present in component.\n";
+				//std::cout << "\t- this property is present in component.\n";
 				if (prop->isPersistent()) {
-					std::cout << "\t- this property is persistent.\n";
+					//std::cout << "\t- this property is persistent.\n";
 					prop->retrieve(tmp.get(nd2.first, ""));
 				}
 			}
@@ -208,7 +208,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 }
 
 void Configurator::loadEvents(const ptree * node) {
-	LOG(LINFO) << "Connecting events\n";
+	LOG(LTRACE) << "Connecting events\n";
 	std::string src, dst, name, caller, receiver, type;
 	Base::Component * src_k, * dst_k;
 	Base::EventHandlerInterface * h;
@@ -262,7 +262,7 @@ void Configurator::loadEvents(const ptree * node) {
 			e->addHandler(h);
 		}
 
-		LOG(LINFO) << name << ": src=" << src << ", dst=" << dst << "\n";
+		LOG(LTRACE) << name << ": src=" << src << ", dst=" << dst << "\n";
 	}
 }
 
