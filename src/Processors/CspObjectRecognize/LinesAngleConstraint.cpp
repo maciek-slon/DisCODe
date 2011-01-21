@@ -22,6 +22,10 @@ LinesAngleConstraint::~LinesAngleConstraint()
 	// TODO Auto-generated destructor stub
 }
 
+bool LinesAngleConstraint::isSatisifed(boost::shared_ptr <AbstractShape> first, boost::shared_ptr <AbstractShape> second)
+{
+	return false;
 }
 
+}
 }

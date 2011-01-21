@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <cv.h>
+#include <boost/shared_ptr.hpp>
 
 #include "Segment.hpp"
 
@@ -37,6 +38,8 @@ struct SegmentedImage
 	 * Detecte edges on image.
 	 */
 	void detectEdges();
+
+	boost::shared_ptr<SegmentedImage> clone();
 };
 
 } // namespace Segmentation

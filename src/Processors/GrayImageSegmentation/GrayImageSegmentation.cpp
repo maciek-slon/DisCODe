@@ -70,7 +70,7 @@ bool GrayImageSegmentation_Processor::onStart()
 
 void GrayImageSegmentation_Processor::onNewImage()
 {
-	Mat image = in_img.read();
+	Mat image = in_img.read().clone();
 	if (image.type() != CV_8U) {
 		LOG(LERROR) << "GrayImageSegmentation_Processor::onNewImage(): image.type() != CV_8U\n";
 		return;

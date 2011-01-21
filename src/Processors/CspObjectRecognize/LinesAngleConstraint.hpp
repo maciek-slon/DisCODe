@@ -19,6 +19,7 @@ class LinesAngleConstraint: public Processors::CspObjectRecognize::AbstractConst
 public:
 	LinesAngleConstraint();
 	virtual ~LinesAngleConstraint();
+	virtual bool isSatisifed(boost::shared_ptr<AbstractShape> first, boost::shared_ptr<AbstractShape> second);
 };
 
 }

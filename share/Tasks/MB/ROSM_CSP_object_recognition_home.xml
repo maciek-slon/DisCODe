@@ -41,7 +41,7 @@
 		</LineSegments>
 		
 		<CspObjectRecognize type="CspObjectRecognize" thread="MainExecutor" group="s1">
-		
+			<modelsFilename>/home/mateusz/workspace/DisCODe/share/Tasks/MB/ROSM_models.xml</modelsFilename>		
 		</CspObjectRecognize>
 	</Components>
 
@@ -56,14 +56,14 @@
 		</KeyboardExecutor>
 		<PreviewExecutor type="periodic">
 			<main_component>Preview</main_component>
-			<interval>0.02</interval>
+			<interval>0.1</interval>
 		</PreviewExecutor>
 	</Executors>
 	
 	<!-- Event connections -->
 	<Events>
 		<Event source="Keyboard.n_Pressed" destination="ImageSource.onTrigger"/>
-		<Event source="ImageSource.newImage" destination="Preview.onNewImage0" />
+		
 		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
 		<Event source="BGRToGray.newImage" destination="Preview.onNewImage1"/>
 		<Event source="BGRToGray.newImage" destination="GrayImageSegmentation.onNewImage"/>
@@ -75,6 +75,7 @@
 		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="LineSegments.onEdgesDetected"/>
 		<Event source="LineSegments.lineSegmentsEstimated" destination="Preview.onNewImage4"/>
 		<Event source="LineSegments.lineSegmentsEstimated" destination="CspObjectRecognize.onSegmentedImage"/>
+		<Event source="CspObjectRecognize.recognized" destination="Preview.onNewImage0" />
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -90,6 +91,7 @@
 		
 		<Preview>
 			<in_img0 type="in" group="ColorImageDataStream"/>
+			<in_draw0 type="in" group="RecognizedDC"/>
 			<in_img1 type="in" group="GrayImageDataStream"/>
 			<in_img2 type="in" group="AfterSegmentation"/>
 			<in_img3 type="in" group="EdgesDetectedImage"/>
@@ -121,7 +123,13 @@
 		<LineSegments>
 			<in_edgesDetected type="in" group="EdgesDetected"/>
 			<out_lineSegments type="out" group="LineSegments"/>
+			<out_lineSegmentsEstimated type="out" group="LineSegmentsEstimated"/>
 		</LineSegments>
+		
+		<CspObjectRecognize>
+			<in_segmentedImage type="in" group="LineSegmentsEstimated"/>
+			<out_recognizedDrawableContainer type="out" group="RecognizedDC"/>
+		</CspObjectRecognize>
 	</DataStreams>
 
 </Task>

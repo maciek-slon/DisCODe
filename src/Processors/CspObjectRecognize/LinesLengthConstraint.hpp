@@ -19,6 +19,7 @@ class LinesLengthConstraint: public Processors::CspObjectRecognize::AbstractCons
 public:
 	LinesLengthConstraint();
 	virtual ~LinesLengthConstraint();
+	virtual bool isSatisifed(boost::shared_ptr<AbstractShape> first, boost::shared_ptr<AbstractShape> second);
 };
 
 }
