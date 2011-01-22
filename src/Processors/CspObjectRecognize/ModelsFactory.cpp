@@ -60,7 +60,7 @@ ModelsMap ModelsFactory::loadModels()
 	return models;
 }
 
-boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const ptree& node)
+boost::shared_ptr <ObjectModel> ModelsFactory::buildObjectModel(const boost::property_tree::ptree& node)
 {
 	int numberOfVertices = node.get <int> ("<xmlattr>.numberOfVertices");
 	if (numberOfVertices < 2) {
