@@ -1,5 +1,5 @@
 /*!
- * \file KW_mean_skin.cpp
+ * \file KW_Skin.cpp
  * \brief
  * \author kwasak
  * \date 2010-11-11

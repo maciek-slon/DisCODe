@@ -1,5 +1,5 @@
 /*!
- * \file Socket.cc
+ * \file Socket.cpp
  * \brief Class responsible for communication through sockets.
  * - methods definition
  * \date 18.03.2008
