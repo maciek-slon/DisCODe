@@ -1,8 +1,8 @@
-/*
- * CspGraph.hpp
- *
- *  Created on: 09-01-2011
- *      Author: mateusz
+/*!
+ * \file CspGraph.hpp
+ * \brief
+ * \author mboryn
+ * \date 2011-01-22
  */
 
 #ifndef CSPGRAPH_HPP_
@@ -97,70 +97,49 @@ enum VertexStatusEnum
 	MANDATORY, OPTIONAL
 };
 
+/**
+ * Searches for object defined by a graph.
+ * Graph consists of vertices (for example line segments)
+ * and edges (constraints between them, for example two line segments have common end).
+ * Typical
+ */
 class CspGraph
 {
 public:
 	CspGraph();
 	virtual ~CspGraph();
-
 	bool init(int mandatoryVertexNum, int optionalVertex, bool empty);
-	//przeszukiwanie grafu
-	bool InitSearchGraph();
+	bool FindCspShape(ShapeSegments *stack);
 	//mapa krawedzi wychodzacych i przychodzacaych do wezla
 	void InitInputOutputEdgeMap();
-	bool NextSearchVector();
+	//przeszukiwanie grafu
+	bool InitSearchGraph();
+
 	void AddSearchVertex(Vertex numVertex, bool status);
-	void ClearSearchVectors();
+	ShapeVector &GetAllUsedShapesVector();
 	VertexVector &GetVertex();
-	VertexVector &GetVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint);
-	VertexVector &GetMandatoryVertex();
-	VertexVector &GetMandatoryVertex(bool empty);
-	VertexVector &GetMandatoryVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint);
-	VertexVector &GetOptionalVertex();
-	VertexVector &GetOptionalVertex(bool empty);
-	VertexVector &GetOptionalVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint);
 	bool AddEdge(Vertex u, Vertex v, boost::shared_ptr <AbstractConstraint>);
-	ConstraintVector &GetConstraints(Edge e);
+private:
+
+	bool NextSearchVector();
+	VertexVector &GetMandatoryVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint);
 	void InsertVertexValue(boost::shared_ptr <AbstractShape> shape, Vertex v);
 	boost::shared_ptr <AbstractShape> GetVertexValue(Vertex v);
 	void SetVertexStatus(int status, Vertex v);
-	int GetVertexStatus(Vertex v);
 	void SetVertexType(Vertex v, int kind);
 	int GetVertexType(Vertex v);
 	Vertex GetSourceEdge(Edge e);
-	Vertex GetTargetEdge(Edge e);
 	EdgeVector &GetOutPutEdge(Vertex v);
-	EdgeVector &GetInPutEdge(Vertex v);
 	EdgeVector &GetOutPutEdge(Vertex v, boost::shared_ptr <AbstractConstraint> constraint);
-	EdgeVector &GetInPutEdge(Vertex v, boost::shared_ptr <AbstractConstraint> constraint);
-	bool FindCspShape(ShapeSegments *stack);
-	bool FindCspShape(ShapeSegments *stack, SearchVector &searchVector);
-	Vertex &getVertex(int vertexNum);
 	void ClearAll();
-	void Clear(uint from, uint to);
-	int NumEmptyMandatoryVertices();
-	int NumMandatoryVertices();
-	int NumEmptyOptionalVertices();
-	int NumOptionalVertices();
-	ShapeVector &GetUsedShapesVector();
-	ShapeVector &GetAllUsedShapesVector();
 	bool FindInMandatory(Vertex u);
-	bool FindInOptional(Vertex u);
+
 	bool
 			checkConstraint(boost::shared_ptr <AbstractConstraint> constraint, Vertex u, boost::shared_ptr <
 					AbstractShape> shape);
-	VertexVector GetMandatoryVertexFrom(uint u, uint v);
-	VertexQueue GetMandatoryVertexFrom(Vertex start, Vertex stop, boost::shared_ptr <AbstractConstraint> constraint);
-	static bool ContainsElement(ShapesStack shapes, boost::shared_ptr <AbstractShape>);
-	void SetEmpty(bool empty);
-	bool GetEmpty();
-	void Show();
-	void ShowMandatory();
 	void ShowOptional();
-	void ReturnObjects(ShapeSegments *shapeSegments);
-	int GetDomainParent();
 	bool checkConstraints(Vertex u, boost::shared_ptr <AbstractShape> shape);
-private:
+	//private:
 	Graph g;
 	VertexVector vertices;
 	//wezy w grafie ktore sa wymagane
@@ -169,13 +148,10 @@ private:
 	VertexVector optionalVertices;
 	edge_constraint_map_t edgeConstraint;
 	vertex_shape_map_t vertexShape;
-	vertex_status_map_t vertexStatus;
 	vertex_type_map_t vertexType;
-	std::vector <Vertex>::iterator bracketStart;
-	std::vector <Vertex>::iterator bracketStop;
 	EdgeMap outputEdgeMap;
 	EdgeMap inputEdgeMap;
-	int numOfVertex;
+
 	bool checkConstraint(Vertex u, Vertex v, Edge e);
 	bool checkConstraint(boost::shared_ptr <AbstractShape> first, boost::shared_ptr <AbstractShape> second, Edge e);
 	ShapeVector usedShapes;
@@ -184,20 +160,56 @@ private:
 	SearchVectors searchVectors;
 	bool searchGraph(ShapeSegments *stack, SearchVector &searchVector);
 	bool checkConstraints(Vertex src, EdgeVector &edgeVector);
-	bool checkConstraints(Vertex src);
+
 	bool goToVertex(Vertex from, Vertex to, boost::shared_ptr <AbstractConstraint> constraint, VertexQueue &vector);
 	bool isVisited(VertexQueue &vector, Vertex u);
 	EdgeVector outputEdgeVector;
-	EdgeVector inputEdgeVector;
+
 	VertexVector returnedMandatoryVertex;
-	VertexVector returnedOptionalVertex;
-	VertexVector returnedVertex;
 
 	void Clear();
+
+	//	void ClearSearchVectors();
+	//	VertexVector &GetVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint);
+	//	VertexVector &GetMandatoryVertex();
+	//	VertexVector &GetMandatoryVertex(bool empty);
+	//	VertexVector &GetOptionalVertex();
+	//	VertexVector &GetOptionalVertex(bool empty);
+	//	VertexVector &GetOptionalVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint);
+	//	ConstraintVector &GetConstraints(Edge e);
+	//	int GetVertexStatus(Vertex v);
+	//	Vertex GetTargetEdge(Edge e);
+	//	EdgeVector &GetInPutEdge(Vertex v);
+	//	EdgeVector &GetInPutEdge(Vertex v, boost::shared_ptr <AbstractConstraint> constraint);
+	//	bool FindCspShape(ShapeSegments *stack, SearchVector &searchVector);
+	//	Vertex &getVertex(int vertexNum);
+	//	void Clear(uint from, uint to);
+	//	int NumEmptyMandatoryVertices();
+	//	int NumMandatoryVertices();
+	//	int NumEmptyOptionalVertices();
+	//	int NumOptionalVertices();
+	//	ShapeVector &GetUsedShapesVector();
+	//	bool FindInOptional(Vertex u);
+	//	VertexVector GetMandatoryVertexFrom(uint u, uint v);
+	//	VertexQueue GetMandatoryVertexFrom(Vertex start, Vertex stop, boost::shared_ptr <AbstractConstraint> constraint);
+	//	static bool ContainsElement(ShapesStack shapes, boost::shared_ptr <AbstractShape>);
+	//	void SetEmpty(bool empty);
+	//	bool GetEmpty();
+	//	void Show();
+	//	void ShowMandatory();
+	//	void ReturnObjects(ShapeSegments *shapeSegments);
+	//	int GetDomainParent();
+	//	std::vector <Vertex>::iterator bracketStart;
+	//	std::vector <Vertex>::iterator bracketStop;
+	//	bool checkConstraints(Vertex src);
+
+	//	vertex_status_map_t vertexStatus;
+	//	EdgeVector inputEdgeVector;
+	//	VertexVector returnedOptionalVertex;
+	//	VertexVector returnedVertex;
 };
 
-}
-
-}
+} // namespace Processors
+} // namespace CspObjectRecognize
 
 #endif /* CSPGRAPH_HPP_ */

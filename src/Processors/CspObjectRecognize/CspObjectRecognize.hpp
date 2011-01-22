@@ -25,6 +25,7 @@
  * \brief Recognizes objects with CSP graph search method.
  *
  *
+ *
  * \par Data streams:
  *
  * \streamin{in_segmentedImage,Types::Segmentation::SegmentedImage}
@@ -44,6 +45,8 @@
  *
  * \handler{onSegmentedImage}
  * Segmented image event handler.
+ *
+ *
  * \par Properties:
  *
  * \prop{modelsFilename,string,""}
