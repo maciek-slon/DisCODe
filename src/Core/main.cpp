@@ -1,5 +1,5 @@
 /*!
- * \file main.cpp
+ * \file src/Core/main.cpp
  * \brief Main body responsible for menu showing and image processing.
  * \author tkornuta
  * \date 11.09.2007

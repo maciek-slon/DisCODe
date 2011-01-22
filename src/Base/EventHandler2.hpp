@@ -10,8 +10,9 @@ class EventHandler2 : public EventHandlerInterface {
 public:
 	/*!
 	 * Setup event handler parameters.
-	 * \param _owner pointer to object on which function will be called, most often 'this' should be passed
-	 * \param _method pointer to method to be called as event handler function
+	 * _owner pointer to object on which function will be called, most often 'this' should be passed
+	 * _method pointer to method to be called as event handler function
+	 * \param f
 	 */
 	void setup(boost::function<void()> f) {
 		fun = f;

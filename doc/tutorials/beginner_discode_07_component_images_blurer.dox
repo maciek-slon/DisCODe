@@ -14,7 +14,6 @@ Instead of implementing the blue operation on your own please use the <a href="h
 The structure of the ImageBlurer task is shown below.
 
 <img src="images/ImageBlurer.png" style="margin: 5px; width: 500px;" alt="ImageBlurer"/>
-\endhtmlonly
 
 \note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
 

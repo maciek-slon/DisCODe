@@ -63,7 +63,7 @@ Modify required parts:
 
 \section ts_result Result
 A sequence of images  will be displayed. After an image will be shown application will wait for user
-to enter the 't' (must be followed by <enter>) to load and display another.
+to enter the 't' (must be followed by \<enter\>) to load and display another.
 
 \note Notice the problem of image refreshment - this will be solved in the next tutorial.
 
