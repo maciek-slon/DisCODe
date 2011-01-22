@@ -21,23 +21,77 @@ namespace CspObjectRecognize {
 /**
  * Read model description from a file.
  * Model file has the following form.
- * <models>
- * 	<model1 numberOfVertices="3">
- *		<constraints>
- *		<c1 type="" v1="0" v2="1"/>
- *		</constraints>
- * 	</model1>
- * 	<model2>
- * 	</model2>
- * </models>
+\code
+<?xml version="1.0" encoding="UTF-8"?>
+<models>
+	<Triangle numberOfVertices="3">
+		<drawColor>
+			<R>0</R>
+			<G>255</G>
+			<B>255</B>
+		</drawColor>
+		<constraints>
+			<c0 type="junction" from="0" to="1"></c0>
+			<c1 type="junction" from="1" to="2"></c1>
+			<c2 type="junction" from="2" to="0"></c2>
+		</constraints>
+	</Triangle>
+
+	<Quadrilateral numberOfVertices="4">
+		<drawColor>
+			<R>255</R>
+			<G>0</G>
+			<B>255</B>
+		</drawColor>
+		<constraints>
+			<c0 type="junction" from="0" to="1"></c0>
+			<c1 type="junction" from="1" to="2"></c1>
+			<c2 type="junction" from="2" to="3"></c2>
+			<c3 type="junction" from="3" to="0"></c3>
+		</constraints>
+	</Quadrilateral>
+	<Pentagon numberOfVertices="5">
+		<drawColor>
+			<R>255</R>
+			<G>255</G>
+			<B>0</B>
+		</drawColor>
+		<constraints>
+			<c0 type="junction" from="0" to="1"></c0>
+			<c1 type="junction" from="1" to="2"></c1>
+			<c2 type="junction" from="2" to="3"></c2>
+			<c3 type="junction" from="3" to="4"></c3>
+			<c4 type="junction" from="4" to="0"></c4>
+		</constraints>
+	</Pentagon>
+
+</models>
+\endcode
  */
 class ModelsFactory
 {
 public:
+	/**
+	 * Create Models factory.
+	 */
 	ModelsFactory();
+	/**
+	 * Destructor
+	 */
 	virtual ~ModelsFactory();
 
+	/**
+	 * Sets models database filename.
+	 * Call it before calling loadModels.
+	 * @param modelsFilename
+	 */
 	void setModelsFilename(const std::string& modelsFilename);
+
+	/**
+	 * Read objects database.
+	 * @throw std::exception throws exception if something's wrong with database file.
+	 * @return whole objects' database.
+	 */
 	ModelsMap loadModels();
 private:
 	std::string modelsFilename;

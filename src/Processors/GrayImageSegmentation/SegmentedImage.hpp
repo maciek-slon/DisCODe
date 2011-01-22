@@ -29,7 +29,7 @@ struct SegmentedImage
 	 */
 	cv::Mat edgeImage;
 
-	/*
+	/**
 	 * Segments collection
 	 */
 	std::vector <Segment> segments;
