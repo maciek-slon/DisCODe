@@ -1,8 +1,8 @@
-/*
- * ShapeRecognize.hpp
- *
- *  Created on: 15-01-2011
- *      Author: mateusz
+/*!
+ * \file ShapeRecognize.hpp
+ * \brief
+ * \author mboryn
+ * \date 2011-01-22
  */
 
 #ifndef SHAPERECOGNIZE_HPP_
@@ -20,6 +20,9 @@
 namespace Processors {
 namespace CspObjectRecognize {
 
+/**
+ * Recognizes shapes from given objects models.
+ */
 class ShapeRecognize
 {
 public:
@@ -28,11 +31,16 @@ public:
 
 	/**
 	 * Set models to recognize.
-	 * Every model will be checked.s
+	 * Every model will be checked.
 	 * @param models
 	 */
 	void setModels(const std::map <std::string, boost::shared_ptr <ObjectModel> >& models);
 
+	/**
+	 * Recognize objects in segmented image.
+	 * @param si segmented image.
+	 * @return recognize object instances.
+	 */
 	ObjectInstanceVector recognize(Types::Segmentation::SegmentedImage& si);
 private:
 	std::map <std::string, boost::shared_ptr <ObjectModel> > models;

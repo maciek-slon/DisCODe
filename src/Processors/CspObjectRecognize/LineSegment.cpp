@@ -14,13 +14,10 @@ namespace CspObjectRecognize {
 LineSegment::LineSegment(const Types::Line& line) :
 	line(line)
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 LineSegment::~LineSegment()
 {
-	// TODO Auto-generated destructor stub
 }
 Types::Line& LineSegment::getLine()
 {

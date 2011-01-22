@@ -1,8 +1,8 @@
-/*
- * LinesAngleConstraint.hpp
- *
- *  Created on: 09-01-2011
- *      Author: mateusz
+/*!
+ * \file LinesAngleConstraint.hpp
+ * \brief
+ * \author mboryn
+ * \date 2011-01-22
  */
 
 #ifndef LINESANGLECONSTRAINT_HPP_
@@ -14,6 +14,16 @@ namespace Processors {
 
 namespace CspObjectRecognize {
 
+/**
+ * Constraint for angle between two line segments.
+ * TODO: implement method isSatisifed().
+ *
+ * Properties:
+ *
+ * <b>minAngle</b>
+ *
+ * <b>maxAngle</b>
+ */
 class LinesAngleConstraint: public Processors::CspObjectRecognize::AbstractConstraint
 {
 public:

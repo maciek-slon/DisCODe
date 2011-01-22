@@ -34,6 +34,7 @@ bool JunctionConstraint::isSatisifed(boost::shared_ptr<AbstractShape> first, boo
 	cv::Point line2p1 = secondLine->getLine().getP1();
 	cv::Point line2p2 = secondLine->getLine().getP2();
 
+	// compare distance between every pair of ends to maxDistance.
 	if(
 			dist(line1p1, line2p1) <= maxDistance ||
 			dist(line1p1, line2p2) <= maxDistance ||

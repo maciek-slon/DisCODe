@@ -1,8 +1,8 @@
-/*
- * ObjectModel.hpp
- *
- *  Created on: 15-01-2011
- *      Author: mateusz
+/*!
+ * \file ObjectModel.hpp
+ * \brief
+ * \author mboryn
+ * \date 2011-01-22
  */
 
 #ifndef OBJECTMODEL_HPP_
@@ -18,13 +18,39 @@
 namespace Processors {
 namespace CspObjectRecognize {
 
+/**
+ * Model of object.
+ * Contains CspGraph.
+ * Properties <b>drawColor.R</b>, <b>drawColor.G</b>, <b>drawColor.B</b> specify which color to draw.
+ */
 class ObjectModel
 {
 public:
+	/**
+	 * Create object model.
+	 * @param graph
+	 * @param node read configuration
+	 */
 	ObjectModel(boost::shared_ptr<CspGraph> graph, const boost::property_tree::ptree& node);
 	virtual ~ObjectModel();
+
+	/**
+	 * Find instances using CspGraph search.
+	 * @param segments
+	 * @return
+	 */
 	bool findInstances(ShapeSegments* segments);
+
+	/**
+	 * Get objects found by CspGraph.
+	 * @return
+	 */
 	ShapeVector getFoundObject();
+
+	/**
+	 * Get draw color.
+	 * @return
+	 */
 	CvScalar getDrawColor();
 private:
 	boost::shared_ptr<CspGraph> graph;

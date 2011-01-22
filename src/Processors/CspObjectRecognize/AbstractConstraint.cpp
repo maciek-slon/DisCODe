@@ -13,18 +13,11 @@ namespace CspObjectRecognize {
 
 AbstractConstraint::AbstractConstraint()
 {
-	// TODO Auto-generated constructor stub
-
 }
 
 AbstractConstraint::~AbstractConstraint()
 {
-	// TODO Auto-generated destructor stub
 }
-
-//bool AbstractConstraint::isSatisifed(AbstractShape *first,AbstractShape *second){
-//	return false;
-//}
 
 double AbstractConstraint::dist(cv::Point p1, cv::Point p2){
 	return sqrt(

@@ -1,8 +1,8 @@
-/*
- * ModelsFactory.hpp
- *
- *  Created on: 15-01-2011
- *      Author: mateusz
+/*!
+ * \file ModelsFactory.hpp
+ * \brief
+ * \author mboryn
+ * \date 2011-01-22
  */
 
 #ifndef MODELSFACTORY_HPP_
