@@ -39,12 +39,7 @@ CspGraph::~CspGraph()
 {
 	g.clear();
 }
-/**
- * Metoda do inicjalizacji grafu
- * mandatoryNum - liczba wezlow wymaganych
- * optionalNum - liczba wezlow opcjonalna
- * empty - czy graf ma wstawiac zaslepki
- */
+
 bool CspGraph::init(int numMandatory, int numOptional, bool empty)
 {
 	ClearAll();
@@ -70,17 +65,11 @@ bool CspGraph::init(int numMandatory, int numOptional, bool empty)
 	return true;
 }
 
-/**
- * Metoda zwraca wszystkie wezly w grafie
- */
 VertexVector &CspGraph::GetVertex()
 {
 	return vertices;
 }
 
-/**
- * Metoda zwraca wezly wymagane spelniajace podane ograniczenie
- */
 VertexVector &CspGraph::GetMandatoryVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint)
 {
 	returnedMandatoryVertex.clear();
@@ -103,9 +92,6 @@ VertexVector &CspGraph::GetMandatoryVertex(Vertex u, boost::shared_ptr <Abstract
 	return returnedMandatoryVertex;
 }
 
-/**
- * Wstawienie krawedzie do grafu oraz nadanie jej ograniczen
- */
 bool CspGraph::AddEdge(Vertex u, Vertex v, boost::shared_ptr <AbstractConstraint> constraint)
 {
 	bool inserted = false;
@@ -124,46 +110,31 @@ bool CspGraph::AddEdge(Vertex u, Vertex v, boost::shared_ptr <AbstractConstraint
 	return inserted;
 }
 
-/**
- * Wstawienie wartosci dla wybranego wezla
- */
 void CspGraph::InsertVertexValue(boost::shared_ptr <AbstractShape> shape, Vertex v)
 {
 	vertexShape[v] = shape;
 }
-/**
- * Metoda zwraca vartosc wezla
- */
+
 boost::shared_ptr <AbstractShape> CspGraph::GetVertexValue(Vertex v)
 {
 	return vertexShape[v];
 }
 
-/**
- * Metoda ustawia rodzaj wezla
- */
 void CspGraph::SetVertexType(Vertex v, int kind)
 {
 	vertexType[v] = kind;
 }
-/**
- * Metoda pobiera rodzaj wezla
- */
+
 int CspGraph::GetVertexType(Vertex v)
 {
 	return vertexType[v];
 }
-/**
- * Metoda pobiera wezel zrodlowy dla danej krawedzi
- */
+
 Vertex CspGraph::GetSourceEdge(Edge e)
 {
 	return target(e, g);
 }
 
-/**
- * Metoda zwraca krawedzie polaczone z danym wezlem, jako wychodzace polaczenia
- */
 EdgeVector &CspGraph::GetOutPutEdge(Vertex v)
 {
 	if (outputEdgeMap.size() > 0) {
@@ -177,10 +148,7 @@ EdgeVector &CspGraph::GetOutPutEdge(Vertex v)
 		return outputEdgeVector;
 	}
 }
-/**
- * Metoda zwraca krawedzie polaczone z danym wezlem, jako wychodzace polaczenia
- * spelniajace ograniczenie
- */
+
 EdgeVector &CspGraph::GetOutPutEdge(Vertex v, boost::shared_ptr <AbstractConstraint> constraint)
 {
 	OutEdgeIterator i, end;
@@ -197,9 +165,6 @@ EdgeVector &CspGraph::GetOutPutEdge(Vertex v, boost::shared_ptr <AbstractConstra
 	return outputEdgeVector;
 }
 
-/**
- * metoda inizjalizujaca mape krawedzi przychodzacych i wychodzacych do wezlow
- */
 void CspGraph::InitInputOutputEdgeMap()
 {
 	//wezly przychodzace
@@ -226,10 +191,7 @@ void CspGraph::InitInputOutputEdgeMap()
 		outputEdgeMap.insert(make_pair(v, output));
 	}
 }
-/**
- * Metoda przeszukuje graf oraz wstawia do niego znalezione ksztalty, gdy model jest uzupelniony poprawnie
- * zwracane jest informacja ze znaleziono obiekt
- */
+
 bool CspGraph::FindCspShape(ShapeSegments *stack)
 {
 	int numSearch = -1;
@@ -258,10 +220,6 @@ bool CspGraph::FindCspShape(ShapeSegments *stack)
 	return returnedValue;
 }
 
-/**
- * Metoda wywolywana rekurencyjnie do szukania obiektu,
- * searchVector- vektor przeszukiwania grafu
- */
 bool CspGraph::searchGraph(ShapeSegments *stack, SearchVector &searchVector)
 {
 	boost::shared_ptr <AbstractShape> shape;
@@ -344,10 +302,7 @@ bool CspGraph::searchGraph(ShapeSegments *stack, SearchVector &searchVector)
 	}
 	return returnedValue;
 }
-/**
- * Metoda sprawdza ograniczenia
- * src -wezel zrodlowy
- */
+
 bool CspGraph::checkConstraints(Vertex src, EdgeVector &edgeVector)
 {
 	boost::shared_ptr <AbstractShape> first;
@@ -366,9 +321,7 @@ bool CspGraph::checkConstraints(Vertex src, EdgeVector &edgeVector)
 	}
 	return true;
 }
-/**
- * Metoda sprawdza czy wszystkie ograniczenia sa spelnione dla dwoch wezlow
- */
+
 bool CspGraph::checkConstraint(Vertex u, Vertex v, Edge e)
 {
 	boost::shared_ptr <AbstractShape> src = GetVertexValue(v);
@@ -377,9 +330,7 @@ bool CspGraph::checkConstraint(Vertex u, Vertex v, Edge e)
 
 	return checkConstraint(src, dst, e);
 }
-/**
- * Metoda sprawdza czy wszystkie ograniczenia sa spelnione dla dwoch wezlow
- */
+
 bool CspGraph::checkConstraint(boost::shared_ptr <AbstractShape> first, boost::shared_ptr <AbstractShape> second, Edge e)
 {
 	ConstraintVector constraintVector = edgeConstraint[e];
@@ -399,9 +350,7 @@ void CspGraph::Clear()
 		vertexShape[vertices[i]] = boost::shared_ptr <AbstractShape>();
 	}
 }
-/**
- * Metoda czysci caly graf
- */
+
 void CspGraph::ClearAll()
 {
 	vertices.clear();
@@ -415,9 +364,6 @@ void CspGraph::ClearAll()
 	g.clear();
 }
 
-/**
- * Metoda wyszukuje polaczen spelniajacych podane ograniczeni i probuje przejsc do wezla koncowego to
- */
 bool CspGraph::goToVertex(Vertex from, Vertex to, boost::shared_ptr <AbstractConstraint> constraint, VertexQueue &vertexQueue)
 {
 	VertexVector vector = GetMandatoryVertex(from, constraint);
@@ -446,9 +392,7 @@ bool CspGraph::goToVertex(Vertex from, Vertex to, boost::shared_ptr <AbstractCon
 	}
 	return status;
 }
-/**
- * Metoda sprawdza czy podany wezel znajduje sie w kolejce
- */
+
 bool CspGraph::isVisited(VertexQueue &queue, Vertex u)
 {
 	VertexQueueIterator iterator = find(queue.begin(), queue.end(), u);
@@ -458,9 +402,6 @@ bool CspGraph::isVisited(VertexQueue &queue, Vertex u)
 	return false;
 }
 
-/**
- * Metoda zwraca wszytskie ksztalty uzyte w grafie, w wezlach opcjonalnych oraz wymaganych
- */
 ShapeVector &CspGraph::GetAllUsedShapesVector()
 {
 	//	LOG(LFATAL) << "\n\nCspGraph::GetAllUsedShapesVector() begin";
@@ -484,9 +425,7 @@ ShapeVector &CspGraph::GetAllUsedShapesVector()
 	//	LOG(LFATAL) << "CspGraph::GetAllUsedShapesVector() end\n\n";
 	return usedShapes;
 }
-/**
- * Metoda sprawdza czy wezel jest wsrod wymaganych wezlow
- */
+
 bool CspGraph::FindInMandatory(Vertex u)
 {
 	for (uint i = 0; i < mandatoryVertices.size(); i++) {
@@ -497,9 +436,6 @@ bool CspGraph::FindInMandatory(Vertex u)
 	return false;
 }
 
-/**
- * Metoda sprawdza czy ksztalt shape wstawiony do wezla u spelnia ograniczenie constraint
- */
 bool CspGraph::checkConstraint(boost::shared_ptr <AbstractConstraint> constraint, Vertex u, boost::shared_ptr <
 		AbstractShape> shape)
 {
@@ -514,17 +450,12 @@ bool CspGraph::checkConstraint(boost::shared_ptr <AbstractConstraint> constraint
 	return false;
 }
 
-/**
- * Inicjalizacja wektora przeszukiwan grafu
- */
 bool CspGraph::InitSearchGraph()
 {
 	searchVectors.clear();
 	return true;
 }
-/**
- * Utworzenie nastepnego vektora przeszukiwan wezlow w grafie
- */
+
 bool CspGraph::NextSearchVector()
 {
 	SearchVector searchVector;
@@ -544,9 +475,6 @@ void CspGraph::AddSearchVertex(Vertex numVertex, bool status)
 	}
 }
 
-/**
- * Metoda sprawdza czy dany wezel spelnia ograniczenia
- */
 bool CspGraph::checkConstraints(Vertex src, boost::shared_ptr <AbstractShape> shape)
 {
 	InsertVertexValue(shape, src);

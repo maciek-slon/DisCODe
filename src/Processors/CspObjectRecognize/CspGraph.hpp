@@ -101,45 +101,180 @@ enum VertexStatusEnum
  * Searches for object defined by a graph.
  * Graph consists of vertices (for example line segments)
  * and edges (constraints between them, for example two line segments have common end).
- * Typical
  */
 class CspGraph
 {
 public:
 	CspGraph();
 	virtual ~CspGraph();
+
+	/**
+	 * Initialize graph.
+	 * @param mandatoryVertexNum number of mandatory vertices.
+	 * @param optionalVertex number of optional vertices.
+	 * @param empty  czy graf ma wstawiac zaslepki
+	 * @return
+	 */
 	bool init(int mandatoryVertexNum, int optionalVertex, bool empty);
-	bool FindCspShape(ShapeSegments *stack);
-	//mapa krawedzi wychodzacych i przychodzacaych do wezla
+
+	/**
+	 * metoda inizjalizujaca mape krawedzi przychodzacych i wychodzacych do wezlow.
+	 * mapa krawedzi wychodzacych i przychodzacaych do wezla
+	 */
 	void InitInputOutputEdgeMap();
-	//przeszukiwanie grafu
+
+	/**
+	 * Inicjalizacja wektora przeszukiwan grafu
+	 * @return
+	 */
 	bool InitSearchGraph();
 
+	/**
+	 *
+	 * @param numVertex
+	 * @param status
+	 */
 	void AddSearchVertex(Vertex numVertex, bool status);
-	ShapeVector &GetAllUsedShapesVector();
-	VertexVector &GetVertex();
-	bool AddEdge(Vertex u, Vertex v, boost::shared_ptr <AbstractConstraint>);
-private:
 
+	/**
+	 * Insert edge to the graph with given constraint.
+	 * @param u from-vertex
+	 * @param v to-vertex
+	 * @param constraint constraint
+	 * @return true if inserted
+	 */
+	bool AddEdge(Vertex u, Vertex v, boost::shared_ptr <AbstractConstraint> constraint);
+
+	/**
+	 * Metoda przeszukuje graf oraz wstawia do niego znalezione ksztalty, gdy model jest uzupelniony poprawnie.
+	 * zwracane jest informacja ze znaleziono obiekt
+	 *
+	 * @param stack
+	 * @return
+	 */
+	bool FindCspShape(ShapeSegments *stack);
+
+	/**
+	 * Metoda zwraca wszytskie ksztalty uzyte w grafie, w wezlach opcjonalnych oraz wymaganych.
+	 * @return
+	 */
+	ShapeVector &GetAllUsedShapesVector();
+
+	/**
+	 * Get all vertices.
+	 * @return
+	 */
+	VertexVector &GetVertex();
+private:
+	/**
+	 *
+	 */
+	void Clear();
+
+	/**
+	 * Metoda czysci caly graf.
+	 */
+	void ClearAll();
+
+	/**
+	 * Utworzenie nastepnego vektora przeszukiwan wezlow w grafie
+	 * @return
+	 */
 	bool NextSearchVector();
+
+	/**
+	 * Get vertices which satisfy given constraint.
+	 * @param u
+	 * @param constraint
+	 * @return
+	 */
 	VertexVector &GetMandatoryVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint);
+
+	/**
+	 * Wstawienie wartosci dla wybranego wezla
+	 * @param shape
+	 * @param v
+	 */
 	void InsertVertexValue(boost::shared_ptr <AbstractShape> shape, Vertex v);
+
+	/**
+	 * Get Vertex Value.
+	 * @param v
+	 * @return
+	 */
 	boost::shared_ptr <AbstractShape> GetVertexValue(Vertex v);
 	void SetVertexStatus(int status, Vertex v);
+
+	/**
+	 * Set Vertex Type.
+	 * @param v
+	 * @param kind
+	 */
 	void SetVertexType(Vertex v, int kind);
+
+	/**
+	 * Get Vertex Type.
+	 * @param v
+	 * @return
+	 */
 	int GetVertexType(Vertex v);
+
+	/**
+	 * Metoda pobiera wezel zrodlowy dla danej krawedzi.
+	 * @param e
+	 * @return
+	 */
 	Vertex GetSourceEdge(Edge e);
+
+	/**
+	 * Metoda zwraca krawedzie polaczone z danym wezlem, jako wychodzace polaczenia
+	 * @param v
+	 * @return
+	 */
 	EdgeVector &GetOutPutEdge(Vertex v);
+
+	/**
+	 * Metoda zwraca krawedzie polaczone z danym wezlem, jako wychodzace polaczenia
+	 * spelniajace ograniczenie
+	 * @param v
+	 * @param constraint
+	 * @return
+	 */
 	EdgeVector &GetOutPutEdge(Vertex v, boost::shared_ptr <AbstractConstraint> constraint);
-	void ClearAll();
+
+	/**
+	 * Metoda sprawdza czy wezel jest wsrod wymaganych wezlow
+	 * @param u
+	 * @return
+	 */
 	bool FindInMandatory(Vertex u);
 
-	bool
-			checkConstraint(boost::shared_ptr <AbstractConstraint> constraint, Vertex u, boost::shared_ptr <
+	/**
+	 * Metoda sprawdza czy ksztalt shape wstawiony do wezla u spelnia ograniczenie constraint.
+	 * @param constraint
+	 * @param u
+	 * @param shape
+	 * @return
+	 */
+	bool checkConstraint(boost::shared_ptr <AbstractConstraint> constraint, Vertex u, boost::shared_ptr <
 					AbstractShape> shape);
-	void ShowOptional();
+
+	/**
+	 * Metoda sprawdza czy dany wezel spelnia ograniczenia.
+	 * @param u
+	 * @param shape
+	 * @return
+	 */
 	bool checkConstraints(Vertex u, boost::shared_ptr <AbstractShape> shape);
-	//private:
+
+	/**
+	 * Metoda sprawdza ograniczenia
+	 * @param src wezel zrodlowy
+	 * @param edgeVector
+	 * @return
+	 */
+	bool checkConstraints(Vertex src, EdgeVector &edgeVector);
+
 	Graph g;
 	VertexVector vertices;
 	//wezy w grafie ktore sa wymagane
@@ -151,23 +286,61 @@ private:
 	vertex_type_map_t vertexType;
 	EdgeMap outputEdgeMap;
 	EdgeMap inputEdgeMap;
-
-	bool checkConstraint(Vertex u, Vertex v, Edge e);
-	bool checkConstraint(boost::shared_ptr <AbstractShape> first, boost::shared_ptr <AbstractShape> second, Edge e);
 	ShapeVector usedShapes;
 	//zmienna informujac czy wstawiamy do grafu zaslepki
 	bool empty;
 	SearchVectors searchVectors;
-	bool searchGraph(ShapeSegments *stack, SearchVector &searchVector);
-	bool checkConstraints(Vertex src, EdgeVector &edgeVector);
 
+	/**
+	 * Metoda sprawdza czy wszystkie ograniczenia sa spelnione dla dwoch wezlow.
+	 * @param u
+	 * @param v
+	 * @param e
+	 * @return
+	 */
+	bool checkConstraint(Vertex u, Vertex v, Edge e);
+
+	/**
+	 * Metoda sprawdza czy wszystkie ograniczenia sa spelnione dla dwoch wezlow.
+	 * @param first
+	 * @param second
+	 * @param e
+	 * @return
+	 */
+	bool checkConstraint(boost::shared_ptr <AbstractShape> first, boost::shared_ptr <AbstractShape> second, Edge e);
+
+	/**
+	 * Metoda wywolywana rekurencyjnie do szukania obiektu,
+	 * searchVector- vektor przeszukiwania grafu
+	 * @param stack
+	 * @param searchVector
+	 * @return
+	 */
+	bool searchGraph(ShapeSegments *stack, SearchVector &searchVector);
+
+	/**
+	 * Metoda wyszukuje polaczen spelniajacych podane ograniczeni i probuje przejsc do wezla koncowego to.
+	 * @param from
+	 * @param to
+	 * @param constraint
+	 * @param vector
+	 * @return
+	 */
 	bool goToVertex(Vertex from, Vertex to, boost::shared_ptr <AbstractConstraint> constraint, VertexQueue &vector);
+
+	/**
+	 * Metoda sprawdza czy podany wezel znajduje sie w kolejce
+	 * @param vector
+	 * @param u
+	 * @return
+	 */
 	bool isVisited(VertexQueue &vector, Vertex u);
+
+	/** */
 	EdgeVector outputEdgeVector;
 
+	/** */
 	VertexVector returnedMandatoryVertex;
-
-	void Clear();
 
 	//	void ClearSearchVectors();
 	//	VertexVector &GetVertex(Vertex u, boost::shared_ptr <AbstractConstraint> constraint);
@@ -202,6 +375,7 @@ private:
 	//	std::vector <Vertex>::iterator bracketStart;
 	//	std::vector <Vertex>::iterator bracketStop;
 	//	bool checkConstraints(Vertex src);
+	//	void ShowOptional();
 
 	//	vertex_status_map_t vertexStatus;
 	//	EdgeVector inputEdgeVector;
