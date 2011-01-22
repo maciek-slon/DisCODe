@@ -62,7 +62,7 @@ std::string convIOMethod(io_method meth);
 
 /*!
  * Convert string do video standard
- * @param std
+ * @param standard
  * @return
  */
 int convStandard(const std::string & standard);

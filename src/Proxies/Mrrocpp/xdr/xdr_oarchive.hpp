@@ -170,7 +170,7 @@ public:
 
 	/**
 	 * Saving Archive Concept::register_type<T>() and ::register_type(u)
-	 * @param The data type to register in this archive.
+	 * @param T The data type to register in this archive.
 	 * @return
 	 */
 	template <class T>
