@@ -1,0 +1,184 @@
+/*!
+\page csp_object_recognize_components CSP object recognize
+
+\section goals Goals
+
+The project aims to implement a set of components designed to identify various objects in the image. 
+An important feature of the project is to be able to recognize objects with the features described
+in an external database. 
+This means that the user can define new types of objects without a change in the source code
+ of application.
+
+\section segmentation Segmentation
+
+Processor Processors::GrayImageSegmentation::GrayImageSegmentation_Processor performs segmentation on grayscale image.
+Result of segmentation is Types::Segmentation::SegmentedImage, which contains image (cv::Mat) and collection of segments (every segment is also cv::Mat).
+
+TODO: create component for color image segmentation.
+
+\section edge_detection Edge detection
+
+Processor Processors::EdgeDetectorForSegmentedImage::EdgeDetectorForSegmentedImage_Processor
+takes Types::Segmentation::SegmentedImage as input and returns also Types::Segmentation::SegmentedImage as a result.
+It performs edge detection for every segment in segmented image.
+Additionally it returns Types::DrawableContainer to easily draw edges in CvWindow.
+
+\section primitive_shapes_extra Primitive shapes extraction
+Processor Processors::LineSegments::LineSegments_Processor 
+takes Types::Segmentation::SegmentedImage as input and returns also Types::Segmentation::SegmentedImage as a result.
+It performs estimation of line segments from the edge image for every segment.
+
+TODO: write component or modify existing one to extract arcs from segments edges or from line segments. 
+
+\section Object_recognition_using_CSP_graph Object recognition using CSP graph
+Processor Processors::CspObjectRecognize::CspObjectRecognize_Processor takes Types::Segmentation::SegmentedImage
+as input and returns Types::DrawableContainer with recognized objects.
+
+At this moment vertices can only be line segments and edges can only be junction constraints.
+
+TODO: add more constraints for: lines length, lines angle, etc.
+
+TODO: in current version of CSP graph search algorithm all vertices are mandatory. 
+Support for optional vertices should be added (so that if one part of the object is not visible, object will be still recognized).
+
+\section Sample_config_file Sample config file
+
+\code
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<!-- List of components -->
+	<Components>
+		<Keyboard type="Keyboard" thread="KeyboardExecutor" group="s1">
+			<keys>n</keys>
+		</Keyboard>
+		
+        <ImageSource type="Sequence" thread="MainExecutor" group="s1">
+			<directory>/home/mateusz/segomo_mboryn/ROSM/dane_testowe/nie-kwadrat</directory>
+			<triggered>true</triggered>
+			<sort>true</sort>
+		</ImageSource>
+
+		<Preview type="CvWindow" thread="PreviewExecutor" group="s1">
+			<title>Preview </title>
+			<count>5</count>
+		</Preview>
+		
+		<BGRToGray type="CvColorConv" thread="MainExecutor" group="s1">
+			<type>BGR2GRAY</type>
+		</BGRToGray>
+		 
+		<GrayImageSegmentation type="GrayImageSegmentation" thread="MainExecutor" group="s1">
+			<minSegmentArea>400</minSegmentArea>
+			<minVariance>3e-3</minVariance>		
+		</GrayImageSegmentation>
+		
+		<ConvertSegments type="ConvertSegments" thread="MainExecutor" group="s1">
+			<showEdgeImage>false</showEdgeImage>
+		</ConvertSegments>
+		
+		<EdgeDetectorForSegmentedImage type="EdgeDetectorForSegmentedImage" thread="MainExecutor" group="s1">
+		</EdgeDetectorForSegmentedImage>
+		
+		<ConvertSegmentsForEdgeImage type="ConvertSegments" thread="MainExecutor" group="s1">
+			<showEdgeImage>true</showEdgeImage>
+		</ConvertSegmentsForEdgeImage>
+		
+		<LineSegments type="LineSegments" thread="MainExecutor" group="s1">
+		</LineSegments>
+		
+		<CspObjectRecognize type="CspObjectRecognize" thread="MainExecutor" group="s1">
+			<modelsFilename>/home/mateusz/workspace/DisCODe/share/Tasks/MB/ROSM_models.xml</modelsFilename>		
+		</CspObjectRecognize>
+	</Components>
+
+	<!-- Threads of execution -->
+	<Executors>
+		<MainExecutor type="periodic">
+			<main_component>ImageSource</main_component>
+			<interval>0.1</interval>
+		</MainExecutor>
+		<KeyboardExecutor type="continuous">
+			<main_component>Keyboard</main_component>
+		</KeyboardExecutor>
+		<PreviewExecutor type="periodic">
+			<main_component>Preview</main_component>
+			<interval>0.1</interval>
+		</PreviewExecutor>
+	</Executors>
+	
+	<!-- Event connections -->
+	<Events>
+		<Event source="Keyboard.n_Pressed" destination="ImageSource.onTrigger"/>
+		
+		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
+		<Event source="BGRToGray.newImage" destination="Preview.onNewImage1"/>
+		<Event source="BGRToGray.newImage" destination="GrayImageSegmentation.onNewImage"/>
+		<Event source="GrayImageSegmentation.segmented" destination="ConvertSegments.onSegmented"/>
+		<Event source="ConvertSegments.newImage" destination="Preview.onNewImage2"/>
+		<Event source="GrayImageSegmentation.segmented" destination="EdgeDetectorForSegmentedImage.onSegmented"/>
+		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="ConvertSegmentsForEdgeImage.onSegmented"/>
+		<Event source="ConvertSegmentsForEdgeImage.newImage" destination="Preview.onNewImage3"/>
+		<Event source="EdgeDetectorForSegmentedImage.edgesDetected" destination="LineSegments.onEdgesDetected"/>
+		<Event source="LineSegments.lineSegmentsEstimated" destination="Preview.onNewImage4"/>
+		<Event source="LineSegments.lineSegmentsEstimated" destination="CspObjectRecognize.onSegmentedImage"/>
+		<Event source="CspObjectRecognize.recognized" destination="Preview.onNewImage0" />
+	</Events>
+
+	<!-- Data stream assignments -->
+	<DataStreams>
+		<ImageSource>
+			<out_img type="out" group="ColorImageDataStream"/>
+		</ImageSource>
+		
+		<BGRToGray>
+			<in_img  type="in" group="ColorImageDataStream"/>
+			<out_img type="out" group="GrayImageDataStream"/>
+		</BGRToGray>
+		
+		<Preview>
+			<in_img0 type="in" group="ColorImageDataStream"/>
+			<in_draw0 type="in" group="RecognizedDC"/>
+			<in_img1 type="in" group="GrayImageDataStream"/>
+			<in_img2 type="in" group="AfterSegmentation"/>
+			<in_img3 type="in" group="EdgesDetectedImage"/>
+			<in_img4 type="in" group="ColorImageDataStream"/>
+			<in_draw4 type="in" group="LineSegments"/>
+		</Preview>
+		 
+		<GrayImageSegmentation>
+			<in_img  type="in" group="GrayImageDataStream"/>
+			<out_segmented type="out" group="Segmented"/>
+		</GrayImageSegmentation>
+		
+		<ConvertSegments>
+			<in_segmented type="in" group="Segmented"/>
+			<out_img type="out" group="AfterSegmentation"/>
+		</ConvertSegments>
+
+		<EdgeDetectorForSegmentedImage>
+			<in_segmented type="in" group="Segmented"/>
+			<out_edgesDetected type="out" group="EdgesDetected"/>
+			<out_contours type="out" group="Contours"/>
+		</EdgeDetectorForSegmentedImage>
+		
+		<ConvertSegmentsForEdgeImage>
+			<in_segmented type="in" group="EdgesDetected"/>
+			<out_img type="out" group="EdgesDetectedImage"/>
+		</ConvertSegmentsForEdgeImage>
+		
+		<LineSegments>
+			<in_edgesDetected type="in" group="EdgesDetected"/>
+			<out_lineSegments type="out" group="LineSegments"/>
+			<out_lineSegmentsEstimated type="out" group="LineSegmentsEstimated"/>
+		</LineSegments>
+		
+		<CspObjectRecognize>
+			<in_segmentedImage type="in" group="LineSegmentsEstimated"/>
+			<out_recognizedDrawableContainer type="out" group="RecognizedDC"/>
+		</CspObjectRecognize>
+	</DataStreams>
+
+</Task>
+\endcode
+
+*/
