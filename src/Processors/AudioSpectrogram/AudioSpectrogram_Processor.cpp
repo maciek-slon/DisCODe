@@ -101,12 +101,12 @@ void AudioSpectrogram_Processor::onNewData() {
 			max = Max(mat_out);
 			min = Min(mat_out);
 
-			// extend image
+			// shorten image to have worse resolution
 			mat_small = ShortenOutputMatrix(img_out_transp, 2);
-
-
+			// extend image
 			mat_big = ExtendOutputMatrix(mat_small, 4);
 
+			// Proby kolorowania spektrogramu
 //			cv::Mat maaat;
 //			printf("aaaa\n");
 //			mat_out.convertTo(maaat, CV_64FC1, 1, 0);
