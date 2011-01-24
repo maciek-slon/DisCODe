@@ -13,6 +13,7 @@
 #include "LineSegment.hpp"
 
 #include "Logger.hpp"
+#include <string>
 
 namespace Processors {
 namespace CspObjectRecognize {
@@ -51,7 +52,7 @@ ObjectInstanceVector ShapeRecognize::recognize(Types::Segmentation::SegmentedIma
 
 					BOOST_FOREACH(ModelsMap::value_type m, models )
 								{
-									string modelName = m.first;
+									std::string modelName = m.first;
 									boost::shared_ptr <ObjectModel> objectModel = m.second;
 									if (objectModel->findInstances(&segments)) {
 										ShapeVector shapeVector = objectModel->getFoundObject();
