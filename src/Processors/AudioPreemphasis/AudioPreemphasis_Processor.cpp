@@ -32,14 +32,10 @@ bool AudioPreemphasis_Processor::onInit() {
 	registerHandler("onNewData", &h_onNewData);
 
 	registerStream("in_data", &in_data);
-	registerStream("in_info", &in_info);
 
 	newData = registerEvent("newData");
 
 	registerStream("out_data", &out_data);
-	registerStream("out_info", &out_info);
-
-	licznik = 1;
 
 	return true;
 }
@@ -67,27 +63,16 @@ bool AudioPreemphasis_Processor::onStart() {
 void AudioPreemphasis_Processor::onNewData() {
 	LOG(LTRACE) << "AudioPreemphasis_Processor::onNewData\n";
 	try {
-		if (licznik == 1) {
-//			printf("aa\n");
 			mat = in_data.read().clone();
 
-//			printf("bb\n");
-			for(int c=0;c<mat.rows;c++)//channels
+			// perform preemphasis filter with given fi
+			for(int c=1;c<mat.rows;c++)//channels
 				for(int t=1;t<mat.cols;t++)//time
 					mat.at<double>(c,t)=mat.at<double>(c,t)-props.fi*mat.at<double>(c,t-1);
 
-//			printf("cc\n");
-			licznik++;
 			out_data.write(mat);
-//			printf("cd\n");
-			info=in_info.read();
-//			printf("dd\n");
-			out_info.write(info);
-//			printf("ee\n");
 			newData->raise();
-//			printf("ff\n");
-
-		}
+//		}
 	} catch (...) {
 		LOG(LERROR) << "AudioPreemphasis::onNewData failed\n";
 	}

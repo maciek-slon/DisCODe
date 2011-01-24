@@ -28,12 +28,12 @@
 	<DataStreams>
 		<Aud1>
 			<out_data type="out" group="Con1"/>
-			<out_info type="out" group="Con2"/>
+			<!--out_info type="out" group="Con2"/-->
 		</Aud1>
 
 		<Aud2>
 			<in_data type="in" group="Con1"/>
-			<in_info type="in" group="Con2"/>
+			<!--in_info type="in" group="Con2"/-->
 		</Aud2>
 
 	</DataStreams>

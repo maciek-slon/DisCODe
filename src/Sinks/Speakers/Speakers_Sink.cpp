@@ -32,10 +32,7 @@ bool Speakers_Sink::onInit() {
 	h_onNewData.setup(this, &Speakers_Sink::onNewData);
 	registerHandler("onNewData", &h_onNewData);
 
-	registerStream("in_info", &in_info);
 	registerStream("in_data", &in_data);
-
-	licznik = 1;
 
 	return true;
 }
@@ -63,9 +60,14 @@ bool Speakers_Sink::onStart() {
 void Speakers_Sink::onNewData() {
 	LOG(LTRACE) << "Speakers_Sink::onNewData\n";
 
-	if (licznik == 1) {
 		data = in_data.read().clone();
-		sfinfo = in_info.read();
+
+		sfinfo.frames=(sf_count_t)data.at<double>(0,0);
+		sfinfo.samplerate=(int)data.at<double>(0,1);
+		sfinfo.channels=(int)data.at<double>(0,2);
+		sfinfo.format=(int)data.at<double>(0,3);
+		sfinfo.sections=(int)data.at<double>(0,4);
+		sfinfo.seekable=(int)data.at<double>(0,5);
 
 		sleep_time = (double)sfinfo.frames / (double)sfinfo.samplerate;
 		printf("prepare.....\n");
@@ -82,6 +84,7 @@ void Speakers_Sink::onNewData() {
 		err = Pa_StartStream(stream);
 		if (err != paNoError)
 			goto error;
+		printf("Now playing\n");
 		/* Sleep for several seconds. */
 		Pa_Sleep(sleep_time * 1000);
 
@@ -99,10 +102,6 @@ void Speakers_Sink::onNewData() {
 		fprintf(stderr, "Error number: %d\n", err);
 		fprintf(stderr, "Error message: %s\n", Pa_GetErrorText(err));
 		return ;
-
-		licznik++;
-
-	}
 
 	onStep();
 }
@@ -123,8 +122,8 @@ int Speakers_Sink::patestCallback(  const void *inputBuffer, void *outputBuffer,
 	for (i = 0; i < framesPerBuffer; i++) {
 		if (i + frame * framesPerBuffer<data2.cols)
 		{
-			*out++ = data2.at<double>(0, i + frame * framesPerBuffer);
 			*out++ = data2.at<double>(1, i + frame * framesPerBuffer);
+			*out++ = data2.at<double>(2, i + frame * framesPerBuffer);
 		}
 		else
 		{

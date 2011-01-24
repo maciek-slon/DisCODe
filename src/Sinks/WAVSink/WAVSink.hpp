@@ -111,9 +111,6 @@ protected:
 	/// Input data stream
 	Base::DataStreamIn<cv::Mat> in_data;
 
-	/// Input data stream
-	Base::DataStreamIn<SF_INFO> in_info;
-
 	/// File properties
 	Props props;
 

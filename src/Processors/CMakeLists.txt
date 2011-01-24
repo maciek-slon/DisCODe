@@ -29,6 +29,7 @@ ADD_PROCESSOR(CvUndistort)
 ADD_PROCESSOR(AudioFFT)
 ADD_PROCESSOR(AudioSpectrogram)
 ADD_PROCESSOR(AudioPreemphasis)
+#ADD_PROCESSOR(AudioNoiseReduction)
 
 
 

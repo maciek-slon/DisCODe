@@ -86,14 +86,6 @@ protected:
 	/// Input data stream
 	Base::DataStreamIn<cv::Mat> in_data;
 
-	/// Input data stream
-	Base::DataStreamIn<SF_INFO> in_info;
-
-	///  Structure used to store sound sample properties
-	SF_INFO sfinfo;
-
-	int licznik;
-
 	/// Array with sound data
 	cv::Mat data;
 

@@ -29,7 +29,6 @@ bool WAVFile_Sink::onInit() {
 	h_onNewData.setup(this, &WAVFile_Sink::onNewData);
 	registerHandler("onNewData", &h_onNewData);
 
-	registerStream("in_info", &in_info);
 	registerStream("in_data", &in_data);
 
 	return true;
@@ -59,7 +58,13 @@ void WAVFile_Sink::onNewData() {
 	LOG(LTRACE) << "WAVFile_Sink::onNewData\n";
 
 	data = in_data.read().clone();
-	sfinfo = in_info.read();
+
+	sfinfo.frames=(sf_count_t)data.at<double>(0,0);
+	sfinfo.samplerate=(int)data.at<double>(0,1);
+	sfinfo.channels=(int)data.at<double>(0,2);
+	sfinfo.format=(int)data.at<double>(0,3);
+	sfinfo.sections=(int)data.at<double>(0,4);
+	sfinfo.seekable=(int)data.at<double>(0,5);
 
 	// save number of frames
 	sf_count_t frames = sfinfo.frames;
@@ -78,7 +83,7 @@ void WAVFile_Sink::onNewData() {
 
 	for (int i = 0; i < frames; i++)
 		for (int c = 0; c < sfinfo.channels; c++) {
-			dataWrite[sfinfo.channels * i + c] = data.at<double> (c, i);
+			dataWrite[sfinfo.channels * i + c] = data.at<double> (c+1, i);
 		}
 
 	int writecount = sf_write_double(outfile, dataWrite, frames

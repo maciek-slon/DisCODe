@@ -4,4 +4,5 @@ MESSAGE(STATUS "Building sinks:")
 
 ADD_SINK(CvWindow)
 ADD_SINK(CvVideoWriter)
-ADD_SINK(WAVFile)
+ADD_SINK(WAVSink)
+ADD_SINK(Speakers)

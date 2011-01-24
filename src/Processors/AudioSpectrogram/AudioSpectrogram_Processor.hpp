@@ -23,13 +23,6 @@ namespace Processors {
 namespace AudioSpectrogram {
 
 /*!
- * \brief AudioFileFFT properties
- */
-struct Props: public Base::Props {
-
-};
-
-/*!
  * \class AudioFileFFT_Processor
  * \brief Example processor class.
  */
@@ -44,14 +37,6 @@ public:
 	 * Destructor
 	 */
 	virtual ~AudioSpectrogram_Processor();
-
-	/*!
-	 * Return window properties
-	 */
-	//	Base::Props * getProperties()
-	//	{
-	//		return &props;
-	//	}
 
 protected:
 
@@ -84,11 +69,30 @@ protected:
 	 * Event handler function.
 	 */
 	void onNewData();
+
+	/*!
+	 * Compute spectrogtam of given Fourier coefficients
+	 */
 	cv::Mat ComputeSpectrogram(cv::Mat mat);
+
+	/*!
+	 * Extends output image by n
+	 */
 	cv::Mat ExtendOutputMatrix(cv::Mat mat, int n);
 
+	/*!
+	 * Shortens output image by n
+	 */
+	cv::Mat ShortenOutputMatrix(cv::Mat mat, int n);
+
+	/// Compute Hamming window coefficients
+	double HammingW(int t, int s, int sample_size);
+
+	/// Compute maximum value in matrix
 	double Max(cv::Mat mat);
+	/// Compute minimum value in matrix
 	double Min(cv::Mat mat);
+
 	/// Event handler.
 	Base::EventHandler<AudioSpectrogram_Processor> h_onNewData;
 
@@ -105,6 +109,7 @@ protected:
 
 	cv::Mat img_out_transp;
 	cv::Mat mat_big;
+	cv::Mat mat_small;
 	cv::Mat mat_out;
 	cv::Mat mat_in;
 	double max;

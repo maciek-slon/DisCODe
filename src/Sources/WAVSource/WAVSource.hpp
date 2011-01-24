@@ -53,8 +53,8 @@ struct Props: public Base::Props
 };
 
 /*!
- * \class AudioFile_Source_Processor
- * \brief AudioFile_Source processor class.
+ * \class AudioFile_Source
+ * \brief AudioFile source class.
  */
 class AudioFile_Source: public Base::Component
 {
@@ -108,9 +108,6 @@ protected:
 	Base::Event * newData;
 
 	/// Output data stream
-	Base::DataStreamOut<SF_INFO> out_info;
-
-	/// Output data stream
 	Base::DataStreamOut<cv::Mat> out_data;
 
 	/// File properties
@@ -131,7 +128,7 @@ protected:
 };
 
 }//: namespace AudioFile_Source
-}//: namespace Sinks
+}//: namespace Sources
 
 
 /*

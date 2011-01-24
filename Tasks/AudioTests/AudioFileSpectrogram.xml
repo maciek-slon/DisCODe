@@ -4,7 +4,7 @@
 	<!-- List of components -->
 	<Components>
 		<AudIn type="WAVSource" thread="Exec1" group="s1">
-			<filename>kawa2.wav</filename>
+			<filename>kawa.wav</filename>
 		</AudIn>
 
 		<AudPree type="AudioPreemphasis" thread="Exec1" group="s1">
@@ -60,19 +60,19 @@
 	<DataStreams>
 		<AudIn>
 			<out_data type="out" group="Con1"/>
-			<out_info type="out" group="Con2"/>
+			<!--out_info type="out" group="Con2"/-->
 		</AudIn>
 		
 		<AudPree>
 			<in_data type="in" group="Con1"/>
-			<in_info  type="in" group="Con2"/>
+			<!--in_info  type="in" group="Con2"/-->
 			<out_data type="out" group="Con13"/>
-			<out_info type="out" group="Con14"/>
+			<!--out_info type="out" group="Con14"/-->
 		</AudPree>
 		
 		<AudFFT>
 			<in_data type="in" group="Con13"/>
-			<in_info  type="in" group="Con14"/>
+			<!--in_info  type="in" group="Con14"/-->
 			<out_data_r type="out" group="Con3"/>
 			<out_data_l type="out" group="Con4"/>
 		</AudFFT>

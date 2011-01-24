@@ -65,7 +65,7 @@ public:
 	virtual ~AudioPreemphasis_Processor();
 
 	/*!
-	 * Return window properties
+	 * Return filter properties
 	 */
 		Base::Props * getProperties()
 		{
@@ -110,24 +110,16 @@ protected:
 	/// Input data stream
 	Base::DataStreamIn<cv::Mat> in_data;
 
-	/// Input data stream
-	Base::DataStreamIn<SF_INFO> in_info;
-
 	/// Event raised, when image is processed
 	Base::Event * newData;
 
 	/// Output data stream - processed image
 	Base::DataStreamOut<cv::Mat> out_data;
 
-	/// Output data stream
-	Base::DataStreamOut<SF_INFO> out_info;
-
+	/// Filter properties
 	Props props;
 
-	SF_INFO info;
-
-	int licznik;
-
+	/// Array with sound data
 	cv::Mat mat;
 };
 
