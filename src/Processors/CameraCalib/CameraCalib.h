@@ -131,6 +131,7 @@ private:
 
 	Base::DataStreamIn <cv::Mat> in_img;
 	Base::DataStreamOut <Types::Objects3D::Chessboard> out_chessboard;
+	Base::DataStreamOut <cv::Mat> out_img;
 
 	/** Raised when chessboard has been located on the image. */
 	Base::Event *chessboardFound;
@@ -153,7 +154,7 @@ private:
 	std::string currentDirectory;
 
 	cv::Mat image;
-
+	cv::Mat grayImage;
 
 	std::string getTimeAsString();
 
