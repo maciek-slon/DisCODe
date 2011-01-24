@@ -16,6 +16,7 @@
 #include "Logger.hpp"
 
 #include "EventHandler2.hpp"
+#include "Property.hpp"
 
 #include <cv.h>
 #include <highgui.h>
@@ -89,33 +90,6 @@ namespace CvWindow {
 using namespace cv;
 
 /*!
- * \brief CvWindow properties
- *
- * WndProps contain window properties, such as title
- */
-struct WndProps : public Base::Props {
-
-	std::string title;
-	int count;
-
-	/*!
-	 * \copydoc Base::Props::load
-	 */
-	void load(const ptree & pt) {
-		title = pt.get("title", "video");
-		count = pt.get("count", 1);
-	}
-
-	/*!
-	 * \copydoc Base::Props::save
-	 */
-	void save(ptree & pt) {
-		pt.put("title", title);
-		pt.put("count", count);
-	}
-};
-
-/*!
  * \class CvWindow_Sink
  * \brief Creates a window and displays the image
  */
@@ -131,13 +105,6 @@ public:
 	 * Destructor
 	 */
 	virtual ~CvWindow_Sink();
-
-	/*!
-	 * Return window properties
-	 */
-	Base::Props * getProperties() {
-		return &props;
-	}
 
 protected:
 
@@ -176,6 +143,11 @@ protected:
 	 */
 	void onNewImageN(int n);
 
+	/*!
+	 * Callback called when title is changed
+	 */
+	void onTitleCahnged(const std::string & old_title, const std::string & new_title);
+
 	/// Event handlers
 	std::vector< Base::EventHandler2* > handlers;
 
@@ -186,13 +158,16 @@ protected:
 	/// Additional data to draw
 	std::vector< Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest> *> in_draw;
 
-	/// Window properties
-	WndProps props;
-
 	/// Image to be drawn.
 	std::vector< cv::Mat > img;
 
 	std::vector< boost::shared_ptr<Types::Drawable> > to_draw;
+
+
+
+
+	Base::Property<std::string> title;
+	Base::Property<int> count;
 
 };
 

@@ -32,5 +32,13 @@ void SegmentedImage::detectEdges()
 	}
 }
 
+boost::shared_ptr<SegmentedImage> SegmentedImage::clone(){
+	boost::shared_ptr<SegmentedImage> si = boost::shared_ptr<SegmentedImage>(new SegmentedImage);
+	si->image = image.clone();
+	si->edgeImage = edgeImage.clone();
+	si->segments = segments;
+	return si;
+}
+
 } // namespace Segmentation
 } // namespace Types

@@ -1,5 +1,5 @@
 /*!
- * \file main.cpp
+ * \file src/Core/main.cpp
  * \brief Main body responsible for menu showing and image processing.
  * \author tkornuta
  * \date 11.09.2007
@@ -21,10 +21,19 @@
 #include "Executor.hpp"
 #include "Logger.hpp"
 
+#include "CommandInterpreter.hpp"
+#include "CommandServer.hpp"
+
 #include <boost/program_options.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
+
+#include "TaskInformer.hpp"
+#include "ComponentInformer.hpp"
+#include "SystemInformer.hpp"
+#include "ExecutorInformer.hpp"
 
 using namespace std;
 using namespace Common;
@@ -35,6 +44,24 @@ namespace pt = boost::property_tree;
 
 volatile bool running = true;
 bool unstoppable = false;
+
+
+
+std::string print(std::vector<std::string> args) {
+	std::stringstream ss;
+	for (unsigned int i = 0; i < args.size(); ++i) {
+		ss << args[i] << ",";
+	}
+
+	std::cout << ss.str();
+
+	return ss.str();
+}
+
+
+
+
+
 
 void terminate (int param) {
 	if (unstoppable) {
@@ -84,6 +111,7 @@ int main(int argc, char* argv[])
 		("log-level,L", po::value<int>(&log_lvl)->default_value(3), "set log severity level")
 		("unstoppable","MWAHAHAHA!")
 		("set,S",po::value< vector<string> >(&task_overrides),"override task settings")
+		("interactive,I", "interactive mode")
 	;
 
 	po::variables_map vm;
@@ -179,6 +207,7 @@ int main(int argc, char* argv[])
 			LOG(LNOTICE) << "Quick fixes:";
 			LOG(LNOTICE) << "   specify task name using -T switch";
 			LOG(LNOTICE) << "   set default task name in config file";
+			LOG(LNOTICE) << "   run DisCODe in interactive mode (-I)";
 			exit(EXIT_FAILURE);
 		} else {
 			task_name = conf.get<std::string>("DisCODe.task");
@@ -208,12 +237,28 @@ int main(int argc, char* argv[])
 	ExecutorManager em;
 	ConnectionManager cm;
 
+	Task task;
+
 	configurator.setExecutorManager(&em);
 	configurator.setComponentManager(&km);
 	configurator.setConnectionManager(&cm);
 
+	TaskInformer task_informer(task);
+	ComponentInformer component_informer(km);
+	SystemInformer system_informer(running);
+	ExecutorInformer executor_informer(em);
+
+	CommandServer server;
+
+	server.addInformer(&task_informer);
+	server.addInformer(&component_informer);
+	server.addInformer(&system_informer);
+	server.addInformer(&executor_informer);
+	server.printCommands();
+
+
 	try {
-		Task task;
+		server.start();
 
 		km.initializeComponentsList();
 
@@ -238,6 +283,7 @@ int main(int argc, char* argv[])
 
 		km.deactivateComponentList();
 
+		server.stop();
 	}//: try
 
 	// =========================================================================

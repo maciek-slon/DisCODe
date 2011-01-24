@@ -1,6 +1,8 @@
 /*!
- * \file
+ * \file GrayImageSegmentation.hpp
  * \brief
+ * \author mboryn
+ * \date 2011-01-22
  */
 
 #ifndef GRAYIMAGESEGMENTATION_PROCESSOR_HPP_
@@ -20,7 +22,7 @@
  * \defgroup GrayImageSegmentation GrayImageSegmentation
  * \ingroup Processors
  *
- * Segmentation of grayscale image.
+ * \brief Segmentation of grayscale image.
  *
  * \par Data streams:
  * \streamin{in_img,cv::Mat}
@@ -34,7 +36,7 @@
  * \par Event handlers:
  *
  * \handler{onNewImage}
- * New image arrived
+ * New image arrived.
  *
  *
  * \par Properties:
@@ -61,6 +63,9 @@ namespace GrayImageSegmentation {
  */
 struct GrayImageSegmentation_Props: public Base::Props
 {
+	/**
+	 * Minimal segment area in pixels.
+	 */
 	int minSegmentArea;
 	/**
 	 * If segment variance is greater than this, segment is thresholded.
@@ -143,6 +148,9 @@ private:
 	/// Properties
 	GrayImageSegmentation_Props props;
 
+	/**
+	 * Process image.
+	 */
 	void onNewImage();
 
 	/// Event handler.
@@ -151,10 +159,19 @@ private:
 	/// Input data stream
 	Base::DataStreamIn <cv::Mat> in_img;
 
+	/**
+	 * Segmented image out data stream.
+	 */
 	Base::DataStreamOut <Types::Segmentation::SegmentedImage> out_segmented;
 
-	Base::Event * onSegmented;
+	/**
+	 * Segmentation completed event.
+	 */
+	Base::Event * segmented;
 
+	/**
+	 * Segment extractor.
+	 */
 	SegmentExtractor segmentExtractor;
 };
 

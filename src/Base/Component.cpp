@@ -10,6 +10,7 @@
 #include "DataStreamInterface.hpp"
 #include "Logger.hpp"
 #include "Timer.hpp"
+#include "Property.hpp"
 
 
 #include <boost/foreach.hpp>
@@ -25,6 +26,9 @@ Component::~Component()
 	}
 }
 
+//------------------------------------------------------------------------------------
+// State change methods
+//------------------------------------------------------------------------------------
 bool Component::initialize() {
 	if (state == Unready) {
 		if (onInit()) {
@@ -138,6 +142,22 @@ double Component::step() {
 	return 0;
 }
 
+//------------------------------------------------------------------------------------
+// State check methods
+//------------------------------------------------------------------------------------
+
+bool Component::running() const {
+	return state == Running;
+}
+
+bool Component::initialized() const {
+	return state == Ready;
+}
+
+//------------------------------------------------------------------------------------
+// Event related methods
+//------------------------------------------------------------------------------------
+
 void Component::printEvents() {
 	LOG(LINFO) << "Registered events:\n";
 	BOOST_FOREACH(EventPair event, events) {
@@ -153,11 +173,30 @@ Event * Component::getEvent(const std::string& name) {
 	}
 }
 
+Event * Component::registerEvent(const std::string& name) {
+	/// \todo check, if event already exists
+	Event * event = new Event();
+	events[name] = event;
+	return event;
+}
+
+//------------------------------------------------------------------------------------
+// Event handler related methods
+//------------------------------------------------------------------------------------
+
 void Component::printHandlers() {
 	LOG(LINFO) << "Registered handlers:\n";
 	BOOST_FOREACH(HandlerPair handler, handlers) {
 		LOG(LINFO) << "\t" << handler.first << "\n";
 	}
+}
+
+std::string Component::listHandlers() {
+	std::string ret;
+	BOOST_FOREACH(HandlerPair handler, handlers) {
+		ret += handler.first + "\n";
+	}
+	return ret;
 }
 
 EventHandlerInterface * Component::getHandler(const std::string& name) {
@@ -167,6 +206,16 @@ EventHandlerInterface * Component::getHandler(const std::string& name) {
 		return NULL;
 	}
 }
+
+EventHandlerInterface * Component::registerHandler(const std::string& name, EventHandlerInterface * handler) {
+	/// \todo check, if handler already exists
+	handlers[name] = handler;
+	return handler;
+}
+
+//------------------------------------------------------------------------------------
+// Data stream related methods
+//------------------------------------------------------------------------------------
 
 void Component::printStreams() {
 	LOG(LINFO) << "Registered data streams:\n";
@@ -183,37 +232,63 @@ DataStreamInterface * Component::getStream(const std::string& name) {
 	}
 }
 
-Props * Component::getProperties() {
-	// by default return NULL indicating, that given component has no properties
-	return NULL;
-}
-
-bool Component::running() const {
-	return state == Running;
-}
-
-bool Component::initialized() const {
-	return state == Ready;
-}
-
-Event * Component::registerEvent(const std::string& name) {
-	/// \todo check, if event already exists
-	Event * event = new Event();
-	events[name] = event;
-	return event;
-}
-
-EventHandlerInterface * Component::registerHandler(const std::string& name, EventHandlerInterface * handler) {
-	/// \todo check, if handler already exists
-	handlers[name] = handler;
-	return handler;
-}
-
 DataStreamInterface * Component::registerStream(const std::string& name, DataStreamInterface * stream) {
 	/// \todo check, if handler already exists
 	streams[name] = stream;
 	return stream;
 }
+
+//------------------------------------------------------------------------------------
+// Property related methods
+//------------------------------------------------------------------------------------
+
+void Component::printProperties() {
+	LOG(LINFO) << "Registered properties:";
+	BOOST_FOREACH(PropertyPair prop, properties) {
+		LOG(LINFO) << "\t" << prop.first;
+	}
+}
+
+std::string Component::listProperties() {
+	std::string ret;
+	BOOST_FOREACH(PropertyPair prop, properties) {
+		ret += prop.first + "\n";
+	}
+	return ret;
+}
+
+PropertyInterface * Component::getProperty(const std::string& name) {
+	if (properties.count(name) > 0) {
+		return properties[name];
+	} else {
+		return NULL;
+	}
+}
+
+PropertyInterface * Component::registerProperty(const std::string& name, PropertyInterface * prop) {
+	/// \todo check, if handler already exists
+	properties[name] = prop;
+	return prop;
+}
+
+PropertyInterface * Component::registerProperty(PropertyInterface & prop) {
+	/// \todo check, if handler already exists
+	properties[prop.name()] = &prop;
+	return &prop;
+}
+
+
+
+
+//------------------------------------------------------------------------------------
+// Deprecated methods
+//------------------------------------------------------------------------------------
+
+Props * Component::getProperties() {
+	// by default return NULL indicating, that given component has no properties
+	return NULL;
+}
+
 
 
 }//: namespace Base

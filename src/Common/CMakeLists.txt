@@ -21,3 +21,4 @@ install(
   ARCHIVE DESTINATION lib COMPONENT sdk
 )
 
+ADD_SUBDIRECTORY(Network)

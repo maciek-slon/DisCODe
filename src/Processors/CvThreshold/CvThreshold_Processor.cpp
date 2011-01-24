@@ -14,9 +14,31 @@
 namespace Processors {
 namespace CvThreshold {
 
-CvThreshold_Processor::CvThreshold_Processor(const std::string & name) : Base::Component(name)
+CvThreshold_Processor::CvThreshold_Processor(const std::string & name) : Base::Component(name),
+		m_type("type", CV_THRESH_BINARY, "combo"),
+		m_thresh("thresh", 128, "range"),
+		m_maxval("maxval", 255, "range")
 {
 	LOG(LTRACE) << "Hello CvThreshold_Processor\n";
+
+	m_type.setToolTip("Thresholding type");
+	m_type.addConstraint("BINARY");
+	m_type.addConstraint("BINARY_INV");
+	m_type.addConstraint("TRUNC");
+	m_type.addConstraint("TOZERO");
+	m_type.addConstraint("TOZERO_INV");
+
+	m_thresh.setToolTip("Threshold level");
+	m_thresh.addConstraint("0");
+	m_thresh.addConstraint("255");
+
+	m_maxval.setToolTip("Maximum value to use with BINARY and BINARY_INV thresholding types");
+	m_maxval.addConstraint("0");
+	m_maxval.addConstraint("255");
+
+	registerProperty(m_type);
+	registerProperty(m_thresh);
+	registerProperty(m_maxval);
 }
 
 CvThreshold_Processor::~CvThreshold_Processor()
@@ -36,6 +58,8 @@ bool CvThreshold_Processor::onInit()
 	newImage = registerEvent("newImage");
 
 	registerStream("out_img", &out_img);
+
+
 
 	return true;
 }
@@ -69,8 +93,8 @@ void CvThreshold_Processor::onNewImage()
 	try {
 		cv::Mat img = in_img.read();
 		cv::Mat out = img.clone();
-		LOG(LTRACE) << "Threshold " << props.thresh;
-		cv::threshold(img, out, props.thresh, props.maxval, props.type);
+		LOG(LTRACE) << "Threshold " << m_thresh;
+		cv::threshold(img, out, m_thresh, m_maxval, m_type);
 		out_img.write(out);
 		newImage->raise();
 	} catch (...) {

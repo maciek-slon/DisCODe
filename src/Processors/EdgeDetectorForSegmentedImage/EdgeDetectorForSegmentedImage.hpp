@@ -1,6 +1,8 @@
 /*!
- * \file
+ * \file EdgeDetectorForSegmentedImage.hpp
  * \brief
+ * \author mbotyn
+ * \date 2011-01-22
  */
 
 #ifndef EDGEDETECTORFORSEGMENTEDIMAGE_PROCESSOR_HPP_
@@ -16,32 +18,45 @@
 
 #include "../GrayImageSegmentation/SegmentedImage.hpp"
 
+
+/**
+ * \defgroup EdgeDetectorForSegmentedImage EdgeDetectorForSegmentedImage
+ * \ingroup Processors
+ *
+ * \brief Detects edges in segmented image.
+ *
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamin{in_segmented,Types::Segmentation::SegmentedImage}
+ * Segmented image data stream.
+ *
+ * \streamout{out_edgesDetected,Types::Segmentation::SegmentedImage}
+ * Segmented image with detected edges.
+ *
+ * \streamout{out_contours,Types::DrawableContainer}
+ * Edges to draw in CvWindow.
+ *
+ *
+ * \par Events:
+ *
+ * \event{edgesDetected}
+ * Edges have been detected.
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onSegmented}
+ * New segmented image is ready on input data stream.
+ *
+ * @{
+ *
+ * @}
+ */
+
 namespace Processors {
 namespace EdgeDetectorForSegmentedImage {
-
-/*!
- * \brief EdgeDetectorForSegmentedImage properties
- */
-struct EdgeDetectorForSegmentedImage_Props: public Base::Props
-{
-
-	/*!
-	 * \copydoc Base::Props::load
-	 */
-	void load(const ptree & pt)
-	{
-
-	}
-
-	/*!
-	 * \copydoc Base::Props::save
-	 */
-	void save(ptree & pt)
-	{
-
-	}
-
-};
 
 /*!
  * \class EdgeDetectorForSegmentedImage_Processor
@@ -59,14 +74,6 @@ public:
 	 * Destructor
 	 */
 	virtual ~EdgeDetectorForSegmentedImage_Processor();
-
-	/*!
-	 * Return window properties
-	 */
-	Base::Props * getProperties()
-	{
-		return &props;
-	}
 
 protected:
 
@@ -96,14 +103,34 @@ protected:
 	bool onStop();
 
 private:
-	/// Properties
-	EdgeDetectorForSegmentedImage_Props props;
-
+	/**
+	 * Process segmented image.
+	 */
 	void onSegmented();
+
+	/**
+	 * Segmented image data stream.
+	 */
 	Base::DataStreamIn <Types::Segmentation::SegmentedImage> in_segmented;
+
+	/**
+	 * Event handler for segmented image.
+	 */
 	Base::EventHandler <EdgeDetectorForSegmentedImage_Processor> h_onSegmented;
+
+	/**
+	 * Segmented image with detected edges.
+	 */
 	Base::DataStreamOut <Types::Segmentation::SegmentedImage> out_edgesDetected;
+
+	/**
+	 * Detected contours.
+	 */
 	Base::DataStreamOut <Types::DrawableContainer> out_contours;
+
+	/**
+	 * Edges detected event.
+	 */
 	Base::Event* edgesDetected;
 };
 

@@ -1,8 +1,9 @@
-/*
- * Mrrocpp_Proxy.cpp
+/*!
+ * \file Mrrocpp_Proxy.cpp
+ * \brief MRROC++ Proxy.
  *
- *  Created on: 15-10-2010
- *      Author: mateusz
+ * \date 15-10-2010
+ * \author Mateusz Boryn
  */
 
 #include <cstdio>
@@ -11,11 +12,13 @@
 #include "Mrrocpp_Proxy.hpp"
 
 namespace Proxies {
-
 namespace Mrrocpp {
 
+using namespace std;
+using namespace boost;
+
 Mrrocpp_Proxy::Mrrocpp_Proxy(const std::string & name) :
-	Base::Component(name), clientConnected(false)
+	Base::Component(name), state(MPS_NOT_INITIALIZED)
 {
 	LOG(LFATAL) << "Mrrocpp_Proxy::Mrrocpp_Proxy\n";
 
@@ -29,8 +32,6 @@ Mrrocpp_Proxy::Mrrocpp_Proxy(const std::string & name) :
 	*header_oarchive << rmh;
 	initiate_message_header_size = header_oarchive->getArchiveSize();
 	header_oarchive->clear_buffer();
-
-	proxyState = PROXY_NOT_CONFIGURED;
 }
 
 Mrrocpp_Proxy::~Mrrocpp_Proxy()
@@ -59,12 +60,11 @@ bool Mrrocpp_Proxy::onInit()
 	registerHandler("onRpcResult", &h_onRpcResult);
 
 	serverSocket.setupServerSocket(props.port);
-	clientConnected = false;
 
 	readingMessage.reset();
 	rpcResultMessage.reset();
 
-	proxyState = PROXY_WAITING_FOR_COMMAND;
+	state = MPS_LISTENING;
 
 	return true;
 }
@@ -79,69 +79,83 @@ bool Mrrocpp_Proxy::onFinish()
 {
 	LOG(LFATAL) << "Mrrocpp_Proxy::onFinish\n";
 	serverSocket.closeSocket();
-	clientConnected = false;
 
 	readingMessage.reset();
 	rpcResultMessage.reset();
 
-	proxyState = PROXY_NOT_CONFIGURED;
+	state = MPS_NOT_INITIALIZED;
 
 	return true;
 }
 
 bool Mrrocpp_Proxy::onStep()
 {
+	mutex::scoped_lock lock(eventsMutex);
 	LOG(LTRACE) << "Mrrocpp_Proxy::onStep\n";
 
-	if (clientConnected) {
-		LOG(LTRACE) << "if(clientConnected){\n";
-
-		switch (proxyState)
-		{
-			case PROXY_NOT_CONFIGURED:
-				LOG(LFATAL) << "bool Mrrocpp_Proxy::onStep(): proxyState==PROXY_NOT_CONFIGURED\n";
-				return true;
-				break;
-			case PROXY_WAITING_FOR_COMMAND:
-				try {
-					if (clientSocket->isDataAvailable()) {
-						receiveCommand();
-					}
-				} catch (exception& ex) {
-					LOG(LERROR)
-							<< "Error while being in state PROXY_WAITING_FOR_COMMAND. Probably client disconnected: "
-							<< ex.what() << endl;
-					LOG(LERROR) << "Closing socket.\n";
-					clientSocket->closeSocket();
-					proxyState = PROXY_NOT_CONFIGURED;
-					clientConnected = false;
-				}
-				break;
-			case PROXY_WAITING_FOR_READING:
-				return true;
-				break;
-			case PROXY_WAITING_FOR_RPC_RESULT:
-				return true;
-				break;
-		}
-	} else {
-		LOG(LTRACE) << "if(!clientConnected){\n";
-		if (!serverSocket.isDataAvailable()) {
-			LOG(LTRACE) << "if (!serverSocket.isDataAvailable()) {\n";
-			return true;
-		}
-		clientSocket = serverSocket.acceptConnection();
-		clientConnected = true;
-		readingMessage.reset();
-		rpcResultMessage.reset();
-		LOG(LTRACE) << "clientConnected!!!!\n";
+	switch (state)
+	{
+		case MPS_LISTENING:
+			tryAcceptConnection();
+			break;
+		case MPS_CONNECTED:
+			tryReceiveFromMrrocpp();
+			break;
+		case MPS_WAITING_FOR_RPC_RESULT:
+			break;
+		default:
+			throw logic_error("Mrrocpp_Proxy::onStep(): wrong state");
 	}
 	return true;
 }
 
+void Mrrocpp_Proxy::tryAcceptConnection()
+{
+	LOG(LTRACE) << "Mrrocpp_Proxy::tryAcceptConnection()\n";
+	if (!serverSocket.isDataAvailable()) {
+		LOG(LTRACE) << "if (!serverSocket.isDataAvailable()) {\n";
+		return;
+	}
+	clientSocket = serverSocket.acceptConnection();
+	readingMessage.reset();
+	rpcResultMessage.reset();
+	LOG(LNOTICE) << "clientConnected\n";
+	state = MPS_CONNECTED;
+}
+
+void Mrrocpp_Proxy::tryReceiveFromMrrocpp()
+{
+	try {
+		if (clientSocket->isDataAvailable()) {
+			receiveBuffersFromMrrocpp();
+			if (imh.is_rpc_call) {
+				rpcParam.write(*iarchive); // send RPC param
+				rpcCall->raise();
+				state = MPS_WAITING_FOR_RPC_RESULT; // wait for RPC result
+			} else {
+				oarchive->clear_buffer();
+				if (readingMessage.get() != 0) { // there is no reading ready
+					rmh.is_rpc_call = false;
+					readingMessage->send(oarchive);
+				}
+
+				sendBuffersToMrrocpp();
+				readingMessage.reset();
+			}
+		}
+	} catch (std::exception& ex) {
+		LOG(LERROR) << "Mrrocpp_Proxy::tryReceiveFromMrrocpp(): Probably client disconnected: " << ex.what()
+				<< endl;
+		LOG(LERROR) << "Closing socket.\n";
+		clientSocket->closeSocket();
+		state = MPS_LISTENING;
+	}
+}
+
 void Mrrocpp_Proxy::onNewReading()
 {
-	LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading ehehehehehehs\n";
+	mutex::scoped_lock lock(eventsMutex);
+	LOG(LTRACE) << "Mrrocpp_Proxy::onNewReading ehehehehehehs\n";
 	readingMessage = reading.read();
 	readingMessage->printInfo();
 	//	if (proxyState == PROXY_WAITING_FOR_READING) {
@@ -162,11 +176,12 @@ void Mrrocpp_Proxy::onNewReading()
 
 void Mrrocpp_Proxy::onRpcResult()
 {
+	mutex::scoped_lock lock(eventsMutex);
 	LOG(LTRACE) << "Mrrocpp_Proxy::onRpcResult\n";
 	rpcResultMessage = rpcResult.read();
 
-	if (proxyState != PROXY_WAITING_FOR_RPC_RESULT) {
-		LOG(LFATAL) << "Mrrocpp_Proxy::onRpcResult(): proxyState != PROXY_WAITING_FOR_RPC_RESULT\n";
+	if (state != MPS_WAITING_FOR_RPC_RESULT) {
+		LOG(LFATAL) << "Mrrocpp_Proxy::onRpcResult(): state != MPS_WAITING_FOR_RPC_RESULT\n";
 		return;
 	}
 
@@ -177,29 +192,7 @@ void Mrrocpp_Proxy::onRpcResult()
 
 	sendBuffersToMrrocpp();
 
-	proxyState = PROXY_WAITING_FOR_COMMAND;
-}
-
-void Mrrocpp_Proxy::receiveCommand()
-{
-	LOG(LINFO) << "Mrrocpp_Proxy::receiveCommand() begin: proxyState = " << proxyState << "\n";
-	receiveBuffersFromMrrocpp();
-
-	if (imh.is_rpc_call) {
-		rpcParam.write(*iarchive); // send RPC param
-		rpcCall->raise();
-		proxyState = PROXY_WAITING_FOR_RPC_RESULT; // wait for RPC result
-	} else {
-		oarchive->clear_buffer();
-		if (readingMessage.get() != 0) { // there is no reading ready
-			rmh.is_rpc_call = false;
-			readingMessage->send(oarchive);
-		}
-
-		sendBuffersToMrrocpp();
-		readingMessage.reset();
-	}
-	LOG(LINFO) << "Mrrocpp_Proxy::receiveCommand() end: proxyState = " << proxyState << "\n";
+	state = MPS_CONNECTED;
 }
 
 Base::Props * Mrrocpp_Proxy::getProperties()
@@ -221,7 +214,6 @@ void Mrrocpp_Proxy::receiveBuffersFromMrrocpp()
 	clientSocket->read(iarchive->get_buffer(), imh.data_size);
 
 	LOG(LDEBUG) << "imh.data_size: " << imh.data_size << endl;
-
 }
 
 void Mrrocpp_Proxy::sendBuffersToMrrocpp()

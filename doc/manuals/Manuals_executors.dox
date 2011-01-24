@@ -27,7 +27,7 @@ The component with ❶ is set as the main (of first to be executed).
 \section executors_types Executor types
 
 Currently there are three main types of executors:
- - \link Core::ContinousExecutor ContinousExecutor\endlink - Calls step() method from it's main component continuously. Other components can activate
+ - \link Core::ContinuousExecutor ContinousExecutor\endlink - Calls step() method from it's main component continuously. Other components can activate
  by receiving and handling events (that e.g. their input datastreams are prepared).
  - \link Core::PeriodicExecutor PeriodicExecutor\endlink - Executes main component periodically by calling its step() method with given interval.
  - \link Core::PassiveExecutor PassiveExecutor\endlink - This executor doesn't call any methods from it's components explicitly, but only

@@ -8,7 +8,7 @@
 Use the -S option in the command line in order to override the default value of parameter.
 
 \section ts_command Command
-\lin_win_command{./discode -T ../Tasks/MovieViewer.xml -SComponents.Mov1.filename=<movies_dir>/Sign_2_HD.avi, discode -T ..\\Tasks\\MovieViewer.xml -SComponents.Mov1.filename=<movies_dir>\\Sign_2_HD.avi}
+\lin_win_command{./discode -T ../Tasks/MovieViewer.xml -SComponents.Mov1.filename=\<movies_dir\>/Sign_2_HD.avi, discode -T ..\\Tasks\\MovieViewer.xml -SComponents.Mov1.filename=\<movies_dir\>\\Sign_2_HD.avi}
 
 \section ts_file Task file
 The file containing the MovieViewer task is listed below.

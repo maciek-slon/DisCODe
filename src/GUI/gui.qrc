@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="play">resources/Play-1-Hot-icon.png</file>
+        <file alias="stop">resources/player_stop.png</file>
+        <file alias="refresh">resources/refresh.png</file>
+        <file alias="connect">resources/Connect_creating.png</file>
+        <file alias="connecting">resources/Connect_established.png</file>
+        <file alias="disconnect">resources/Connect_no.png</file>
+        <file alias="wizard">resources/Nuvola_actions_wizard.png</file>
+        <file alias="cancel">resources/Nuvola_actions_cancel.png</file>
+    </qresource>
+</RCC>

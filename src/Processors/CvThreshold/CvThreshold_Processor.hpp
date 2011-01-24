@@ -12,7 +12,7 @@
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
-#include "Props.hpp"
+#include "Property.hpp"
 
 #include <cv.h>
 #include <highgui.h>
@@ -70,69 +70,40 @@ namespace CvThreshold {
 
 using namespace cv;
 
-/*!
- * \brief CvThreshold properties
- */
-struct ThresholdProps: public Base::Props
-{
-
-	int type;
-	double maxval;
-	double thresh;
-
-	/*!
-	 * \copydoc Base::Props::load
-	 */
-	void load(const ptree & pt)
+class ThresholdTranslator {
+public:
+	static int fromStr(const std::string & s)
 	{
-		type = str2type(pt.get("type", "binary"));
-		maxval = pt.get("maxval", 1.0);
-		thresh = pt.get("thresh", 0.5);
-	}
-
-	/*!
-	 * \copydoc Base::Props::save
-	 */
-	void save(ptree & pt)
-	{
-		pt.put("type", type2str(type));
-		pt.put("maxval", maxval);
-		pt.put("thresh", thresh);
-	}
-
-protected:
-	int str2type(const std::string & s)
-	{
-		if (s == "binary")
+		if (s == "BINARY")
 			return THRESH_BINARY;
-		else if (s == "inv_binary")
+		else if (s == "BINARY_INV")
 			return THRESH_BINARY_INV;
-		else if (s == "trunc")
+		else if (s == "TRUNC")
 			return THRESH_TRUNC;
-		else if (s == "zero")
+		else if (s == "TOZERO")
 			return THRESH_TOZERO;
-		else if (s == "inv_zero")
+		else if (s == "TOZERO_INV")
 			return THRESH_TOZERO_INV;
 		else
 			return THRESH_BINARY;
 	}
 
-	std::string type2str(int t)
+	static std::string toStr(int t)
 	{
 		switch (t)
 		{
 			case THRESH_BINARY:
-				return "binary";
+				return "BINARY";
 			case THRESH_BINARY_INV:
-				return "inv_binary";
+				return "BINARY_INV";
 			case THRESH_TRUNC:
-				return "trunc";
+				return "TRUNC";
 			case THRESH_TOZERO:
-				return "zero";
+				return "TOZERO";
 			case THRESH_TOZERO_INV:
-				return "inv_zero";
+				return "TOZERO_INV";
 			default:
-				return "binary";
+				return "BINARY";
 		}
 	}
 };
@@ -153,14 +124,6 @@ public:
 	 * Destructor
 	 */
 	virtual ~CvThreshold_Processor();
-
-	/*!
-	 * Return window properties
-	 */
-	Base::Props * getProperties()
-	{
-		return &props;
-	}
 
 protected:
 
@@ -207,8 +170,10 @@ protected:
 	/// Output data stream - processed image
 	Base::DataStreamOut <Mat> out_img;
 
-	/// Threshold properties
-	ThresholdProps props;
+private:
+	Base::Property<int, ThresholdTranslator> m_type;
+	Base::Property<double> m_thresh;
+	Base::Property<double> m_maxval;
 };
 
 }//: namespace CvThreshold

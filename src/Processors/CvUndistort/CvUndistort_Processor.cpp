@@ -16,7 +16,7 @@ using namespace cv;
 using namespace boost;
 using namespace Base;
 
-CvUndistort_Processor::CvUndistort_Processor(const string& n) :
+CvUndistort_Processor::CvUndistort_Processor(const std::string& n) :
 	Component(n)
 {
 }

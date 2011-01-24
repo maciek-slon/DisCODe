@@ -43,7 +43,7 @@ Modify required parts:
 
 \section ts_result Result
 A sequence of images  will be displayed. After an image is shown application will wait for user
-to enter the 't' (must be followed by <enter>) to load and display another. Besides the displayed
+to enter the 't' (must be followed by \<enter\>) to load and display another. Besides the displayed
 images will be refreshed every 0.2s.
 
 \section ts_sections Related sections

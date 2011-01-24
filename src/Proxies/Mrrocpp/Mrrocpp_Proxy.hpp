@@ -11,6 +11,7 @@
 
 #include <cv.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -21,6 +22,51 @@
 #include "headers.h"
 #include "Reading.hpp"
 
+/**
+ * \defgroup Mrrocpp Proxy
+ * \ingroup Proxies
+ *
+ * Proxy to the mrrocpp system.
+ *
+ * \par Data streams:
+ *
+ * \streamin{reading,Reading}
+ * Reading to send to mrrocpp as soon as mrroc asks for it.
+ *
+ * \streamin{rpcResult,Reading}
+ * RPC result send in response to RPC param
+ *
+ * \streamout{rpcParam,xdr_iarchive <> }
+ * RPC param received from mrrocpp
+ *
+ * \par Events:
+ *
+ * \event{rpcCall}
+ * RPC called. rpcParam datastream should be read.
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onNewReading}
+ * New reading is ready to be read from reading data stream.
+ *
+ * \handler{onRpcResult}
+ * RPC result is ready.
+ *
+ * \par Properties:
+ *
+ * \prop{port,port,&nbsp;}
+ * Port on which to listen.
+ *
+ *
+ * \see http://www.youtube.com/watch?v=sKxy5Vst7Mo&feature=player_embedded
+ * \see http://robotyka.ia.pw.edu.pl/twiki/bin/view/Projects/Mrrocpp
+ *
+ * @{
+ *
+ * @}
+ */
+
 namespace Proxies {
 namespace Mrrocpp {
 
@@ -30,7 +76,6 @@ struct Mrrocpp_ProxyProps: public Base::Props
 {
 	int port;
 
-	bool rpcMode;
 	/*!
 	 * Load settings
 	 *
@@ -39,7 +84,6 @@ struct Mrrocpp_ProxyProps: public Base::Props
 	virtual void load(const ptree & pt)
 	{
 		port = pt.get <int> ("port");
-		rpcMode = pt.get <bool> ("rpcMode");
 	}
 
 	/*!
@@ -50,7 +94,6 @@ struct Mrrocpp_ProxyProps: public Base::Props
 	virtual void save(ptree & pt)
 	{
 		pt.put("port", port);
-		pt.put("rpcMode", rpcMode);
 	}
 };
 
@@ -97,6 +140,14 @@ protected:
 	virtual bool onStep();
 private:
 	/**
+	 * MPS (short form of MrrocppProxyState)
+	 */
+	enum MrrocppProxyState {
+		MPS_NOT_INITIALIZED, MPS_LISTENING, MPS_CONNECTED, MPS_WAITING_FOR_READING, MPS_WAITING_FOR_RPC_RESULT
+	};
+
+	MrrocppProxyState state;
+	/**
 	 * Event handler called when new reading is ready.
 	 */
 	void onNewReading();
@@ -130,23 +181,26 @@ private:
 	initiate_message_header imh;
 	reading_message_header rmh;
 
-	void receiveCommand();
-
 	Socket serverSocket;
 	boost::shared_ptr <Socket> clientSocket;
 
 	Mrrocpp_ProxyProps props;
 
-	bool clientConnected;
-	bool msgSet;
-	bool getReadingReceived;
+	void tryAcceptConnection();
+	void tryReceiveFromMrrocpp();
 
-	enum
-	{
-		PROXY_NOT_CONFIGURED, PROXY_WAITING_FOR_COMMAND, PROXY_WAITING_FOR_READING, PROXY_WAITING_FOR_RPC_RESULT
-	} proxyState;
+//	bool clientConnected;
+//	bool msgSet;
+//	bool getReadingReceived;
+
+//	enum
+//	{
+//		PROXY_NOT_CONFIGURED, PROXY_WAITING_FOR_COMMAND, PROXY_WAITING_FOR_READING, PROXY_WAITING_FOR_RPC_RESULT
+//	} proxyState;
 
 	size_t initiate_message_header_size;
+
+	boost::mutex eventsMutex;
 };
 
 } // namespace Mrrocpp {

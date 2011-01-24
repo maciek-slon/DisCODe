@@ -1,6 +1,8 @@
 /*!
- * \file
+ * \file LineSegments.hpp
  * \brief
+ * \author mboryn
+ * \date 2011-01-22
  */
 
 #ifndef LINESEGMENTS_PROCESSOR_HPP_
@@ -15,32 +17,46 @@
 #include "../GrayImageSegmentation/SegmentedImage.hpp"
 #include "DrawableContainer.hpp"
 
+
+/**
+ * \defgroup LineSegments LineSegments
+ * \ingroup Processors
+ *
+ * \brief Estimate line segments from segmented image with edges detected.
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamin{in_edgesDetected,Types::Segmentation::SegmentedImage}
+ * Input segmented image with edges detected.
+ *
+ * \streamout{out_lineSegmentsEstimated,Types::Segmentation::SegmentedImage}
+ * Line segments estimated.
+ *
+ * \streamout{out_lineSegments,Types::DrawableContainer}
+ * Line segments ready to draw.
+ *
+ *
+ * \par Events:
+ *
+ * \event{lineSegmentsEstimated}
+ * Line segments estimated event.
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onEdgesDetected}
+ * New segmented image with edges detected arrived.
+ *
+ *
+ * @{
+ *
+ * @}
+ */
+
+
 namespace Processors {
 namespace LineSegments {
-
-/*!
- * \brief LineSegments properties
- */
-struct LineSegments_Props: public Base::Props
-{
-
-	/*!
-	 * \copydoc Base::Props::load
-	 */
-	void load(const ptree & pt)
-	{
-
-	}
-
-	/*!
-	 * \copydoc Base::Props::save
-	 */
-	void save(ptree & pt)
-	{
-
-	}
-
-};
 
 /*!
  * \class LineSegments_Processor
@@ -58,15 +74,6 @@ public:
 	 * Destructor
 	 */
 	virtual ~LineSegments_Processor();
-
-	/*!
-	 * Return window properties
-	 */
-	Base::Props * getProperties()
-	{
-		return &props;
-	}
-
 protected:
 
 	/*!
@@ -95,16 +102,34 @@ protected:
 	bool onStop();
 
 private:
-
+	/**
+	 * Segmented image with detected edges.
+	 */
 	void onEdgesDetected();
 
-	/// Properties
-	LineSegments_Props props;
-
+	/**
+	 * Event handler.
+	 */
 	Base::EventHandler <LineSegments_Processor> h_onEdgesDetected;
+
+	/**
+	 * Segmented image input data stream.
+	 */
 	Base::DataStreamIn <Types::Segmentation::SegmentedImage> in_edgesDetected;
+
+	/**
+	 * Segmented image with line segments estimated.
+	 */
 	Base::DataStreamOut <Types::Segmentation::SegmentedImage> out_lineSegmentsEstimated;
+
+	/**
+	 * Line segments to draw in CvWindow.
+	 */
 	Base::DataStreamOut <Types::DrawableContainer> out_lineSegments;
+
+	/**
+	 * Line segments estimated event.
+	 */
 	Base::Event* lineSegmentsEstimated;
 };
 

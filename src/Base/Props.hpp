@@ -85,6 +85,7 @@ protected:
 	/*!
 	 * Parse matrix from string.
 	 * Throws exception if failed.
+	 * @param str
 	 * @param rows
 	 * @param cols
 	 * @return

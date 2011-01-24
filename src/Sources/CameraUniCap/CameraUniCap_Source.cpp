@@ -18,8 +18,12 @@ namespace CameraUniCap {
 #define MAX_FORMATS 64
 #define MAX_PROPERTIES 64
 
-CameraUniCap_Source::CameraUniCap_Source(const std::string & name) : Base::Component(name) {
-
+CameraUniCap_Source::CameraUniCap_Source(const std::string & name) : Base::Component(name),
+	m_buffer_type("buffer/type", boost::bind(&CameraUniCap_Source::onBufferTypeCahnged, this, _1, _2), "SYSTEM", "combo")
+{
+	m_buffer_type.addConstraint("SYSTEM");
+	m_buffer_type.addConstraint("USER");
+	m_buffer_type.setToolTip("Buffer type");
 }
 
 CameraUniCap_Source::~CameraUniCap_Source() {
@@ -39,6 +43,8 @@ bool CameraUniCap_Source::onInit() {
 	bool device_found = false;
 
 	unicap_status_t status = STATUS_SUCCESS;
+
+	registerProperty(m_buffer_type);
 
 	LOG(LINFO) << "CameraUniCap_Source::initialize()\n";
 	newImage = registerEvent("newImage");
@@ -113,7 +119,8 @@ bool CameraUniCap_Source::onInit() {
 		}
 	}
 
-	format.buffer_type = UNICAP_BUFFER_TYPE_SYSTEM;
+	//format.buffer_type = UNICAP_BUFFER_TYPE_SYSTEM;
+	format.buffer_type = UNICAP_BUFFER_TYPE_USER; // (1)
 
 	/*
 	 Set this video format
@@ -122,6 +129,9 @@ bool CameraUniCap_Source::onInit() {
 		LOG(LERROR) << "Failed to set video format\n";
 
 	}
+
+	buffer.data = new unsigned char[format.buffer_size]; // (2)
+	buffer.buffer_size = format.buffer_size;
 
 	status = STATUS_SUCCESS;
 
@@ -221,8 +231,7 @@ bool CameraUniCap_Source::onInit() {
 		}
 	}
 
-	unicap_register_callback(handle, UNICAP_EVENT_NEW_FRAME,
-			(unicap_callback_t) new_frame_cb, this);
+	//unicap_register_callback(handle, UNICAP_EVENT_NEW_FRAME, (unicap_callback_t) new_frame_cb, this);
 
 	return true;
 }
@@ -245,6 +254,38 @@ bool CameraUniCap_Source::onFinish() {
 }
 
 bool CameraUniCap_Source::onStep() {
+	unicap_data_buffer_t * returned_buffer;
+
+	//LOG(LNOTICE) << "1";
+
+	if (!SUCCESS(unicap_wait_buffer(handle, &returned_buffer))) {
+		LOG(LERROR) << "Failed to wait for buffer!";
+		return false;
+	}
+
+	//LOG(LNOTICE) << "2";
+
+	cv::Mat frame = Mat(
+				format.size.height,
+				format.size.width,
+				CV_8UC3,
+				(void *) buffer.data
+			).clone();
+
+	//LOG(LNOTICE) << "3";
+
+	out_img.write(frame);
+	newImage->raise();
+
+	//LOG(LNOTICE) << "4";
+
+	if (!SUCCESS(unicap_queue_buffer(handle, returned_buffer))) {
+		LOG(LERROR) << "Failed to queue buffer!";
+		return false;
+	}
+
+	//LOG(LNOTICE) << "5";
+
 	return true;
 }
 
@@ -257,6 +298,11 @@ bool CameraUniCap_Source::onStart() {
 		LOG(LERROR) << "Failed to start capture on device: "	<< device.identifier << '\n';
 		return false;
 	}
+
+
+	unicap_queue_buffer(handle, &buffer); // (4)
+
+
 	return true;
 }
 
@@ -293,6 +339,11 @@ void CameraUniCap_Source::new_frame_cb(unicap_event_t event,
 
 }
 
-}
+void CameraUniCap_Source::onBufferTypeCahnged(const std::string & old_type, const std::string & new_type) {
 
 }
+
+
+} //: CameraUniCap
+
+} //: Sources

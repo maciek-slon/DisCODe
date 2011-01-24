@@ -24,7 +24,7 @@
  * \defgroup CvSolvePnP CvSolvePnP
  * \ingroup Processors
  *
- * Maps object found on input image to 3D object with given object's model.
+ * \brief Maps object found on input image to 3D object with given object's model.
  *
   * \par Data streams:
  *
@@ -46,25 +46,25 @@
  *
  * \par Properties:
  *
- * \prop{cameraMatrix,boost::numeric::ublas::matrix <double> 3x3,}
+ * \prop{cameraMatrix,boost::numeric::ublas::matrix \<double\> 3x3,""}
  * Camera matrix.
  * For example:
- * \verbatim
+ * \code
 [3,3](
 	(647.07647705, 0., 383.50000000),
 	(0., 632.76348877, 287.50000000),
 	(0, 0, 1)
 )
-\endverbatim
+\endcode
  *
- * \prop{distCoeffs,boost::numeric::ublas::matrix <double> 1x5,}
+ * \prop{distCoeffs,boost::numeric::ublas::matrix \<double\> 1x5,""}
  * Distortion correction coefficients.
  * For example:
- * \verbatim
+ * \code
 [1,5](
 	(-0.51084775, 0.23313555, 4.50637517e-03, -6.86281081e-03, 4.94365674e-03)
 )
-	\endverbatim
+	\endcode
  *
  * \see http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html#cv-solvepnp
  * @{
