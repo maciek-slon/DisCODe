@@ -42,7 +42,7 @@ public:
 
 	virtual void printInfo()
 	{
-		LOG(LNOTICE) << "PBReading::printInfo()\n";
+		LOG(LTRACE) << "PBReading::printInfo()\n";
 		stringstream ss;
 		if (objectVisible) {
 			for (int i = 0; i < 3; ++i) {
@@ -56,7 +56,7 @@ public:
 			ss << "object not visible\n";
 		}
 
-		LOG(LNOTICE) << "HomogMatrix:\n" << ss.str() << endl;
+		LOG(LDEBUG) << "HomogMatrix:\n" << ss.str() << endl;
 	}
 
 	virtual void send(boost::shared_ptr<xdr_oarchive<> > & ar){

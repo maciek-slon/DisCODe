@@ -1,5 +1,5 @@
 /*!
- * \file Socket.h
+ * \file Socket.hpp
  * \brief Class responsible for communication through sockets.
  * - class declaration
  * \date 18.03.2008

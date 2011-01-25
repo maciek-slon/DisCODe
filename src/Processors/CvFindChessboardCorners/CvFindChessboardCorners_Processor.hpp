@@ -21,9 +21,9 @@
  * \defgroup CvFindChessboardCorners CvFindChessboardCorners
  * \ingroup Processors
  *
- * Locates chessboard on the image.
+ * \brief Locates chessboard on the image.
  *
-  * \par Data streams:
+ * \par Data streams:
  *
  * \streamin{in_img,cv::Mat}
  * Input image.
@@ -46,15 +46,15 @@
  * New image arrived
  *
  * \par Properties:
- * \prop{width,int,}
+ * \prop{width,int,""}
  * Chessboard width.
  * This is number of corners, not the number of fields. Number of corners = number of fields - 1.
  *
- * \prop{height,int,}
+ * \prop{height,int,""}
  * Chessboard height.
  * This is number of corners, not the number of fields. Number of corners = number of fields - 1.
  *
- * \prop{squareSize,int,}
+ * \prop{squareSize,int,""}
  * Square size in meters.
  *
  * \see http://opencv.willowgarage.com/documentation/cpp/camera_calibration_and_3d_reconstruction.html#cv-findchessboardcorners

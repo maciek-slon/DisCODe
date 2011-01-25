@@ -23,7 +23,7 @@ perform the undistortion operation on received image and pass it to output data 
 \lin_win_create_component
 
 \subsection beg_cam_undistort_properties Create component properties
- - Edit the component header (Undistort_Processor.hpp), find the <b>Undistort_Props</b> structure and add the following field.
+ - Edit the component header (Undistort.hpp), find the <b>Props</b> structure and add the following field.
 \code
 	// Name of file to in which calibration results are stored.
 	string calibrationResults;
@@ -90,7 +90,7 @@ perform the undistortion operation on received image and pass it to output data 
     bool loadParameters();
 \endcode
 
-\subsection beg_cam_calib_definitions Add definitions of Undistort class methods (Undistort_Processor.cpp).
+\subsection beg_undistort_definitions Add definitions of Undistort class methods (Undistort.cpp).
 - In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
 \code
     // Register handlers.

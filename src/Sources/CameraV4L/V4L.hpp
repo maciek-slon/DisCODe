@@ -1,5 +1,5 @@
 /*!
- * \file V4L.h
+ * \file V4L.hpp
  * \author szymek
  * \date 05.03.2009
  */

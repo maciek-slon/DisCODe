@@ -27,4 +27,11 @@ The tutorial focuses on the structural analysis of images and recognition of sim
 
 \endlinklist
 
+\section csp_object_recognize [CSP object recognize]
+
+\beginlinklist
+- \ref csp_object_recognize_components \n
+
+\endlinklist
+
 */

@@ -100,7 +100,7 @@ void CvSolvePnP_Processor::onNewObject3D()
 		hm.elements[i][3] = tvec(i, 0);
 		ss << hm.elements[i][3] << "\n";
 	}
-	LOG(LNOTICE) << "HomogMatrix:\n" << ss.str() << endl;
+	LOG(LDEBUG) << "HomogMatrix:\n" << ss.str() << endl;
 
 	out_homogMatrix.write(hm);
 

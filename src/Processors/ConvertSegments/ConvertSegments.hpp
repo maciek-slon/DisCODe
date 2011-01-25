@@ -1,6 +1,8 @@
 /*!
- * \file
+ * \file ConvertSegments.hpp
  * \brief
+ * \author mboryn
+ * \date 2011-01-22
  */
 
 #ifndef CONVERTSEGMENTS_PROCESSOR_HPP_
@@ -12,10 +14,49 @@
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
-#include "Props.hpp"
+#include "Property.hpp"
 
 #include "../GrayImageSegmentation/Segment.hpp"
 #include "../GrayImageSegmentation/SegmentedImage.hpp"
+
+/**
+ * \defgroup ConvertSegments ConvertSegments
+ * \ingroup Processors
+ *
+ * \brief Convert segments of segmented image to draw them in CvWindow.
+ *
+ *
+ * \par Data streams:
+ *
+ * \streamin{in_segmented,Types::Segmentation::SegmentedImage}
+ * Input segmented image.
+ *
+ * \streamout{out_img,cv::Mat}
+ * Output image.
+ *
+ *
+ * \par Events:
+ *
+ * \event{newImage}
+ * New image is ready.
+ *
+ *
+ * \par Event handlers:
+ *
+ * \handler{onSegmented}
+ * New segmented image arrived.
+ *
+ *
+ * \par Properties:
+ *
+ * \prop{showEdgeImage,bool,""}
+ * If false, show whole segments.
+ * If true, show only edges of segments.
+ *
+ * @{
+ *
+ * @}
+ */
 
 namespace Processors {
 namespace ConvertSegments {
@@ -25,6 +66,9 @@ namespace ConvertSegments {
  */
 struct ConvertSegments_Props: public Base::Props
 {
+	/**
+	 * If false, show whole segments. Show edges otherwise.
+	 */
 	bool showEdgeImage;
 	/*!
 	 * \copydoc Base::Props::load
@@ -99,15 +143,39 @@ protected:
 	/// Properties
 	ConvertSegments_Props props;
 private:
+	/**
+	 * Process segmented image and write to out_img.
+	 */
 	void onSegmented();
 
+	/**
+	 * Segmented image input data stream.
+	 */
 	Base::DataStreamIn <Types::Segmentation::SegmentedImage> in_segmented;
+
+	/**
+	 * On segmented image event handler.
+	 */
 	Base::EventHandler <ConvertSegments_Processor> h_onSegmented;
 
+	/**
+	 * Output image data stream.
+	 */
 	Base::DataStreamOut <cv::Mat> out_img;
-	Base::Event* onNewImage;
 
+	/**
+	 * New image ready.
+	 */
+	Base::Event* newImage;
+
+	/**
+	 * Number of different segments' colors.
+	 */
 	static const int colorsSize = 16;
+
+	/**
+	 * Array of segments' colors.
+	 */
 	u_int8_t colors[colorsSize];
 };
 

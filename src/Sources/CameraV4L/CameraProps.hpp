@@ -50,12 +50,12 @@ struct CameraProps : public Base::Props {
 	std::string min_settings;
 
 	/*!
-	 * \copydoc Common::Props::load
+	 * \copydoc Base::Props::load
 	 */
 	void load(const ptree & pt);
 
 	/*!
-	 * \copydoc Common::Props::save
+	 * \copydoc Base::Props::save
 	 */
 	void save(ptree & pt);
 
