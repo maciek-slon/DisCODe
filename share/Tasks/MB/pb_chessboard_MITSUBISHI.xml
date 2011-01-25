@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Task>
 	<Components>
-		<Mrrocpp type="Mrrocpp" thread="MrrocProxyThread" group="s1">
+		<!-- <Mrrocpp type="Mrrocpp" thread="MrrocProxyThread" group="s1">
 			<port>8888</port>
 			<rpcMode>1</rpcMode>
 		</Mrrocpp>
@@ -22,9 +22,6 @@
 				)
 			</distCoeffs>
 		</PositionEstimator>
-		<Window type="CvWindow" thread="PreviewExecutor" group="s1">
-			<title>Preview</title>
-		</Window>
 		<FindChessboard type="CvFindChessboardCorners" thread="ImageSourceThread" group="s1">
 			<width>4</width>
 			<height>3</height>
@@ -34,7 +31,12 @@
 		<BGRToGray type="CvColorConv" thread="ImageSourceThread" group="s1">
 			<type>BGR2GRAY</type>
 		</BGRToGray>
-		<ImageSource type="CameraUniCap" thread="ImageSourceThread" group="s1">
+		 -->
+		<Window type="CvWindow" thread="PreviewExecutor" group="s1">
+			<title>Preview</title>
+			<count>1</count>
+		</Window>
+		<ImageSource type="CameraOpenCV" thread="ImageSourceThread" group="s1">
 			<dev>
 				<device>/dev/video0</device>
 			</dev>
@@ -42,28 +44,29 @@
 	</Components>
 
 	<Executors>
-		<MrrocProxyThread type="periodic">
+		<!-- <MrrocProxyThread type="periodic">
 			<main_component>Mrrocpp</main_component>
 			<interval>0.02</interval>
-		</MrrocProxyThread>
+		</MrrocProxyThread> -->
 		<ImageSourceThread type="continuous">
 			<main_component>ImageSource</main_component>
 		</ImageSourceThread>
 		<PreviewExecutor type="periodic">
 			<main_component>Window</main_component>
-			<interval>0.02</interval>
+			<interval>0.1</interval>
 		</PreviewExecutor>
 	</Executors>
 
 	<Events>
-		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
-		<Event source="BGRToGray.newImage" destination="FindChessboard.onNewImage"/>
+		<!-- <Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>  -->
+		<Event source="ImageSource.newImage" destination="Window.onNewImage0"/>
+		<!-- <Event source="BGRToGray.newImage" destination="FindChessboard.onNewImage"/>
 		<Event source="FindChessboard.chessboardFound" destination="PositionEstimator.onNewObject3D"/>
 		<Event source="FindChessboard.chessboardFound" destination="Window.onNewImage"/>
 		<Event source="FindChessboard.chessboardNotFound" destination="Window.onNewImage"/>
 		<Event source="PositionEstimator.objectLocated" destination="VisualServoPB.onObjectLocated"/>
 		<Event source="FindChessboard.chessboardNotFound" destination="VisualServoPB.onObjectNotFound"/>
-		<Event source="VisualServoPB.readingReady" destination="Mrrocpp.onNewReading"/>
+		<Event source="VisualServoPB.readingReady" destination="Mrrocpp.onNewReading"/> -->
 	</Events>
 
 	<DataStreams>
@@ -71,7 +74,12 @@
 			<out_img type="out" group="OriginalImage"/>
 		</ImageSource>
 		
-		<BGRToGray>
+		<Window>
+			<!-- <in_draw type="in" group="Chessboard"/>  -->
+			<in_img0 type="in" group="OriginalImage"/>
+		</Window>
+		
+		<!-- <BGRToGray>
 			<in_img  type="in" group="OriginalImage"/>
 			<out_img type="out" group="GrayImage"/>
 		</BGRToGray>
@@ -81,10 +89,7 @@
 			<out_chessboard type="out" group="Chessboard"/>
 		</FindChessboard>
 		
-		<Window>
-			<in_draw type="in" group="Chessboard"/>
-			<in_img type="in" group="OriginalImage"/>
-		</Window>
+		
 		
 		<PositionEstimator>
 			<in_object3d type="in" group="Chessboard"/>
@@ -98,6 +103,6 @@
 		
 		<Mrrocpp>
 			<reading type="in" group="reading"/>
-		</Mrrocpp>
+		</Mrrocpp> -->
 	</DataStreams>
 </Task>

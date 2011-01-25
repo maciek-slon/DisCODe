@@ -112,6 +112,7 @@ void Configurator::loadExecutors(const ptree * node, Task & task) {
 	Executor * ex;
 
 	BOOST_FOREACH( TreeNode nd, *node) {
+		if (nd.first == "<xmlcomment>") continue;
 		ptree tmp = nd.second;
 		ex = executorManager->createExecutor(nd.first, tmp.get("<xmlattr>.type", "UNKNOWN"));
 		ex->load(tmp);
