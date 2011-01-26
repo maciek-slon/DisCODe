@@ -1,7 +1,7 @@
 /*!
 \page manuals_executors Executors - task 'engines'
 
-\up_prev_top{manuals, manuals_events}
+\up_prevnext_top{manuals, manuals_events, manuals_properties}
 
 \section executors_desc Introduction
 The \link Core::Executor Executors\endlink are responsible for activation of components of given processing stream.
@@ -44,5 +44,5 @@ PassiveExecutor can also be utilized for control of a single thread in multi-thr
 The list of executors isn't complete - and it can be expanded f.e. by a cyclic component, that will execute
 the step method of all related components (the most simplest is a round-robin based algorithm).
 
-\up_prev_bottom{manuals, manuals_events}
+\up_prevnext_bottom{manuals, manuals_events, manuals_properties}
 */

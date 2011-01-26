@@ -1,0 +1,294 @@
+/*!
+\page manuals_properties Properties
+
+\up_prev_top{manuals, manuals_executors}
+
+Properties are designed to behave liko normal fields in class, i.e. every property
+can be accessed in the way normal variable would be. The advantage of using
+Base::Property instead of normal fields is that it can be automaticcaly accesed from
+outside (for example from GUI, but not only).
+
+\section dummy DummyProcessor as learning example
+
+Next sections will be using abstract DummyProcessor as an learning example.
+It is simple processor, doing virtually nothing but writing constant text to
+standard output.
+
+\code
+#include "Component.hpp"
+#include "Property.hpp"
+// other includes
+
+class DummyProcessor : public Base::Component {
+public:
+	DummyProcessor() {
+		// empty, but not for long
+	}
+
+	// abstract methods from Base::Component
+	bool onInit() {
+		return true;
+	}
+
+	bool onStart() {
+		return true;
+	}
+
+	bool onStep() {
+		std::cout << "I'm alive!\n";
+		return true;
+	}
+
+	bool onStop() {
+		return true;
+	}
+
+	bool onFinish() {
+		return true;
+	}
+
+private:
+	// nothing here for now
+};
+\endcode
+
+As you can see - it's as simple as it can be. Just simple cout in onStep method.
+
+\section simple Simple properties
+
+Our component works, but after few seconds (or minutes, if you're patient enough)
+it gets boring. Nothing but "I'm alive!". First thing we can do is give our component
+a name. Now we are just three steps from success:
+
+First of all, we need to declare proper field in our class; in private section add:
+
+\code
+	Base::Property<std::string> prop_name;
+\endcode
+
+Next, we need to initialize it and register during component creation; in constructor:
+
+\code
+	DummyProcessor() :
+		// set property name and default value
+		prop_name("name", "John")
+	{
+		// register property in component
+		registerProperty(prop_name);
+	}
+\endcode
+
+What does "name" stands for? It's label of our property visible to whole world.
+"John" is property default value, used when it is not set via xml task file or
+in any other way.
+
+Last, but not least is using our property - just a little addition in onStep:
+\code
+	bool onStep() {
+		std::cout << "I'm alive! And my name is " << prop_name << "\n";
+		return true;
+	}
+\endcode
+
+A little bit better. We can change our property from xml file (before running the task) or
+from GUI (and it will be updated realtime!).
+
+What types are allowed in property declaration apart from std::string? Almost every existing
+type, including those custom, complex types defined by users (more about that later).
+For now, lets add one more property holding age of our Dummy. Do it now as an example.
+
+\section types Different property behaviours
+
+Our dummy has name and can tell us, how old is it. But when you turn on GUI and
+check properties of our processor you'll notice, that age can be set to any number,
+for example -100, which is rather not possible value for this kind of variable.
+If we have properties with some constraints (like age, which can be in range
+from 0 to let say 120) there is a way to prepare property to accomodate to this.
+To do this, we must alter our property initialisation a bit, in constructor:
+
+\code
+	DummyProcessor() :
+		// set property name and default value
+		prop_name("name", "John"),
+		prop_age("age", 30, "range")
+	{
+		// register property in component
+		registerProperty(prop_name);
+
+		// set constraints for property
+		prop_age.addConstraint("0");
+		prop_age.addConstraint("120");
+
+		registerProperty(prop_age);
+	}
+\endcode
+
+Two new thing here. First - "range" in property initialization line. It means, that
+our property is numeric type (integer to be precise) and has defined boundaries.
+Setting those boundaries is second new thing - addContraint adds constraints to
+properties. For range type, first constraint is lower boundary and second is upper.
+More constraints are ignored for range.
+
+Ah, and you may ask: why we pass strings as contraints to numeric property?
+That's some internal implementation magic, and some trivial non magic, but
+it works. It uses translators (again - will be described soon). Now, when you
+look to the Dummy panel in GUI you'll see beautifull scrollbar with set minimum
+and maximum value. Success!
+
+Last thing - what can be choosed in place of "range"? Now, list is rather short,
+but day by day it is getting longer and longer.
+- "range" - integer range value, first boundary is minimum, second is maximum value
+- "combo" - selection of one value from many possibilities, each constraint is one posibility.
+
+And in the end of this section - exercise. Add another property, holding string
+value, representing sex of our Dummy. It's obvious (at least for me), that only allowed
+values are "male", "female" and "apple", thus property behaviour should be set to "combo".
+
+One more thing - as our components have more and more properties, name is sometimes
+not enough as description. There is one more thing you can set for property - it's
+tool tip. It's used as a hint in GUI, and can be used for automatic generation of
+component description.
+
+\code
+	prop_sex.setToolTip("Choose sec of Dummy. Beware, it's tricky sometimes...");
+\endcode
+
+\section custom Defining translators for custom types
+
+Remember last exercise? We add prop_sex keeping sex of our Dummy. But keeping
+this kind of data as strings is a little bit extravagant. Simple int will be suficient,
+or we can even make custom enum for this purpose. Let's choose first option - int.
+Mark male as 1, female as 2 and apple as 3. Simple, but has some drawbacks. First
+of all, we need to write those magic numbers in Task files and/or in GUI. We need
+to put it into documentation, and it's error prone. It will be great to have possibility
+to keep variable in one format internally, and export it in more human-readable format
+externally.
+
+And, as some of you probably guessed - it is possible (more - it was mentioned
+before twice!). So, our scenario is keeping sex as integer, and setting human
+readable equivalents for each possibility. We have to make some changes. First of all
+we need to define our translator. Translator is simple class, containing only two
+static methids - toStr converting our value to it's string representation, and
+fromStr doing the opposite conversion.
+
+\code
+class SexTranslator {
+public:
+	static int fromStr(const std::string & s) {
+		if (s == "male")
+			return 1;
+		else if (s == "female")
+			return 2;
+		else
+			return 3;
+	}
+
+	static std::string toStr(int t) {
+		switch(t) {
+			case 1: return "male";
+			case 2: return "female";
+			default: return "apple";
+		}
+	}
+};
+\endcode
+
+That's all - full featured translator. Of course, if you'll need translator for
+type other than int you must define functions with different headers, for example
+for enum:
+\code
+enum Sex {
+	male,
+	female,
+	apple
+};
+
+class SexTranslator {
+public:
+	static Sex fromStr(const std::string & s) {
+		if (s == "male")
+			return male;
+		else if (s == "female")
+			return female;
+		else
+			return apple;
+	}
+
+	static std::string toStr(Sex t) {
+		switch(t) {
+			case male: return "male";
+			case female: return "female";
+			default: return "apple";
+		}
+	}
+};
+\endcode
+
+Next thing is telling our property that it has to use translator, so alter declaration from
+
+\code
+	Base::Property<int> prop_sex;
+\endcode
+
+to:
+
+\code
+	Base::Property<int, SexTranslator> prop_sex;
+\endcode
+
+Default value in property initialization is last thing we must change. Change it
+from string to integer representation of one of the sexes. And that's all. You
+can leave constraints in the way they were, because they are translated using
+defined translator. That's why we wrote constraints for integer properties (age)
+as strings - default translator did it's job for us.
+
+\section callbacks Capturing property change event
+
+Last thing we cannot controll or even notice (at least in easy way, we can check
+property value in each loop and store it somewhere to detect moment when it changes)
+is property change. Properties can be changed from outside of running system
+(from GUI or other connected clients), and sometimes when property changes
+some work has to be done in order to apply it's new value (or ignore new value
+and reset it to previous state).
+
+We can set callbacks - functions called when property changes it's value. Basic
+prototype for callback is:
+
+\code
+void callback(const T & old_value, const T & new_value);
+\endcode
+
+where T is internal type of property (set in it's declaration as first template argument).
+
+Let's assume, that when our Dummy will have sex changed, we want to do some extra
+job (change clothes in closet or something), and that checking sex in every loop
+to detect the moment of change is not allowed. We have to do just two things:
+
+Define callback (can be in private section)...
+
+\code
+void sexCallback(int old_value, int new_value) {
+	if (old_value == 1)
+		std::cout << "Eh... It was great time being man...\n";
+
+	if (new_value == 2)
+		std::cout << " Weeeee!!!!! Shopping! We're gonna go shopping! Weeee!\n";
+}
+\endcode
+
+...and connect it to property (in constructor):
+
+\code
+	prop_sex.setCallback(boost::bind(&DummyProcessor::sexCallback, this, _1, _2));
+\endcode
+
+This whole boost and bind and more is required, as in C++ there is no native
+mechanism for delegates. But it works as it is and we must get used to it.
+
+That all about properties (at least for now). You now know how to add properties
+either of built-in types (like int or string) or custom types (using translators),
+change it behaviour and controll its constraints, and can detect and handle moment
+when property changes.
+
+\up_prev_bottom{manuals, manuals_executors}
+*/
