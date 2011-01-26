@@ -23,18 +23,25 @@
 #include "headers.h"
 #include "Reading.hpp"
 
-/**
- * \defgroup Mrrocpp Proxy
+/*!
+ * \defgroup Mrrocpp_Proxy Mrrocpp_Proxy
  * \ingroup Proxies
  *
- * Proxy to the mrrocpp system.
+ * Proxy to MRROC++.
+ * This proxy listens on specified TCP/IP port for connection from MRROC++.
+ * Only one incoming client connection at a time will be accepted.
+ * Then Mrrocpp_Proxy will wait for requests from MRROC++.
+ * There are two types of requests: request for reading and RPC call.
+ * Request for reading makes Mrrocpp_Proxy to send as soon as possible latest reading.
+ * If there is no reading then empty messege is sent back to MRROC++
+ * to let MRROC++ know that there was no reading.
  *
  * \par Data streams:
  *
- * \streamin{reading,Reading}
+ * \streamin{reading,Proxies::Mrrocpp::Reading}
  * Reading to send to mrrocpp as soon as mrroc asks for it.
  *
- * \streamin{rpcResult,Reading}
+ * \streamin{rpcResult,Proxies::Mrrocpp::Reading}
  * RPC result send in response to RPC param
  *
  * \streamout{rpcParam,xdr_iarchive <> }
@@ -56,7 +63,7 @@
  *
  * \par Properties:
  *
- * \prop{port,port,&nbsp;}
+ * \prop{port,port,""}
  * Port on which to listen.
  *
  *
@@ -73,13 +80,8 @@ namespace Mrrocpp {
 
 using namespace cv;
 
-/*!
- * \defgroup Mrrocpp Mrrocpp
- * \ingroup Proxies
+/**
  *
- * @{
- *
- * }@
  */
 class Mrrocpp_Proxy: public Base::Component
 {
