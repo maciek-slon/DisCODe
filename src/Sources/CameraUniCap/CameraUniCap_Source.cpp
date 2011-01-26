@@ -119,8 +119,8 @@ bool CameraUniCap_Source::onInit() {
 		}
 	}
 
-	//format.buffer_type = UNICAP_BUFFER_TYPE_SYSTEM;
-	format.buffer_type = UNICAP_BUFFER_TYPE_USER; // (1)
+	format.buffer_type = UNICAP_BUFFER_TYPE_SYSTEM;
+	//format.buffer_type = UNICAP_BUFFER_TYPE_USER; // (1)
 
 	/*
 	 Set this video format
@@ -231,7 +231,9 @@ bool CameraUniCap_Source::onInit() {
 		}
 	}
 
-	//unicap_register_callback(handle, UNICAP_EVENT_NEW_FRAME, (unicap_callback_t) new_frame_cb, this);
+	unicap_register_callback(handle, UNICAP_EVENT_NEW_FRAME, (unicap_callback_t) new_frame_cb, this);
+
+	LOG(LINFO)<<"CameraUniCap_Source::onInit() end\n";
 
 	return true;
 }
@@ -254,38 +256,38 @@ bool CameraUniCap_Source::onFinish() {
 }
 
 bool CameraUniCap_Source::onStep() {
-	unicap_data_buffer_t * returned_buffer;
-
-	//LOG(LNOTICE) << "1";
-
-	if (!SUCCESS(unicap_wait_buffer(handle, &returned_buffer))) {
-		LOG(LERROR) << "Failed to wait for buffer!";
-		return false;
-	}
-
-	//LOG(LNOTICE) << "2";
-
-	cv::Mat frame = Mat(
-				format.size.height,
-				format.size.width,
-				CV_8UC3,
-				(void *) buffer.data
-			).clone();
-
-	//LOG(LNOTICE) << "3";
-
-	out_img.write(frame);
-	newImage->raise();
-
-	//LOG(LNOTICE) << "4";
-
-	if (!SUCCESS(unicap_queue_buffer(handle, returned_buffer))) {
-		LOG(LERROR) << "Failed to queue buffer!";
-		return false;
-	}
-
-	//LOG(LNOTICE) << "5";
-
+//	unicap_data_buffer_t * returned_buffer;
+//
+//	//LOG(LNOTICE) << "1";
+//
+//	if (!SUCCESS(unicap_wait_buffer(handle, &returned_buffer))) {
+//		LOG(LERROR) << "Failed to wait for buffer!";
+//		return false;
+//	}
+//
+//	//LOG(LNOTICE) << "2";
+//
+//	cv::Mat frame = Mat(
+//				format.size.height,
+//				format.size.width,
+//				CV_8UC3,
+//				(void *) buffer.data
+//			).clone();
+//
+//	//LOG(LNOTICE) << "3";
+//
+//	out_img.write(frame);
+//	newImage->raise();
+//
+//	//LOG(LNOTICE) << "4";
+//
+//	if (!SUCCESS(unicap_queue_buffer(handle, returned_buffer))) {
+//		LOG(LERROR) << "Failed to queue buffer!";
+//		return false;
+//	}
+//
+//	//LOG(LNOTICE) << "5";
+//
 	return true;
 }
 

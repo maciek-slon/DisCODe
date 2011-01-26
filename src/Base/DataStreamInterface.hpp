@@ -7,6 +7,7 @@
 #define DATASTREAMINTERFACE_HPP_
 
 #include <string>
+#include <stdexcept>
 
 namespace Base {
 
@@ -41,7 +42,7 @@ public:
     	if (type() == dsIn)
     		internalSet( (void*)(&t) );
     	else
-    		throw "Output ports can't receive data!";
+    		throw std::runtime_error("DataStreamInterface: Output ports can't receive data!");
     }
 
 

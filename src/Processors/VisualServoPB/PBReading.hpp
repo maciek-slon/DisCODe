@@ -42,7 +42,7 @@ public:
 
 	virtual void printInfo()
 	{
-		LOG(LTRACE) << "PBReading::printInfo()\n";
+//		LOG(LTRACE) << "PBReading::printInfo()\n";
 		stringstream ss;
 		if (objectVisible) {
 			for (int i = 0; i < 3; ++i) {
@@ -60,7 +60,7 @@ public:
 	}
 
 	virtual void send(boost::shared_ptr<xdr_oarchive<> > & ar){
-		LOG(LNOTICE) << "PBReading::send(): hehehehe\n";
+//		LOG(LNOTICE) << "PBReading::send(): hehehehe\n";
 		*ar<<*this;
 	}
 

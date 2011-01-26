@@ -10,6 +10,7 @@
 #define DATASTREAMBUFFER_HPP_
 
 #include <queue>
+#include <stdexcept>
 
 namespace Base {
 
@@ -66,7 +67,7 @@ protected:
 			return t;
 		} else {
 			/// \todo Throw correct exception
-			throw "Empty buffer!";
+			throw std::runtime_error("Queue: Empty buffer!");
 			// throwing disabled until scopeLock will be implemented in DataStream
 		}
 	}
@@ -120,7 +121,7 @@ protected:
 			return item;
 		} else {
 			/// \todo Throw correct exception
-			throw "Fresh data not available!";
+			throw std::runtime_error("Newest: Fresh data not available!");
 		}
 	}
 
@@ -177,7 +178,7 @@ protected:
 			return item;
 		} else {
 			/// \todo Throw correct exception
-			throw "No data available!";
+			throw std::runtime_error("Oldest: No data available!");
 		}
 	}
 

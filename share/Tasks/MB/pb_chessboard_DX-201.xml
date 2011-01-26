@@ -44,7 +44,7 @@
 	<Executors>
 		<MrrocProxyThread type="periodic">
 			<main_component>Mrrocpp</main_component>
-			<interval>0.02</interval>
+			<interval>0.001</interval>
 		</MrrocProxyThread>
 		<ImageSourceThread type="continuous">
 			<main_component>ImageSource</main_component>
