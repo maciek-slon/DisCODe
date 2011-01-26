@@ -11,7 +11,7 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
-#include "PBReading.hpp"
+#include "Mrrocpp_Proxy/PBReading.hpp"
 
 namespace Processors {
 namespace VisualServoPB {
@@ -99,7 +99,7 @@ private:
 	void onObjectNotFound();
 
 	Base::DataStreamIn<Types::HomogMatrix> in_position;
-	Base::DataStreamOut<PBReading> out_reading;
+	Base::DataStreamOut<Types::Mrrocpp_Proxy::PBReading> out_reading;
 
 	Base::EventHandler <VisualServoPB_Processor> h_onObjectLocated;
 	Base::EventHandler <VisualServoPB_Processor> h_onObjectNotFound;

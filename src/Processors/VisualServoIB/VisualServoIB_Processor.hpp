@@ -11,7 +11,7 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
-#include "IBReading.hpp"
+#include "Mrrocpp_Proxy/IBReading.hpp"
 
 namespace Processors {
 namespace VisualServoIB {
@@ -99,7 +99,7 @@ private:
 	void onObjectNotFound();
 
 	Base::DataStreamIn<Types::ImagePosition> in_position;
-	Base::DataStreamOut<IBReading> out_reading;
+	Base::DataStreamOut<Types::Mrrocpp_Proxy::IBReading> out_reading;
 
 	Base::EventHandler <VisualServoIB_Processor> h_onObjectLocated;
 	Base::EventHandler <VisualServoIB_Processor> h_onObjectNotFound;

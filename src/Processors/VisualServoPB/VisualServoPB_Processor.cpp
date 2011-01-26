@@ -12,6 +12,8 @@
 namespace Processors {
 namespace VisualServoPB {
 
+using Types::Mrrocpp_Proxy::PBReading;
+
 VisualServoPB_Processor::VisualServoPB_Processor(const std::string & name) :
 	Base::Component(name)
 {

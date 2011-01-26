@@ -21,7 +21,7 @@
 #include "xdr/xdr_iarchive.hpp"
 #include "Socket.hpp"
 #include "headers.h"
-#include "Reading.hpp"
+#include "Mrrocpp_Proxy/Reading.hpp"
 
 /*!
  * \defgroup Mrrocpp_Proxy Mrrocpp_Proxy
@@ -131,7 +131,7 @@ private:
 	void serviceReading();
 
 	Base::EventHandler <Mrrocpp_Proxy> h_onNewReading;
-	Base::DataStreamInPtr <Reading> reading;
+	Base::DataStreamInPtr <Types::Mrrocpp_Proxy::Reading> reading;
 
 	/**
 	 * Event handler called when RPC call has finished.
@@ -141,7 +141,7 @@ private:
 
 	Base::Event *rpcCall;
 	Base::DataStreamOut <xdr_iarchive <> > rpcParam;
-	Base::DataStreamInPtr <Reading> rpcResult;
+	Base::DataStreamInPtr <Types::Mrrocpp_Proxy::Reading> rpcResult;
 	Base::EventHandler <Mrrocpp_Proxy> h_onRpcResult;
 
 	boost::shared_ptr <xdr_iarchive <> > header_iarchive;
@@ -149,8 +149,8 @@ private:
 	boost::shared_ptr <xdr_oarchive <> > header_oarchive;
 	boost::shared_ptr <xdr_oarchive <> > oarchive;
 
-	boost::shared_ptr <Reading> readingMessage;
-	boost::shared_ptr <Reading> rpcResultMessage;
+	boost::shared_ptr <Types::Mrrocpp_Proxy::Reading> readingMessage;
+	boost::shared_ptr <Types::Mrrocpp_Proxy::Reading> rpcResultMessage;
 
 	void receiveBuffersFromMrrocpp();
 	void sendBuffersToMrrocpp();

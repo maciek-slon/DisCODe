@@ -114,21 +114,21 @@ bool Mrrocpp_Proxy::onStep()
 void Mrrocpp_Proxy::tryAcceptConnection()
 {
 	LOG(LTRACE) << "Mrrocpp_Proxy::tryAcceptConnection()\n";
-	if (!serverSocket.isDataAvailable(numeric_limits<double>::infinity())) {
+	if (!serverSocket.isDataAvailable(numeric_limits <double>::infinity())) {
 		LOG(LTRACE) << "if (!serverSocket.isDataAvailable()) {\n";
 		return;
 	}
 	clientSocket = serverSocket.acceptConnection();
 	readingMessage.reset();
 	rpcResultMessage.reset();
-	LOG(LNOTICE) << "clientConnected\n";
+	LOG(LNOTICE) << "Client connected.";
 	state = MPS_CONNECTED;
 }
 
 void Mrrocpp_Proxy::tryReceiveFromMrrocpp()
 {
 	try {
-		if (clientSocket->isDataAvailable(numeric_limits<double>::infinity())) {
+		if (clientSocket->isDataAvailable(numeric_limits <double>::infinity())) {
 			mutex::scoped_lock lock(readingMutex);
 			receiveBuffersFromMrrocpp();
 			if (imh.is_rpc_call) {
@@ -147,9 +147,8 @@ void Mrrocpp_Proxy::tryReceiveFromMrrocpp()
 			}
 		}
 	} catch (std::exception& ex) {
-		LOG(LERROR) << "Mrrocpp_Proxy::tryReceiveFromMrrocpp(): Probably client disconnected: " << ex.what()
-				<< endl;
-		LOG(LERROR) << "Closing socket.\n";
+		LOG(LERROR) << "Mrrocpp_Proxy::tryReceiveFromMrrocpp(): Probably client disconnected: " << ex.what();
+		LOG(LNOTICE) << "Closing socket.\n";
 		clientSocket->closeSocket();
 		state = MPS_LISTENING;
 	}
@@ -159,21 +158,6 @@ void Mrrocpp_Proxy::onNewReading()
 {
 	mutex::scoped_lock lock(readingMutex);
 	readingMessage = reading.read();
-//	readingMessage->printInfo();
-	//	if (proxyState == PROXY_WAITING_FOR_READING) {
-	//		LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading(): proxyState == PROXY_WAITING_FOR_READING\n";
-	//		rmh.is_rpc_call = false;
-	//
-	//		oarchive->clear_buffer();
-	//		readingMessage->send(oarchive);
-	//
-	//		sendBuffersToMrrocpp();
-	//
-	//		readingMessage.reset();
-	//		proxyState = PROXY_WAITING_FOR_COMMAND;
-	//	} else {
-	//		LOG(LNOTICE) << "Mrrocpp_Proxy::onNewReading(): proxyState != PROXY_WAITING_FOR_READING\n";
-	//	}
 }
 
 void Mrrocpp_Proxy::onRpcResult()
@@ -199,7 +183,6 @@ void Mrrocpp_Proxy::onRpcResult()
 
 void Mrrocpp_Proxy::receiveBuffersFromMrrocpp()
 {
-
 	LOG(LTRACE) << "Mrrocpp_Proxy::receiveBuffersFromMrrocpp() begin\n";
 	header_iarchive->clear_buffer();
 
@@ -227,8 +210,5 @@ void Mrrocpp_Proxy::sendBuffersToMrrocpp()
 	oarchive->clear_buffer();
 }
 
-} // namespace Mrrocpp {
-
+} // namespace Mrrocpp
 } // namespace Proxies
-
-
