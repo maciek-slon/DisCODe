@@ -16,6 +16,7 @@
 #include "Component_Aux.hpp"
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
+#include "Property.hpp"
 #include "xdr/xdr_oarchive.hpp"
 #include "xdr/xdr_iarchive.hpp"
 #include "Socket.hpp"
@@ -72,31 +73,6 @@ namespace Mrrocpp {
 
 using namespace cv;
 
-struct Mrrocpp_ProxyProps: public Base::Props
-{
-	int port;
-
-	/*!
-	 * Load settings
-	 *
-	 * @param pt root property tree to load settings from
-	 */
-	virtual void load(const ptree & pt)
-	{
-		port = pt.get <int> ("port");
-	}
-
-	/*!
-	 * Save settings
-	 *
-	 * @param pt root property tree to save settings
-	 */
-	virtual void save(ptree & pt)
-	{
-		pt.put("port", port);
-	}
-};
-
 /*!
  * \defgroup Mrrocpp Mrrocpp
  * \ingroup Proxies
@@ -110,7 +86,6 @@ class Mrrocpp_Proxy: public Base::Component
 public:
 	Mrrocpp_Proxy(const std::string & name = "");
 	virtual ~Mrrocpp_Proxy();
-	virtual Base::Props * getProperties();
 
 protected:
 	virtual bool onStart();
@@ -184,23 +159,14 @@ private:
 	Socket serverSocket;
 	boost::shared_ptr <Socket> clientSocket;
 
-	Mrrocpp_ProxyProps props;
-
 	void tryAcceptConnection();
 	void tryReceiveFromMrrocpp();
 
-//	bool clientConnected;
-//	bool msgSet;
-//	bool getReadingReceived;
-
-//	enum
-//	{
-//		PROXY_NOT_CONFIGURED, PROXY_WAITING_FOR_COMMAND, PROXY_WAITING_FOR_READING, PROXY_WAITING_FOR_RPC_RESULT
-//	} proxyState;
-
 	size_t initiate_message_header_size;
 
-	boost::mutex eventsMutex;
+	boost::mutex readingMutex;
+
+	Base::Property<int> port;
 };
 
 } // namespace Mrrocpp {

@@ -6,7 +6,8 @@
  */
 
 #include <stdexcept>
-
+#include <limits>
+#include <cmath>
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
@@ -17,6 +18,7 @@
 #include <fcntl.h>
 
 #include "Socket.hpp"
+#include "Logger.hpp"
 
 namespace Proxies {
 
@@ -65,7 +67,6 @@ void Socket::setupServerSocket(int port)
 
 boost::shared_ptr <Proxies::Mrrocpp::Socket> Socket::acceptConnection()
 {
-	boost::shared_ptr <Socket> s;
 	sockaddr_in m_addr;
 	int addr_length = sizeof(m_addr);
 
@@ -74,25 +75,28 @@ boost::shared_ptr <Proxies::Mrrocpp::Socket> Socket::acceptConnection()
 	if (acceptedFd < 0) {
 		throw runtime_error("accept() failed: " + string(strerror(errno)));
 	}
-	s = boost::shared_ptr <Socket>(new Socket());
+	boost::shared_ptr <Socket> s = boost::shared_ptr <Socket>(new Socket());
 	s->fd = acceptedFd;
 
 	return s;
 }
 
-bool Socket::isDataAvailable(int usec)
+bool Socket::isDataAvailable(double sec)
 {
 	//	log_dbg("Socket::isDataAvailable()\n");
 	fd_set rfds;
-	struct timeval tv;
-	int retval;
-
 	FD_ZERO(&rfds);
 	FD_SET(fd, &rfds);
-	tv.tv_sec = 0;
-	tv.tv_usec = usec;
 
-	retval = select(fd + 1, &rfds, NULL, NULL, &tv);
+	struct timeval tv;
+	struct timeval *tvPtr = NULL;
+	if (sec != numeric_limits <double>::infinity()) {
+		tv.tv_sec = floor(sec);
+		tv.tv_usec = round(fmod(sec, 1) * 1e6);
+		tvPtr = &tv;
+	}
+
+	int retval = select(fd + 1, &rfds, NULL, NULL, tvPtr);
 
 	if (retval < 0) {
 		throw runtime_error("select() failed: " + string(strerror(errno)));
@@ -109,6 +113,7 @@ void Socket::closeSocket()
 {
 	if (fd >= 0) {
 		close(fd);
+		fd = -1;
 	}
 }
 
@@ -131,7 +136,7 @@ void Socket::writev2(const void *buf1, size_t buf1Size, const void *buf2, size_t
 	if (nwritten == -1) {
 		throw runtime_error("Socket::writev2() nwritten == -1");
 	}
-	if ((size_t)nwritten != buf1Size + buf2Size) {
+	if ((size_t) nwritten != buf1Size + buf2Size) {
 		throw runtime_error("Socket::writev2() nwritten != buf1Size + buf2Size");
 	}
 }
@@ -141,10 +146,10 @@ void Socket::read(void *buf, size_t bufSize)
 	int r;
 
 	r = ::read(fd, buf, bufSize);
-	if(r == -1){
+	if (r == -1) {
 		throw runtime_error("Socket::read: r == -1");
 	}
-	if((size_t)r != bufSize){
+	if ((size_t) r != bufSize) {
 		throw runtime_error("Socket::read: r != bufSize");
 	}
 }
