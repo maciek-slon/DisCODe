@@ -14,6 +14,9 @@
 namespace Types {
 namespace Mrrocpp_Proxy {
 
+/**
+ *
+ */
 class IBReading: public Reading
 {
 public:

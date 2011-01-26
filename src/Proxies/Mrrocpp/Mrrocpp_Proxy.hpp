@@ -167,6 +167,7 @@ private:
 	size_t initiate_message_header_size;
 
 	boost::mutex readingMutex;
+	boost::mutex rpcCallMutex;
 
 	Base::Property<int> port;
 };
