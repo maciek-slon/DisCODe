@@ -8,8 +8,13 @@ The project aims to implement a set of components designed to run visual servoin
 \section Mrrocpp_Proxy_component Mrrocpp_Proxy component
 
 The \link Mrrocpp_Proxy \endlink component is a proxy for MRROC++ system.
+It sends readings (any type derived from Types::Mrrocpp_Proxy::Reading) to MRROC++.
+Additional feature is RPC calls from MRROC++ to DisCODe.
 
+\section Visual_servo_processors Visual servo processors  
 
+Visual servo processors (\link VisualServoPB_Processor \endlink and \link VisualServoIB_Processor \endlink)
+converts object's position to reading that will be sent by \link Mrrocpp_Proxy \endlink.
 
 \section Sample_config_file Sample config file
 

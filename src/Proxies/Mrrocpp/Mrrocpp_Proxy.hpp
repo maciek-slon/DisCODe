@@ -30,18 +30,46 @@
  * Proxy to MRROC++.
  * This proxy listens on specified TCP/IP port for connection from MRROC++.
  * Only one incoming client connection at a time will be accepted.
- * Then Mrrocpp_Proxy will wait for requests from MRROC++.
+ * Then Proxies::Mrrocpp::Mrrocpp_Proxy will wait for requests from MRROC++.
  * There are two types of requests: request for reading and RPC call.
+ *
  * Request for reading makes Mrrocpp_Proxy to send as soon as possible latest reading.
  * If there is no reading then empty messege is sent back to MRROC++
  * to let MRROC++ know that there was no reading.
  *
+ * RPC call is a call that makes Mrrocpp_Proxy generate rpcCall event and wait for onRpcResult.
+ * Between generating rpcCall and receiving onRpcResult no reading requests will be received
+ * and no readings will be sent to MRROC++.
+ *
+ * This is SDL diagram of Mrrocpp_Proxy on initializing.
+ * After Mrrocpp_Proxy::onInit() has been called, proxy waits for client to connect.
+ * When new client has connected, proxy changes its state to MPS_CONNECTED.
+ *
+\htmlonly
+<img src="images/visual_servoing/automat_discode_MPS_NOT_INITIALIZED.png" style="margin: 5px; " alt=""/>
+\endhtmlonly
+ *
+ * This is SDL diagram of processing requests from MRROC++.
+ * When proxy is in MPS_CONNECTED state, it waits for request for reading or RPC call.
+ * If reading request has been received, then reply is sent back.
+ * If RPC call has been received, rpcCall event is raised and proxy waits for RPC result (onRpcResult event).
+ *
+\htmlonly
+<img src="images/visual_servoing/automat_discode_MPS_CONNECTED.png" style="margin: 5px; " alt=""/>
+\endhtmlonly
+ *
+ * When RPC result has been received, proxy sends it immediately to MRROC++.
+ * Then proxy waits for another request.
+\htmlonly
+<img src="images/visual_servoing/automat_discode_MPS_WAITING_FOR_RPC_RESULT.png" style="margin: 5px; " alt=""/>
+\endhtmlonly
+ *
  * \par Data streams:
  *
- * \streamin{reading,Proxies::Mrrocpp::Reading}
+ * \streamin{reading,Types::Mrrocpp_Proxy::Reading}
  * Reading to send to mrrocpp as soon as mrroc asks for it.
  *
- * \streamin{rpcResult,Proxies::Mrrocpp::Reading}
+ * \streamin{rpcResult,Types::Mrrocpp_Proxy::Reading}
  * RPC result send in response to RPC param
  *
  * \streamout{rpcParam,xdr_iarchive <> }
@@ -67,7 +95,6 @@
  * Port on which to listen.
  *
  *
- * \see http://www.youtube.com/watch?v=sKxy5Vst7Mo&feature=player_embedded
  * \see http://robotyka.ia.pw.edu.pl/twiki/bin/view/Projects/Mrrocpp
  *
  * @{
@@ -81,7 +108,7 @@ namespace Mrrocpp {
 using namespace cv;
 
 /**
- *
+ * See \link Mrrocpp_Proxy \endlink.
  */
 class Mrrocpp_Proxy: public Base::Component
 {
