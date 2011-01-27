@@ -142,7 +142,7 @@ void CameraCalib_Processor::onNewImage()
 				lastImageAlreadySaved = false;
 			}
 
-			drawChessboardCorners(image, props.patternSize, lastImagePoints, true);
+			drawChessboardCorners(image, props.patternSize, Mat(lastImagePoints, true), true);
 
 			Types::Objects3D::Chessboard chessboard(props.patternSize, props.squareSize);
 
