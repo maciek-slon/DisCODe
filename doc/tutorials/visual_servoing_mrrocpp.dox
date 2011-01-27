@@ -16,6 +16,24 @@ Additional feature is RPC calls from MRROC++ to DisCODe.
 Visual servo processors (\link VisualServoPB_Processor \endlink and \link VisualServoIB_Processor \endlink)
 converts object's position to reading that will be sent by \link Mrrocpp_Proxy \endlink.
 
+\section Components_connection Components' connection
+
+First of all, an image source and object's recognition components are required.
+In this example \link CvFindChessboardCorners \endlink is used.
+It raises two events: chessboardFound and chessboardNotFound.
+Both are required for visual servo to run properly.
+Then position estimation component is required for position-based visual servoing (\link CvSolvePnP \endlink).
+It produces object's position with respect to camera - this is what is required for robot motion.
+
+The almost last step is to build a reading which will be sent to MRROC++.
+Reading has two possible interpretations: when object is visible, it is object's position with respect to camera.
+The second form is, when object is not visible.
+Reading is built by \link VisualServoPB_Processor \endlink.
+
+Reading is then sent to \link Mrrocpp_Proxy \endlink. 
+Proxy will send it to MRROC++ as soon as MRROC++ asks for it.
+There's nothing more to do in DisCODe - the rest of robot control is done by MRROC++.
+
 \section Sample_config_file Sample config file
 
 \code
