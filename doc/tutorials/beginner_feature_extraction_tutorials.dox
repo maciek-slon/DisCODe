@@ -1,0 +1,317 @@
+/*!
+\page beginner_feature_extraction_tutorials Image processing and feature extraction - Beginner
+<div class="beginner">[Beginner level]</div>
+
+\prev_top{beginner_camera_calibration_tutorials}
+
+\section sec_description Description
+The tutorial focuses on the comparison of different features extracted from images.
+
+\section ts_structure Task structure
+General structure of tasks required by this tutorial is presented on the diagram below.
+
+\htmlonly
+<img src="images/FeatureComparer.png" style="margin: 5px; width: 650px;" alt="FeatureComparer"/>
+\endhtmlonly
+
+\note For more details regarding the structure please click <a href="images/Legend.png">here</a>.
+
+The FeatureComparer component after receiving new image should perform two sets of operations and pass 
+results to two outputs, so the difference could be displayed on the screen by two instances 
+of the cvWindow component. After the results will be computed an event should be emited.
+
+\section sec_tutorials Tutorials
+- Image processing: Compare mean and medium filter.\n
+OpenCV functions: 
+      <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-blur">cv::blur</a>,
+      <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-medianblur">cv::medianBlur</a>
+
+- Image processing: Perform thresholding and compare (on the result binary image) morphological dilation end erosion.\n
+OpenCV functions:
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_miscellaneous_image_transformations.html#cv-threshold">cv::threshold</a>,
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-dilate">cv::dilate</a>,
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-erode">cv::erode</a>
+
+- Feature extraction: Compare Sobel and Canny edges detectors.\n
+OpenCV functions:
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html#cv-sobel">cv::Sobel</a>,
+       <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_feature_detection.html#cv-canny">cv::Canny</a>
+
+\section The FeatureComparer component
+\subsection component_creation Utilize the existing tools to create the component body, configure cmake and generate makefile.
+\lin_win_create_component
+
+\subsection Create component properties
+ - Edit the component header (FeatureComparer.hpp), find the <b>Props</b> structure and add following fields to the structure. Here the feature_type property determines which property we are going to compare
+\code
+    	 int feature_type;      //type of feature comparision
+     	 cv::Size meanMaskSize; //kernel size of mean filter
+	 int medianSize;        //size of median filter
+	 int thresholdLevel;    //threshold level for binarization
+	 int cannyLowThresh;    //Low threshold of canny filter
+	 int cannyHighThresh;   //High threshod of canny filter
+	 int sobelXorder;       //X order of sobel filter
+	 int sobelYorder;       //Y order of sobel filter
+\endcode
+- The description of each property is given below.
+\code
+featureType:  1 (Compares mean and median filter)
+	Width of mean filter: meanWidth
+	Height of mean filter: meanHeight
+	Size of Median mask: medianSize
+
+featureType:  2 (Performs thresholding and compares morphological dilation and erosion)
+	Level of threshold:  thresholdLevel
+
+featureType:  3 (Compares Sobel and Canny edge detectors)
+	Sobel:
+		Order of derivative x: sobelXorder
+		Order of derivative y: sobelYorder
+	Canny:
+		First threshold for hysteresis procedure:  cannyLowThresh
+		Second threshold for hysteresis procedure:  cannyHighThresh
+\endcode
+- Implement the method responsible for properties load.
+\code
+void load(const ptree & pt)
+	{
+	 feature_type = pt.get("featureType",0);
+     	 meanMaskSize.width = pt.get("meanWidth", 3);
+     	 meanMaskSize.height = pt.get("meanHeight", 3);
+	 medianSize = pt.get("medianSize",3);
+	 thresholdLevel = pt.get("thresholdLevel",125);
+	 cannyLowThresh = pt.get("cannyLowThresh",1);
+	 cannyHighThresh = pt.get("cannyHighThresh",200);
+	 sobelXorder = pt.get("sobelXorder",1);
+	 sobelYorder = pt.get("sobelYorder",1);
+	}
+\endcode
+
+- Implement the method responsible for properties save.
+\code
+	void save(ptree & pt)
+	{
+	 pt.put("featureType",feature_type);
+	 pt.put("meanWidth",meanMaskSize.width);
+     	 pt.put("meanHeight",meanMaskSize.height);	 
+	 pt.put("medianSize",medianSize);
+	 pt.put("thresholdLevel",thresholdLevel);
+	 pt.put("cannyLowThresh",cannyLowThresh);
+	 pt.put("cannyHighThresh",cannyHighThresh);
+	 pt.put("sobelXorder",sobelXorder);
+	 pt.put("sobelYorder",sobelYorder);
+	}
+\endcode
+
+\subsection Add required fields and methods to the declaration of the FeatureComparer class.
+ - Add input and output data ports.
+
+\code
+    // Input image
+    Base::DataStreamIn <Mat> in_img;
+
+    // Processed out image 1
+    Base::DataStreamOut <Mat> out_img_features_1;
+	
+    // Processed out image 2
+    Base::DataStreamOut <Mat> out_img_features_2;
+\endcode
+
+- Add event emited after the image is processed.
+\code
+    // Event emited after the image is processed.
+    Base::Event * imageProcessed;
+\endcode
+
+- Add event handlers and methods utilized when a new image is received.
+\code
+    // Event handler function.
+    void onNewImage();
+
+    // Event handler.
+    Base::EventHandler <FeatureComparer_Processor> h_onNewImage;
+\endcode
+
+\subsection Add definitions of FeatureComparer class methods (FeatureComparer.cpp).
+- In the body of the <b>OnInit()</b> method register data streams, events and event handlers.
+\code
+    // Register handler.
+    h_onNewImage.setup(this, &FeatureComparer_Processor::onNewImage);
+    registerHandler("onNewImage", &h_onNewImage);
+    // Register event.
+    imageProcessed = registerEvent("imageProcessed");
+    // Register data streams.
+    registerStream("in_img", &in_img);
+    registerStream("out_img_features_1", &out_img_features_1);
+    registerStream("out_img_features_2", &out_img_features_2);
+\endcode
+
+- Implement the onNewImage() method - to compute the features
+\code
+void FeatureComparer_Processor::onNewImage()
+{
+    LOG(LTRACE) << "FeatureComparer::onNewImage\n";
+    try {
+                // Read image from input data stream.
+                Mat img = in_img.read();
+		Mat img1,img2;
+		img1 = img.clone();
+		img2 = img.clone();
+		Mat gray_image(img.size(),CV_8UC1);;
+		Mat bin_imag = img.clone();
+		Mat struct_elem(3,3,CV_8UC1,1);
+		
+		switch(props.feature_type)
+		{
+		        case 0: //default value
+				break;
+			case 1: //mean and median filter
+				blur(img, img1, cv::Size(props.meanMaskSize.width, props.meanMaskSize.height));
+		                medianBlur(img, img2, props.medianSize);
+				break;
+			case 2: //dilate and erode
+				cvtColor(img,gray_image,CV_RGB2GRAY);
+				threshold(gray_image,bin_imag,props.thresholdLevel,255,THRESH_BINARY);
+				dilate(bin_imag,img1,struct_elem);
+				erode(bin_imag,img2,struct_elem);	
+				break;
+			case 3: //sobel and canny edge detectors
+				cvtColor(img,gray_image,CV_RGB2GRAY);
+				Sobel(gray_image,img1,0,props.sobelXorder,props.sobelYorder);
+				Canny(gray_image,img2,props.cannyLowThresh,props.cannyHighThresh);
+				break;	
+			default:
+			        break;		
+		}	
+  
+        out_img_features_1.write(img1);
+	out_img_features_2.write(img2);
+        // Raise event.
+        imageProcessed->raise();
+    } catch (...) {
+        LOG(LERROR) << "FeatureComparer::onNewImage failed\n";
+    }
+}
+\endcode
+\note Compile and copy the component to bin library.
+
+\section ts_file Task file
+Create a new FeatureComparer.xml file (e.g. on the base of any xml file).
+- In the list of components sections add a Sequence component
+\code
+	<Seq1 type="Sequence" thread="Exec1" group="s1">
+		<directory>D:\DisCODeEnv\DisCODe\datasets\images\opencv_classics\</directory>
+		<triggered>true</triggered>			
+	</Seq1>
+\endcode
+- Add a Keyboard component with triggered property set as true.
+\code
+        <Kbd1 type="Keyboard" thread="Exec2" group="s1">
+        	<keys>t</keys> 
+        </Kbd1>
+\endcode
+
+- Add two CvWindow components for displaying two sets of features
+\code
+	<Wnd1 type="CvWindow" thread="Exec3" group="s1">
+		<title>Feature 1</title>
+	</Wnd1>
+		
+	<Wnd2 type="CvWindow" thread="Exec4" group="s1">
+		<title>Feature 2</title>
+	</Wnd2
+\endcode
+
+- Add FeatureComparer component 
+\code 
+	<Fcmp1 type="FeatureComparer" thread="Exec1" group="s1">
+		<featureType>0</featureType>
+		<meanWidth>5</meanWidth>
+		<meanHeight>5</meanHeight>
+		<medianSize>5</medianSize>
+		<thresholdLevel>100</thresholdLevel>
+		<sobelXorder>0</sobelXorder>
+		<sobelYorder>1</sobelYorder>
+		<cannyLowThresh>100</cannyLowThresh>
+		<cannyHighThresh>150</cannyHighThresh>
+        </Fcmp1>
+\endcode
+
+- In the Threads of execution section add the required executors used in the above components
+\code 
+		<Exec1 type="continuous">
+			<main_component>Seq1</main_component>
+		</Exec1>
+
+		<Exec2 type="continuous">
+			<main_component>Kbd1</main_component>
+		</Exec2>
+		
+		<Exec3 type="periodic">
+			<main_component>Wnd1</main_component>
+			<interval>0.2</interval>
+		</Exec3>
+		
+		<Exec4 type="periodic">
+			<main_component>Wnd2</main_component>
+			<interval>0.2</interval>
+		</Exec4>
+\endcode
+
+- Add the event connections
+\code
+	<Event source="Kbd1.t_Pressed" destination="Seq1.onTrigger"/>
+        <Event source="Seq1.newImage" destination="Fcmp1.onNewImage"/>
+        <Event source="Fcmp1.imageProcessed" destination="Wnd1.onNewImage"/>
+	<Event source="Fcmp1.imageProcessed" destination="Wnd2.onNewImage"/>
+\endcode
+
+- Add the data stream assignments
+\code
+ 	<Seq1>
+            <out_img type="out" group="Con1"/>
+        </Seq1>
+
+        <Fcmp1>
+            <in_img  type="in" group="Con1"/>
+            <out_img_features_1 type="out" group="Con2"/>
+	    <out_img_features_2 type="out" group="Con3"/>
+        </Fcmp1>
+
+        <Wnd1>
+            <in_img  type="in" group="Con2"/>
+        </Wnd1>
+
+	<Wnd2>
+            <in_img  type="in" group="Con3"/>
+        </Wnd2>
+\endcode
+\note For more task file details please refer to the previous tutorials.
+
+\section sec_datasets Datasets
+- Images used commonly in computer vision (Lena, etc.)\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics">/home/discode/public_html/datasets/opencv_classics</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_classics.rar">opencv_classics.rar</a>
+
+ - Some other images from the OpenCV examples\n
+Dir: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other">/home/discode/public_html/datasets/opencv_other</a>\n
+Rar: <a href="http://segomo.elka.pw.edu.pl/~discode/datasets/opencv_other.rar">opencv_other.rar</a>
+
+\section sec_materials Materials
+- ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV5.pdf">Boundary-based segmentation</a> (CV5), Wlodzimierz Kasprzak, ICCE, 2010
+- ECOVI lectures: <a href="https://studia.elka.pw.edu.pl/priv/ECOVI.A/CV6.pdf">Region-based segmentation</a> (CV6), Wlodzimierz Kasprzak, ICCE, 2010
+- "Learning OpenCV. Computer Vision with the OpenCV Library", Gary Bradski and Adrian Kaehler, O'Reilly Media, 2008
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_image_filtering.html">Image Filtering</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/imgproc_feature_detection.html">Feature Detection</a>
+- OpenCV reference manual: <a href="http://opencv.willowgarage.com/documentation/cpp/features2d_feature_detection_and_description.html">Feature detection and description</a>
+
+
+\section ts_sections Related sections
+- \ref manuals_components : Description of components
+- Manuals describing the process of component creation. \lin_win_create_component
+
+\prev_bottom{beginner_camera_calibration_tutorials}
+*/
+
+
+//- Feature extraction: Compare image histograms in the BGR and HSV spaces.\n
