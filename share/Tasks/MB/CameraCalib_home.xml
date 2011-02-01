@@ -9,27 +9,22 @@
 			</dev>
 		</ImageSource>
 		 -->
-		<!--  
+		  
 		<ImageSource type="CameraOpenCV" thread="MainExecutor" group="s1">
 		</ImageSource>  
-		 -->
 		
-		 
+		
+		<!--  
 		<ImageSource type="Sequence" thread="MainExecutor" group="s1">
-			<directory>CameraCalib/Results/CameraCalib_20110109123509</directory>
+			<directory>/home/mateusz/CameraCalib/Results/CameraCalib_20110109123509</directory>
 			<triggered>false</triggered>
 			<sort>true</sort>
 		</ImageSource>
-		
-
-		<BGRToGray type="CvColorConv" thread="MainExecutor" group="s1">
-			<type>BGR2GRAY</type>
-		</BGRToGray>
+		 -->
 
 		<CameraCalib type="CameraCalib" thread="MainExecutor" group="s1">
-			<!-- <imagesBaseDirectory>~/CameraCalib/Results</imagesBaseDirectory>  -->
 			<imagesBaseDirectory></imagesBaseDirectory>
-			<resultsFilename>CameraCalib/Results.txt</resultsFilename>
+			<resultsFilename>/home/mateusz/CameraCalib/Results.txt</resultsFilename>
 			
 			<storeOnNewImage>true</storeOnNewImage>
 			<width>9</width>
@@ -65,12 +60,9 @@
 	<!-- Event connections -->
 	<Events>
 		 
-		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
-		<Event source="BGRToGray.newImage" destination="CameraCalib.onNewImage"/>
-		
-		 
 		<Event source="ImageSource.newImage" destination="CameraCalib.onNewImage"/>
-		<Event source="ImageSource.endOfSequence" destination="CameraCalib.onSequenceEnd"/>
+		
+		<!-- <Event source="ImageSource.endOfSequence" destination="CameraCalib.onSequenceEnd"/>  -->
 		
 		<Event source="CameraCalib.chessboardFound" destination="Preview.onNewImage"/>
 		<Event source="CameraCalib.chessboardNotFound" destination="Preview.onNewImage"/>
@@ -86,30 +78,17 @@
 	<!-- Data stream assignments -->
 	<DataStreams>
 		<ImageSource>
-			<out_img type="out" group="ColorImageDS"/>
+			<out_img type="out" group="ImageDS"/>
 		</ImageSource>
 		
-		<BGRToGray>
-			<in_img  type="in" group="ColorImageDS"/>
-			<out_img type="out" group="GrayImageDS"/>
-		</BGRToGray>
-		
-		
 		<CameraCalib>
-			<in_img type="in" group="GrayImageDS"/>
+			<in_img type="in" group="ImageDS"/>
 			<out_chessboard type="out" group="ChessboardDS"/>
+			<out_img type="out" group="ChessboardImageDS"/>
 		</CameraCalib>
-		
-		<!--  
-		<CameraCalib>
-			<in_img type="in" group="ColorImageDS"/>
-			<out_chessboard type="out" group="ChessboardDS"/>
-		</CameraCalib>
-		 -->
 		
 		<Preview>
-			<in_img  type="in" group="ColorImageDS"/>
-			<in_draw type="in" group="ChessboardDS"/>
+			<in_img  type="in" group="ChessboardImageDS"/>
 		</Preview>
 	</DataStreams>
 

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Task>
 	<Components>
-		<ImageSource type="CameraUniCap" thread="ImageSourceThread" group="s1">
-			<dev>
-				<device>/dev/video0</device>
-			</dev>
+		<ImageSource type="CameraOpenCV" thread="ImageSourceThread" group="s1">
 		</ImageSource>
 		
 		<BGRToGray type="CvColorConv" thread="ImageSourceThread" group="s1">
@@ -12,23 +9,23 @@
 		</BGRToGray>
 		
 		<FindChessboard type="CvFindChessboardCorners" thread="ImageSourceThread" group="s1">
-			<width>4</width>
-			<height>3</height>
-			<squareSize>0.02</squareSize>
+			<width>6</width>
+			<height>9</height>
+			<squareSize>0.028</squareSize>
 			<findSubpix>1</findSubpix>
 		</FindChessboard>
 		
 		<PositionEstimator type="CvSolvePnP" thread="ImageSourceThread" group="s1">
 			<cameraMatrix>
 				[3,3](
-					(1794.47, 0, 319.5),
-					(0, 1809.86, 239.5),
-					(0, 0, 1)	
+					(781.282, 0, 304.619),
+					(0, 781.133, 240.771),
+					(0, 0, 1)
 				)
 			</cameraMatrix>
 			<distCoeffs>
 				[1,5](
-					(0, 1, 6.91793e-310, 4.94066e-324, 6.91791e-310)
+					(0.530914, 1, 1.63398e-312, 1.33512e-306, -6.97232e-80)
 				)
 			</distCoeffs>
 		</PositionEstimator>
@@ -38,6 +35,7 @@
 		
 		<Mrrocpp type="Mrrocpp" thread="MrrocProxyThread" group="s1">
 			<port>8888</port>
+			<rpcMode>1</rpcMode>
 		</Mrrocpp>
 		
 		<Window type="CvWindow" thread="PreviewExecutor" group="s1">
@@ -46,9 +44,9 @@
 	</Components>
 
 	<Executors>
-		<ImageSourceThread type="passive">
+		<ImageSourceThread type="continuous">
 			<main_component>ImageSource</main_component>
-			
+			<interval>0.02</interval>
 		</ImageSourceThread>
 		
 		<MrrocProxyThread type="continuous">

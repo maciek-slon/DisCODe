@@ -44,6 +44,7 @@ bool CameraCalib_Processor::onInit()
 
 	registerStream("in_img", &in_img);
 	registerStream("out_chessboard", &out_chessboard);
+	registerStream("out_img", &out_img);
 
 	chessboardFound = registerEvent("chessboardFound");
 	chessboardNotFound = registerEvent("chessboardNotFound");
@@ -111,15 +112,25 @@ void CameraCalib_Processor::onNewImage()
 			return;
 		}
 
+		if(image.type() == CV_8UC3){
+			cvtColor(image, grayImage, CV_BGR2GRAY);
+		} else if(image.type() == CV_8UC1){
+			image.copyTo(grayImage);
+		} else {
+			LOG(LERROR) << "CameraCalib_Processor::onNewImage(): unknown image format. Ignoring frame.\n";
+			return;
+//			throw std::runtime_error("CameraCalib_Processor::onNewImage()");
+		}
+
 		lastImagePoints.clear();
-		bool found = findChessboardCorners(image, props.patternSize, lastImagePoints, findChessboardCornersFlags);
+		bool found = findChessboardCorners(grayImage, props.patternSize, lastImagePoints, findChessboardCornersFlags);
 		LOG(LDEBUG) << "lastImagePoints.size()=" << lastImagePoints.size();
 
 		if (found) {
 			LOG(LINFO) << "chessboard found\n";
 
 			if (props.findSubpix) {
-				cornerSubPix(image, lastImagePoints, Size(5, 5), Size(1, 1), TermCriteria(CV_TERMCRIT_EPS
+				cornerSubPix(grayImage, lastImagePoints, Size(5, 5), Size(1, 1), TermCriteria(CV_TERMCRIT_EPS
 						| CV_TERMCRIT_ITER, 50, 1e-3));
 				LOG(LDEBUG) << "lastImagePoints.size()=" << lastImagePoints.size();
 			}
@@ -131,16 +142,19 @@ void CameraCalib_Processor::onNewImage()
 				lastImageAlreadySaved = false;
 			}
 
+			drawChessboardCorners(image, props.patternSize, lastImagePoints, true);
+
 			Types::Objects3D::Chessboard chessboard(props.patternSize, props.squareSize);
 
 			chessboard.setImagePoints(lastImagePoints);
 			chessboard.setModelPoints(chessboardModelPoints);
 			out_chessboard.write(chessboard);
+			out_img.write(image);
 
 			chessboardFound->raise();
 		} else {
 			LOG(LINFO) << "chessboard not found\n";
-
+			out_img.write(image);
 			chessboardNotFound->raise();
 		}
 	} catch (const Exception& e) {

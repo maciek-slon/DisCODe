@@ -8,14 +8,16 @@
 #ifndef PBREADING_HPP_
 #define PBREADING_HPP_
 
-#include "../../Proxies/Mrrocpp/Reading.hpp"
+#include "Reading.hpp"
 #include "HomogMatrix.hpp"
 
-namespace Processors {
+namespace Types {
+namespace Mrrocpp_Proxy {
 
-namespace VisualServoPB {
-
-class PBReading: public Proxies::Mrrocpp::Reading
+/**
+ *
+ */
+class PBReading: public Reading
 {
 public:
 	PBReading()
@@ -40,27 +42,7 @@ public:
 	bool objectVisible;
 	Types::HomogMatrix objectPosition;
 
-	virtual void printInfo()
-	{
-		LOG(LTRACE) << "PBReading::printInfo()\n";
-		stringstream ss;
-		if (objectVisible) {
-			for (int i = 0; i < 3; ++i) {
-				for (int j = 0; j < 4; ++j) {
-					ss << objectPosition.elements[i][j] << "  ";
-				}
-
-				ss << "\n";
-			}
-		} else {
-			ss << "object not visible\n";
-		}
-
-		LOG(LDEBUG) << "HomogMatrix:\n" << ss.str() << endl;
-	}
-
 	virtual void send(boost::shared_ptr<xdr_oarchive<> > & ar){
-		LOG(LNOTICE) << "PBReading::send(): hehehehe\n";
 		*ar<<*this;
 	}
 
@@ -76,7 +58,7 @@ private:
 	}
 };
 
-} // namespace VisualServoPB
-} // namespace Processors
+}//namespace Mrrocpp_Proxy
+}//namespace Types
 
 #endif /* PBREADING_HPP_ */

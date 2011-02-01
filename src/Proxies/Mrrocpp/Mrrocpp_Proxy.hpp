@@ -16,24 +16,60 @@
 #include "Component_Aux.hpp"
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
+#include "Property.hpp"
 #include "xdr/xdr_oarchive.hpp"
 #include "xdr/xdr_iarchive.hpp"
 #include "Socket.hpp"
 #include "headers.h"
-#include "Reading.hpp"
+#include "Mrrocpp_Proxy/Reading.hpp"
 
-/**
- * \defgroup Mrrocpp Proxy
+/*!
+ * \defgroup Mrrocpp_Proxy Mrrocpp_Proxy
  * \ingroup Proxies
  *
- * Proxy to the mrrocpp system.
+ * Proxy to MRROC++.
+ * This proxy listens on specified TCP/IP port for connection from MRROC++.
+ * Only one incoming client connection at a time will be accepted.
+ * Then Proxies::Mrrocpp::Mrrocpp_Proxy will wait for requests from MRROC++.
+ * There are two types of requests: request for reading and RPC call.
+ *
+ * Request for reading makes Mrrocpp_Proxy to send as soon as possible latest reading.
+ * If there is no reading then empty messege is sent back to MRROC++
+ * to let MRROC++ know that there was no reading.
+ *
+ * RPC call is a call that makes Mrrocpp_Proxy generate rpcCall event and wait for onRpcResult.
+ * Between generating rpcCall and receiving onRpcResult no reading requests will be received
+ * and no readings will be sent to MRROC++.
+ *
+ * This is SDL diagram of Mrrocpp_Proxy on initializing.
+ * After Mrrocpp_Proxy::onInit() has been called, proxy waits for client to connect.
+ * When new client has connected, proxy changes its state to MPS_CONNECTED.
+ *
+\htmlonly
+<img src="images/visual_servoing/automat_discode_MPS_NOT_INITIALIZED.png" style="margin: 5px; " alt=""/>
+\endhtmlonly
+ *
+ * This is SDL diagram of processing requests from MRROC++.
+ * When proxy is in MPS_CONNECTED state, it waits for request for reading or RPC call.
+ * If reading request has been received, then reply is sent back.
+ * If RPC call has been received, rpcCall event is raised and proxy waits for RPC result (onRpcResult event).
+ *
+\htmlonly
+<img src="images/visual_servoing/automat_discode_MPS_CONNECTED.png" style="margin: 5px; " alt=""/>
+\endhtmlonly
+ *
+ * When RPC result has been received, proxy sends it immediately to MRROC++.
+ * Then proxy waits for another request.
+\htmlonly
+<img src="images/visual_servoing/automat_discode_MPS_WAITING_FOR_RPC_RESULT.png" style="margin: 5px; " alt=""/>
+\endhtmlonly
  *
  * \par Data streams:
  *
- * \streamin{reading,Reading}
+ * \streamin{reading,Types::Mrrocpp_Proxy::Reading}
  * Reading to send to mrrocpp as soon as mrroc asks for it.
  *
- * \streamin{rpcResult,Reading}
+ * \streamin{rpcResult,Types::Mrrocpp_Proxy::Reading}
  * RPC result send in response to RPC param
  *
  * \streamout{rpcParam,xdr_iarchive <> }
@@ -55,11 +91,10 @@
  *
  * \par Properties:
  *
- * \prop{port,port,&nbsp;}
+ * \prop{port,port,""}
  * Port on which to listen.
  *
  *
- * \see http://www.youtube.com/watch?v=sKxy5Vst7Mo&feature=player_embedded
  * \see http://robotyka.ia.pw.edu.pl/twiki/bin/view/Projects/Mrrocpp
  *
  * @{
@@ -72,45 +107,14 @@ namespace Mrrocpp {
 
 using namespace cv;
 
-struct Mrrocpp_ProxyProps: public Base::Props
-{
-	int port;
-
-	/*!
-	 * Load settings
-	 *
-	 * @param pt root property tree to load settings from
-	 */
-	virtual void load(const ptree & pt)
-	{
-		port = pt.get <int> ("port");
-	}
-
-	/*!
-	 * Save settings
-	 *
-	 * @param pt root property tree to save settings
-	 */
-	virtual void save(ptree & pt)
-	{
-		pt.put("port", port);
-	}
-};
-
-/*!
- * \defgroup Mrrocpp Mrrocpp
- * \ingroup Proxies
- *
- * @{
- *
- * }@
+/**
+ * See \link Mrrocpp_Proxy \endlink.
  */
 class Mrrocpp_Proxy: public Base::Component
 {
 public:
 	Mrrocpp_Proxy(const std::string & name = "");
 	virtual ~Mrrocpp_Proxy();
-	virtual Base::Props * getProperties();
 
 protected:
 	virtual bool onStart();
@@ -154,7 +158,7 @@ private:
 	void serviceReading();
 
 	Base::EventHandler <Mrrocpp_Proxy> h_onNewReading;
-	Base::DataStreamInPtr <Reading> reading;
+	Base::DataStreamInPtr <Types::Mrrocpp_Proxy::Reading> reading;
 
 	/**
 	 * Event handler called when RPC call has finished.
@@ -164,7 +168,7 @@ private:
 
 	Base::Event *rpcCall;
 	Base::DataStreamOut <xdr_iarchive <> > rpcParam;
-	Base::DataStreamInPtr <Reading> rpcResult;
+	Base::DataStreamInPtr <Types::Mrrocpp_Proxy::Reading> rpcResult;
 	Base::EventHandler <Mrrocpp_Proxy> h_onRpcResult;
 
 	boost::shared_ptr <xdr_iarchive <> > header_iarchive;
@@ -172,8 +176,8 @@ private:
 	boost::shared_ptr <xdr_oarchive <> > header_oarchive;
 	boost::shared_ptr <xdr_oarchive <> > oarchive;
 
-	boost::shared_ptr <Reading> readingMessage;
-	boost::shared_ptr <Reading> rpcResultMessage;
+	boost::shared_ptr <Types::Mrrocpp_Proxy::Reading> readingMessage;
+	boost::shared_ptr <Types::Mrrocpp_Proxy::Reading> rpcResultMessage;
 
 	void receiveBuffersFromMrrocpp();
 	void sendBuffersToMrrocpp();
@@ -184,23 +188,15 @@ private:
 	Socket serverSocket;
 	boost::shared_ptr <Socket> clientSocket;
 
-	Mrrocpp_ProxyProps props;
-
 	void tryAcceptConnection();
 	void tryReceiveFromMrrocpp();
 
-//	bool clientConnected;
-//	bool msgSet;
-//	bool getReadingReceived;
-
-//	enum
-//	{
-//		PROXY_NOT_CONFIGURED, PROXY_WAITING_FOR_COMMAND, PROXY_WAITING_FOR_READING, PROXY_WAITING_FOR_RPC_RESULT
-//	} proxyState;
-
 	size_t initiate_message_header_size;
 
-	boost::mutex eventsMutex;
+	boost::mutex readingMutex;
+	boost::mutex rpcCallMutex;
+
+	Base::Property<int> port;
 };
 
 } // namespace Mrrocpp {

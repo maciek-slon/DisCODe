@@ -6,14 +6,16 @@
 #ifndef READING_HPP_
 #define READING_HPP_
 
-#include "xdr/xdr_oarchive.hpp"
-#include <boost/shared_ptr.hpp>
+#include "Common/xdr/xdr_oarchive.hpp"
+
 #include "Logger.hpp"
 
-namespace Proxies {
+namespace Types {
+namespace Mrrocpp_Proxy {
 
-namespace Mrrocpp {
-
+/**
+ * Reading for MRROC++ proxy.
+ */
 class Reading
 {
 public:
@@ -27,23 +29,20 @@ public:
 
 	virtual Reading* clone() = 0;
 
-	virtual void printInfo()
-	{
-		LOG(LNOTICE) << "Reading::printInfo()\n";
-	}
-
+	/**
+	 * Serialize object to archive.
+	 * @param ar
+	 */
 	virtual void send(boost::shared_ptr<xdr_oarchive<> > & ar) = 0;
 private:
 	friend class boost::serialization::access;
 	template <class Archive>
 	void serialize(Archive & ar, const unsigned int version)
 	{
-		LOG(LNOTICE) << "Reading::serialize()\n";
 	}
-
 };
 
-}//namespace Mrrocpp
-}//namespace Proxies
+}//namespace Mrrocpp_Proxy
+}//namespace Types
 
 #endif /* READING_HPP_ */

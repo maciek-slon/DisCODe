@@ -34,4 +34,11 @@ The tutorial focuses on the structural analysis of images and recognition of sim
 
 \endlinklist
 
+\section visual_servoing_mrrocpp [Visual servoing - MRROC++]
+
+\beginlinklist
+- \ref visual_servoing_mrrocpp_components \n
+
+\endlinklist
+
 */

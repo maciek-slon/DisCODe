@@ -13,6 +13,7 @@ namespace Processors {
 namespace VisualServoIB {
 
 using Types::ImagePosition;
+using Types::Mrrocpp_Proxy::IBReading;
 
 VisualServoIB_Processor::VisualServoIB_Processor(const std::string & name) :
 	Base::Component(name)

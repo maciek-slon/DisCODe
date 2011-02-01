@@ -12,6 +12,10 @@
 
 namespace Types {
 
+/**
+ * Object's position in image.
+ * Contains image coordinates.
+ */
 struct ImagePosition {
 	static const int elementsSize = 4;
 	double elements[elementsSize];

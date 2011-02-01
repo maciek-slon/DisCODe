@@ -11,38 +11,53 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
-#include "IBReading.hpp"
+#include "Mrrocpp_Proxy/IBReading.hpp"
+
+/*!
+ * \defgroup VisualServoIB_Processor VisualServoIB_Processor
+ * \ingroup Processors
+ *
+ * A component for image-based visual servoing.
+ * Receives object's position in image or information that object has not been found.
+ * Given this information creates reading which will be sent to robot control system.
+ *
+ * \par Data streams:
+ *
+ * \streamin{in_position,Types::ImagePosition}
+ * Position of object in image.
+ *
+ * \streamout{out_reading,Types::Mrrocpp_Proxy::IBReading}
+ * Reading to send to robot control system.
+ *
+ * \par Events:
+ *
+ * \event{readingReady}
+ * Raised when new reading is ready.
+ *
+ * \par Event handlers:
+ *
+ * \handler{onObjectLocated}
+ * If object has been located, raise this event.
+ * Event handler will read from in_position data stream.
+ * New reading will be written to out_reading and readingReady event will be raised.
+ *
+ * \handler{onObjectNotFound}
+ * If object has not been located, raise this event.
+ * Event handler will not be read from in_position data stream.
+ * New reading will be written to out_reading and readingReady event will be raised.
+ *
+ * @{
+ *
+ * @}
+ */
 
 namespace Processors {
 namespace VisualServoIB {
 
 /*!
- * \brief VisualServoIB_Processor properties
- */
-struct VisualServoIB_Props: public Base::Props
-{
-
-	/*!
-	 * \copydoc Base::Props::load
-	 */
-	void load(const ptree & pt)
-	{
-
-	}
-
-	/*!
-	 * \copydoc Base::Props::save
-	 */
-	void save(ptree & pt)
-	{
-
-	}
-
-};
-
-/*!
  * \class VisualServoIB_Processor
  * \brief VisualServoIB processor class.
+ * See \link VisualServoIB_Processor \endlink
  */
 class VisualServoIB_Processor: public Base::Component
 {
@@ -56,15 +71,6 @@ public:
 	 * Destructor
 	 */
 	virtual ~VisualServoIB_Processor();
-
-	/*!
-	 * Return window properties
-	 */
-	Base::Props * getProperties()
-	{
-		return &props;
-	}
-
 protected:
 
 	/*!
@@ -91,15 +97,12 @@ protected:
 	 * Stop component
 	 */
 	bool onStop();
-
-	/// Properties
-	VisualServoIB_Props props;
 private:
 	void onObjectLocated();
 	void onObjectNotFound();
 
 	Base::DataStreamIn<Types::ImagePosition> in_position;
-	Base::DataStreamOut<IBReading> out_reading;
+	Base::DataStreamOut<Types::Mrrocpp_Proxy::IBReading> out_reading;
 
 	Base::EventHandler <VisualServoIB_Processor> h_onObjectLocated;
 	Base::EventHandler <VisualServoIB_Processor> h_onObjectNotFound;

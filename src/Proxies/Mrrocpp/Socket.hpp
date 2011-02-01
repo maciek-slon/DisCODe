@@ -43,10 +43,11 @@ public:
 
 	/**
 	 * Calls select(fd, usec) to check if there is data to read.
-	 * @param usec time in microseconds
-	 * @return
+	 * @param sec Time in seconds. Passing 0 will make it return immediately.
+	 * Passing std::numeric_limits\<double\>::infinity() will make it block.
+	 * @return true when data is available.
 	 */
-	bool isDataAvailable(int usec = 0);
+	bool isDataAvailable(double sec = 0);
 
 	bool isSocketOpened() const;
 

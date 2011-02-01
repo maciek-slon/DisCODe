@@ -11,34 +11,48 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Props.hpp"
-#include "PBReading.hpp"
+#include "Mrrocpp_Proxy/PBReading.hpp"
+
+/*!
+ * \defgroup VisualServoPB_Processor VisualServoPB_Processor
+ * \ingroup Processors
+ *
+ * A component for position-based visual servoing.
+ * Receives object's position with respect to the camera or information that object has not been found.
+ * Given this information creates reading which will be sent to robot control system.
+ *
+ * \par Data streams:
+ *
+ * \streamin{in_position,Types::HomogMatrix}
+ * Position of object with respect to camera.
+ *
+ * \streamout{out_reading,Types::Mrrocpp_Proxy::PBReading}
+ * Reading to send to robot control system.
+ *
+ * \par Events:
+ *
+ * \event{readingReady}
+ * Raised when new reading is ready.
+ *
+ * \par Event handlers:
+ *
+ * \handler{onObjectLocated}
+ * If object has been located, raise this event.
+ * Event handler will read from in_position data stream.
+ * New reading will be written to out_reading and readingReady event will be raised.
+ *
+ * \handler{onObjectNotFound}
+ * If object has not been located, raise this event.
+ * Event handler will not be read from in_position data stream.
+ * New reading will be written to out_reading and readingReady event will be raised.
+ *
+ * @{
+ *
+ * @}
+ */
 
 namespace Processors {
 namespace VisualServoPB {
-
-/*!
- * \brief VisualServoPB_Processor properties
- */
-struct VisualServoPB_Props: public Base::Props
-{
-
-	/*!
-	 * \copydoc Base::Props::load
-	 */
-	void load(const ptree & pt)
-	{
-
-	}
-
-	/*!
-	 * \copydoc Base::Props::save
-	 */
-	void save(ptree & pt)
-	{
-
-	}
-
-};
 
 /*!
  * \class VisualServoPB_Processor
@@ -56,14 +70,6 @@ public:
 	 * Destructor
 	 */
 	virtual ~VisualServoPB_Processor();
-
-	/*!
-	 * Return window properties
-	 */
-	Base::Props * getProperties()
-	{
-		return &props;
-	}
 
 protected:
 
@@ -92,14 +98,12 @@ protected:
 	 */
 	bool onStop();
 
-	/// Properties
-	VisualServoPB_Props props;
 private:
 	void onObjectLocated();
 	void onObjectNotFound();
 
 	Base::DataStreamIn<Types::HomogMatrix> in_position;
-	Base::DataStreamOut<PBReading> out_reading;
+	Base::DataStreamOut<Types::Mrrocpp_Proxy::PBReading> out_reading;
 
 	Base::EventHandler <VisualServoPB_Processor> h_onObjectLocated;
 	Base::EventHandler <VisualServoPB_Processor> h_onObjectNotFound;

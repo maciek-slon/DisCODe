@@ -8,14 +8,16 @@
 #ifndef IBREADING_HPP_
 #define IBREADING_HPP_
 
-#include "../../Proxies/Mrrocpp/Reading.hpp"
+#include "Reading.hpp"
 #include "ImagePosition.hpp"
 
-namespace Processors {
+namespace Types {
+namespace Mrrocpp_Proxy {
 
-namespace VisualServoIB {
-
-class IBReading: public Proxies::Mrrocpp::Reading
+/**
+ *
+ */
+class IBReading: public Reading
 {
 public:
 	IBReading()
@@ -25,7 +27,7 @@ public:
 	IBReading(const IBReading& o)
 	{
 		objectVisible = o.objectVisible;
-
+		imagePosition = o.imagePosition;
 	}
 
 	virtual ~IBReading()
@@ -40,25 +42,10 @@ public:
 	bool objectVisible;
 	Types::ImagePosition imagePosition;
 
-
-	virtual void printInfo()
-	{
-		LOG(LNOTICE) << "IBReading::printInfo()\n";
-		stringstream ss;
-		if (objectVisible) {
-
-		} else {
-			ss << "object not visible\n";
-		}
-
-		LOG(LNOTICE) << "HomogMatrix:\n" << ss.str() << endl;
-	}
-
 	virtual void send(boost::shared_ptr<xdr_oarchive<> > & ar){
 		LOG(LNOTICE) << "IBReading::send(): hehehehe\n";
 		*ar<<*this;
 	}
-
 private:
 	friend class boost::serialization::access;
 	template <class Archive>
@@ -71,7 +58,7 @@ private:
 	}
 };
 
-} // namespace VisualServoIB
-} // namespace Processors
+}//namespace Mrrocpp_Proxy
+}//namespace Types
 
 #endif /* IBREADING_HPP_ */
