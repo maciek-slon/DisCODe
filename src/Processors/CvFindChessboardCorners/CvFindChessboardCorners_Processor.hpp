@@ -16,6 +16,8 @@
 #include "Drawable.hpp"
 #include "Timer.hpp"
 
+#include "Property.hpp"
+
 
 /**
  * \defgroup CvFindChessboardCorners CvFindChessboardCorners
@@ -133,6 +135,8 @@ protected:
 private:
 	void onNewImage();
 
+	void initChessboard();
+
 	/** New image event handler. */
 	Base::EventHandler <CvFindChessboardCorners_Processor> h_onNewImage;
 	/** Image stream. */
@@ -154,6 +158,17 @@ private:
 	CvFindChessboardCornersProps props;
 
 	boost::shared_ptr<Types::Objects3D::Chessboard> chessboard;
+
+	cv::Mat sub_img;
+
+	Base::Property<bool> prop_subpix;
+	Base::Property<int> prop_subpix_window;
+	Base::Property<bool> prop_scale;
+	Base::Property<int> prop_scale_factor;
+	Base::Property<int> prop_width;
+	Base::Property<int> prop_height;
+	Base::Property<int> prop_square_width;
+	Base::Property<int> prop_square_height;
 };
 
 } // namespace CvFindChessboardCorners {

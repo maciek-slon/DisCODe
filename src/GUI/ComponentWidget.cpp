@@ -28,8 +28,17 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 			QWidget * widget;
 			QWidget * emitter = NULL;
 
-			if (ptype == "i") {
+			//std::cout << pname.toStdString() << ": " << ptype.toStdString() << std::endl;
 
+			if (ptype == "b") {
+				QCheckBox * check = new QCheckBox(pname);
+				check->setChecked(boost::lexical_cast<bool>(proxy->getPropertyValue(i)));
+
+				connect(check, SIGNAL(toggled(bool)), signalMapper, SLOT(map()));
+
+				widget = check;
+			} else
+			if (ptype == "i") {
 				QSpinBox * spin = new QSpinBox;
 				spin->setValue(boost::lexical_cast<int>(proxy->getPropertyValue(i)));
 
@@ -158,6 +167,10 @@ void ComponentWidget::triggerHandler(const QString & name) {
 
 void ComponentWidget::setProperty(QWidget * widget) {
 	QString val;
+	if (widget->inherits("QCheckBox")) {
+		QCheckBox * check = qobject_cast<QCheckBox*>(widget);
+		val = check->isChecked() ? "1" : "0";
+	} else
 	if (widget->inherits("QLineEdit")) {
 		QLineEdit * edit = qobject_cast<QLineEdit*>(widget);
 		val = edit->text();
