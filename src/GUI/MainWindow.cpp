@@ -91,6 +91,8 @@ void MainWindow::setup(DisCODe::Client * c) {
 	task = new DisCODe::TaskProxy(client);
 	task->refresh();
 
+	system = new DisCODe::SystemProxy(client);
+
 	ui->treeWidget->clear();
 
 	QTreeWidgetItem * i_task = new QTreeWidgetItem;
@@ -133,4 +135,8 @@ void MainWindow::on_actionConnect_triggered(bool checked) {
 	} else {
 		//do_connect();
 	}
+}
+
+void MainWindow::on_actionFinish_triggered(bool checked) {
+	system->finish();
 }

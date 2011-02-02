@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "DisCODeException.hpp"
+
 namespace Common {
 
 
@@ -171,7 +173,7 @@ void TCPServer::start()
 
 		if (select_return == -1) {
 			perror("Select failed!");
-			return;
+			throw Common::DisCODeException("Server creation failed.");
 		}
 		if (select_return == 0) {
 			//std::cout << "Select timed out." << std::endl;
