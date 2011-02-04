@@ -1,11 +1,16 @@
+include(FindPkgConfig)
+
 # Include the directory itself as a path to include directories
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# Find OpenAL library files
-FIND_PACKAGE( OpenAL REQUIRED )
-
 # Find OpenCV library files
 FIND_PACKAGE( OpenCV REQUIRED )
+
+PKG_SEARCH_MODULE(SNDFile sndfile)
+
+PKG_SEARCH_MODULE(PortAudio portaudio)
+
+IF(SNDFile_FOUND AND PortAudio_FOUND)
 
 # Create a variable containing all .cpp files:
 FILE(GLOB files *.cpp)
@@ -14,6 +19,8 @@ FILE(GLOB files *.cpp)
 ADD_LIBRARY(Speakers SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(Speakers ${OpenAL_LIBS} ${OpenCV_LIBS} ${DisCODe_LIBRARIES} -lsndfile -lportaudio)
+TARGET_LINK_LIBRARIES(Speakers ${OpenCV_LIBS} ${DisCODe_LIBRARIES}  ${SNDFile_LIBRARIES}  ${PortAudio_LIBRARIES} )
 
 INSTALL_SOURCE(Speakers)
+
+ENDIF(SNDFile_FOUND AND PortAudio_FOUND)
