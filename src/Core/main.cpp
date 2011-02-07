@@ -262,11 +262,9 @@ int main(int argc, char* argv[])
 		km.initializeComponentsList();
 
 		task = configurator.loadConfiguration(task_name, overrides);
-		if (!task.start()) {
-			LOG(LFATAL) << "Task::start() returned false\n";
-			running = false;
-		}
 
+		task.initialize();
+		task.start();
 
 		while(running) {
 			Common::Thread::msleep(50);
@@ -274,6 +272,7 @@ int main(int argc, char* argv[])
 
 		Common::Thread::msleep(500);
 
+		task.stop();
 		task.finish();
 
 		km.release();

@@ -67,20 +67,13 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
 
-		try {
-			tmp_node = &(configuration.get_child("Task.Executors"));
-			loadExecutors(tmp_node, task);
-		}
-		catch(ptree_bad_path&) {
-			LOG(LERROR) << "No Executors branch in configuration file!\n";
-		}
 
 		try {
-			tmp_node = &(configuration.get_child("Task.Components"));
-			loadComponents(tmp_node, task);
+			tmp_node = &(configuration.get_child("Task.Subtasks"));
+			loadSubtasks(tmp_node, task);
 		}
-		catch(const ptree_bad_path& ex) {
-			LOG(LERROR) << "No Components branch in configuration file!\n";
+		catch(ptree_bad_path&) {
+			LOG(LERROR) << "No Subtasks branch in configuration file!\n";
 		}
 
 
@@ -106,24 +99,95 @@ Task Configurator::loadConfiguration(std::string filename_, const std::vector<st
 	}//: else
 }
 
-void Configurator::loadExecutors(const ptree * node, Task & task) {
+void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 	LOG(LINFO) << "Creating execution threads\n";
 
 	Executor * ex;
+	std::string name;
+	std::string key;
+	std::string type;
 
-	BOOST_FOREACH( TreeNode nd, *node) {
+	BOOST_FOREACH( TreeNode nd, *node ) {
 		ptree tmp = nd.second;
-		ex = executorManager->createExecutor(nd.first, tmp.get("<xmlattr>.type", "UNKNOWN"));
-		ex->load(tmp);
+		key = nd.first;
 
-		task+=ex;
+		// ignore coments in task file
+		if (key == "<xmlcomment>" || key="<xmlattr>") {
+			continue;
+		} else
+		if (key != "Executor") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
+
+		name = tmp.get("<xmlattr>.name", "");
+		type = tmp.get("<xmlattr>.type", "");
+
+		ex = executorManager->createExecutor(name, type);
+
+		subtask+=ex;
+		LOG(LINFO) << "\t" << name;
+
+		loadComponents(&tmp, *ex);
 	}
 }
 
-void Configurator::loadComponents(const ptree * node, Task & task) {
+void Configurator::loadSubtasks(const ptree * node, Task & task) {
+	LOG(LINFO) << "Loading subtasks\n";
+
+	std::string name;
+	std::string key;
+	Subtask * subtask;
+
+	BOOST_FOREACH( TreeNode nd, *node) {
+		ptree tmp = nd.second;
+		key = nd.first;
+
+		// ignore coments in task file
+		if (key == "<xmlcomment>" || key="<xmlattr>") {
+			continue;
+		} else
+		if (key != "Subtask") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
+
+		name = tmp.get("<xmlattr>.name", "");
+
+		subtask = &task[name];
+		LOG(LINFO) << "" << name;
+
+		loadExecutors(&tmp, *subtask);
+	}
+}
+
+void Configurator::loadComponents(const ptree * node, Executor & executor) {
 	LOG(LINFO) << "Loading required components\n";
 
-	Base::Component * kern;
+	std::string name;
+	std::string type;
+	std::string key;
+
+	BOOST_FOREACH( TreeNode nd, *node) {
+		ptree tmp = nd.second;
+		key = nd.first;
+
+		// ignore coments in task file
+		if (key == "<xmlcomment>" || key="<xmlattr>") {
+			continue;
+		} else
+		if (key != "Component") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
+
+		name = tmp.get("<xmlattr>.name", "");
+		type = tmp.get("<xmlattr>.type", "");
+
+		LOG(LINFO) << "\t\t" << name;
+	}
+
+/*	Base::Component * kern;
 	Executor * ex;
 	std::string name;
 	std::string type;
@@ -204,12 +268,12 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 		task[group] += kern;
 
 		component_executor[name] = thread;
-	}
+	}*/
 }
 
 void Configurator::loadEvents(const ptree * node) {
 	LOG(LTRACE) << "Connecting events\n";
-	std::string src, dst, name, caller, receiver, type;
+/*	std::string src, dst, name, caller, receiver, type;
 	Base::Component * src_k, * dst_k;
 	Base::EventHandlerInterface * h;
 	Base::Event * e;
@@ -263,12 +327,12 @@ void Configurator::loadEvents(const ptree * node) {
 		}
 
 		LOG(LTRACE) << name << ": src=" << src << ", dst=" << dst << "\n";
-	}
+	}*/
 }
 
 void Configurator::loadConnections(const ptree * node) {
 	LOG(LINFO) << "Connecting data streams\n";
-	std::string name, ds_name;
+/*	std::string name, ds_name;
 	Base::Component * kern;
 	std::string type, con_name;
 	Base::Connection * con;
@@ -308,7 +372,7 @@ void Configurator::loadConnections(const ptree * node) {
 				continue;
 			}
 		}
-	}
+	}*/
 }
 
 

@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 namespace Base {
 	class Component;
@@ -15,6 +16,9 @@ namespace Base {
 
 namespace Core {
 
+	class Executor;
+
+	typedef std::pair<std::string, Executor*> ExecutorPair;
 /*!
  * \class Subtask
  * \brief
@@ -25,22 +29,12 @@ public:
 	/*!
 	 *
 	 */
-	Subtask(const std::string & n = "") : name_(n) {};
+	Subtask(const std::string & n = "") : name_(n) {}
 
 	/*!
 	 *
 	 */
 	virtual ~Subtask();
-
-	/*!
-	 * Add new component to subtask.
-	 *
-	 * Component have to be created and initialized before.
-	 *
-	 * \param comp component to be added
-	 * \return reference to itself, so it's possible to chain add components
-	 */
-	Subtask & operator +=(Base::Component* comp);
 
 	/*!
 	 * Start all components in this subtask.
@@ -56,13 +50,24 @@ public:
 	 * \retval true if every component stopped without problems
 	 * \retval false if at least one component returned false in it's stop method
 	 */
-	bool stop();
+	void stop();
 
-	bool finish();
+	void initialize();
+
+	void finish();
 
 	const std::string & name() {
 		return name_;
 	}
+
+	/*!
+	 * Add executor to subtask
+	 * \param ex pointer to executor to be added
+	 */
+	Subtask & operator += (Executor * ex);
+
+
+	std::vector<std::string> listExecutors();
 
 private:
 	typedef std::vector<Base::Component*>::iterator comp_it;
@@ -70,6 +75,11 @@ private:
 	std::vector<Base::Component*> components;
 
 	std::string name_;
+
+
+	/// All executors in task
+	std::map<std::string, Executor*> executors;
+
 };
 
 } //: namespace Core

@@ -66,10 +66,13 @@ public:
 	 */
 	Task loadConfiguration(std::string filename, const std::vector<std::pair<std::string, std::string> > & overrides);
 
-	void loadExecutors(const ptree * node, Task & task);
-	void loadComponents(const ptree * node, Task & task);
+	void loadSubtasks(const ptree * node, Task & task);
+	void loadExecutors(const ptree * node, Subtask & subtask);
+	void loadComponents(const ptree * node, Executor & executor);
 	void loadEvents(const ptree * node);
 	void loadConnections(const ptree * node);
+
+
 
 	void setExecutorManager(ExecutorManager * em) {
 		executorManager = em;

@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Task>
-	<!-- List of components -->
-	<Components>
-		<Source type="CameraOpenCV" thread="Thread1" group="s1">
-		</Source>
+	<Subtasks>
+		<Subtask name="main">
+			<Executor name="Thr1" type="continuous">
+				<param name="main_component">Src1</param>
 
-		<Window type="CvWindow" thread="Thread1" group="s1">
-			<title>Preview</title>
-		</Window>
-	</Components>
+				<Component name="Src1" type="CameraOpenCV">
+				</Component>
 
-	<!-- Threads of execution -->
-	<Executors>
-		<Thread1 type="continuous">
-			<main_component>Source</main_component>
-		</Thread1>
-	</Executors>
+				<Component name="Wnd1" type="CvWindow">
+					<param name="title">Preview</param>
+				</Component>
+			</Executor>
+		</Subtask>
+	</Subtasks>
 
 	<!-- Event connections -->
 	<Events>

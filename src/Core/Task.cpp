@@ -11,12 +11,6 @@
 
 namespace Core {
 
-Task & Task::operator += (Executor * ex) {
-	executors[ex->name()] = ex;
-	return *this;
-}
-
-
 Subtask & Task::operator[](const std::string & name) {
 	if (subtasks.count(name) < 1) {
 		LOG(LWARNING) << "Subtask " << name << " absent. Creating new one...\n";
@@ -29,13 +23,7 @@ Subtask & Task::operator[](const std::string & name) {
 bool Task::start() {
 	LOG(LTRACE) << "Starting subtasks...";
 	BOOST_FOREACH(SubtaskPair sp, subtasks) {
-		if (!sp.second.start())
-			return false;
-	}
-
-	LOG(LTRACE) << "Starting executors...";
-	BOOST_FOREACH(ExecutorPair executor, executors) {
-		executor.second->restart();
+		sp.second.start();
 	}
 
 	LOG(LTRACE) << "Task started successfully";
@@ -43,21 +31,21 @@ bool Task::start() {
 }
 
 bool Task::stop() {
-	BOOST_FOREACH(ExecutorPair executor, executors) {
-		executor.second->pause();
+	LOG(LTRACE) << "Stopping subtasks...";
+	BOOST_FOREACH(SubtaskPair sp, subtasks) {
+		sp.second.stop();
 	}
 
 	return true;
 }
 
-bool Task::finish() {
-	BOOST_FOREACH(ExecutorPair executor, executors) {
-		executor.second->finish();
-		executor.second->wait(1000);
+void Task::initialize() {
+	BOOST_FOREACH(SubtaskPair sp, subtasks) {
+		sp.second.initialize();
 	}
+}
 
-	Common::Thread::msleep(500);
-
+bool Task::finish() {
 	BOOST_FOREACH(SubtaskPair sp, subtasks) {
 		sp.second.stop();
 		sp.second.finish();
@@ -73,15 +61,6 @@ std::vector<std::string> Task::listSubtasks() {
 	}
 	return ret;
 }
-
-std::vector<std::string> Task::listExecutors() {
-	std::vector<std::string> ret;
-	BOOST_FOREACH(ExecutorPair ep, executors) {
-		ret.push_back(ep.first);
-	}
-	return ret;
-}
-
 
 } //: namespace Core
 

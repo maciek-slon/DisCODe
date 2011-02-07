@@ -23,6 +23,13 @@ namespace Base {
 
 namespace Core {
 
+enum ExecutorState {
+	Loaded,
+	Paused,
+	Running,
+	Finished
+};
+
 /*!
  * \class Executor
  * \brief Executor object holds \ref Base::Component "components" and implements message queue.
@@ -35,7 +42,7 @@ namespace Core {
 class Executor : public Common::Thread, public Base::Props {
 public:
 
-	Executor(const std::string & n) : running(false), paused(true), name_(n) {
+	Executor(const std::string & n) : running(false), paused(true), name_(n), m_state(Loaded) {
 	}
 
 	virtual ~Executor() {
@@ -79,6 +86,21 @@ public:
 
 	void pause() {
 		paused = true;
+	}
+
+	/*!
+	 * Initialize all managed components.
+	 */
+	void initialize() {
+		/// \todo IMPLEMENT!
+	}
+
+	/*!
+	 * Reset execution thread, making it possible to start over again
+	 * (reinitialize components etc.).
+	 */
+	void reset() {
+		/// \todo IMPLEMENT!
 	}
 
 	/*!
@@ -148,6 +170,8 @@ protected:
 
 	///
 	boost::mutex ev_mtx;
+
+	ExecutorState m_state;
 };
 
 }//: namespace Core
