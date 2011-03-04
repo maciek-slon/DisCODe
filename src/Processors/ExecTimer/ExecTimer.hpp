@@ -10,6 +10,7 @@
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
+#include "Property.hpp"
 
 #include "Timer.hpp"
 
@@ -89,6 +90,8 @@ private:
 
 	int loops;
 	double total;
+
+	Base::Property<bool> alwaysPrintTime;
 };
 
 }//: namespace ExecTimer

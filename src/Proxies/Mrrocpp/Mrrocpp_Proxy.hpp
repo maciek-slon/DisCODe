@@ -9,7 +9,8 @@
 #ifndef MRROCPP_PROXY_HPP_
 #define MRROCPP_PROXY_HPP_
 
-#include <cv.h>
+#include <ctime>
+
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 
@@ -105,8 +106,6 @@
 namespace Proxies {
 namespace Mrrocpp {
 
-using namespace cv;
-
 /**
  * See \link Mrrocpp_Proxy \endlink.
  */
@@ -169,6 +168,7 @@ private:
 	Base::Event *rpcCall;
 	Base::DataStreamOut <xdr_iarchive <> > rpcParam;
 	Base::DataStreamInPtr <Types::Mrrocpp_Proxy::Reading> rpcResult;
+	Base::DataStreamIn<struct timespec> in_timestamp;
 	Base::EventHandler <Mrrocpp_Proxy> h_onRpcResult;
 
 	boost::shared_ptr <xdr_iarchive <> > header_iarchive;
@@ -177,6 +177,7 @@ private:
 	boost::shared_ptr <xdr_oarchive <> > oarchive;
 
 	boost::shared_ptr <Types::Mrrocpp_Proxy::Reading> readingMessage;
+	struct timespec readingTimestamp;
 	boost::shared_ptr <Types::Mrrocpp_Proxy::Reading> rpcResultMessage;
 
 	void receiveBuffersFromMrrocpp();
