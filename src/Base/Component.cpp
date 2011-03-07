@@ -257,6 +257,14 @@ std::string Component::listProperties() {
 	return ret;
 }
 
+std::vector<std::string> Component::getAllProperties() {
+	std::vector<std::string> ret;
+	BOOST_FOREACH(PropertyPair prop, properties) {
+		ret.push_back( prop.first );
+	}
+	return ret;
+}
+
 PropertyInterface * Component::getProperty(const std::string& name) {
 	if (properties.count(name) > 0) {
 		return properties[name];

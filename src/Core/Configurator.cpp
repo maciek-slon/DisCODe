@@ -181,8 +181,9 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 		//std::cout << name << " properties:\n";
 		kern->printProperties();
 
+
 		//std::cout << name << " properties defined in xml:" << std::endl;
-		BOOST_FOREACH( TreeNode nd2, tmp) {
+		/*BOOST_FOREACH( TreeNode nd2, tmp) {
 			//std::cout << nd2.first << "=[" << tmp.get(nd2.first, "") << "]" << std::endl;
 			prop = kern->getProperty(nd2.first);
 			if (prop != NULL) {
@@ -192,7 +193,24 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 					prop->retrieve(tmp.get(nd2.first, ""));
 				}
 			}
+		}*/
+
+		std::vector<std::string> props = kern->getAllProperties();
+		std::string s;
+
+		BOOST_FOREACH( std::string pr, props) {
+			prop = kern->getProperty(pr);
+			if (prop != NULL) {
+				if (prop->isPersistent()) {
+					s = tmp.get(pr, "");
+					if (s != "") prop->retrieve(s);
+					LOG(LNOTICE) << pr << "=[" << prop->store() << "] from [" << s << "]";
+				} else {
+					LOG(LNOTICE) << pr << "=[" << prop->store() << "]";
+				}
+			}
 		}
+
 
 		kern->initialize();
 
