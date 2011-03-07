@@ -29,6 +29,11 @@
 			<width>4</width>
 			<height>3</height>
 			<squareSize>0.02</squareSize>
+			
+			<fastCheck>1</fastCheck>
+			<filterQuads>0</filterQuads>
+			<adaptiveThreshold>1</adaptiveThreshold>
+			<normalizeImage>0</normalizeImage>
 		</FindChessboard>
 		<ImageSource type="Sequence" thread="ImageSourceThread" group="s1">
 			<directory>../../../chessboard_images_3_4/</directory>

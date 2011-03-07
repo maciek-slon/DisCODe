@@ -60,7 +60,7 @@ protected:
 
 	void onNewImage();
 
-	Base::DataStreamIn <cv::Mat, Base::DataStreamBuffer::Newest> in_img;
+	Base::DataStreamIn <cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex> in_img;
 	Base::EventHandler <NewestImage_Processor> h_onNewImage;
 
 	Base::DataStreamOut<cv::Mat> out_img;
