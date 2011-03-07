@@ -39,6 +39,10 @@ bool EventTimestamp_Processor::onInit()
 		LOG(LFATAL) << "clock_getres() failed. " << strerror(errno);
 	}
 
+
+	double resolution = clockResolution.tv_sec + clockResolution.tv_nsec * 1e-9;
+	LOG(LNOTICE)<< "Clock resolution (clock_getres()) = " << resolution;
+
 	return true;
 }
 
