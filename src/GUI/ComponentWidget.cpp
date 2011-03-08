@@ -12,6 +12,8 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 
 	QVBoxLayout * top_layout = new QVBoxLayout;
 
+	QString group_separator = ".";
+
 	// Properties
 	int pc = proxy->countProperties();
 
@@ -20,15 +22,42 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 		QGroupBox * group_box = new QGroupBox(QString(proxy->name().c_str()) + " properties");
 		QGridLayout * layout = new QGridLayout;
 
+		QMap<QString, QGroupBox*> boxes;
+		QMap<QString, QGridLayout*> layouts;
+
+		boxes["Ungrouped"] = group_box;
+		layouts["Ungrouped"] = layout;
+
 		for (int i = 0; i < pc; ++i) {
 			QString ptype = proxy->getPropertyType(i).c_str();
 			QString pname = proxy->getPropertyName(i).c_str();
+			QString fullname = pname;
 			QString pttip = proxy->getPropertyToolTip(i).c_str();
+			QString group = "Ungrouped";
 
 			QWidget * widget;
 			QWidget * emitter = NULL;
 
-			std::cout << pname.toStdString() << ": " << ptype.toStdString() << std::endl;
+
+			if (pname.contains(group_separator)) {
+				group = pname.left(pname.indexOf(group_separator));
+				pname.remove(0, pname.indexOf(group_separator)+1);
+			}
+
+
+			std::cout << pname.toStdString() << "(" << group.toStdString() << "): " << ptype.toStdString() << std::endl;
+
+			if (!boxes.contains(group)) {
+				boxes[group] = new QGroupBox(group);
+
+				//boxes[group]->setCheckable(true);
+				//boxes[group]->setChecked(true);
+				//connect(boxes[group], SIGNAL(toggled(bool)), boxes[group], SLOT(setVisible(bool)));
+
+				layouts[group] = new QGridLayout;
+			}
+
+			layout = layouts[group];
 
 			// boolean value rendered as CheckBox
 			if (ptype == "b") {
@@ -42,6 +71,18 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 			// integer value rendered as SpinBox
 			if (ptype == "i") {
 				QSpinBox * spin = new QSpinBox;
+
+				std::vector<std::string> vcon = proxy->getPropertyConstraints(i);
+
+				int vmin = 0, vmax = 100;
+
+				if (vcon.size() > 0)
+					vmin = boost::lexical_cast<int>(vcon[0]);
+
+				if (vcon.size() > 1)
+					vmax = boost::lexical_cast<int>(vcon[1]);
+
+				spin->setRange(vmin, vmax);
 				spin->setValue(boost::lexical_cast<int>(proxy->getPropertyValue(i)));
 
 				connect(spin, SIGNAL(valueChanged(int)), signalMapper, SLOT(map()));
@@ -85,7 +126,7 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 					slider->setMinimum(boost::lexical_cast<int>(vcon[0]));
 
 				if (vcon.size() > 1)
-					slider->setMaximum(boost::lexical_cast<int>(vcon[vcon.size()-1]));
+					slider->setMaximum(boost::lexical_cast<int>(vcon[1]));
 
 				lay->addWidget(new QLabel(QString::number(slider->minimum())));
 				lay->addWidget(slider);
@@ -123,19 +164,36 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 			if (!emitter)
 				emitter = widget;
 
-			emitter->setObjectName(pname);
+			emitter->setObjectName(fullname);
 			emitter->setToolTip(pttip);
 			emitter->setStatusTip(pttip);
 
-			layout->addWidget(new QLabel(pname), i, 0);
-			layout->addWidget(widget, i, 1);
+			int pos = layout->rowCount();
+
+			layout->addWidget(new QLabel(pname), pos, 0);
+			layout->addWidget(widget, pos, 1);
 
 			signalMapper->setMapping(emitter, emitter);
 		}
 
 		connect(signalMapper, SIGNAL(mapped(QWidget*)), this, SLOT(setProperty(QWidget*)));
 
-		group_box->setLayout(layout);
+		foreach (QString str, boxes.keys()) {
+			if (str == "Ungrouped")
+				continue;
+
+			boxes[str]->setLayout(layouts[str]);
+		}
+
+		foreach (QString str, layouts.keys()) {
+			if (str == "Ungrouped")
+				continue;
+
+			int pos = layouts["Ungrouped"]->rowCount();
+			layouts["Ungrouped"]->addWidget(boxes[str], pos, 0, 1, 2);
+		}
+
+		boxes["Ungrouped"]->setLayout(layouts["Ungrouped"]);
 		top_layout->addWidget(group_box);
 	}
 
