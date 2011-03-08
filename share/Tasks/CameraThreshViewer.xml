@@ -2,31 +2,32 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Source type="CameraUniCap" thread="Thread1" group="s1">
+		<Source type="CameraOpenCV" thread="Thread1" group="s1">
 		</Source>
-		
+
 		<Proc type="CvThreshold" thread="Thread1" group="s1">
-			<type>TRUNC</type>
+			<type>BINARY</type>
 			<maxval>192</maxval>
-			<thresh>128</thresh>	
 		</Proc>
 
 		<Window type="CvWindow" thread="Thread1" group="s1">
 			<title>Preview</title>
+			<count>2</count>
 		</Window>
 	</Components>
 
 	<!-- Threads of execution -->
 	<Executors>
-		<Thread1 type="continuous">
+		<Thread1 type="periodic">
 			<main_component>Source</main_component>
 		</Thread1>
 	</Executors>
 
 	<!-- Event connections -->
 	<Events>
+		<Event source="Source.newImage" destination="Window.onNewImage1"/>
 		<Event source="Source.newImage" destination="Proc.onNewImage"/>
-		<Event source="Proc.newImage" destination="Window.onNewImage"/>
+		<Event source="Proc.newImage" destination="Window.onNewImage0"/>
 	</Events>
 
 	<!-- Data stream assignments -->
@@ -39,9 +40,10 @@
 			<in_img type="in" group="Con"/>
 			<out_img type="out" group="Con2"/>
 		</Proc>
-		
+
 		<Window>
-			<in_img type="in" group="Con2"/>
+			<in_img0 type="in" group="Con2"/>
+			<in_img1 type="in" group="Con"/>
 		</Window>
 	</DataStreams>
 

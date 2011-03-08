@@ -28,8 +28,9 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 			QWidget * widget;
 			QWidget * emitter = NULL;
 
-			//std::cout << pname.toStdString() << ": " << ptype.toStdString() << std::endl;
+			std::cout << pname.toStdString() << ": " << ptype.toStdString() << std::endl;
 
+			// boolean value rendered as CheckBox
 			if (ptype == "b") {
 				QCheckBox * check = new QCheckBox(pname);
 				check->setChecked(boost::lexical_cast<bool>(proxy->getPropertyValue(i)));
@@ -38,6 +39,7 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 
 				widget = check;
 			} else
+			// integer value rendered as SpinBox
 			if (ptype == "i") {
 				QSpinBox * spin = new QSpinBox;
 				spin->setValue(boost::lexical_cast<int>(proxy->getPropertyValue(i)));
@@ -45,7 +47,9 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 				connect(spin, SIGNAL(valueChanged(int)), signalMapper, SLOT(map()));
 
 				widget = spin;
-			} else if (ptype == "combo") {
+			} else
+			// choice out of fixed list of possibilities rendered as ComboBox
+			if (ptype == "combo") {
 				QComboBox * combo = new QComboBox;
 
 				QStringList consts;
@@ -62,7 +66,9 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 
 				connect(combo, SIGNAL(currentIndexChanged(int)), signalMapper, SLOT (map()));
 				widget = combo;
-			} else if (ptype == "range") {
+			} else
+			// integer value rendered as Slider+SpinBox
+			if (ptype == "range") {
 				QWidget * w = new QWidget;
 				QHBoxLayout * lay = new QHBoxLayout;
 				lay->setSpacing(3);
@@ -104,7 +110,9 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 
 				emitter = slider;
 				widget = w;
-			} else {
+			} else
+			// default behavoir rendered as TextEdit
+			{
 				QLineEdit * edit = new QLineEdit(proxy->getPropertyValue(i).c_str());
 
 				connect(edit, SIGNAL(returnPressed()), signalMapper, SLOT (map()));

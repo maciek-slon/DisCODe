@@ -2,7 +2,7 @@
 <Task>
 	<Components>
 		
-		<ImageSource type="CameraUniCap" thread="Thread1" group="s1">
+		<ImageSource type="CameraOpenCV" thread="Thread1" group="s1">
 			<Address>192.168.1.2</Address>
 			<Controls>
 				<Exposure>
@@ -24,8 +24,10 @@
 		</ImageSource>
 		
 		<FindChessboard type="CvFindChessboardCorners" thread="Thread1" group="s1">
-			<width>3</width>
-			<height>4</height>
+			<chessboard>
+				<width>3</width>
+				<height>4</height>
+			</chessboard>
 			
 			<scale>1</scale>
 			<subpix>0</subpix>

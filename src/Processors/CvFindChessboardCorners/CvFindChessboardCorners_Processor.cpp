@@ -22,10 +22,10 @@ CvFindChessboardCorners_Processor::CvFindChessboardCorners_Processor(const std::
 	prop_subpix_window("subpix_window", 9, "range"),
 	prop_scale("scale", true),
 	prop_scale_factor("scale_factor", 4, "range"),
-	prop_width("width", 9),
-	prop_height("height", 6),
-	prop_square_width("square_width", 20),
-	prop_square_height("square_height", 20)
+	prop_width("chessboard.width", 9),
+	prop_height("chessboard.height", 6),
+	prop_square_width("chessboard.square_width", 20),
+	prop_square_height("chessboard.square_height", 20)
 {
 	findChessboardCornersFlags = CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE + CV_CALIB_CB_FAST_CHECK;
 
