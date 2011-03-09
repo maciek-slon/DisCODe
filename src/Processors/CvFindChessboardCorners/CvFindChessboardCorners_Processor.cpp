@@ -21,7 +21,7 @@ CvFindChessboardCorners_Processor::CvFindChessboardCorners_Processor(const std::
 	prop_subpix("subpix", true),
 	prop_subpix_window("subpix_window", 9, "range"),
 	prop_scale("scale", true),
-	prop_scale_factor("scale_factor", 4, "range"),
+	prop_scale_factor("scale_factor", 2, "range"),
 	prop_width("chessboard.width", 9),
 	prop_height("chessboard.height", 6),
 	prop_square_width("chessboard.square_width", 20),
