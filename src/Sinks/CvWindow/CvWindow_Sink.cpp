@@ -28,6 +28,8 @@ CvWindow_Sink::CvWindow_Sink(const std::string & name) : Base::Component(name),
 	registerProperty(count);
 
 	count.setToolTip("Total number of displayed windows");
+
+	firststep = true;
 }
 
 CvWindow_Sink::~CvWindow_Sink() {
@@ -45,7 +47,7 @@ bool CvWindow_Sink::onInit() {
 		handlers.push_back(hand);
 		registerHandler(std::string("onNewImage")+id, hand);
 
-		in_img.push_back(new Base::DataStreamIn<cv::Mat>);
+		in_img.push_back(new Base::DataStreamIn<cv::Mat, Base::DataStreamBuffer::Newest>);
 		registerStream(std::string("in_img")+id, in_img[i]);
 
 		in_draw.push_back(new Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest>);
@@ -77,6 +79,15 @@ bool CvWindow_Sink::onStep()
 {
 	LOG(LTRACE)<<"CvWindow_Sink::step\n";
 
+	if (firststep) {
+		firststep = false;
+		for (int i = 0; i < count; ++i) {
+			char id = '0' + i;
+			cv::namedWindow( std::string(title) + id);
+		}
+		return true;
+	}
+
 	try {
 		for (int i = 0; i < count; ++i) {
 			char id = '0' + i;
@@ -86,13 +97,13 @@ bool CvWindow_Sink::onStep()
 			} else {
 				// Refresh image.
 				imshow( std::string(title) + id, img[i] );
+				waitKey( 2 );
 			}
 		}
 
-		waitKey( 10 );
 	}
 	catch(...) {
-		LOG(LERROR) << "CvWindow::onNewImage failed\n";
+		LOG(LERROR) << "CvWindow::onStep failed\n";
 	}
 
 	return true;
@@ -106,10 +117,6 @@ bool CvWindow_Sink::onStop()
 bool CvWindow_Sink::onStart()
 {
 	return true;
-}
-
-void CvWindow_Sink::onNewImage() {
-	LOG(LTRACE)<<"CvWindow_Sink::onNewImage\n";
 }
 
 void CvWindow_Sink::onNewImageN(int n) {

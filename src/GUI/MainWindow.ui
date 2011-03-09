@@ -43,8 +43,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>624</width>
-         <height>419</height>
+         <width>460</width>
+         <height>350</height>
         </rect>
        </property>
       </widget>
@@ -84,6 +84,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionConnect"/>
+   <addaction name="actionFinish"/>
    <addaction name="separator"/>
    <addaction name="actionStart_all"/>
    <addaction name="actionStop_all"/>
@@ -246,6 +247,18 @@
    </property>
    <property name="toolTip">
     <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionFinish">
+   <property name="icon">
+    <iconset resource="gui.qrc">
+     <normaloff>:/icons/exit</normaloff>:/icons/exit</iconset>
+   </property>
+   <property name="text">
+    <string>Finish</string>
+   </property>
+   <property name="toolTip">
+    <string>Stop DisCODe execution</string>
    </property>
   </action>
  </widget>

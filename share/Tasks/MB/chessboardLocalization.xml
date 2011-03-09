@@ -2,7 +2,7 @@
 <Task>
 	<Components>
 		
-		<ImageSource type="CameraGigE" thread="Thread1" group="s1">
+		<ImageSource type="CameraOpenCV" thread="Thread1" group="s1">
 			<Address>192.168.1.2</Address>
 			<Controls>
 				<Exposure>
@@ -12,21 +12,27 @@
 			</Controls>
 			<ImageFormat>
 				<PixelFormat>Mono8</PixelFormat>
-				<!--  <ROI>
+				<ROI>
 					<Width>1280</Width>
 					<Height>960</Height>
-				</ROI> -->
+				</ROI>
 			</ImageFormat>
 			<ImageMode>
-				<BinningX>4</BinningX>
-				<BinningY>4</BinningY>
+				<BinningX>1</BinningX>
+				<BinningY>1</BinningY>
 			</ImageMode>
 		</ImageSource>
 		
 		<FindChessboard type="CvFindChessboardCorners" thread="Thread1" group="s1">
-			<width>6</width>
-			<height>9</height>
-			<findSubpix>false</findSubpix>
+			<chessboard>
+				<width>3</width>
+				<height>4</height>
+			</chessboard>
+			
+			<scale>1</scale>
+			<subpix>0</subpix>
+
+			<findSubpix>true</findSubpix>
 			<squareSize>0.02</squareSize>
 		</FindChessboard>
 		

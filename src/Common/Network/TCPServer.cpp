@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "DisCODeException.hpp"
+
 namespace Common {
 
 
@@ -15,7 +17,7 @@ int defaultCompletionHook(const char *, int size) {
 
 TCPServer::TCPServer(int port, int max_cons, int buffer_size) : m_buffer_size(buffer_size)
 {
-
+	const int yes = 1;
 
 	m_reply_buffer = NULL;
 	m_tmp_buffer = NULL;
@@ -27,6 +29,8 @@ TCPServer::TCPServer(int port, int max_cons, int buffer_size) : m_buffer_size(bu
 		std::cout << "Socket creation failed." << std::endl;
 		return;
 	}
+
+	setsockopt(m_sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
 	m_addr.sin_family = AF_INET;
 	m_addr.sin_addr.s_addr = INADDR_ANY;
@@ -171,7 +175,7 @@ void TCPServer::start()
 
 		if (select_return == -1) {
 			perror("Select failed!");
-			return;
+			throw Common::DisCODeException("Server creation failed.");
 		}
 		if (select_return == 0) {
 			//std::cout << "Select timed out." << std::endl;

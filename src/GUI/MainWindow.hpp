@@ -8,6 +8,7 @@
 #include "../Client/TaskProxy.hpp"
 #include "../Client/ExecutorProxy.hpp"
 #include "../Client/ComponentProxy.hpp"
+#include "../Client/SystemProxy.hpp"
 #include "../Client/DisCODeClient.hpp"
 
 #include "WelcomePage.hpp"
@@ -36,6 +37,7 @@ public slots:
 	void on_treeWidget_itemClicked(QTreeWidgetItem * item, int column);
 
 	void on_actionConnect_triggered(bool checked);
+	void on_actionFinish_triggered(bool checked);
 
 	void do_connect(const QString & host,const QString & port);
 	void do_disconnect();
@@ -47,6 +49,7 @@ private:
 
 	DisCODe::Client * client;
 	DisCODe::TaskProxy * task;
+	DisCODe::SystemProxy * system;
 
 	QMap<QString, QWidget*> component_props;
 

@@ -2,7 +2,7 @@
 <Task>
 	<!-- List of components -->
 	<Components>
-		<Source type="Movie" thread="Thread1" group="s1">
+		<Source type="CameraOpenCV" thread="Thread1" group="s1">
 				<filename>../../movies/zakaz_1.1280.avi</filename>
 		</Source>
 
@@ -11,7 +11,7 @@
 		</Split>
 
 		<Window type="CvWindow" thread="WndExec" group="s1">
-			<title>Preview</title>	
+			<title>Preview</title>
 			<count>3</count>
 		</Window>
 	</Components>
@@ -21,7 +21,7 @@
 		<Thread1 type="continuous">
 			<main_component>Source</main_component>
 		</Thread1>
-		
+
 		<WndExec type="periodic">
 			<main_component>Window</main_component>
 			<interval>0.03</interval>
