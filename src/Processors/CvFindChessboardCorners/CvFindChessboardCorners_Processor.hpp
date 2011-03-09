@@ -74,6 +74,10 @@ struct CvFindChessboardCornersProps: public Base::Props
 	cv::Size patternSize;
 	float squareSize;
 	bool findSubpix;
+	bool fastCheck;
+	bool filterQuads;
+	bool adaptiveThreshold;
+	bool normalizeImage;
 	void load(const ptree & pt)
 	{
 		LOG(LTRACE) << "CvFindChessboardCornersProps::load()\n";
@@ -81,6 +85,10 @@ struct CvFindChessboardCornersProps: public Base::Props
 		//patternSize.height = pt.get<int>("height");
 		squareSize = pt.get<float>("squareSize");
 		findSubpix = pt.get<bool>("findSubpix");
+		fastCheck = pt.get<bool>("fastCheck");
+		filterQuads = pt.get<bool>("filterQuads");
+		adaptiveThreshold = pt.get<bool>("adaptiveThreshold");
+		normalizeImage = pt.get<bool>("normalizeImage");
 	}
 	void save(ptree & pt)
 	{
@@ -89,6 +97,10 @@ struct CvFindChessboardCornersProps: public Base::Props
 		pt.put("height", patternSize.height);
 		pt.put("squareSize", squareSize);
 		pt.put("findSubpix", findSubpix);
+		pt.put("fastCheck", fastCheck);
+		pt.put("filterQuads", filterQuads);
+		pt.put("adaptiveThreshold", adaptiveThreshold);
+		pt.put("normalizeImage", normalizeImage);
 	}
 };
 

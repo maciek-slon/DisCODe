@@ -55,6 +55,7 @@ bool Mrrocpp_Proxy::onInit()
 	h_onNewReading.setup(this, &Mrrocpp_Proxy::onNewReading);
 	registerHandler("onNewReading", &h_onNewReading);
 	registerStream("reading", &reading);
+	registerStream("in_timestamp", &in_timestamp);
 
 	rpcCall = registerEvent("rpcCall");
 	registerStream("rpcParam", &rpcParam);
@@ -142,6 +143,8 @@ void Mrrocpp_Proxy::tryReceiveFromMrrocpp()
 				oarchive->clear_buffer();
 				if (readingMessage.get() != 0) { // there is no reading ready
 					rmh.is_rpc_call = false;
+					rmh.readingTimeNanoseconds = readingTimestamp.tv_nsec;
+					rmh.readingTimeSeconds = readingTimestamp.tv_sec;
 					readingMessage->send(oarchive);
 				}
 
@@ -161,6 +164,9 @@ void Mrrocpp_Proxy::onNewReading()
 {
 	mutex::scoped_lock lock(readingMutex);
 	readingMessage = reading.read();
+	if (!in_timestamp.empty()) {
+		readingTimestamp = in_timestamp.read();
+	}
 }
 
 void Mrrocpp_Proxy::onRpcResult()
@@ -205,6 +211,15 @@ void Mrrocpp_Proxy::sendBuffersToMrrocpp()
 	LOG(LTRACE) << "sendBuffersToMrrocpp() begin\n";
 
 	rmh.data_size = oarchive->getArchiveSize();
+	struct timespec ts;
+	if(clock_gettime(CLOCK_REALTIME, &ts) == 0){
+		rmh.sendTimeSeconds = ts.tv_sec;
+		rmh.sendTimeNanoseconds = ts.tv_nsec;
+	} else {
+		rmh.sendTimeSeconds = 0;
+		rmh.sendTimeNanoseconds = 0;
+	}
+
 
 	header_oarchive->clear_buffer();
 	*header_oarchive << rmh;

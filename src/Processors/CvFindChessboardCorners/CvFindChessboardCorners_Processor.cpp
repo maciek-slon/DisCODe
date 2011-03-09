@@ -93,6 +93,21 @@ bool CvFindChessboardCorners_Processor::onInit()
 
 	initChessboard();
 
+	findChessboardCornersFlags = 0;
+	if(props.fastCheck){
+		findChessboardCornersFlags |= CV_CALIB_CB_FAST_CHECK;
+	}
+	if(props.filterQuads){
+		findChessboardCornersFlags |= CV_CALIB_CB_FILTER_QUADS;
+	}
+	if(props.adaptiveThreshold){
+		findChessboardCornersFlags |= CV_CALIB_CB_ADAPTIVE_THRESH;
+	}
+	if(props.normalizeImage){
+		findChessboardCornersFlags |= CV_CALIB_CB_NORMALIZE_IMAGE;
+	}
+
+
 	LOG(LTRACE) << "component initialized\n";
 	return true;
 }

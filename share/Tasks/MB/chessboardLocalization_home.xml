@@ -10,6 +10,11 @@
 			<height>9</height>
 			<findSubpix>false</findSubpix>
 			<squareSize>0.028</squareSize>
+			
+			<fastCheck>1</fastCheck>
+			<filterQuads>0</filterQuads>
+			<adaptiveThreshold>1</adaptiveThreshold>
+			<normalizeImage>0</normalizeImage>
 		</FindChessboard>
 		
 		<PositionEstimator type="CvSolvePnP" thread="Thread1" group="s1">
