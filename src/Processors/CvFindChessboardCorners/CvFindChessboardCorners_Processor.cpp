@@ -22,13 +22,19 @@ CvFindChessboardCorners_Processor::CvFindChessboardCorners_Processor(const std::
 	prop_subpix_window("subpix_window", 9, "range"),
 	prop_scale("scale", true),
 	prop_scale_factor("scale_factor", 2, "range"),
+
 	prop_width("chessboard.width", 9),
 	prop_height("chessboard.height", 6),
 	prop_square_width("chessboard.square_width", 20),
-	prop_square_height("chessboard.square_height", 20)
-{
-	findChessboardCornersFlags = CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE + CV_CALIB_CB_FAST_CHECK;
+	prop_square_height("chessboard.square_height", 20),
 
+	prop_fastCheck("flags.fast_check", true),
+	prop_filterQuads("flags.filter_quads", true),
+	prop_adaptiveThreshold("flags.adaptive_treshold", true),
+	prop_normalizeImage("flags.normalize_image", true)
+{
+
+	findChessboardCornersFlags = 0;
 
 	registerProperty(prop_subpix);
 
@@ -43,12 +49,25 @@ CvFindChessboardCorners_Processor::CvFindChessboardCorners_Processor(const std::
 	registerProperty(prop_scale_factor);
 
 	registerProperty(prop_width);
-
 	registerProperty(prop_height);
-
 	registerProperty(prop_square_width);
-
 	registerProperty(prop_square_height);
+
+	prop_fastCheck.setCallback(boost::bind(&CvFindChessboardCorners_Processor::flagsCallback, this, _1, _2));
+	registerProperty(prop_fastCheck);
+
+	prop_filterQuads.setCallback(boost::bind(&CvFindChessboardCorners_Processor::flagsCallback, this, _1, _2));
+	registerProperty(prop_filterQuads);
+
+	prop_adaptiveThreshold.setCallback(boost::bind(&CvFindChessboardCorners_Processor::flagsCallback, this, _1, _2));
+	registerProperty(prop_adaptiveThreshold);
+
+	prop_normalizeImage.setCallback(boost::bind(&CvFindChessboardCorners_Processor::flagsCallback, this, _1, _2));
+	registerProperty(prop_normalizeImage);
+
+	prop_width.setCallback(boost::bind(&CvFindChessboardCorners_Processor::sizeCallback, this, _1, _2));
+	prop_height.setCallback(boost::bind(&CvFindChessboardCorners_Processor::sizeCallback, this, _1, _2));
+
 }
 
 CvFindChessboardCorners_Processor::~CvFindChessboardCorners_Processor()
@@ -93,6 +112,7 @@ bool CvFindChessboardCorners_Processor::onInit()
 
 	initChessboard();
 
+
 	LOG(LTRACE) << "component initialized\n";
 	return true;
 }
@@ -112,6 +132,36 @@ void CvFindChessboardCorners_Processor::initChessboard() {
 	}
 
 	chessboard->setModelPoints(modelPoints);
+}
+
+void CvFindChessboardCorners_Processor::sizeCallback(int old_value, int new_value) {
+	initChessboard();
+}
+
+void CvFindChessboardCorners_Processor::flagsCallback(bool old_value, bool new_value) {
+	if(prop_fastCheck){
+		findChessboardCornersFlags |= CV_CALIB_CB_FAST_CHECK;
+	} else {
+		findChessboardCornersFlags &= ~CV_CALIB_CB_FAST_CHECK;
+	}
+
+	if(prop_filterQuads){
+		findChessboardCornersFlags |= CV_CALIB_CB_FILTER_QUADS;
+	} else {
+		findChessboardCornersFlags &= ~CV_CALIB_CB_FILTER_QUADS;
+	}
+
+	if(prop_adaptiveThreshold){
+		findChessboardCornersFlags |= CV_CALIB_CB_ADAPTIVE_THRESH;
+	} else {
+		findChessboardCornersFlags &= ~CV_CALIB_CB_ADAPTIVE_THRESH;
+	}
+
+	if(prop_normalizeImage){
+		findChessboardCornersFlags |= CV_CALIB_CB_NORMALIZE_IMAGE;
+	} else {
+		findChessboardCornersFlags &= ~CV_CALIB_CB_NORMALIZE_IMAGE;
+	}
 }
 
 bool CvFindChessboardCorners_Processor::onStart()

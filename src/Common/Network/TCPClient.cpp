@@ -21,8 +21,8 @@ void *get_in_addr(struct sockaddr *sa)
 
 TCPClient::TCPClient(int buffer_size) : m_sock(-1), m_buffer_size(buffer_size), m_buf(NULL), m_size(0)
 {
-	m_buf = new char[m_buffer_size];
-	m_tmp_buf = new char[m_buffer_size];
+	m_buf = new unsigned char[m_buffer_size];
+	m_tmp_buf = new unsigned char[m_buffer_size];
 }
 
 TCPClient::~TCPClient()
@@ -119,9 +119,12 @@ int TCPClient::recv(int msec_timeout)
 				skip += expected_packet_size;
 				m_size -= expected_packet_size;
 
-				expected_packet_size = m_completion_hook(m_buf+skip, m_size);
-
 				ready = true;
+
+				if (m_size > 0)
+					expected_packet_size = m_completion_hook(m_buf+skip, m_size);
+				else
+					break;
 			}
 
 			// check, if any packet was processed
@@ -135,7 +138,7 @@ int TCPClient::recv(int msec_timeout)
 				memcpy(m_tmp_buf, m_buf+skip, m_size);
 
 				// exchange temporary buffer with client buffer
-				char * tmp = m_buf;
+				unsigned char * tmp = m_buf;
 				m_buf = m_tmp_buf;
 				m_tmp_buf = tmp;
 			}
@@ -146,7 +149,7 @@ int TCPClient::recv(int msec_timeout)
 	return recvd;
 }
 
-int TCPClient::send(const char * msg, int size)
+int TCPClient::send(const unsigned char * msg, int size)
 {
 	int total = 0;
 	// how many bytes we've sent
