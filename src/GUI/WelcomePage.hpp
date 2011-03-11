@@ -24,6 +24,8 @@ public slots:
 	void on_btnSpawnOk_clicked();
 	void on_btnSpawnCancel_clicked();
 
+	void on_btnLoadTask_linkActivated ( const QString & link );
+
 private:
     Ui::WelcomePageClass ui;
 };

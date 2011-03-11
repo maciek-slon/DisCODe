@@ -46,7 +46,7 @@ public:
 		fillBuffer(msg);
 		m_client.send(buf, msg.size()+3);
 		m_client.recv();
-		return buf;
+		return std::string((char*)buf);
 	}
 
 	void setListExecutorsHandler(list_executors_t h) {
@@ -78,19 +78,19 @@ public:
 	}
 
 protected:
-	int check(const char * msg, int size) {
-	//	std::cout << "Check...\n";
-	//	int ss = msg[0] * 256 + msg[1];
-	//	std::cout << "Computed: " << ss << ", got: " << size << std::endl;
-	//	std::cout << msg+2 << std::endl;
+	int check(const unsigned char * msg, int size) {
+		std::cout << "Check...\n";
+		int ss = msg[0] * 256 + msg[1];
+		std::cout << "Computed: " << ss << "(" << (int)msg[0] << "+" << (int)msg[1] << "), got: " << size << std::endl;
+		std::cout << msg+2 << std::endl;
 		return size > 1 ? msg[0] * 256 + msg[1] : 2;
 	}
 
-	int service(const char * msg, int size) {
-	//	std::cout << "Service...\n";
-	//	std::cout << msg+2 << std::endl;
+	int service(const unsigned char * msg, int size) {
+		std::cout << "Service... " << size << "\n";
+		std::cout << msg+2 << std::endl;
 
-		strcpy(buf, msg+2);
+		strcpy((char*)buf, (char*)msg+2);
 
 		return 0;
 	}
@@ -99,14 +99,14 @@ protected:
 		buf[0] = msg.size() / 256;
 		buf[1] = msg.size() % 256;
 
-		strcpy(buf+2, msg.c_str());
+		strcpy((char*)buf+2, msg.c_str());
 		buf[msg.size()+2] = 0;
 	}
 
 private:
 	Common::TCPClient m_client;
 
-	char buf[1024];
+	unsigned char buf[1024];
 
 
 	list_executors_t m_list_executors_handler;

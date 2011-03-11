@@ -248,16 +248,15 @@ int main(int argc, char* argv[])
 	SystemInformer system_informer(running);
 	ExecutorInformer executor_informer(em);
 
-	CommandServer server;
-
-	server.addInformer(&task_informer);
-	server.addInformer(&component_informer);
-	server.addInformer(&system_informer);
-	server.addInformer(&executor_informer);
-	server.printCommands();
-
-
 	try {
+		CommandServer server;
+
+		server.addInformer(&task_informer);
+		server.addInformer(&component_informer);
+		server.addInformer(&system_informer);
+		server.addInformer(&executor_informer);
+		server.printCommands();
+
 		server.start();
 
 		km.initializeComponentsList();

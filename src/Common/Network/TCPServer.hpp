@@ -29,15 +29,15 @@ protected:
 		/// Size of data
 		int size;
 		/// Buffer itself
-		char * buf;
+		unsigned char * buf;
 	};
 
 public:
 	/// Function descriptor of service hook
-	typedef boost::function<int (const char *, int, char *, int)> service_hook_t;
+	typedef boost::function<int (const unsigned char *, int, unsigned char *, int)> service_hook_t;
 
 	/// Function descriptor of completion hook
-	typedef boost::function<int (const char *, int)> completion_hook_t;
+	typedef boost::function<int (const unsigned char *, int)> completion_hook_t;
 
 	/*!
 	 * Constructor.
@@ -48,7 +48,7 @@ public:
 	 * \param max_cons maximum numbers of simultaneous connections allowed
 	 * \param buffer_size size of input buffers for each client
 	 */
-	TCPServer(int port = 30000, int max_cons = 10, int buffer_size = 20000);
+	TCPServer(int port = 30000, int max_cons = 10, int buffer_size = 200000);
 
 	/*!
 	 * Destructor.
@@ -136,10 +136,10 @@ private:
 	std::map<int, DataBuffer> m_buffers;
 
 	/// Buffer in which clients stores reply
-	char * m_reply_buffer;
+	unsigned char * m_reply_buffer;
 
 	/// Temporary buffer
-	char * m_tmp_buffer;
+	unsigned char * m_tmp_buffer;
 };
 
 }

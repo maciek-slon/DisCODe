@@ -11,6 +11,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 namespace Base {
 
@@ -161,6 +162,8 @@ public:
 	void printProperties();
 
 	std::string listProperties();
+
+	std::vector<std::string> getAllProperties();
 
 	/*!
 	 * Returns property with specified name if registered or NULL.

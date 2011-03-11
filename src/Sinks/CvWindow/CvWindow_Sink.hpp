@@ -136,11 +136,6 @@ protected:
 	/*!
 	 * Event handler function.
 	 */
-	void onNewImage();
-
-	/*!
-	 * Event handler function.
-	 */
 	void onNewImageN(int n);
 
 	/*!
@@ -153,7 +148,7 @@ protected:
 
 
 	/// Image to be drawn
-	std::vector< Base::DataStreamIn<Mat> *> in_img;
+	std::vector< Base::DataStreamIn<Mat, Base::DataStreamBuffer::Newest> *> in_img;
 
 	/// Additional data to draw
 	std::vector< Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest> *> in_draw;
@@ -168,6 +163,8 @@ protected:
 
 	Base::Property<std::string> title;
 	Base::Property<int> count;
+
+	bool firststep;
 
 };
 

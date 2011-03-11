@@ -3,7 +3,7 @@
 #include <boost/lexical_cast.hpp>
 #include <iostream>
 
-int service(const char * msg, int msg_size, char * reply, int reply_limit)
+int service(const unsigned char * msg, int msg_size, unsigned char * reply, int reply_limit)
 {
 	std::cout << msg << std::endl;
 	reply[0] = 'O';
