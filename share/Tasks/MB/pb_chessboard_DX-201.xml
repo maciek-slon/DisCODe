@@ -4,8 +4,10 @@
 		<ImageSource type="CameraUniCap" thread="ImageSourceThread" group="s1">
 			<dev>
 				<device>/dev/video0</device>
-				<!-- <input>S-Video</input> -->
-				<input>Composite0</input>
+				<input>S-Video</input>
+				<!-- 
+					<input>Composite0</input>
+				 -->
 			</dev>
 		</ImageSource>
 
@@ -24,15 +26,24 @@
 		</BGRToGray>
 		
 		<FindChessboard type="CvFindChessboardCorners" thread="ProcessingThread" group="s1">
-			<width>4</width>
-			<height>3</height>
-			<squareSize>0.02</squareSize>
-			<findSubpix>1</findSubpix>
+			<chessboard>
+				<width>4</width>
+				<height>3</height>
+				<square_height>0.02</square_height>
+				<square_width>0.02</square_width>
+			</chessboard>
 			
-			<fastCheck>1</fastCheck>
-			<filterQuads>0</filterQuads>
-			<adaptiveThreshold>1</adaptiveThreshold>
-			<normalizeImage>0</normalizeImage>
+			<scale>1</scale>
+			<scale_factor>2</scale_factor>
+			<subpix>1</subpix>
+			<subpix_window>7</subpix_window>
+
+			<flags>
+				<fast_check>1</fast_check>
+				<filter_quads>0</filter_quads>
+				<adaptive_treshold>1</adaptive_treshold>
+				<normalize_image>0</normalize_image>
+			</flags>
 		</FindChessboard>
 		
 		<PositionEstimator type="CvSolvePnP" thread="ProcessingThread" group="s1">
