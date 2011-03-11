@@ -148,10 +148,10 @@ protected:
 
 
 	/// Image to be drawn
-	std::vector< Base::DataStreamIn<Mat, Base::DataStreamBuffer::Newest> *> in_img;
+	std::vector< Base::DataStreamIn<Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex> *> in_img;
 
 	/// Additional data to draw
-	std::vector< Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest> *> in_draw;
+	std::vector< Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex> *> in_draw;
 
 	/// Image to be drawn.
 	std::vector< cv::Mat > img;

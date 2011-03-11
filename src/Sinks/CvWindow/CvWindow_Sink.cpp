@@ -48,10 +48,10 @@ bool CvWindow_Sink::onInit() {
 		handlers.push_back(hand);
 		registerHandler(std::string("onNewImage")+id, hand);
 
-		in_img.push_back(new Base::DataStreamIn<cv::Mat, Base::DataStreamBuffer::Newest>);
+		in_img.push_back(new Base::DataStreamIn<cv::Mat, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex>);
 		registerStream(std::string("in_img")+id, in_img[i]);
 
-		in_draw.push_back(new Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest>);
+		in_draw.push_back(new Base::DataStreamInPtr<Types::Drawable, Base::DataStreamBuffer::Newest, Base::Synchronization::Mutex>);
 		registerStream(std::string("in_draw")+id, in_draw[i]);
 
 		//cv::namedWindow(props.title + id);
