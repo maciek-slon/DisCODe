@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <iostream>
+#include <stdexcept>
 
 #include "CvWindow_Sink.hpp"
 #include "Logger.hpp"
@@ -123,7 +124,9 @@ void CvWindow_Sink::onNewImageN(int n) {
 	LOG(LTRACE) << name() << "::onNewImage(" << n << ")";
 
 	try {
-		img[n] = in_img[n]->read().clone();
+		if(!in_img[n]->empty()){
+			img[n] = in_img[n]->read().clone();
+		}
 
 		if (!in_draw[n]->empty()) {
 			to_draw[n] = in_draw[n]->read();
@@ -137,8 +140,8 @@ void CvWindow_Sink::onNewImageN(int n) {
 		// Display image.
 		onStep();
 	}
-	catch(...) {
-		LOG(LERROR) << "CvWindow::onNewImage failed\n";
+	catch(std::exception &ex) {
+		LOG(LERROR) << "CvWindow::onNewImage failed: " << ex.what() << "\n";
 	}
 }
 
