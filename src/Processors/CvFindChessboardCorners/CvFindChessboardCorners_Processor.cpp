@@ -25,8 +25,8 @@ CvFindChessboardCorners_Processor::CvFindChessboardCorners_Processor(const std::
 
 	prop_width("chessboard.width", 9),
 	prop_height("chessboard.height", 6),
-	prop_square_width("chessboard.square_width", 20),
-	prop_square_height("chessboard.square_height", 20),
+	prop_square_width("chessboard.square_width", 1),
+	prop_square_height("chessboard.square_height", 1),
 
 	prop_fastCheck("flags.fast_check", true),
 	prop_filterQuads("flags.filter_quads", true),
@@ -104,14 +104,14 @@ bool CvFindChessboardCorners_Processor::onInit()
 void CvFindChessboardCorners_Processor::initChessboard() {
 	LOG(LINFO) << "CvFindChessboardCorners_Processor: width: " << prop_width << "\n";
 	LOG(LINFO) << "CvFindChessboardCorners_Processor: height: " << prop_height << "\n";
-	LOG(LINFO) << "CvFindChessboardCorners_Processor: squareSize: " << prop_square_width << "x" << prop_square_height << "mm\n";
+	LOG(LINFO) << "CvFindChessboardCorners_Processor: squareSize: " << prop_square_width << "x" << prop_square_height << "m\n";
 
 	chessboard = boost::shared_ptr <Chessboard>(new Chessboard(cv::Size(prop_height, prop_width), prop_square_width));
 
 	vector <Point3f> modelPoints;
 	for (int i = 0; i < prop_height; ++i) {
 		for (int j = 0; j < prop_width; ++j) {
-			modelPoints.push_back(Point3f(-j * prop_square_height * 0.001, -i * prop_square_width * 0.001, 0));
+			modelPoints.push_back(Point3f(-j * prop_square_height, -i * prop_square_width, 0));
 		}
 	}
 
