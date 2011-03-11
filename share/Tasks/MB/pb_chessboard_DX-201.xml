@@ -4,19 +4,19 @@
 		<ImageSource type="CameraUniCap" thread="ImageSourceThread" group="s1">
 			<dev>
 				<device>/dev/video0</device>
-				<input>S-Video</input>
-				<!-- 
+				<!-- <input>S-Video</input>  -->
+				
 					<input>Composite0</input>
-				 -->
+				
 			</dev>
 		</ImageSource>
 
 		<NewestImage type="NewestImage" thread="ProcessingThread" group="s1">
 		</NewestImage>
 		
-		<ExecTimer type="ExecTimer" thread="ProcessingThread" group="s1">
+		<!-- <ExecTimer type="ExecTimer" thread="ProcessingThread" group="s1">
 			<alwaysPrintTime>1</alwaysPrintTime>
-		</ExecTimer>
+		</ExecTimer>  -->
 
 		<EventTimestamp type="EventTimestamp" thread="ProcessingThread" group="s1">
 		</EventTimestamp>
@@ -95,14 +95,24 @@
 	<Events>
 		<Event source="ImageSource.newImage" destination="NewestImage.onNewImage"/>
 		<Event source="NewestImage.newImage" destination="EventTimestamp.onEvent"/>
+		
+		<!-- 
 		<Event source="EventTimestamp.event" destination="ExecTimer.onStartExec"/>
 		<Event source="ExecTimer.started" destination="BGRToGray.onNewImage"/>
+		 -->
+		 
+		<Event source="EventTimestamp.event" destination="BGRToGray.onNewImage"/>
+		 
 		<Event source="BGRToGray.newImage" destination="FindChessboard.onNewImage"/>
 		<Event source="FindChessboard.chessboardFound" destination="PositionEstimator.onNewObject3D"/>
 		<Event source="PositionEstimator.objectLocated" destination="VisualServoPB.onObjectLocated"/>
 		<Event source="FindChessboard.chessboardNotFound" destination="VisualServoPB.onObjectNotFound"/>
-		<Event source="VisualServoPB.readingReady" destination="ExecTimer.onStopExec"/>
-		<Event source="ExecTimer.stopped" destination="Mrrocpp.onNewReading"/>
+		
+		<!-- <Event source="VisualServoPB.readingReady" destination="ExecTimer.onStopExec"/>
+		<Event source="ExecTimer.stopped" destination="Mrrocpp.onNewReading"/> -->
+		
+		<Event source="VisualServoPB.readingReady" destination="Mrrocpp.onNewReading"/>
+		
 		<Event source="ImageSource.newImage" destination="Window.onNewImage"/>
 	</Events>
 
