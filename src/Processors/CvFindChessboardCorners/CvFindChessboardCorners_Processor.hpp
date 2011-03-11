@@ -144,6 +144,8 @@ protected:
 	 * \return true on success
 	 */
 	virtual bool onStep();
+
+
 private:
 	void onNewImage();
 
@@ -181,6 +183,15 @@ private:
 	Base::Property<int> prop_height;
 	Base::Property<float> prop_square_width;
 	Base::Property<float> prop_square_height;
+
+	Base::Property<bool> prop_fastCheck;
+	Base::Property<bool> prop_filterQuads;
+	Base::Property<bool> prop_adaptiveThreshold;
+	Base::Property<bool> prop_normalizeImage;
+
+
+	void sizeCallback(int old_value, int new_value);
+	void flagsCallback(bool old_value, bool new_value);
 };
 
 } // namespace CvFindChessboardCorners {

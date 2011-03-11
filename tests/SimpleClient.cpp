@@ -3,7 +3,7 @@
 #include <cstring>
 #include <iostream>
 
-int check(const char * msg, int size) {
+int check(const unsigned char * msg, int size) {
 //	std::cout << "Check...\n";
 //	int ss = msg[0] * 256 + msg[1];
 //	std::cout << "Computed: " << ss << ", got: " << size << std::endl;
@@ -11,7 +11,7 @@ int check(const char * msg, int size) {
 	return size > 1 ? msg[0] * 256 + msg[1] : 2;
 }
 
-int service(const char * msg, int size) {
+int service(const unsigned char * msg, int size) {
 //	std::cout << "Service...\n";
 	std::cout << msg+2 << std::endl;
 	return 0;
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	client.setCompletionHook(check);
 	client.connect("localhost", "30000");
 
-	char buf[256];
+	unsigned char buf[256];
 	std::string msg;
 
 	if (argc < 2)
@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 	buf[0] = msg.size() / 256;
 	buf[1] = msg.size() % 256;
 
-	strcpy(buf+2, msg.c_str());
+	strcpy((char*)buf+2, msg.c_str());
 	buf[msg.size()+2] = 0;
 
 	client.send(buf, msg.size()+3);

@@ -11,7 +11,7 @@
 namespace Common {
 
 
-int defaultCompletionHook(const char *, int size) {
+int defaultCompletionHook(const unsigned char *, int size) {
 	return size > 0 ? size : 1;
 }
 
@@ -53,8 +53,8 @@ TCPServer::TCPServer(int port, int max_cons, int buffer_size) : m_buffer_size(bu
 	FD_SET(m_sock, &m_socks);
 	m_maxfd = m_sock;
 
-	m_reply_buffer = new char[m_buffer_size];
-	m_tmp_buffer = new char[m_buffer_size];
+	m_reply_buffer = new unsigned char[m_buffer_size];
+	m_tmp_buffer = new unsigned char[m_buffer_size];
 
 	m_completion_hook = defaultCompletionHook;
 }
@@ -126,12 +126,12 @@ void TCPServer::handleClient(int i) {
 
 		// handle all completed packets from buffer
 		while (expected_packet_size <= buffer.size) {
-
+			std::cout << "Expected packet size: " << expected_packet_size << std::endl;
 			if ( (reply_size = m_service_hook(buffer.buf+skip, expected_packet_size, m_reply_buffer, m_buffer_size)) > 0) {
-//				std::cout << "Got reply in TCPServer. Sending...\n";
-//				int ss = m_reply_buffer[0] * 256 + m_reply_buffer[1];
-//				std::cout << ss << std::endl;
-//				std::cout << m_reply_buffer+2 << std::endl;
+				std::cout << "Got reply in TCPServer. Sending...\n";
+				int ss = m_reply_buffer[0] * 256 + m_reply_buffer[1];
+				std::cout << "Reply size: " << reply_size << "=" << ss << std::endl;
+				std::cout << m_reply_buffer+2 << std::endl;
 				send(i, m_reply_buffer, reply_size, MSG_NOSIGNAL);
 			}
 			skip += expected_packet_size;
@@ -151,7 +151,7 @@ void TCPServer::handleClient(int i) {
 			memcpy(m_tmp_buffer, buffer.buf+skip, buffer.size);
 
 			// exchange temporary buffer with client buffer
-			char * tmp = buffer.buf;
+			unsigned char * tmp = buffer.buf;
 			buffer.buf = m_tmp_buffer;
 			m_tmp_buffer = tmp;
 		}
@@ -241,7 +241,7 @@ void *TCPServer::get_in_addr(struct sockaddr *sa)
 
 
 void TCPServer::prepareNewClient(int client_sock) {
-	char * buf = new char[m_buffer_size];
+	unsigned char * buf = new unsigned char[m_buffer_size];
 	DataBuffer buffer;
 	buffer.size = 0;
 	buffer.buf = buf;

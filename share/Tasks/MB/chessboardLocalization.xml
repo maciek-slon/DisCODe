@@ -2,7 +2,10 @@
 <Task>
 	<Components>
 		
-		<ImageSource type="CameraOpenCV" thread="Thread1" group="s1">
+		<ImageSource type="CameraUniCap" thread="Thread1" group="s1">
+			<dev>
+				<device>/dev/video1</device>		
+			</dev>
 			<Address>192.168.1.2</Address>
 			<Controls>
 				<Exposure>
@@ -23,9 +26,13 @@
 			</ImageMode>
 		</ImageSource>
 		
+		<Col1 type="CvColorConv" thread="Thread1" group="s1">
+			<type>BGR2GRAY</type>	
+		</Col1>
+		
 		<FindChessboard type="CvFindChessboardCorners" thread="Thread1" group="s1">
 			<chessboard>
-				<width>3</width>
+				<width>6</width>
 				<height>4</height>
 			</chessboard>
 			
@@ -73,15 +80,21 @@
 	</Executors>
 
 	<Events>
-		<Event source="ImageSource.newImage" destination="FindChessboard.onNewImage"/>
+		<Event source="ImageSource.newImage" destination="Col1.onNewImage"/>
+		<Event source="Col1.newImage" destination="FindChessboard.onNewImage"/>
 		<Event source="FindChessboard.chessboardFound" destination="PositionEstimator.onNewObject3D"/>
 		<Event source="ImageSource.newImage" destination="Window.onNewImage"/>
 	</Events>
 
 	<DataStreams>
 		<ImageSource>
-			<out_img type="out" group="GrayImage"/>
+			<out_img type="out" group="InputImage"/>
 		</ImageSource>
+		
+		<Col1>
+			<in_img type="in" group="InputImage"/>
+			<out_img type="out" group="GrayImage"/>	
+		</Col1>
 		
 		<FindChessboard>
 			<in_img type="in" group="GrayImage"/>
@@ -94,7 +107,7 @@
 		
 		<Window>
 			<in_draw type="in" group="LocatedChessboard"/>
-			<in_img type="in" group="GrayImage"/>
+			<in_img type="in" group="InputImage"/>
 		</Window>
 	</DataStreams>
 </Task>
