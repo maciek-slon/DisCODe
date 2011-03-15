@@ -106,7 +106,7 @@ void CvFindChessboardCorners_Processor::initChessboard() {
 	LOG(LINFO) << "CvFindChessboardCorners_Processor: height: " << prop_height << "\n";
 	LOG(LINFO) << "CvFindChessboardCorners_Processor: squareSize: " << prop_square_width << "x" << prop_square_height << "m\n";
 
-	chessboard = boost::shared_ptr <Chessboard>(new Chessboard(cv::Size(prop_height, prop_width), prop_square_width));
+	chessboard = boost::shared_ptr <Chessboard>(new Chessboard(cv::Size(prop_width, prop_height)));
 
 	vector <Point3f> modelPoints;
 	for (int i = 0; i < prop_height; ++i) {
@@ -173,13 +173,17 @@ void CvFindChessboardCorners_Processor::onNewImage()
 
 		bool found;
 
+
+		cv::Size chessboardSize(prop_width, prop_height);
+
 		if (prop_scale) {
-			found = findChessboardCorners(sub_img, cv::Size(prop_height, prop_width), corners, findChessboardCornersFlags);
+			found = findChessboardCorners(sub_img, chessboardSize, corners, findChessboardCornersFlags);
 			for (size_t i = 0; i < corners.size(); ++i) {
-				corners[i] *= prop_scale_factor;
+				corners[i].x *= prop_scale_factor;
+				corners[i].y *= prop_scale_factor;
 			}
 		} else {
-			found = findChessboardCorners(image, cv::Size(prop_height, prop_width), corners, findChessboardCornersFlags);
+			found = findChessboardCorners(image, chessboardSize, corners, findChessboardCornersFlags);
 		}
 
 		LOG(LINFO) << "findChessboardCorners() execution time: " << timer.elapsed() << " s\n";

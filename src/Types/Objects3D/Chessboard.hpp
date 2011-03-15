@@ -19,14 +19,13 @@ namespace Objects3D {
 class Chessboard : public Object3D
 {
 public:
-	Chessboard(cv::Size patternSize, float squareSize) :
-		patternSize(patternSize), squareSize(squareSize)
+	Chessboard(cv::Size patternSize) :
+		patternSize(patternSize)
 	{
 	}
 	Chessboard(const Chessboard& o) :
 		Object3D(o),
-		patternSize(o.patternSize),
-		squareSize(o.squareSize)
+		patternSize(o.patternSize)
 	{
 	}
 
@@ -46,7 +45,6 @@ public:
 	}
 private:
 	const cv::Size patternSize;
-	const float squareSize;
 };
 
 }

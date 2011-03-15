@@ -40,7 +40,7 @@
 
 			<flags>
 				<fast_check>1</fast_check>
-				<filter_quads>0</filter_quads>
+				<filter_quads>1</filter_quads>
 				<adaptive_treshold>1</adaptive_treshold>
 				<normalize_image>0</normalize_image>
 			</flags>
