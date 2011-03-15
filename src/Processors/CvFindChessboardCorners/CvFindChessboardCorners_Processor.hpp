@@ -13,6 +13,7 @@
 #include "Component_Aux.hpp"
 #include "Panel_Empty.hpp"
 #include "Objects3D/Chessboard.hpp"
+#include "ImagePosition.hpp"
 #include "Drawable.hpp"
 #include "Timer.hpp"
 
@@ -117,6 +118,7 @@ private:
 	Base::DataStreamIn <cv::Mat> in_img;
 	/** Chessboard stream. */
 	Base::DataStreamOut <Types::Objects3D::Chessboard> out_chessboard;
+	Base::DataStreamOut <Types::ImagePosition> out_imagePosition;
 	/** Raised when chessboard has been located on the image. */
 	Base::Event *chessboardFound;
 	/** Raised when chessboard has not been located on the image. */

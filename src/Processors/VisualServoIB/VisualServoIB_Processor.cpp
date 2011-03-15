@@ -70,22 +70,29 @@ bool VisualServoIB_Processor::onStart()
 
 void VisualServoIB_Processor::onObjectLocated()
 {
-	LOG(LFATAL) << "VisualServoIB_Processor::onObjectLocated()\n";
-	IBReading ibr;
-	ibr.objectVisible = true;
-	ibr.imagePosition = in_position.read();
+	try{
+		LOG(LTRACE) << "VisualServoIB_Processor::onObjectLocated()\n";
+		IBReading ibr;
+		ibr.objectVisible = true;
+		ibr.imagePosition = in_position.read();
 
-	out_reading.write(ibr);
-	readingReady->raise();
+		LOG(LDEBUG)<<"ibr.imagePosition = "<<ibr.imagePosition;
+
+
+		out_reading.write(ibr);
+		readingReady->raise();
+	}catch(exception& ex){
+		LOG(LERROR) << "VisualServoIB_Processor::onObjectLocated(): " << ex.what();
+	}
 }
 
 void VisualServoIB_Processor::onObjectNotFound()
 {
-	LOG(LFATAL) << "VisualServoIB_Processor::onObjectNotFound()\n";
+	LOG(LTRACE) << "VisualServoIB_Processor::onObjectNotFound()\n";
 	IBReading ibr;
 	ibr.objectVisible = false;
 	for (int i = 0; i < ImagePosition::elementsSize; ++i) {
-			ibr.imagePosition.elements[i]= 0;
+		ibr.imagePosition.elements[i]= 0;
 	}
 	out_reading.write(ibr);
 

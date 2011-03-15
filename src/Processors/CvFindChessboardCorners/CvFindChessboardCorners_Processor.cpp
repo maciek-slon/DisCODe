@@ -91,6 +91,7 @@ bool CvFindChessboardCorners_Processor::onInit()
 
 	registerStream("in_img", &in_img);
 	registerStream("out_chessboard", &out_chessboard);
+	registerStream("out_imagePosition", &out_imagePosition);
 
 	chessboardFound = registerEvent("chessboardFound");
 	chessboardNotFound = registerEvent("chessboardNotFound");
@@ -186,7 +187,7 @@ void CvFindChessboardCorners_Processor::onNewImage()
 			found = findChessboardCorners(image, chessboardSize, corners, findChessboardCornersFlags);
 		}
 
-		LOG(LINFO) << "findChessboardCorners() execution time: " << timer.elapsed() << " s\n";
+		LOG(LTRACE) << "findChessboardCorners() execution time: " << timer.elapsed() << " s\n";
 
 		if (found) {
 			LOG(LTRACE) << "chessboard found\n";
@@ -197,6 +198,15 @@ void CvFindChessboardCorners_Processor::onNewImage()
 
 			chessboard->setImagePoints(corners);
 			out_chessboard.write(*chessboard);
+
+
+			Types::ImagePosition imagePosition;
+			double maxPixels = std::max(image.size().width, image.size().height);
+			imagePosition.elements[0] = (corners[0].x - image.size().width / 2) / maxPixels;
+			imagePosition.elements[1] = (corners[1].y - image.size().height / 2) / maxPixels;
+			imagePosition.elements[2] = 0;
+			imagePosition.elements[3] = 0;
+			out_imagePosition.write(imagePosition);
 
 			chessboardFound->raise();
 		} else {

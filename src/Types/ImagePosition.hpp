@@ -9,6 +9,7 @@
 #define IMAGEPOSITION_HPP_
 
 #include <boost/serialization/serialization.hpp>
+#include <iostream>
 
 namespace Types {
 
@@ -26,7 +27,23 @@ private:
 	{
 		ar & elements;
 	}
+
+	friend std::ostream& operator<<(std::ostream& os, const ImagePosition& ip);
 };
+
+std::ostream& operator<<(std::ostream& os, const ImagePosition& ip)
+{
+	os<<"[";
+	for(int i=0; i<ImagePosition::elementsSize; ++i){
+		os<<ip.elements[i];
+		if(i < ImagePosition::elementsSize-1){
+			os<<"; ";
+		}
+	}
+	os<<"]";
+
+	return os;
+}
 
 } // namespace Types
 
