@@ -203,9 +203,9 @@ void CvFindChessboardCorners_Processor::onNewImage()
 			Types::ImagePosition imagePosition;
 			double maxPixels = std::max(image.size().width, image.size().height);
 			imagePosition.elements[0] = (corners[0].x - image.size().width / 2) / maxPixels;
-			imagePosition.elements[1] = (corners[1].y - image.size().height / 2) / maxPixels;
+			imagePosition.elements[1] = (corners[0].y - image.size().height / 2) / maxPixels;
 			imagePosition.elements[2] = 0;
-			imagePosition.elements[3] = 0;
+			imagePosition.elements[3] = - atan2(corners[1].y - corners[0].y, corners[1].x - corners[0].x);
 			out_imagePosition.write(imagePosition);
 
 			chessboardFound->raise();
