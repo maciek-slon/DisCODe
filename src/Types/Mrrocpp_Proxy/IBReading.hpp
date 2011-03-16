@@ -43,7 +43,6 @@ public:
 	Types::ImagePosition imagePosition;
 
 	virtual void send(boost::shared_ptr<xdr_oarchive<> > & ar){
-		LOG(LNOTICE) << "IBReading::send(): hehehehe\n";
 		*ar<<*this;
 	}
 private:
