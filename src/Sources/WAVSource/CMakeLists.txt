@@ -26,4 +26,8 @@ FILE(GLOB files *.cpp)
 
 INSTALL_SOURCE(srcWAVSource)
 
+ELSE(SNDFile_FOUND)
+
+MESSAGE(STATUS "SndFile library not found. WAVSource excluded from build")
+
 ENDIF(SNDFile_FOUND)
