@@ -6,7 +6,7 @@
 			<filename>/home/discode/public_html/datasets/movies_sign/Sign_1_HD.avi</filename>
 		</Mov1>
 
-		<Wnd1 type="CvWindow" thread="Exec1" group="s1">
+		<Wnd1 type="CvWindow" thread="Exec3" group="s1">
 			<title>Preview</title>
 		</Wnd1>
 	</Components>
@@ -16,6 +16,11 @@
 		<Exec1 type="continuous">
 			<main_component>Mov1</main_component>
 		</Exec1>
+		
+		<Exec3 type="periodic">
+			<main_component>Wnd1</main_component>
+			<interval>0.2</interval>
+		</Exec3>
 	</Executors>
 
 	<!-- Event connections -->

@@ -13,6 +13,7 @@
 #include "Component.hpp"
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
+#include "Property.hpp"
 
 #include <cv.h>
 #include <highgui.h>
@@ -113,6 +114,15 @@ protected:
 	bool trig;
 
 	Props props;
+
+
+	Base::Property<int> m_device;
+	Base::Property<int> m_width;
+	Base::Property<int> m_height;
+
+	void onDeviceCahnged(int old_device, int new_device);
+
+	bool valid;
 };
 
 }//: namespace CameraOpenCV

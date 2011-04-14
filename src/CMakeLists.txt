@@ -7,8 +7,8 @@ include(CheckCXXCompilerFlag)
 # Define place for all created executables and libraries
 # Disabled. All binaries are created in their folders.
 # Use make install to put everything in proper place
-SET(LIBRARY_OUTPUT_PATH    ${CMAKE_BINARY_DIR}/lib)
-SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+#SET(LIBRARY_OUTPUT_PATH    ${CMAKE_BINARY_DIR}/lib)
+#SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
