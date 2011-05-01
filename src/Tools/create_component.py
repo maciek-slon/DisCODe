@@ -65,7 +65,7 @@ fullpath = os.path.abspath(sys.argv[1])
 dcl_name = os.path.basename(fullpath)
 cmp_name = sys.argv[2]
 
-dir = fullpath+'/'+cmp_name
+dir = fullpath+'/src/Components/'+cmp_name
 if os.path.exists(dir):
     sys.exit("Folder already exists! Choose different name of component.")
 else:
@@ -81,13 +81,13 @@ dic = {
 'EXAMPLE' : cmp_name.upper()
 }
 
-configure_file(DISCODE_PATH+'/share/DisCODe/Templates/Component/Component.hpp', dir+'/'+cmp_name+'.hpp', dic)
-configure_file(DISCODE_PATH+'/share/DisCODe/Templates/Component/Component.cpp', dir+'/'+cmp_name+'.cpp', dic)
-configure_file(DISCODE_PATH+'/share/DisCODe/Templates/Component/CMakeLists.txt', dir+'/CMakeLists.txt', dic)
+configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.hpp', dir+'/'+cmp_name+'.hpp', dic)
+configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.cpp', dir+'/'+cmp_name+'.cpp', dic)
+configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/CMakeLists.txt', dir+'/CMakeLists.txt', dic)
 
 #===============================================================================
 # Adding new component to DCL CMakeLists file
 #===============================================================================
-cmakefile = open(fullpath+'/CMakeLists.txt', "a")
+cmakefile = open(fullpath+'/src/Components/CMakeLists.txt', "a")
 cmakefile.write("\nADD_COMPONENT("+cmp_name+")\n")
 cmakefile.close()

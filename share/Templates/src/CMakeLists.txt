@@ -1,0 +1,3 @@
+# TEMPLATE_ARG_DCL_NAME components
+ADD_SUBDIRECTORY(Components)
+

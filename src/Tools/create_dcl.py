@@ -100,15 +100,32 @@ cmakelists_dic = {
 
 configure_file(DISCODE_PATH+'/share/DisCODe/Templates/CMakeLists.txt', fullpath+'/CMakeLists.txt', cmakelists_dic)
 
-
-
-print dcl_name , "DCL created."
-print "Please edit README file and provide all necessary information."
-print "You can create new components by executing create_component command."
-
 #===============================================================================
-# Roll through existing directories and try to convert and add found components
+# Preparing 'src' directory. If it already exists, then all components
+# inside are converted and inserted to CMakeLists.txt
 #===============================================================================
+
+# create src directory if it doesn't exist
+srcpath = os.path.join(fullpath, "src")
+if not os.path.exists(srcpath):
+    os.makedir(srcpath)
+
+# create CMakeLists.txt in src directory
+srccmakepath = os.path.join(srcpath, "CMakeLists.txt")
+if not os.path.exists(srccmakepath):
+    configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/CMakeLists.txt', srccmakepath, cmakelists_dic)
+
+# create Components directory if it doesn't exist
+srccomponentspath = os.path.join(srcpath, "Components")
+if not os.path.exists(srccomponentspath):
+    os.makedir(srccomponentspath)
+
+# create CMakeLists.txt in Components directory
+srccomponentscmakepath = os.path.join(srccomponentspath, "CMakeLists.txt")
+if not os.path.exists(srccomponentscmakepath):
+    configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/CMakeLists.txt', srccomponentscmakepath, cmakelists_dic)
+
+# prepare dictionary for components conversion
 cmakelists_dic = {
 'INSTALL_PROCESSOR' : 'INSTALL_COMPONENT',
 'INSTALL_SOURCE' : 'INSTALL_COMPONENT',
@@ -116,10 +133,11 @@ cmakelists_dic = {
 'INSTALL_PROXY' : 'INSTALL_COMPONENT'
 }
 
-cmakefile = open(fullpath+'/CMakeLists.txt', "a")
+cmakefile = open(srccomponentscmakepath, "a")
 
-for f in os.listdir(fullpath):
-    newpath = os.path.join(fullpath, f)
+# iterate through all subdirectories in Components folder
+for f in os.listdir(srccomponentspath):
+    newpath = os.path.join(srccomponentspath, f)
     if os.path.isdir(newpath):
         cmakepath = os.path.join(newpath, "CMakeLists.txt")
         if os.path.exists(cmakepath):
@@ -128,3 +146,12 @@ for f in os.listdir(fullpath):
             cmakefile.write("\nADD_COMPONENT("+f+")\n")
             
 cmakefile.close()
+
+
+
+#===============================================================================
+# Print message and finish
+#===============================================================================
+print dcl_name , "DCL created."
+print "Please edit README file and provide all necessary information."
+print "You can create new components by executing create_component command."
