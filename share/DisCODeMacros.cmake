@@ -39,7 +39,7 @@ MACRO(DISCODE_FIND_DCL DCL_NAME)
 
         IF (NOT DEFINED DISCODE_DCL_DIR)
             MESSAGE(STATUS "Looking for DISCODE_DCL_DIR...")
-            SET(DISCODE_DCL_DIR $ENV{DISCODE_DCL_DIR})
+            SET(DISCODE_DCL_DIR $ENV{DISCODE_DCL_DIR} CACHE INTERNAL "DisCODe DCL directory")
         ENDIF (NOT DEFINED DISCODE_DCL_DIR)
         
         # if DISCODE_DCL_DIR is not set
@@ -64,7 +64,14 @@ MACRO(DISCODE_FIND_DCL DCL_NAME)
     
     # second check, if found then add apropriate include dirs
     IF( DISCODE_${DCL_NAME}_FOUND )
-        INCLUDE_DIRECTORIES(${DISCODE_DCL_DIR}/${DCL_NAME}/dist/include)
+        # check, if config file exists
+        IF (EXISTS ${DISCODE_DCL_DIR}/${DCL_NAME}/dist/${DCL_NAME}Config.cmake)
+            # include it if it exists
+            INCLUDE(${DISCODE_DCL_DIR}/${DCL_NAME}/dist/${DCL_NAME}Config.cmake)
+        ELSE (EXISTS ${DISCODE_DCL_DIR}/${DCL_NAME}/dist/${DCL_NAME}Config.cmake)
+            # print error message and stop compilation
+            MESSAGE( FATAL_ERROR "${DCL_NAME} DCL found, but ${DCL_NAME}Config.cmake not found" )
+        ENDIF (EXISTS ${DISCODE_DCL_DIR}/${DCL_NAME}/dist/${DCL_NAME}Config.cmake)
     ELSE( DISCODE_${DCL_NAME}_FOUND )
         MESSAGE(FATAL_ERROR "Couldn't find ${DCL_NAME} DCL!")
     ENDIF( DISCODE_${DCL_NAME}_FOUND )
