@@ -22,7 +22,7 @@ endif(WIN32)
 SET(Boost_DEBUG FALSE)
 
 # Find all required packages
-FIND_PACKAGE( Boost REQUIRED thread filesystem system regex program_options)
+FIND_PACKAGE( Boost 1.41.0 REQUIRED thread filesystem system regex program_options)
 
 # Make makefiles more verbose
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
@@ -37,14 +37,17 @@ SET(DisCODe_LIBRARIES
 )
 
 # Specify include directories for the build
-include_directories( . Base Core Common Types ${Boost_INCLUDE_DIR})
+include_directories( . Base Core Common Types)
+include_directories( SYSTEM ${Boost_INCLUDE_DIR})
 
 # Specify directories in which the linker will look for libraries
 LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
 add_definitions(-Wall)
+add_definitions(-Wextra)
 add_definitions(-Werror=return-type)
+add_definitions(-pedantic)
 
 # Checking if compiler supports C++0x standard
 CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)
