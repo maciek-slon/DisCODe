@@ -22,6 +22,10 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/algorithm/string.hpp>
+
+#include <cstdlib>
+
 
 namespace Core {
 
@@ -37,12 +41,37 @@ Configurator::~Configurator()
 
 }
 
-Task Configurator::loadConfiguration(std::string filename_, const std::vector<std::pair<std::string, std::string> > & overrides)
+void Configurator::loadConfiguration(const ptree * config) {
+	// get enviroment variable containing DCL directory
+	char * env_dcldir_tmp = std::getenv("DISCODE_DCL_DIR");
+	std::string env_dcldir;
+	if (env_dcldir_tmp)
+		env_dcldir = env_dcldir_tmp;
+
+	LOG(LINFO) << "ENV[DISCODE_DCL_DIR]='" << env_dcldir << "'";
+	boost::split(dcl_locations, env_dcldir, boost::is_any_of(":"));
+}
+
+Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<std::string, std::string> > & overrides)
 {
-	// Set filename pointer to given one.
-	configuration_filename = filename_;
+
 
 	ptree * tmp_node;
+
+	std::vector<std::string> task_parts;
+	boost::split(task_parts, filename_, boost::is_any_of(":"));
+	if (task_parts.size() == 2) {
+		// retrieve task filename from dcl
+		std::string dcldir = Utils::findSubdir(task_parts[0], dcl_locations, true);
+		if (dcldir != "") {
+			configuration_filename = dcldir + "/tasks/" + task_parts[1] + ".xml";
+		} else {
+			throw Common::DisCODeException(std::string("Configuration: DCL '") + task_parts[0] + "' doesn't exist.\n");
+		}
+	} else {
+		// Set filename pointer to given one.
+		configuration_filename = filename_;
+	}
 
 	// Check whether config file exists.
 	if (!filesystem::exists(configuration_filename)) {
