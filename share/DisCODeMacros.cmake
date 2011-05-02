@@ -37,33 +37,34 @@ MACRO(DISCODE_FIND_DCL DCL_NAME)
     
     ELSE( DISCODE_${DCL_NAME}_FOUND )
 
-        IF (not DISCODE_DCL_DIR)
+        IF (NOT DEFINED DISCODE_DCL_DIR)
             MESSAGE(STATUS "Looking for DISCODE_DCL_DIR...")
             SET(DISCODE_DCL_DIR $ENV{DISCODE_DCL_DIR})
-        ENDIF (not DISCODE_DCL_DIR)
+        ENDIF (NOT DEFINED DISCODE_DCL_DIR)
         
         # if DISCODE_DCL_DIR is not set
-        IF( ${DISCODE_DCL_DIR} == "" )
-            UNSET( DISCODE_DCL_DIR)
+        IF( DISCODE_DCL_DIR STREQUAL "" OR NOT DEFINED DISCODE_DCL_DIR)
+            UNSET( DISCODE_DCL_DIR )
             MESSAGE(FATAL_ERROR "DISCODE_DCL_DIR not set!")
-        ELSE( DISCODE_DCL_DIR == "" )
-            MESSAGE(STATUS "DISCODE_DCL_DIR=${DISCODE_DCL_DIR}")
+        ELSE( DISCODE_DCL_DIR STREQUAL "" OR NOT DEFINED DISCODE_DCL_DIR)
+            MESSAGE(STATUS "DISCODE_DCL_DIR=[${DISCODE_DCL_DIR}]")
             MESSAGE(STATUS "Looking for ${DCL_NAME} DCL...")
     
             # check, if there is proper directory in DCL folder
             IF(EXISTS ${DISCODE_DCL_DIR}/${DCL_NAME})
             
-            
+                MESSAGE(STATUS "${DCL_NAME} found.")
+                SET( DISCODE_${DCL_NAME}_FOUND 1 CACHE INTERNAL "${DCL_NAME} already found")
             
             ENDIF(EXISTS ${DISCODE_DCL_DIR}/${DCL_NAME})
     
-        ENDIF( DISCODE_DCL_DIR == "" )
+        ENDIF( DISCODE_DCL_DIR STREQUAL "" OR NOT DEFINED DISCODE_DCL_DIR)
     
     ENDIF( DISCODE_${DCL_NAME}_FOUND )
     
     # second check, if found then add apropriate include dirs
     IF( DISCODE_${DCL_NAME}_FOUND )
-    
+        INCLUDE_DIRECTORIES(${DISCODE_DCL_DIR}/${DCL_NAME}/dist/include)
     ELSE( DISCODE_${DCL_NAME}_FOUND )
         MESSAGE(FATAL_ERROR "Couldn't find ${DCL_NAME} DCL!")
     ENDIF( DISCODE_${DCL_NAME}_FOUND )
