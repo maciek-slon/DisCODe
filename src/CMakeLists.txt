@@ -97,9 +97,6 @@ SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Base)
 
 SET(DisCODe_Core_LIBRARIES ${DisCODe_LIBRARIES} Network)
 
-# Create Types library
-add_subdirectory(Types)
-
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
 
