@@ -38,6 +38,8 @@ SET(DisCODe_LIBRARIES
 
 # Specify include directories for the build
 include_directories( . Base Core Common Types)
+
+# Try to include Boost as system directory to suppress it's warnings
 include_directories( SYSTEM ${Boost_INCLUDE_DIR})
 
 # Specify directories in which the linker will look for libraries
