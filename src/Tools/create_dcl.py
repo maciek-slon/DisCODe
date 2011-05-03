@@ -115,6 +115,25 @@ srccmakepath = os.path.join(srcpath, "CMakeLists.txt")
 if not os.path.exists(srccmakepath):
     configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/CMakeLists.txt', srccmakepath, cmakelists_dic)
 
+
+# create DCLConfig.txt in src directory
+srcconfigpath = os.path.join(srcpath, dcl_name+"Config.cmake.in")
+if not os.path.exists(srcconfigpath):
+    configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/DCLConfig.cmake.in', srcconfigpath, cmakelists_dic)
+
+
+# create Types directory if it doesn't exist
+srctypespath = os.path.join(srcpath, "Types")
+if not os.path.exists(srctypespath):
+    os.makedir(srctypespath)
+
+# create CMakeLists.txt in Components directory
+srctypescmakepath = os.path.join(srctypespath, "CMakeLists.txt")
+if not os.path.exists(srctypescmakepath):
+    configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Types/CMakeLists.txt', srctypescmakepath, cmakelists_dic)
+
+
+
 # create Components directory if it doesn't exist
 srccomponentspath = os.path.join(srcpath, "Components")
 if not os.path.exists(srccomponentspath):

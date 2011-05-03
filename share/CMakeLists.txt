@@ -8,8 +8,11 @@ install(FILES Templates/README.md DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisC
 install(FILES Templates/CMakeLists.txt DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates)
 
 install(FILES Templates/src/CMakeLists.txt DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src)
+install(FILES Templates/src/DCLConfig.cmake.in DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src)
 
 install(FILES Templates/src/Components/CMakeLists.txt DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src/Components)
+
+install(FILES Templates/src/Types/CMakeLists.txt DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src/Types)
 
 # Component template
 install(FILES Templates/src/Components/Component/Component.cpp DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src/Components/Component)
