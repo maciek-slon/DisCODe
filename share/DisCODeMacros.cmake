@@ -102,11 +102,14 @@ ENDMACRO(ADD_COMPONENT)
 # ==============================================================================
 # Set component's install directory and group
 # ==============================================================================
+SET(MORELIBDIRS ${DisCODe_DIR}/lib ${CMAKE_INSTALL_PREFIX}/lib ${ADDITIONAL_LIB_DIRS})
+MESSAGE(STATUS "${MORELIBDIRS}")
+SET(LIBDIRS ${ADDITIONAL_LIB_DIRS} ${CMAKE_INSTALL_PREFIX}/lib)
 MACRO(INSTALL_COMPONENT COMP_NAME)
 	SET_TARGET_PROPERTIES(${COMP_NAME} PROPERTIES
-		BUILD_WITH_INSTALL_RPATH ON
-		INSTALL_RPATH_USE_LINK_PATH 1
-		INSTALL_RPATH ${DisCODe_DIR}/lib
+		BUILD_WITH_INSTALL_RPATH TRUE
+		INSTALL_RPATH_USE_LINK_PATH TRUE
+		INSTALL_RPATH "${MORELIBDIRS}"
 	)
 
 	install(
