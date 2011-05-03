@@ -1,6 +1,3 @@
-# Include ADD_PROCESSOR and ADD_SOURCE macros
-include(AddModules)
-
 # Checking compiler flags
 include(CheckCXXCompilerFlag)
 
