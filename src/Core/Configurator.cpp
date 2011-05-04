@@ -52,10 +52,36 @@ void Configurator::loadConfiguration(const ptree * config) {
 	boost::split(dcl_locations, env_dcldir, boost::is_any_of(":"));
 }
 
+typedef std::pair<std::string, std::string> pss;
+
+std::string & Configurator::substitute(std::string & text, const std::vector<std::pair<std::string, std::string> > & dict) {
+	BOOST_FOREACH(pss de, dict) {
+		boost::replace_all(text, de.first, de.second);
+	}
+
+	return text;
+}
+
+void Configurator::expandMacros(ptree & pt, const std::vector<std::pair<std::string, std::string> > & dict) {
+	BOOST_FOREACH(ptree::value_type & p, pt) {
+		std::string val = pt.get(p.first, "");
+		std::string oval = val;
+
+		if (val != "") {
+			substitute(val, dict);
+			pt.put(p.first, val);
+			if (val != oval) {
+				LOG(LINFO) << "Configurator: " << p.first << " value substituted\n"
+							  "\tfrom '" << oval << "' to '" << val << "'";
+			}
+		}
+
+		expandMacros(p.second, dict);
+	}
+}
+
 Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<std::string, std::string> > & overrides)
 {
-
-
 	ptree * tmp_node;
 
 	std::vector<std::string> task_parts;
@@ -79,6 +105,7 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 	}
 	else {
 		Task task;
+		std::vector<std::pair<std::string, std::string> > dict;
 
 		// Load and parse configuration from file.
 		try {
@@ -95,6 +122,12 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 			std::cout << overrides[i].first << " set to " << overrides[i].second << std::endl;
 			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
+
+		std::string task_path = boost::filesystem::path(configuration_filename).branch_path().string();
+		dict.push_back(std::make_pair("%[TASK_LOCATION]%", task_path));
+
+		// expand macros used in config file
+		expandMacros(configuration, dict);
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Executors"));

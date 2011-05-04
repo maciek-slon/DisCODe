@@ -62,6 +62,10 @@ private:
 	std::map<std::string, std::string> component_executor;
 
 
+	void expandMacros(ptree & pt, const std::vector<std::pair<std::string, std::string> > & dict);
+
+	std::string & substitute(std::string & text, const std::vector<std::pair<std::string, std::string> > & dict);
+
 public:
 	Configurator();
 
