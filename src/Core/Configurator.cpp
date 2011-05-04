@@ -223,6 +223,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 			}
 		}
 
+		// loading old-style properties
 		if (kern->getProperties()) {
 			try {
 				kern->getProperties()->load(tmp);
@@ -241,22 +242,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 			}
 		}
 
-		//std::cout << name << " properties:\n";
 		kern->printProperties();
-
-
-		//std::cout << name << " properties defined in xml:" << std::endl;
-		/*BOOST_FOREACH( TreeNode nd2, tmp) {
-			//std::cout << nd2.first << "=[" << tmp.get(nd2.first, "") << "]" << std::endl;
-			prop = kern->getProperty(nd2.first);
-			if (prop != NULL) {
-				//std::cout << "\t- this property is present in component.\n";
-				if (prop->isPersistent()) {
-					//std::cout << "\t- this property is persistent.\n";
-					prop->retrieve(tmp.get(nd2.first, ""));
-				}
-			}
-		}*/
 
 		std::vector<std::string> props = kern->getAllProperties();
 		std::string s;
@@ -267,9 +253,9 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 				if (prop->isPersistent()) {
 					s = tmp.get(pr, "");
 					if (s != "") prop->retrieve(s);
-					LOG(LNOTICE) << pr << "=[" << prop->store() << "] from [" << s << "]";
+					LOG(LINFO) << pr << "=[" << prop->store() << "] from [" << s << "]";
 				} else {
-					LOG(LNOTICE) << pr << "=[" << prop->store() << "]";
+					LOG(LINFO) << pr << "=[" << prop->store() << "]";
 				}
 			}
 		}
@@ -280,7 +266,7 @@ void Configurator::loadComponents(const ptree * node, Task & task) {
 		ex = executorManager->getExecutor(thread);
 		ex->addComponent(name, kern);
 
-		LOG(LTRACE) << "Adding component " << name << " to subtask " << group << "\n";
+		LOG(LINFO) << "Adding component " << name << " to subtask " << group << "\n";
 
 		task[group] += kern;
 
