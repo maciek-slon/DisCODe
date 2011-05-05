@@ -160,39 +160,6 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 	}//: else
 }
 
-void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
-	LOG(LINFO) << "Creating execution threads\n";
-
-	Executor * ex;
-	std::string name;
-	std::string key;
-	std::string type;
-
-	BOOST_FOREACH( TreeNode nd, *node ) {
-		ptree tmp = nd.second;
-		key = nd.first;
-
-		// ignore coments in task file
-		if (key == "<xmlcomment>" || key="<xmlattr>") {
-			continue;
-		} else
-		if (key != "Executor") {
-			LOG(LWARNING) << "Skipping unknown entry: " << key;
-			continue;
-		}
-
-		name = tmp.get("<xmlattr>.name", "");
-		type = tmp.get("<xmlattr>.type", "");
-
-		ex = executorManager->createExecutor(name, type);
-
-		subtask+=ex;
-		LOG(LINFO) << "\t" << name;
-
-		loadComponents(&tmp, *ex);
-	}
-}
-
 void Configurator::loadSubtasks(const ptree * node, Task & task) {
 	LOG(LINFO) << "Loading subtasks\n";
 
@@ -206,7 +173,7 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 		key = nd.first;
 
 		// ignore coments in task file
-		if (key == "<xmlcomment>" || key="<xmlattr>") {
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
 			continue;
 		} else
 		if (key != "Subtask") {
@@ -217,9 +184,42 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 		name = tmp.get("<xmlattr>.name", "");
 
 		subtask = &task[name];
-		LOG(LINFO) << "" << name;
+		LOG(LNOTICE) << "" << name;
 
 		loadExecutors(&tmp, *subtask);
+	}
+}
+
+void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
+	LOG(LINFO) << "Creating execution threads\n";
+
+	Executor * ex;
+	std::string name;
+	std::string key;
+	std::string type;
+
+	BOOST_FOREACH( TreeNode nd, *node ) {
+		ptree tmp = nd.second;
+		key = nd.first;
+
+		// ignore coments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "Executor") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
+
+		name = tmp.get("<xmlattr>.name", "");
+		type = tmp.get("<xmlattr>.type", "");
+
+		ex = executorManager->createExecutor(name, type);
+
+		subtask+=ex;
+		LOG(LNOTICE) << "\t" << name;
+
+		loadComponents(&tmp, *ex);
 	}
 }
 
@@ -235,7 +235,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		key = nd.first;
 
 		// ignore coments in task file
-		if (key == "<xmlcomment>" || key="<xmlattr>") {
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
 			continue;
 		} else
 		if (key != "Component") {
@@ -246,7 +246,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		name = tmp.get("<xmlattr>.name", "");
 		type = tmp.get("<xmlattr>.type", "");
 
-		LOG(LINFO) << "\t\t" << name;
+		LOG(LNOTICE) << "\t\t" << name;
 	}
 
 /*	Base::Component * kern;
