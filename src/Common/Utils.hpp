@@ -34,6 +34,17 @@ namespace Utils {
  */
 MYLIB_EXPORT std::vector<std::string> searchFiles(const std::string & root, const std::string & regexp, bool with_path = true);
 
+/*!
+ * List subdirectories of given folder
+ * @param root
+ * @param with_path
+ * @return
+ */
+MYLIB_EXPORT std::vector<std::string> getSubdirs(const std::string & root, bool with_path);
+
+MYLIB_EXPORT std::string findSubdir(const std::string & name, const std::vector<std::string> & roots, bool with_path);
+
+
 
 
 template <class T>

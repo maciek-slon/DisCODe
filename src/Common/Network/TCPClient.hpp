@@ -10,12 +10,12 @@ namespace Common {
 class TCPClient {
 public:
 	/// Function descriptor of service hook
-	typedef boost::function<int (const char *, int)> service_hook_t;
+	typedef boost::function<int (const unsigned char *, int)> service_hook_t;
 
 	/// Function descriptor of completion hook
-	typedef boost::function<int (const char *, int)> completion_hook_t;
+	typedef boost::function<int (const unsigned char *, int)> completion_hook_t;
 
-	TCPClient(int buffer_size = 20000);
+	TCPClient(int buffer_size = 200000);
 
 	~TCPClient();
 
@@ -49,7 +49,7 @@ public:
 	 *
 	 * @return number of bytes sent (equal to size on success)
 	 */
-	int send(const char * msg, int size);
+	int send(const unsigned char * msg, int size);
 
 	/*!
 	 * Set function called when new packet arrives.
@@ -70,8 +70,8 @@ private:
 	int m_buffer_size;
 
 	/// Data buffer
-	char * m_buf;
-	char * m_tmp_buf;
+	unsigned char * m_buf;
+	unsigned char * m_tmp_buf;
 
 	/// Size of current buffer data
 	int m_size;

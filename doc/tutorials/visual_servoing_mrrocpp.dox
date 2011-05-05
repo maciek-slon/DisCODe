@@ -1,0 +1,150 @@
+/*!
+\page visual_servoing_mrrocpp_components Visual servoing - MRROC++
+
+\section goals Goals
+
+The project aims to implement a set of components designed to run visual servoing with MRROC++. 
+
+\section Mrrocpp_Proxy_component Mrrocpp_Proxy component
+
+The \link Mrrocpp_Proxy \endlink component is a proxy for MRROC++ system.
+It sends readings (any type derived from Types::Mrrocpp_Proxy::Reading) to MRROC++.
+Additional feature is RPC calls from MRROC++ to DisCODe.
+
+\section Visual_servo_processors Visual servo processors  
+
+Visual servo processors (\link VisualServoPB_Processor \endlink and \link VisualServoIB_Processor \endlink)
+converts object's position to reading that will be sent by \link Mrrocpp_Proxy \endlink.
+
+\section Components_connection Components' connection
+
+First of all, an image source and object's recognition components are required.
+In this example \link CvFindChessboardCorners \endlink is used.
+It raises two events: chessboardFound and chessboardNotFound.
+Both are required for visual servo to run properly.
+Then position estimation component is required for position-based visual servoing (\link CvSolvePnP \endlink).
+It produces object's position with respect to camera - this is what is required for robot motion.
+
+The almost last step is to build a reading which will be sent to MRROC++.
+Reading has two possible interpretations: when object is visible, it is object's position with respect to camera.
+The second form is, when object is not visible.
+Reading is built by \link VisualServoPB_Processor \endlink.
+
+Reading is then sent to \link Mrrocpp_Proxy \endlink. 
+Proxy will send it to MRROC++ as soon as MRROC++ asks for it.
+There's nothing more to do in DisCODe - the rest of robot control is done by MRROC++.
+
+\section Sample_config_file Sample config file
+
+\code
+<?xml version="1.0" encoding="utf-8"?>
+<Task>
+	<Components>
+		<ImageSource type="CameraUniCap" thread="ImageSourceThread" group="s1">
+			<dev>
+				<device>/dev/video1</device>
+			</dev>
+		</ImageSource>
+
+		<BGRToGray type="CvColorConv" thread="ImageSourceThread" group="s1">
+			<type>BGR2GRAY</type>
+		</BGRToGray>
+		
+		<FindChessboard type="CvFindChessboardCorners" thread="ImageSourceThread" group="s1">
+			<width>4</width>
+			<height>3</height>
+			<squareSize>0.02</squareSize>
+			<findSubpix>1</findSubpix>
+		</FindChessboard>
+		
+		<PositionEstimator type="CvSolvePnP" thread="ImageSourceThread" group="s1">
+			<cameraMatrix>
+				[3,3](
+					(647.07647705, 0., 383.50000000),
+					(0., 632.76348877, 287.50000000),
+					(0, 0, 1)
+				)
+			</cameraMatrix>
+			<distCoeffs>
+				[1,5](
+					(-0.51084775, 0.23313555, 4.50637517e-03, -6.86281081e-03, 4.94365674e-03)
+				)
+			</distCoeffs>
+		</PositionEstimator>
+		
+		<VisualServoPB type="VisualServoPB" thread="ImageSourceThread" group="s1">
+		</VisualServoPB>
+				
+		<Mrrocpp type="Mrrocpp" thread="MrrocProxyThread" group="s1">
+			<port>8888</port>
+		</Mrrocpp>
+		
+		<Window type="CvWindow" thread="PreviewExecutor" group="s1">
+			<title>Preview</title>
+		</Window>
+	</Components>
+
+	<Executors>
+		<ImageSourceThread type="passive">
+			<main_component>ImageSource</main_component>
+			
+		</ImageSourceThread>
+		
+		<MrrocProxyThread type="continuous">
+			<main_component>Mrrocpp</main_component>
+		</MrrocProxyThread>
+		
+		<PreviewExecutor type="periodic">
+			<main_component>Window</main_component>
+			<interval>0.05</interval>
+		</PreviewExecutor>
+	</Executors>
+
+	<Events>
+		<Event source="ImageSource.newImage" destination="BGRToGray.onNewImage"/>
+		<Event source="BGRToGray.newImage" destination="FindChessboard.onNewImage"/>
+		<Event source="FindChessboard.chessboardFound" destination="PositionEstimator.onNewObject3D"/>
+		<Event source="PositionEstimator.objectLocated" destination="VisualServoPB.onObjectLocated"/>
+		<Event source="FindChessboard.chessboardNotFound" destination="VisualServoPB.onObjectNotFound"/>
+		<Event source="VisualServoPB.readingReady" destination="Mrrocpp.onNewReading"/>
+		<Event source="ImageSource.newImage" destination="Window.onNewImage"/>
+	</Events>
+
+	<DataStreams>
+		<ImageSource>
+			<out_img type="out" group="OriginalImage"/>
+		</ImageSource>
+		
+		<BGRToGray>
+			<in_img  type="in" group="OriginalImage"/>
+			<out_img type="out" group="GrayImage"/>
+		</BGRToGray>
+		
+		<FindChessboard>
+			<in_img type="in" group="GrayImage"/>
+			<out_chessboard type="out" group="Chessboard"/>
+		</FindChessboard>
+				
+		<PositionEstimator>
+			<in_object3d type="in" group="Chessboard"/>
+			<out_homogMatrix typr="out" group="position"/>
+		</PositionEstimator>
+		
+		<VisualServoPB>
+			<in_position type="in" group="position"/>
+			<out_reading type="out" group="reading"/>
+		</VisualServoPB>
+		
+		<Mrrocpp>
+			<reading type="in" group="reading"/>
+		</Mrrocpp>
+		
+		<Window>
+			<in_draw type="in" group="Chessboard"/>
+			<in_img type="in" group="OriginalImage"/>
+		</Window>
+	</DataStreams>
+</Task>
+\endcode
+
+*/

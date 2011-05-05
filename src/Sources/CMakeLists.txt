@@ -1,9 +1,0 @@
-SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-MESSAGE(STATUS "Building sources:")
-ADD_SOURCE(Sequence ON)
-ADD_SOURCE(Movie ON)
-ADD_SOURCE(CameraOpenCV ON)
-ADD_SOURCE(CameraUniCap ON Linux)
-ADD_SOURCE(Keyboard ON)
-ADD_SOURCE(CameraGigE OFF)

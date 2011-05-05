@@ -1,14 +1,11 @@
-# Include ADD_PROCESSOR and ADD_SOURCE macros
-include(AddModules)
-
 # Checking compiler flags
 include(CheckCXXCompilerFlag)
 
 # Define place for all created executables and libraries
 # Disabled. All binaries are created in their folders.
 # Use make install to put everything in proper place
-SET(LIBRARY_OUTPUT_PATH    ${CMAKE_BINARY_DIR}/lib)
-SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+#SET(LIBRARY_OUTPUT_PATH    ${CMAKE_BINARY_DIR}/lib)
+#SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -22,7 +19,7 @@ endif(WIN32)
 SET(Boost_DEBUG FALSE)
 
 # Find all required packages
-FIND_PACKAGE( Boost REQUIRED thread filesystem system regex program_options)
+FIND_PACKAGE( Boost 1.41.0 REQUIRED thread filesystem system regex program_options)
 
 # Make makefiles more verbose
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
@@ -37,14 +34,19 @@ SET(DisCODe_LIBRARIES
 )
 
 # Specify include directories for the build
-include_directories( . Base Core Common Types ${Boost_INCLUDE_DIR})
+include_directories( . Base Core Common Types)
+
+# Try to include Boost as system directory to suppress it's warnings
+include_directories( SYSTEM ${Boost_INCLUDE_DIR})
 
 # Specify directories in which the linker will look for libraries
 LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 
 # Add compiler directives
 add_definitions(-Wall)
+add_definitions(-Wextra)
 add_definitions(-Werror=return-type)
+add_definitions(-pedantic)
 
 # Checking if compiler supports C++0x standard
 CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)
@@ -92,15 +94,9 @@ SET(DisCODe_LIBRARIES ${DisCODe_LIBRARIES} Base)
 
 SET(DisCODe_Core_LIBRARIES ${DisCODe_LIBRARIES} Network)
 
-# Create Types library
-add_subdirectory(Types)
-
 # Add subdirectories to the build - CMake will run CMakeFiles from them
 add_subdirectory(Core)
-add_subdirectory(Sources)
-add_subdirectory(Processors)
-add_subdirectory(Sinks)
-add_subdirectory(Proxies)
+
 add_subdirectory(Client)
 
 # User interface
