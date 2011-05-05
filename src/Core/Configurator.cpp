@@ -168,11 +168,10 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 	Subtask * subtask;
 
 	BOOST_FOREACH( TreeNode nd, *node) {
-		if (nd.first == "<xmlcomment>") continue;
 		ptree tmp = nd.second;
 		key = nd.first;
 
-		// ignore coments in task file
+		// ignore comments in task file
 		if (key == "<xmlcomment>" || key == "<xmlattr>") {
 			continue;
 		} else
@@ -202,7 +201,7 @@ void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 		ptree tmp = nd.second;
 		key = nd.first;
 
-		// ignore coments in task file
+		// ignore comments in task file
 		if (key == "<xmlcomment>" || key == "<xmlattr>") {
 			continue;
 		} else
@@ -234,7 +233,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		ptree tmp = nd.second;
 		key = nd.first;
 
-		// ignore coments in task file
+		// ignore comments in task file
 		if (key == "<xmlcomment>" || key == "<xmlattr>") {
 			continue;
 		} else
@@ -246,9 +245,11 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		name = tmp.get("<xmlattr>.name", "");
 		type = tmp.get("<xmlattr>.type", "");
 
+		// split component type into dcl and type
 		std::vector<std::string> dcl_comp;
 		boost::split(dcl_comp, type, boost::is_any_of(":"));
 
+		// check, if type is properly formed
 		if (dcl_comp.size() != 2) {
 			LOG(LERROR) << "Bad component type definition: '" << type << "'";
 			LOG(LNOTICE) << "Should be in form DCL:COMPONENT";
