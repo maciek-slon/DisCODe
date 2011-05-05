@@ -246,7 +246,15 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		name = tmp.get("<xmlattr>.name", "");
 		type = tmp.get("<xmlattr>.type", "");
 
-		LOG(LNOTICE) << "\t\t" << name;
+		std::vector<std::string> dcl_comp;
+		boost::split(dcl_comp, type, boost::is_any_of(":"));
+
+		if (dcl_comp.size() != 2) {
+			LOG(LERROR) << "Bad component type definition: '" << type << "'";
+			LOG(LNOTICE) << "Should be in form DCL:COMPONENT";
+		} else {
+			LOG(LNOTICE) << "\t\t" << name << " [" << dcl_comp[1] << " from " << dcl_comp[0] << "]";
+		}
 	}
 
 /*	Base::Component * kern;
