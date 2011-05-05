@@ -1,0 +1,52 @@
+<Task>
+	<!-- reference task information -->
+	<Reference>
+		<Author>
+			<name>Maciej Stefańczyk</name>
+			<link></link>
+		</Author>
+		
+		<Description>
+			<brief>Simple camera viewer</brief>
+			<full>Simple camera viewer</full>	
+		</Description>
+	</Reference>
+	
+	<!-- task definition -->
+	<Subtasks>
+		<Subtask name="Processing">
+			<Executor name="Exec1" type="continuous">
+				<Component name="Source" type="CameraOpenCV">
+
+				</Component>
+			</Executor>
+		</Subtask>
+		
+		<Subtask name="Visualisation">
+			<Executor name="Exec2" type="periodic">
+				<Component name="Window" type="CvBasic:CvWindow">
+								
+				</Component>
+			</Executor>
+		</Subtask>	
+	
+	</Subtasks>
+	
+	<!-- connections between events and handelrs -->
+	<Events>
+		<Emitter name="Source.newImage">
+			<handler>Window.onNewImage</handler>	
+		</Emitter>
+	</Events>
+	
+	<!-- pipes connecting datastreams -->
+	<DataStreams>
+		<Source name="Source.out_img">
+			<sink>Window.in_img</sink>	
+		</Source>
+	</DataStreams>
+</Task>
+
+
+
+
