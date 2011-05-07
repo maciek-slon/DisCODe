@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 2.6)
 FIND_PACKAGE(DisCODe REQUIRED)
 
 # Use CMake macros provided with DisCODe
-set(CMAKE_MODULE_PATH ${DisCODe_DIR}/share/DisCODe ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${DisCODe_DIR} ${CMAKE_MODULE_PATH})
 include(DisCODeMacros)
 
 # Set default install prefix to dist folder
