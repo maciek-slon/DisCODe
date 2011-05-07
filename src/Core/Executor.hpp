@@ -113,7 +113,7 @@ public:
 	/*!
 	 * Save configuration
 	 */
-	void save(ptree & pt) {
+	void save(ptree & /* pt */ ) {
 	}
 
 	/*!

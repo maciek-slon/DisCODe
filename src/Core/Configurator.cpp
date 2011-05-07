@@ -41,7 +41,7 @@ Configurator::~Configurator()
 
 }
 
-void Configurator::loadConfiguration(const ptree * config) {
+void Configurator::loadConfiguration(const ptree * /* config */) {
 	// get enviroment variable containing DCL directory
 	char * env_dcldir_tmp = std::getenv("DISCODE_DCL_DIR");
 	std::string env_dcldir;
@@ -222,7 +222,7 @@ void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 	}
 }
 
-void Configurator::loadComponents(const ptree * node, Executor & executor) {
+void Configurator::loadComponents(const ptree * node, Executor & /*executor*/) {
 	LOG(LINFO) << "Loading required components\n";
 
 	std::string name;
@@ -346,7 +346,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 	}*/
 }
 
-void Configurator::loadEvents(const ptree * node) {
+void Configurator::loadEvents(const ptree * /*node*/) {
 	LOG(LTRACE) << "Connecting events\n";
 /*	std::string src, dst, name, caller, receiver, type;
 	Base::Component * src_k, * dst_k;
@@ -405,7 +405,7 @@ void Configurator::loadEvents(const ptree * node) {
 	}*/
 }
 
-void Configurator::loadConnections(const ptree * node) {
+void Configurator::loadConnections(const ptree * /* node */ ) {
 	LOG(LINFO) << "Connecting data streams\n";
 /*	std::string name, ds_name;
 	Base::Component * kern;

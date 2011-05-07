@@ -63,7 +63,7 @@ std::string print(std::vector<std::string> args) {
 
 
 
-void terminate (int param) {
+void terminate (int /* param */ ) {
 	if (unstoppable) {
 		std::cout << "\rGet lost! WMAHAHA!\n";
 		return;

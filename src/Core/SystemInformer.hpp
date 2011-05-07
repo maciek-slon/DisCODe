@@ -16,7 +16,7 @@ public:
 		ci.addHandler("kill", boost::bind(&SystemInformer::kill, this, _1));
 	}
 
-	std::string kill(std::vector<std::string> args) {
+	std::string kill(std::vector<std::string> /* args */) {
 		m_flag = false;
 		return "OK";
 	}

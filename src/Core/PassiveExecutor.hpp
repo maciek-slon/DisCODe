@@ -23,7 +23,7 @@ public:
 	/*!
 	 * Load executor settings from given configuration node
 	 */
-	void load(const ptree & pt) {
+	void load(const ptree & /* pt */ ) {
 	}
 
 protected:

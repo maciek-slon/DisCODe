@@ -47,6 +47,7 @@ add_definitions(-Wall)
 add_definitions(-Wextra)
 add_definitions(-Werror=return-type)
 add_definitions(-pedantic)
+add_definitions(-Wuninitialized)
 
 # Checking if compiler supports C++0x standard
 CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)

@@ -74,7 +74,7 @@ bool TCPClient::connect(const std::string & host, const std::string & port)
 
 int TCPClient::recv(int msec_timeout)
 {
-	int recvd = 0, res;
+	int recvd = 0;
 	bool ready = false;
 	int select_return;
 	fd_set sock;

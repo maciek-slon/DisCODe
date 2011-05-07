@@ -120,7 +120,7 @@ void MainWindow::setup(DisCODe::Client * c) {
 	ui->treeWidget->expandAll();
 }
 
-void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int column) {
+void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int /*column*/) {
 	if (!item->parent()) { // Task
 	} else if (!item->parent()->parent()) { // Executor
 	} else { // Component
@@ -129,7 +129,7 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int column) {
 	}
 }
 
-void MainWindow::on_actionConnect_triggered(bool checked) {
+void MainWindow::on_actionConnect_triggered(bool /*checked*/) {
 	if (m_connected) {
 		do_disconnect();
 	} else {
@@ -137,6 +137,6 @@ void MainWindow::on_actionConnect_triggered(bool checked) {
 	}
 }
 
-void MainWindow::on_actionFinish_triggered(bool checked) {
+void MainWindow::on_actionFinish_triggered(bool /*checked*/) {
 	system->finish();
 }

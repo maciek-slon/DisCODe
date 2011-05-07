@@ -96,7 +96,7 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 				QStringList consts;
 				std::vector<std::string> vcon = proxy->getPropertyConstraints(i);
 
-				for (int cc = 0; cc < vcon.size(); ++cc) {
+				for (size_t cc = 0; cc < vcon.size(); ++cc) {
 					std::cout << vcon[cc] << std::endl;
 					consts.append(vcon[cc].c_str());
 				}
