@@ -228,6 +228,7 @@ void Configurator::loadComponents(const ptree * node, Executor & /*executor*/) {
 	std::string name;
 	std::string type;
 	std::string key;
+	Base::Component * cmp;
 
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
@@ -253,9 +254,17 @@ void Configurator::loadComponents(const ptree * node, Executor & /*executor*/) {
 		if (dcl_comp.size() != 2) {
 			LOG(LERROR) << "Bad component type definition: '" << type << "'";
 			LOG(LNOTICE) << "Should be in form DCL:COMPONENT";
+			throw Common::DisCODeException("Task loading error.");
 		} else {
 			LOG(LNOTICE) << "\t\t" << name << " [" << dcl_comp[1] << " from " << dcl_comp[0] << "]";
 		}
+
+		// try to create requested component
+		cmp = componentManager->createComponent(name, dcl_comp[0], dcl_comp[1]);
+
+		// iterate through properties defined in xml, check if component has them
+		// and set them if property is persistent
+		// loadComponent(&tmp, *cmp)
 	}
 
 /*	Base::Component * kern;

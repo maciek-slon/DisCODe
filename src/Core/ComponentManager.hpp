@@ -35,7 +35,9 @@ protected:
 	/*!
 	 * List of component factories properly loaded by the manager.
 	 */
-	boost::ptr_map <string, Core::ComponentFactory> component_factories;
+	typedef std::map <string, Core::ComponentFactory *> factories_map;
+
+	std::map<std::string, factories_map> m_available_components;
 
 	/*!
 	 * List of created components
@@ -73,6 +75,7 @@ public:
 	 */
 	void initializeComponentsList(const std::vector<std::string> dcl_locations)
 	{
+		int total_components = 0;
 
 		if (dcl_locations.size() < 1) {
 			LOG(LWARNING) << "No DCL locations speecified.";
@@ -95,11 +98,14 @@ public:
 				getSOList(dcl_location + "/dist/lib", files);
 			}
 			catch(...) {
+				LOG(LWARNING) << "Something bad happened when loading file list from " << dcl_location << ". Skipping.";
+				continue;
 			}
 
 			// Check number of so's to import.
 			if (files.empty()) {
-				LOG(LWARNING) << "ComponentManager: There are no dynamic libraries in " << dcl_location;
+				LOG(LWARNING) << "ComponentManager: There are no components in " << dcl_location;
+				continue;
 			}
 
 			// Iterate through so names and add retrieved components to list.
@@ -111,24 +117,25 @@ public:
 				if (k->lazyInitialize(file))
 				{
 					// Add component to list.
-					component_factories.insert(k->getName(), k);
-				}
-				else
+					m_available_components[dcl_location][k->getName()] = k;
+					++total_components;
+				} else {
 					// Delete incorrect component.
 					delete (k);
+				}
 			}//: FOREACH
 
 		}//: FOREACH
 
 		// Check number of successfully loaded components.
-		LOG(LNOTICE) << "Found " << component_factories.size() << " components\n";
+		LOG(LNOTICE) << "Found " << total_components << " components in " << m_available_components.size() << " DCLs.";
 	}
 
 	/*!
 	 *
 	 */
 	void deactivateComponentList() {
-		component_factories.release();
+		// \todo: release all factories
 	}
 
 	/*!
@@ -137,19 +144,26 @@ public:
 	 * @param type
 	 * @return
 	 */
-	Base::Component* createComponent(const std::string & name, const std::string & type) {
+	Base::Component* createComponent(const std::string & name, const std::string & dcl, const std::string & type) {
 		if (components.count(name) > 0) {
 			LOG(LWARNING) << "Module " << name << " already created. Returning previous one.\n";
 			return components[name];
 		}
 
-		if (component_factories.count(type) < 1) {
-			LOG(LERROR) << "Module type " << type << " not found!\n";
+		if (m_available_components.count(dcl) < 1) {
+			LOG(LERROR) << "DCL " << dcl << " either not available or empty!\n";
+			LOG(LNOTICE) << "When creating component: " << name << " [" << dcl << ":" << type << "]";
+			throw Common::DisCODeException("Create component");
+		}
+
+		if (m_available_components[dcl].count(type) < 1) {
+			LOG(LERROR) << "Component type " << type << " not found in " << dcl;
+			LOG(LNOTICE) << "When creating component: " << name << " [" << dcl << ":" << type << "]";
 			throw Common::DisCODeException("createComponent");
 		}
 
-		components[name] = component_factories[type].create(name);
-		LOG(LINFO) << name << " (" << type << ") component created\n";
+		components[name] = m_available_components[dcl][type]->create(name);
+		LOG(LINFO) << name << " [" << type << ":" << dcl << "] component created\n";
 		return components[name];
 	}
 
