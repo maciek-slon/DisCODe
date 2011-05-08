@@ -42,23 +42,29 @@ include_directories( SYSTEM ${Boost_INCLUDE_DIR})
 # Specify directories in which the linker will look for libraries
 LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 
-# Add compiler directives
-add_definitions(-Wall)
-add_definitions(-Wextra)
-add_definitions(-Werror=return-type)
-add_definitions(-pedantic)
+IF(CMAKE_COMPILER_IS_GNUCXX)
 
-# Checking if compiler supports C++0x standard
-CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)
+	# Add compiler directives
+	add_definitions(-Wall)
+	add_definitions(-Wextra)
+	add_definitions(-Werror=return-type)
+	add_definitions(-pedantic)
 
-# If C++0x is supported then use it
-if(CPP0x)
-    MESSAGE(STATUS "c++0x supported")
-    add_definitions(-std=c++0x)
-else(CPP0x)
-    MESSAGE(STATUS "c++0x NOT supported")
-endif(CPP0x)
+	# Checking if compiler supports C++0x standard
+	CHECK_CXX_COMPILER_FLAG(-std=c++0x CPP0x)
 
+	# If C++0x is supported then use it
+	if(CPP0x)
+	    MESSAGE(STATUS "c++0x supported")
+	    add_definitions(-std=c++0x)
+	else(CPP0x)
+	    MESSAGE(STATUS "c++0x NOT supported")
+	endif(CPP0x)
+ELSEIF(CMAKE_CXX_COMPILER MATCHES ".*icpc")
+	add_definitions(-Wall)
+	# disable remark #981: operands are evaluated in unspecified order
+	add_definitions(-wd981)
+ENDIF()
 
 set(WITH_UNIFIED_TIMER OFF CACHE BOOL "Use unified timer (based on ctime)")
 

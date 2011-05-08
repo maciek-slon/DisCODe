@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
+#include <cstdio>
 
 #include "DisCODeException.hpp"
 
