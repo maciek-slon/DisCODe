@@ -10,9 +10,6 @@
 #define EXECUTORMANAGER_HPP_
 
 #include "Executor.hpp"
-#include "ContinuousExecutor.hpp"
-#include "PassiveExecutor.hpp"
-#include "PeriodicExecutor.hpp"
 #include "Logger.hpp"
 #include "Utils.hpp"
 
@@ -30,9 +27,9 @@ class ExecutorManager {
 
 public:
 	ExecutorManager() {
-		types.push_back("continuous");
-		types.push_back("periodic");
-		types.push_back("passive");
+//		types.push_back("continuous");
+//		types.push_back("periodic");
+//		types.push_back("passive");
 	}
 
 	~ExecutorManager() {
@@ -50,8 +47,8 @@ public:
 			return executors[name];
 		}
 
-		Executor * ex;
-		if (type == "continuous") {
+		Executor * ex = new Executor(name);
+		/*if (type == "continuous") {
 			ex = new ContinuousExecutor(name);
 		} else if (type == "passive") {
 			ex = new PassiveExecutor(name);
@@ -72,7 +69,7 @@ public:
 
 			LOG(LNOTICE) << "Did you mean " << types[id] << " type?";
 			throw Common::DisCODeException("createExecutor");
-		}
+		}*/
 
 		executors[name] = ex;
 		LOG(LINFO) << name << " (" << type << ") executor created.\n";

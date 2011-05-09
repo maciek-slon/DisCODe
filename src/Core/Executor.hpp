@@ -14,7 +14,6 @@
 
 #include "Thread.hpp"
 #include "EventHandler.hpp"
-#include "Props.hpp"
 #include "Logger.hpp"
 
 namespace Base {
@@ -39,10 +38,10 @@ enum ExecutorState {
  *
  * \author mstefanc
  */
-class Executor : public Common::Thread, public Base::Props {
+class Executor : public Common::Thread {
 public:
 
-	Executor(const std::string & n) : running(false), paused(true), name_(n), m_state(Loaded) {
+	Executor(const std::string & n) :  m_name(n), m_state(Loaded) {
 	}
 
 	virtual ~Executor() {
@@ -78,55 +77,52 @@ public:
 		return handler;
 	}
 
-	void restart() {
-		paused = false;
-		if (!running)
-			start();
-	}
+	void restart();
 
-	void pause() {
-		paused = true;
-	}
+	void pause();
 
 	/*!
 	 * Initialize all managed components.
 	 */
-	void initialize() {
-		/// \todo IMPLEMENT!
-	}
+	void initialize();
 
 	/*!
 	 * Reset execution thread, making it possible to start over again
 	 * (reinitialize components etc.).
 	 */
-	void reset() {
-		/// \todo IMPLEMENT!
-	}
+	void reset();
 
 	/*!
 	 * Finish main Executor loop thus ending associated thread.
 	 */
-	void finish() {
-		running = false;
-	}
-
-	/*!
-	 * Save configuration
-	 */
-	void save(ptree & /* pt */ ) {
-	}
+	void finish();
 
 	/*!
 	 * Return name
 	 */
 	const std::string & name() const {
-		return name_;
+		return m_name;
 	}
 
 
 	std::vector<std::string> listComponents();
 
+	/*!
+	 *
+	 * @param period period in seconds
+	 */
+	void setPeriod(float period) {
+		m_period = period;
+	}
+
 protected:
+
+	bool ensureState(ExecutorState st, const std::string & errmsg);
+
+	/*!
+	 * Implementation of run method from Thread.
+	 */
+	void run();
 
 	/**
 	 * Execute all pending events.
@@ -151,19 +147,13 @@ protected:
 	/// List of components managed by this Executor
 	std::map<std::string, Base::Component *> components;
 
-	/// Flag indicating that executor is running
-	volatile bool running;
-
-	/// Flag indicating that executor is paused
-	volatile bool paused;
-
 	/// FIFO queue for incoming events
 	std::deque<Base::EventHandlerInterface *> queue;
 
 	std::deque<Base::EventHandlerInterface *> loc_queue;
 
 	/// Name of execution thread
-	std::string name_;
+	std::string m_name;
 
 	/// Asynchronous event queue synchronization
 	boost::mutex mtx;
@@ -171,7 +161,12 @@ protected:
 	///
 	boost::mutex ev_mtx;
 
+	boost::condition_variable m_cond;
+	boost::mutex m_cond_mtx;
+
 	ExecutorState m_state;
+
+	float m_period;
 };
 
 }//: namespace Core
