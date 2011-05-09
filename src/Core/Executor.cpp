@@ -72,7 +72,7 @@ void Executor::pause() {
  * Initialize all managed components.
  */
 void Executor::initialize() {
-	if (!ensureState(Paused, "Can't initialize."))
+	if (!ensureState(Loaded, "Can't initialize."))
 		return;
 
 	// set state to paused
@@ -109,10 +109,21 @@ void Executor::finish() {
 void Executor::run() {
 	boost::unique_lock<boost::mutex> lock(m_cond_mtx);
 
+	LOG(LINFO) << "Executor " << name() << " thread started.";
+
 	// wait until executor is initialized
 	while(m_state == Loaded) {
 		m_cond.wait(lock);
 	}
+
+	// initialize all components
+	BOOST_FOREACH(ComponentPair cmp, components) {
+		cmp.second->initialize();
+	}
+
+	LOG(LINFO) << "Executor " << name() << " initialized.";
+
+	LOG(LINFO) << "Executor " << name() << " thread finished.";
 }
 
 }//: namespace Core

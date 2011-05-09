@@ -219,6 +219,8 @@ void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 		LOG(LNOTICE) << "\t" << name;
 
 		loadComponents(&tmp, *ex);
+
+		ex->start();
 	}
 }
 
