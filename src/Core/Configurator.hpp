@@ -87,6 +87,7 @@ public:
 	void loadSubtasks(const ptree * node, Task & task);
 	void loadExecutors(const ptree * node, Subtask & subtask);
 	void loadComponents(const ptree * node, Executor & executor);
+	void loadProperties(const ptree * node, Base::Component & component);
 	void loadEvents(const ptree * node);
 	void loadConnections(const ptree * node);
 

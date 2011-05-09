@@ -13,6 +13,7 @@
 
 #include <boost/foreach.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
+#include <boost/filesystem.hpp>
 
 #include "Component_Aux.hpp"
 #include "DisCODeException.hpp"
@@ -92,6 +93,9 @@ public:
 
 		BOOST_FOREACH(dcl_location, dcls) {
 
+			std::string dcl_name = boost::filesystem::path(dcl_location).leaf();
+			LOG(LINFO) << "Loading components from " << dcl_name;
+
 			// Get filenames.
 			vector <string> files;
 			try {
@@ -117,7 +121,7 @@ public:
 				if (k->lazyInitialize(file))
 				{
 					// Add component to list.
-					m_available_components[dcl_location][k->getName()] = k;
+					m_available_components[dcl_name][k->getName()] = k;
 					++total_components;
 				} else {
 					// Delete incorrect component.

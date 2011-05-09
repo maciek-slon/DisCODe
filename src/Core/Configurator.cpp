@@ -222,13 +222,14 @@ void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 	}
 }
 
-void Configurator::loadComponents(const ptree * node, Executor & /*executor*/) {
+void Configurator::loadComponents(const ptree * node, Executor & executor) {
 	LOG(LINFO) << "Loading required components\n";
 
 	std::string name;
 	std::string type;
 	std::string key;
 	Base::Component * cmp;
+	int prio;
 
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
@@ -245,6 +246,7 @@ void Configurator::loadComponents(const ptree * node, Executor & /*executor*/) {
 
 		name = tmp.get("<xmlattr>.name", "");
 		type = tmp.get("<xmlattr>.type", "");
+		prio = tmp.get("<xmlattr>.priority", 0);
 
 		// split component type into dcl and type
 		std::vector<std::string> dcl_comp;
@@ -264,95 +266,54 @@ void Configurator::loadComponents(const ptree * node, Executor & /*executor*/) {
 
 		// iterate through properties defined in xml, check if component has them
 		// and set them if property is persistent
-		// loadComponent(&tmp, *cmp)
-	}
+		loadProperties(&tmp, *cmp);
 
-/*	Base::Component * kern;
-	Executor * ex;
+		// TODO: add created component to executor
+		executor.addComponent(name, cmp);
+
+	}
+}
+
+void Configurator::loadProperties(const ptree * node, Base::Component & component) {
+	LOG(LINFO) << "Loading properties";
+
 	std::string name;
-	std::string type;
-	std::string thread;
-	std::string group;
-	std::string include;
+	std::string value;
+	std::string key;
 
 	Base::PropertyInterface * prop;
 
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
-		name = nd.first;
+		key = nd.first;
 
-		// ignore coments in tast file
-		if (name == "<xmlcomment>") continue;
-
-		type = tmp.get("<xmlattr>.type", "UNKNOWN");
-		thread = tmp.get("<xmlattr>.thread", "UNKNOWN");
-		group = tmp.get("<xmlattr>.group", "DEFAULT");
-		include = tmp.get("<xmlattr>.include", "");
-
-		LOG(LTRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
-
-		kern = componentManager->createComponent(name, type);
-
-		if (include != "") {
-			try {
-				read_xml(include, tmp);
-			}
-			catch(const xml_parser_error& ex) {
-				LOG(LERROR) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
-				LOG(LERROR) << ex.what();
-				throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + include + "' file.\n");
-			}
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "param") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
 		}
 
-		// loading old-style properties
-		if (kern->getProperties()) {
-			try {
-				kern->getProperties()->load(tmp);
-			}
-			catch(const ptree_bad_path& ex) {
-				LOG(LERROR) << name << ": " << ex.what();
-				LOG(LNOTICE) << "Set this property in config file!";
+		name = tmp.get("<xmlattr>.name", "");
+		value = tmp.data();
 
-				throw Common::DisCODeException(name + ": failed to load component");
-			}
-			catch(const ptree_bad_data& ex) {
-				LOG(LERROR) << name << ": " << ex.what();
-				LOG(LNOTICE) << "Check properties in configuration file!";
+		LOG(LNOTICE) << "Property: " << name << "=" << value;
 
-				throw Common::DisCODeException(name + ": failed to load component");
-			}
+		prop = component.getProperty(name);
+		if (!prop) {
+			LOG(LWARNING) << "Component " << component.name() << " has no property named " << name << ", but it is defined in task file.";
+			continue;
 		}
 
-		kern->printProperties();
-
-		std::vector<std::string> props = kern->getAllProperties();
-		std::string s;
-
-		BOOST_FOREACH( std::string pr, props) {
-			prop = kern->getProperty(pr);
-			if (prop != NULL) {
-				if (prop->isPersistent()) {
-					s = tmp.get(pr, "");
-					if (s != "") prop->retrieve(s);
-					LOG(LINFO) << pr << "=[" << prop->store() << "] from [" << s << "]";
-				} else {
-					LOG(LINFO) << pr << "=[" << prop->store() << "]";
-				}
-			}
+		if (!prop->isPersistent()) {
+			LOG(LWARNING) << "Property " << name << "in " << component.name() << " is not persistent, but is set in task file.";
+			continue;
 		}
 
-
-		kern->initialize();
-
-		ex = executorManager->getExecutor(thread);
-		ex->addComponent(name, kern);
-
-		LOG(LINFO) << "Adding component " << name << " to subtask " << group << "\n";
-
-		task[group] += kern;
-
-		component_executor[name] = thread;
-	}*/
+		prop->retrieve(value);
+	}
 }
 
 void Configurator::loadEvents(const ptree * /*node*/) {
