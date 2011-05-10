@@ -35,6 +35,7 @@ bool Task::stop() {
 	BOOST_FOREACH(SubtaskPair sp, subtasks) {
 		sp.second.stop();
 	}
+	LOG(LTRACE) << "Task stopped.";
 
 	return true;
 }

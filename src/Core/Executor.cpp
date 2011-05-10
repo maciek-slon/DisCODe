@@ -45,6 +45,7 @@ bool Executor::ensureState(ExecutorState st, const std::string & errmsg) {
 }
 
 void Executor::restart() {
+	LOG(LTRACE) << "Executor::restart";
 	if (!ensureState(Paused, "Can't restart."))
 		return;
 
@@ -57,6 +58,7 @@ void Executor::restart() {
 }
 
 void Executor::pause() {
+	LOG(LTRACE) << "Executor::pause";
 	if (!ensureState(Running, "Can't pause."))
 		return;
 
@@ -72,6 +74,7 @@ void Executor::pause() {
  * Initialize all managed components.
  */
 void Executor::initialize() {
+	LOG(LTRACE) << "Executor::initialize";
 	if (!ensureState(Loaded, "Can't initialize."))
 		return;
 
@@ -95,33 +98,63 @@ void Executor::reset() {
  * Finish main Executor loop thus ending associated thread.
  */
 void Executor::finish() {
+	LOG(LTRACE) << "Executor::finish";
 	if (!ensureState(Paused, "Can't finish."))
 		return;
 
 	// set state to finished
 	{
 		boost::lock_guard<boost::mutex> lock(m_cond_mtx);
-		m_state = Running;
+		m_state = Finished;
 	}
 	m_cond.notify_all();
 }
 
 void Executor::run() {
-	boost::unique_lock<boost::mutex> lock(m_cond_mtx);
+	{
+		boost::unique_lock<boost::mutex> lock(m_cond_mtx);
 
-	LOG(LINFO) << "Executor " << name() << " thread started.";
+		LOG(LINFO) << "Executor " << name() << " thread started.";
 
-	// wait until executor is initialized
-	while(m_state == Loaded) {
-		m_cond.wait(lock);
+		// wait until executor is initialized
+		while(m_state == Loaded) {
+			m_cond.wait(lock);
+		}
+
+		// initialize all components
+		BOOST_FOREACH(ComponentPair cmp, components) {
+			cmp.second->initialize();
+		}
+
+		LOG(LINFO) << "Executor " << name() << " initialized.";
 	}
 
-	// initialize all components
-	BOOST_FOREACH(ComponentPair cmp, components) {
-		cmp.second->initialize();
-	}
+	for(;;) {
+		if (m_state == Running) {
 
-	LOG(LINFO) << "Executor " << name() << " initialized.";
+		}
+
+		// handle pending events
+
+		// if period set, then sleep until next wakeup
+		if (m_period > 0) {
+			// TODO: use periodic timer
+		}
+
+
+		// double-check if executor is paused
+		if (m_state == Paused) {
+			boost::unique_lock<boost::mutex> lock(m_cond_mtx);
+			// wait until component is paused
+			while(m_state == Paused) {
+				m_cond.wait(lock);
+			}
+		}
+
+		// stop main execution loop
+		if (m_state == Finished)
+			break;
+	}
 
 	LOG(LINFO) << "Executor " << name() << " thread finished.";
 }
