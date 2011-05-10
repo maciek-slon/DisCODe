@@ -41,6 +41,17 @@ bool Executor::ensureState(ExecutorState st, const std::string & errmsg) {
 		return false;
 	}
 
+	if ( (m_state == Pausing) && (st != Pausing) ) {
+		LOG(LWARNING) << "Thread " << name() << " is pausing. " << errmsg;
+		return false;
+	}
+
+	if ( (m_state == Starting) && (st != Starting) ) {
+		LOG(LWARNING) << "Thread " << name() << " is starting. " << errmsg;
+		return false;
+	}
+
+
 	return true;
 }
 
@@ -52,7 +63,7 @@ void Executor::restart() {
 	// set state to running
 	{
 		boost::lock_guard<boost::mutex> lock(m_cond_mtx);
-		m_state = Running;
+		m_state = Starting;
 	}
 	m_cond.notify_all();
 }
@@ -65,7 +76,7 @@ void Executor::pause() {
 	// set state to paused
 	{
 		boost::lock_guard<boost::mutex> lock(m_cond_mtx);
-		m_state = Paused;
+		m_state = Pausing;
 	}
 	m_cond.notify_all();
 }
@@ -130,21 +141,52 @@ void Executor::run() {
 	}
 
 	for(;;) {
+
+		if (m_state == Starting) {
+			boost::unique_lock<boost::mutex> lock(m_cond_mtx);
+
+			// start all components
+			if (m_state == Starting) {
+				BOOST_FOREACH(ComponentPair cmp, components) {
+					cmp.second->start();
+				}
+
+				m_state = Running;
+			}
+		}
+
 		if (m_state == Running) {
 
+			// handle all pending events
+			while (!queue.empty())
+				executeEvents();
+
+			// if period set, then sleep until next wake-up
+			if (m_period > 0) {
+				// TODO: use periodic timer
+				Thread::msleep(1000*m_period);
+			}
+
+			LOG(LTRACE) << "Thread " << name() << " works!";
+
 		}
-
-		// handle pending events
-
-		// if period set, then sleep until next wakeup
-		if (m_period > 0) {
-			// TODO: use periodic timer
-		}
-
 
 		// double-check if executor is paused
-		if (m_state == Paused) {
+		if ( (m_state == Paused) || (m_state == Pausing) ) {
 			boost::unique_lock<boost::mutex> lock(m_cond_mtx);
+
+			LOG(LTRACE) << "Thread " << name() << " pause or pausing...";
+
+			// pause all components
+			if (m_state == Pausing) {
+				LOG(LTRACE) << "Thread " << name() << " pausing...";
+				BOOST_FOREACH(ComponentPair cmp, components) {
+					cmp.second->stop();
+				}
+
+				m_state = Paused;
+			}
+
 			// wait until component is paused
 			while(m_state == Paused) {
 				m_cond.wait(lock);

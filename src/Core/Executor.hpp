@@ -25,7 +25,9 @@ namespace Core {
 enum ExecutorState {
 	Loaded,
 	Paused,
+	Starting,
 	Running,
+	Pausing,
 	Finished
 };
 
@@ -41,7 +43,7 @@ enum ExecutorState {
 class Executor : public Common::Thread {
 public:
 
-	Executor(const std::string & n) :  m_name(n), m_state(Loaded) {
+	Executor(const std::string & n) :  m_name(n), m_state(Loaded), m_period(2) {
 	}
 
 	virtual ~Executor() {
@@ -113,6 +115,10 @@ public:
 	 */
 	void setPeriod(float period) {
 		m_period = period;
+	}
+
+	ExecutorState state() const {
+		return m_state;
 	}
 
 protected:

@@ -270,7 +270,6 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		// and set them if property is persistent
 		loadProperties(&tmp, *cmp);
 
-		// TODO: add created component to executor
 		executor.addComponent(name, cmp);
 
 	}
@@ -316,110 +315,168 @@ void Configurator::loadProperties(const ptree * node, Base::Component & componen
 
 		prop->retrieve(value);
 	}
+
+	component.configure();
 }
 
-void Configurator::loadEvents(const ptree * /*node*/) {
+void Configurator::loadEvents(const ptree * node) {
 	LOG(LTRACE) << "Connecting events\n";
-/*	std::string src, dst, name, caller, receiver, type;
-	Base::Component * src_k, * dst_k;
-	Base::EventHandlerInterface * h;
+
+	std::string src_name, src_evt;
+	Base::Component * src_cmp;
 	Base::Event * e;
-	BOOST_FOREACH( TreeNode nd, *node ) {
+
+	std::string dst_name, dst_hand;
+	Base::Component * dst_cmp;
+	Base::EventHandlerInterface * h;
+
+	std::string key, type;
+
+	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
-		name = nd.first;
-		if (name == "<xmlcomment>") continue;
+		key = nd.first;
 
-		src = tmp.get("<xmlattr>.source", "");
-		if (src == "") {
-			LOG(LERROR) << "No event source specified...\n";
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "Emitter") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
 			continue;
 		}
 
-		dst = tmp.get("<xmlattr>.destination", "");
-		if (dst == "") {
-			LOG(LERROR) << "No event destination specified...\n";
-			continue;
-		}
+		src_evt = tmp.get("<xmlattr>.name", "");
 
-		type=tmp.get("type", "");
-
-		caller = src.substr(0, src.find_first_of("."));
-		src = src.substr(src.find_first_of(".")+1);
-
-		receiver = dst.substr(0, dst.find_first_of("."));
-		dst = dst.substr(dst.find_first_of(".")+1);
-
-		src_k = componentManager->getComponent(caller);
-		dst_k = componentManager->getComponent(receiver);
-
-		h = dst_k->getHandler(dst);
-		if (!h) {
-			LOG(LERROR) << "Component " << receiver << " has no event handler named '" << dst << "'!\n";
-			continue;
-		}
-
-		e = src_k->getEvent(src);
+		src_name = src_evt.substr(0, src_evt.find_first_of("."));
+		src_evt = src_evt.substr(src_evt.find_first_of(".")+1);
+		src_cmp = componentManager->getComponent(src_name);
+		e = src_cmp->getEvent(src_evt);
+		src_cmp->printEvents();
 		if (!e) {
-			LOG(LERROR) << "Component " << caller << " has no event named '" << src << "'!\n";
+			LOG(LERROR) << "Component " << src_name << " has no event named '" << src_evt << "'!\n";
 			continue;
 		}
 
-		// asynchronous connection
-		if ( (component_executor[caller] != component_executor[receiver]) || (type=="async")) {
-			Executor * ex = executorManager->getExecutor(component_executor[receiver]);
-			h = ex->scheduleHandler(h);
-			e->addAsyncHandler(h);
-		} else {
-			e->addHandler(h);
-		}
+		BOOST_FOREACH( TreeNode nd2, tmp) {
+			key = nd2.first;
 
-		LOG(LTRACE) << name << ": src=" << src << ", dst=" << dst << "\n";
-	}*/
-}
-
-void Configurator::loadConnections(const ptree * /* node */ ) {
-	LOG(LINFO) << "Connecting data streams\n";
-/*	std::string name, ds_name;
-	Base::Component * kern;
-	std::string type, con_name;
-	Base::Connection * con;
-	Base::DataStreamInterface * ds;
-
-
-	BOOST_FOREACH( TreeNode nd, *node ) {
-		ptree tmp = nd.second;
-		name = nd.first;
-		if (name == "<xmlcomment>") continue;
-
-		kern = componentManager->getComponent(name);
-		BOOST_FOREACH( TreeNode ds_nd, tmp ) {
-			ds_name = ds_nd.first;
-			if (ds_name == "<xmlcomment>") continue;
-
-			ptree ds_tmp = ds_nd.second;
-			type = ds_tmp.get("<xmlattr>.type", "out");
-			con_name = ds_tmp.get("<xmlattr>.group", "DefaultGroup");
-
-			con = connectionManager->get(con_name);
-
-			ds = kern->getStream(ds_name);
-			if (!ds) {
-				LOG(LERROR) << "Component " << name << " has no data stream named '" << ds_name << "'!\n";
-			}
-
-			LOG(LINFO) << name << ": str=" << ds_name << " [" << type << "] in " << con_name;
-
-			if (type == "out") {
-				ds->setConnection(con);
+			// ignore comments in task file
+			if (key == "<xmlcomment>" || key == "<xmlattr>") {
+				continue;
 			} else
-			if (type == "in") {
-				con->addListener(ds);
-			} else {
-				LOG(LERROR) << "Unknown data stream type: " << type << "\n";
+			if (key != "handler") {
+				LOG(LWARNING) << "Skipping unknown entry: " << key;
 				continue;
 			}
+
+			type = nd2.second.get("<xmlattr>.type", "sync");
+
+			dst_hand = nd2.second.data();
+			dst_name = dst_hand.substr(0, dst_hand.find_first_of("."));
+			dst_hand = dst_hand.substr(dst_hand.find_first_of(".")+1);
+			dst_cmp = componentManager->getComponent(dst_name);
+
+			dst_cmp->printHandlers();
+
+			h = dst_cmp->getHandler(dst_hand);
+			if (!h) {
+				LOG(LERROR) << "Component " << dst_name << " has no handler named '" << dst_hand << "'!\n";
+				continue;
+			}
+
+			// asynchronous connection
+			if ( (component_executor[src_name] != component_executor[dst_name]) || (type=="async")) {
+				Executor * ex = executorManager->getExecutor(component_executor[dst_name]);
+				h = ex->scheduleHandler(h);
+				e->addAsyncHandler(h);
+			} else {
+				e->addHandler(h);
+			}
+
+			LOG(LINFO) << src_name << " : " << src_evt << " -> " << dst_name << " : " << dst_hand << " (" << type << ")";
 		}
-	}*/
+	}
+}
+
+void Configurator::loadConnections(const ptree * node) {
+	LOG(LINFO) << "Connecting data streams\n";
+
+	std::string src_name, src_port;
+	Base::Component * src_cmp;
+	Base::DataStreamInterface * src_ds;
+
+	std::string dst_name, dst_port;
+	Base::Component * dst_cmp;
+	Base::DataStreamInterface * dst_ds;
+
+	std::string key;
+
+	Base::Connection * con;
+
+	BOOST_FOREACH( TreeNode nd, *node) {
+		ptree tmp = nd.second;
+		key = nd.first;
+
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "Source") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
+
+		src_port = tmp.get("<xmlattr>.name", "");
+
+		src_name = src_port.substr(0, src_port.find_first_of("."));
+		src_port = src_port.substr(src_port.find_first_of(".")+1);
+		src_cmp = componentManager->getComponent(src_name);
+		src_ds = src_cmp->getStream(src_port);
+		if (!src_ds) {
+			LOG(LERROR) << "Component " << src_name << " has no data stream named '" << src_port << "'!\n";
+			continue;
+		}
+
+		if (src_ds->type() == Base::DataStreamInterface::dsIn) {
+			LOG(LERROR) << "Component " << src_name << ": trying to set input data stream '" << src_port<< "' as output!";
+			continue;
+		}
+
+		con = connectionManager->get(src_name + ":" + src_port);
+		src_ds->setConnection(con);
+
+		BOOST_FOREACH( TreeNode nd2, tmp) {
+			key = nd2.first;
+
+			// ignore comments in task file
+			if (key == "<xmlcomment>" || key == "<xmlattr>") {
+				continue;
+			} else
+			if (key != "sink") {
+				LOG(LWARNING) << "Skipping unknown entry: " << key;
+				continue;
+			}
+
+			dst_port = nd2.second.data();
+			dst_name = dst_port.substr(0, dst_port.find_first_of("."));
+			dst_port = dst_port.substr(dst_port.find_first_of(".")+1);
+			dst_cmp = componentManager->getComponent(dst_name);
+			dst_ds = dst_cmp->getStream(dst_port);
+			if (!dst_ds) {
+				LOG(LERROR) << "Component " << dst_name << " has no data stream named '" << dst_port << "'!\n";
+				continue;
+			}
+
+			if (dst_ds->type() == Base::DataStreamInterface::dsOut) {
+				LOG(LERROR) << "Component " << src_name << ": trying to set output data stream '" << dst_port << "' as input!";
+				continue;
+			}
+
+			con->addListener(dst_ds);
+
+			LOG(LINFO) << src_name << " : " << src_port << " -> " << dst_name << " : " << dst_port;
+		}
+	}
 }
 
 

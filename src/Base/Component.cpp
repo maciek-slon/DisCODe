@@ -289,18 +289,5 @@ PropertyInterface * Component::registerProperty(PropertyInterface & prop) {
 }
 
 
-
-
-//------------------------------------------------------------------------------------
-// Deprecated methods
-//------------------------------------------------------------------------------------
-
-Props * Component::getProperties() {
-	// by default return NULL indicating, that given component has no properties
-	return NULL;
-}
-
-
-
 }//: namespace Base
 

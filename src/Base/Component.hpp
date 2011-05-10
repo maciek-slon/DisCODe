@@ -15,7 +15,6 @@
 
 namespace Base {
 
-class Props;
 class Event;
 class EventHandlerInterface;
 class DataStreamInterface;
@@ -172,16 +171,6 @@ public:
 	 */
 	PropertyInterface * getProperty(const std::string& name);
 
-
-	/*!
-	 * Return pointer to properties of this object.
-	 *
-	 * Should be overridden in derived classes containing specific properties.
-	 *
-	 * \deprecated
-	 */
-	virtual Props * getProperties();
-
 	/*!
 	 * Check, if component is running
 	 */
@@ -191,6 +180,12 @@ public:
 	 * Check, if component is initialized
 	 */
 	bool initialized() const;
+
+
+
+	virtual void configure() {
+
+	}
 
 protected:
 	/*!

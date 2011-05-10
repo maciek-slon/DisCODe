@@ -24,6 +24,10 @@ void Subtask::stop()
 	BOOST_FOREACH(ExecutorPair executor, executors) {
 		executor.second->pause();
 	}
+
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		while (executor.second->state() != Paused);
+	}
 }
 
 bool Subtask::start()

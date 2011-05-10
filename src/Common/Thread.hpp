@@ -106,13 +106,6 @@ protected:
 	 */
 	virtual void run() = 0;
 
-	/*!
-	 * Suspends the current thread until the specified time in milliseconds has been reached.
-	 */
-	void sleep(int msec) {
-		boost::this_thread::sleep(boost::posix_time::milliseconds(msec));
-	}
-
 private:
 	/// Actual thread
 	boost::thread thread;

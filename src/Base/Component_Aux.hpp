@@ -13,7 +13,6 @@
 
 #include "Component.hpp"
 #include "Panel.hpp"
-#include "Props.hpp"
 #include "Event.hpp"
 #include "EventHandler.hpp"
 #include "DataStreamInterface.hpp"

@@ -18,7 +18,6 @@
 #include "Logger.hpp"
 #include "Component_Aux.hpp"
 #include "SharedLibrary.hpp"
-#include "Props.hpp"
 
 namespace Core {
 
@@ -60,10 +59,6 @@ private:
 	 */
 	Base::Panel* panel;
 
-	/*!
-	 * Pointer to node containing component configuration
-	 */
-	ptree * config_node;
 
 public:
 	/*!
@@ -74,7 +69,6 @@ public:
 		// NULL pointers.
 		panel = 0;
 		object = 0;
-		config_node = 0;
 	}
 
 	/*!
@@ -164,13 +158,6 @@ public:
 			LOG(LINFO) << "ComponentFactory: " << ex.what() << "\n";
 		}
 		return false;
-	}
-
-	/*!
-	 * Set config node associated to this component
-	 */
-	void setConfigNode(ptree * node) {
-		config_node = node;
 	}
 
 };
