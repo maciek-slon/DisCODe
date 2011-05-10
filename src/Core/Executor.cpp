@@ -51,6 +51,11 @@ bool Executor::ensureState(ExecutorState st, const std::string & errmsg) {
 		return false;
 	}
 
+	if ( (m_state == Finishing) && (st != Finishing) ) {
+		LOG(LWARNING) << "Thread " << name() << " is finishing. " << errmsg;
+		return false;
+	}
+
 
 	return true;
 }
@@ -116,7 +121,7 @@ void Executor::finish() {
 	// set state to finished
 	{
 		boost::lock_guard<boost::mutex> lock(m_cond_mtx);
-		m_state = Finished;
+		m_state = Finishing;
 	}
 	m_cond.notify_all();
 }
@@ -207,9 +212,16 @@ void Executor::run() {
 		}
 
 		// stop main execution loop
-		if (m_state == Finished)
+		if (m_state == Finishing)
 			break;
 	}
+
+
+	BOOST_FOREACH(ComponentPair cmp, components) {
+		cmp.second->finish();
+	}
+
+	m_state = Finished;
 
 	LOG(LINFO) << "Executor " << name() << " thread finished.";
 }

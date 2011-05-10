@@ -28,6 +28,7 @@ enum ExecutorState {
 	Starting,
 	Running,
 	Pausing,
+	Finishing,
 	Finished
 };
 

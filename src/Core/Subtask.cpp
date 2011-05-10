@@ -22,7 +22,8 @@ Subtask::~Subtask()
 void Subtask::stop()
 {
 	BOOST_FOREACH(ExecutorPair executor, executors) {
-		executor.second->pause();
+		if (executor.second->state() != Paused)
+			executor.second->pause();
 	}
 
 	BOOST_FOREACH(ExecutorPair executor, executors) {
@@ -36,6 +37,12 @@ bool Subtask::start()
 	BOOST_FOREACH(ExecutorPair executor, executors) {
 		executor.second->restart();
 	}
+
+
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		while (executor.second->state() != Running);
+	}
+
 	return ret;
 }
 
@@ -50,6 +57,10 @@ void Subtask::finish()
 {
 	BOOST_FOREACH(ExecutorPair executor, executors) {
 		executor.second->finish();
+	}
+
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		while (executor.second->state() != Finished);
 	}
 }
 

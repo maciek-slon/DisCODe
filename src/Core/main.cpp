@@ -232,24 +232,25 @@ int main(int argc, char* argv[])
 	// === Main program part
 	// =========================================================================
 
-	Configurator configurator;
-	ComponentManager km;
-	ExecutorManager em;
-	ConnectionManager cm;
-
-	Task task;
-
-	configurator.loadConfiguration(&conf);
-	configurator.setExecutorManager(&em);
-	configurator.setComponentManager(&km);
-	configurator.setConnectionManager(&cm);
-
-	TaskInformer task_informer(task);
-	ComponentInformer component_informer(km);
-	SystemInformer system_informer(running);
-	ExecutorInformer executor_informer(em);
-
 	try {
+		Configurator configurator;
+		ComponentManager km;
+		ExecutorManager em;
+		ConnectionManager cm;
+
+		Task task;
+
+		configurator.loadConfiguration(&conf);
+		configurator.setExecutorManager(&em);
+		configurator.setComponentManager(&km);
+		configurator.setConnectionManager(&cm);
+
+		TaskInformer task_informer(task);
+		ComponentInformer component_informer(km);
+		SystemInformer system_informer(running);
+		ExecutorInformer executor_informer(em);
+
+
 		//CommandServer server;
 
 		/*server.addInformer(&task_informer);
