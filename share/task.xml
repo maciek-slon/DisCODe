@@ -15,7 +15,7 @@
 	<!-- task definition -->
 	<Subtasks>
 		<Subtask name="Processing">
-			<Executor name="Exec1" type="continuous">
+			<Executor name="Exec1">
 				<Component name="Source" type="CvBasic:CameraOpenCV" priority="1">
 					<param name="device">0</param>
 				</Component>
@@ -23,9 +23,9 @@
 		</Subtask>
 		
 		<Subtask name="Visualisation">
-			<Executor name="Exec2" type="periodic">
+			<Executor name="Exec2" period="0.2">
 				<Component name="Window" type="CvBasic:CvWindow" priority="1">
-					<param name="count">2</param>
+					<param name="count">1</param>
 					<param name="title">Okienko</param>
 				</Component>
 			</Executor>

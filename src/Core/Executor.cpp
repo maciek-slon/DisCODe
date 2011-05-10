@@ -140,6 +140,8 @@ void Executor::run() {
 		LOG(LINFO) << "Executor " << name() << " initialized.";
 	}
 
+	size_t current_component = 0;
+
 	for(;;) {
 
 		if (m_state == Starting) {
@@ -152,14 +154,25 @@ void Executor::run() {
 				}
 
 				m_state = Running;
+
+
+				LOG(LINFO) << "Executor " << name() << " components initialized.";
 			}
 		}
 
 		if (m_state == Running) {
 
 			// handle all pending events
-			while (!queue.empty())
+			//while (!queue.empty())
 				executeEvents();
+
+			if (!active_components.empty()) {
+				active_components[current_component]->step();
+				++current_component;
+				current_component = current_component+1 >= active_components.size() ? 0 : current_component+1;
+
+				LOG(LTRACE) << "Executor " << name() << ": current=" << current_component;
+			}
 
 			// if period set, then sleep until next wake-up
 			if (m_period > 0) {

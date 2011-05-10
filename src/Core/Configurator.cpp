@@ -196,6 +196,7 @@ void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 	std::string name;
 	std::string key;
 	std::string type;
+	float period;
 
 	BOOST_FOREACH( TreeNode nd, *node ) {
 		ptree tmp = nd.second;
@@ -212,8 +213,10 @@ void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 
 		name = tmp.get("<xmlattr>.name", "");
 		type = tmp.get("<xmlattr>.type", "");
+		period = tmp.get("<xmlattr>.period", 0.0f);
 
-		ex = executorManager->createExecutor(name, type);
+		ex = executorManager->createExecutor(name);
+		ex->setPeriod(period);
 
 		subtask+=ex;
 		LOG(LNOTICE) << "\t" << name;
@@ -270,8 +273,9 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		// and set them if property is persistent
 		loadProperties(&tmp, *cmp);
 
-		executor.addComponent(name, cmp);
+		executor.addComponent(name, cmp, prio);
 
+		component_executor[name] = executor.name();
 	}
 }
 
@@ -389,6 +393,7 @@ void Configurator::loadEvents(const ptree * node) {
 				Executor * ex = executorManager->getExecutor(component_executor[dst_name]);
 				h = ex->scheduleHandler(h);
 				e->addAsyncHandler(h);
+				type = "async";
 			} else {
 				e->addHandler(h);
 			}

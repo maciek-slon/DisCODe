@@ -54,7 +54,11 @@ public:
 	 * \param name name of component
 	 * \param component component to be added to executor
 	 */
-	void addComponent(const std::string & name, Base::Component * component) {
+	void addComponent(const std::string & name, Base::Component * component, int priority) {
+		// TODO: implement priority queue
+		if (priority > 0)
+			active_components.push_back(component);
+
 		components[name] = component;
 	}
 
@@ -152,6 +156,10 @@ protected:
 
 	/// List of components managed by this Executor
 	std::map<std::string, Base::Component *> components;
+
+
+	/// List of components managed by this Executor
+	std::vector<Base::Component *> active_components;
 
 	/// FIFO queue for incoming events
 	std::deque<Base::EventHandlerInterface *> queue;
