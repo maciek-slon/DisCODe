@@ -235,6 +235,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 	std::string key;
 	Base::Component * cmp;
 	int prio;
+	int bump;
 
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
@@ -252,6 +253,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		name = tmp.get("<xmlattr>.name", "");
 		type = tmp.get("<xmlattr>.type", "");
 		prio = tmp.get("<xmlattr>.priority", 0);
+		bump = tmp.get("<xmlattr>.bump", 0);
 
 		// split component type into dcl and type
 		std::vector<std::string> dcl_comp;
@@ -268,6 +270,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 
 		// try to create requested component
 		cmp = componentManager->createComponent(name, dcl_comp[0], dcl_comp[1]);
+		cmp->setBump(bump);
 
 		// iterate through properties defined in xml, check if component has them
 		// and set them if property is persistent

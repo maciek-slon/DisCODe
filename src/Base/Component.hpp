@@ -13,6 +13,10 @@
 #include <string>
 #include <vector>
 
+#include "Logger.hpp"
+
+#define CLOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level, this->getBump()).get())
+
 namespace Base {
 
 class Event;
@@ -70,7 +74,7 @@ public:
 	 */
 	Component(const std::string & n) : name_(n), state(Unready)
 	{
-
+		m_bump = 0;
 	}
 
 	void setName(const std::string & n) {
@@ -188,6 +192,14 @@ public:
 	 */
 	bool initialized() const;
 
+	void setBump(int bump) {
+		m_bump = bump;
+	}
+
+	int getBump() const {
+		return m_bump;
+	}
+
 protected:
 	/*!
 	 * Method called when component is started
@@ -272,6 +284,8 @@ private:
 	/// all registered properties
 	std::map<std::string, PropertyInterface *> properties;
 
+	/// severity level bump
+	int m_bump;
 };
 
 }//: namespace Base

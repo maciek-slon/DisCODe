@@ -20,9 +20,9 @@ namespace Logger {
 Logger::~Logger() {
 }
 
-Logger & Logger::log(const std::string & file, int line, Severity sev, const std::string & msg) {
+Logger & Logger::log(const std::string & file, int line, Severity sev, const std::string & msg, int bump) {
 	BOOST_FOREACH(LoggerOutput & output, outputs) {
-		if (sev < output.getLvl())
+		if (sev + bump < output.getLvl())
 			continue;
 
 		output.print(msg, sev, file, line);
@@ -38,7 +38,7 @@ static char char2dump(char ch) {
 }
 
 void Logger::dump(Severity sev, const std::string & msg, void * data, int length) {
-	log("", 0, sev, "") << msg << "\n";
+	log("", 0, sev, "", 0) << msg << "\n";
 	int step;
 	int offset;
 	char * itr;
