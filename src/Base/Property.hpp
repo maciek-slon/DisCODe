@@ -14,6 +14,8 @@
 #include <typeinfo>
 #include <vector>
 
+#include <iostream>
+
 namespace Base {
 
 class PropertyInterface {
@@ -175,6 +177,11 @@ public:
 
 	/// Might be useful for template deductions
 	typedef T value_type;
+
+	friend std::ostream & operator<<(std::ostream & os, const Property & prop) {
+		os << prop.data;
+		return os;
+	}
 
 protected:
 	/// actual data

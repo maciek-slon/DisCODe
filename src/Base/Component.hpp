@@ -117,6 +117,13 @@ public:
 	 */
 	double step();
 
+
+
+	/*!
+	 * Prepare all events and data streams
+	 */
+	virtual void prepareInterface() = 0;
+
 	/*!
 	 * Print list of all registered events.
 	 */
@@ -180,12 +187,6 @@ public:
 	 * Check, if component is initialized
 	 */
 	bool initialized() const;
-
-
-
-	virtual void configure() {
-
-	}
 
 protected:
 	/*!

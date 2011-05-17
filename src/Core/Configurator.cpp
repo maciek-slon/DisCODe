@@ -320,7 +320,7 @@ void Configurator::loadProperties(const ptree * node, Base::Component & componen
 		prop->retrieve(value);
 	}
 
-	component.configure();
+	component.prepareInterface();
 }
 
 void Configurator::loadEvents(const ptree * node) {
