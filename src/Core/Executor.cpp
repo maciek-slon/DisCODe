@@ -7,6 +7,8 @@
 #include "Component.hpp"
 #include "Timer.hpp"
 
+#include <cstdlib>
+
 #include <boost/foreach.hpp>
 
 namespace Core {
@@ -161,13 +163,14 @@ void Executor::run() {
 				m_state = Running;
 
 
-				LOG(LINFO) << "Executor " << name() << " components initialized.";
+				LOG(LINFO) << "Executor " << name() << " components started.";
 			}
 		}
 
 		if (m_state == Running) {
 
 			// handle all pending events
+			LOG(LTRACE) << "Executing events in " << name();
 			//while (!queue.empty())
 				executeEvents();
 
@@ -182,7 +185,11 @@ void Executor::run() {
 			// if period set, then sleep until next wake-up
 			if (m_period > 0) {
 				// TODO: use periodic timer
-				Thread::msleep(1000*m_period);
+				int msec = 1000*m_period;
+				LOG(LTRACE) << "Thread " << name() << " sleep " << msec;
+				//Thread::msleep(msec);
+				sleep(1);
+				LOG(LTRACE) << "Thread " << name() << " wakeup";
 			}
 
 			LOG(LTRACE) << "Thread " << name() << " works!";
@@ -214,6 +221,8 @@ void Executor::run() {
 		// stop main execution loop
 		if (m_state == Finishing)
 			break;
+
+		yield();
 	}
 
 
