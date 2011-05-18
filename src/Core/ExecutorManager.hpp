@@ -11,7 +11,7 @@
 
 #include "Executor.hpp"
 #include "Logger.hpp"
-#include "Utils.hpp"
+#include "DisCODeException.hpp"
 
 #include <map>
 #include <string>
@@ -27,9 +27,6 @@ class ExecutorManager {
 
 public:
 	ExecutorManager() {
-//		types.push_back("continuous");
-//		types.push_back("periodic");
-//		types.push_back("passive");
 	}
 
 	~ExecutorManager() {

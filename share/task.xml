@@ -15,18 +15,18 @@
 	<!-- task definition -->
 	<Subtasks>
 		<Subtask name="Processing">
-			<Executor name="Exec1"  period="0.2">
-				<Component name="Source" type="CvBasic_2:Sequence" priority="1" bump="3">
+			<Executor name="Exec1"  period="1.5">
+				<Component name="Source" type="CvBasic_2:Sequence" priority="1" bump="-3">
 					<param name="device">0</param>
-					<param name="directory">/home/mstefanc/workspace/datasets/Chessboard</param>
+					<param name="directory">/usr/share/pixmaps</param>
 					<param name="device">0</param>-->
 				</Component>
 			</Executor>
 		</Subtask>
 		
 		<Subtask name="Visualisation">
-			<Executor name="Exec2" period="1.0">
-				<Component name="Window" type="CvBasic_2:CvWindow" priority="1">
+			<Executor name="Exec2" period="10.0">
+				<Component name="Window" type="CvBasic_2:CvWindow" priority="1" bump="-3">
 					<param name="count">1</param>
 					<param name="title">Okienko</param>
 				</Component>

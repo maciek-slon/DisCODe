@@ -5,13 +5,22 @@
 
 #include "Executor.hpp"
 #include "Component.hpp"
+#include "EventHandler.hpp"
+
 #include "Timer.hpp"
+#include "Logger.hpp"
 
 #include <cstdlib>
 
 #include <boost/foreach.hpp>
 
 namespace Core {
+
+Executor::Executor(const std::string & n) :  m_name(n), m_state(Loaded), m_period(0) {
+}
+
+Executor::~Executor() {
+}
 
 std::vector<std::string> Executor::listComponents() {
 	std::vector<std::string> ret;
@@ -21,6 +30,41 @@ std::vector<std::string> Executor::listComponents() {
 	return ret;
 }
 
+void Executor::addComponent(const std::string & name, Base::Component * component, int priority) {
+	// TODO: implement priority queue
+	if (priority > 0)
+		active_components.push_back(component);
+
+	components[name] = component;
+}
+
+Base::EventHandlerInterface * Executor::scheduleHandler(Base::EventHandlerInterface * h) {
+	Base::EventScheduler<Executor> * handler = new Base::EventScheduler<Executor>();
+	handler->setup(this, &Executor::queueEvent);
+	handler->registerHandler(h);
+	return handler;
+}
+
+void Executor::queueEvent(Base::EventHandlerInterface * h) {
+	mtx.lock();
+	queue.push_back(h);
+	mtx.unlock();
+	m_event_cond.notify_all();
+}
+
+void Executor::executeEvents() {
+	mtx.lock();
+	loc_queue = queue;
+	queue.clear();
+	mtx.unlock();
+
+	while (!loc_queue.empty()) {
+		Base::EventHandlerInterface * h;
+		h = loc_queue.front();
+		loc_queue.pop_front();
+		h->execute();
+	}
+}
 
 bool Executor::ensureState(ExecutorState st, const std::string & errmsg) {
 	if ( (m_state == Loaded) && (st != Loaded) ) {
@@ -86,6 +130,7 @@ void Executor::pause() {
 		m_state = Pausing;
 	}
 	m_cond.notify_all();
+	m_event_cond.notify_all();
 }
 
 /*!
@@ -148,6 +193,7 @@ void Executor::run() {
 	}
 
 	size_t current_component = 0;
+	bool timeout = true;
 
 	for(;;) {
 
@@ -160,6 +206,8 @@ void Executor::run() {
 					cmp.second->start();
 				}
 
+				next_wakeup = boost::get_system_time();
+
 				m_state = Running;
 
 
@@ -171,10 +219,10 @@ void Executor::run() {
 
 			// handle all pending events
 			LOG(LTRACE) << "Executing events in " << name();
-			//while (!queue.empty())
+			while (!queue.empty())
 				executeEvents();
 
-			if (!active_components.empty()) {
+			if (timeout && !active_components.empty()) {
 				active_components[current_component]->step();
 				++current_component;
 				current_component = current_component+1 >= active_components.size() ? 0 : current_component+1;
@@ -184,12 +232,17 @@ void Executor::run() {
 
 			// if period set, then sleep until next wake-up
 			if (m_period > 0) {
-				// TODO: use periodic timer
-				int msec = 1000*m_period;
-				LOG(LTRACE) << "Thread " << name() << " sleep " << msec;
-				//Thread::msleep(msec);
-				sleep(1);
-				LOG(LTRACE) << "Thread " << name() << " wakeup";
+				boost::unique_lock<boost::mutex> lock(m_event_cond_mtx);
+
+				if (timeout) {
+					timeout = false;
+					next_wakeup += boost::posix_time::milliseconds(1000 * m_period);
+				}
+
+				timeout = !m_event_cond.timed_wait(lock, next_wakeup);
+			} else {
+				// if there is no period set, then yield thread
+				yield();
 			}
 
 			LOG(LTRACE) << "Thread " << name() << " works!";
@@ -221,8 +274,6 @@ void Executor::run() {
 		// stop main execution loop
 		if (m_state == Finishing)
 			break;
-
-		yield();
 	}
 
 

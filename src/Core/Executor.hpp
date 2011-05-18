@@ -13,79 +13,84 @@
 #include <map>
 
 #include "Thread.hpp"
-#include "EventHandler.hpp"
-#include "Logger.hpp"
 
 namespace Base {
 	class Component;
+	class EventHandlerInterface;
 }
 
 namespace Core {
 
+/*!
+ * Possible Executor states.
+ */
 enum ExecutorState {
-	Loaded,
-	Paused,
-	Starting,
-	Running,
-	Pausing,
-	Finishing,
-	Finished
+	Loaded,   //!< Loaded
+	Pausing,  //!< Pausing
+	Paused,   //!< Paused
+	Starting, //!< Starting
+	Running,  //!< Running
+	Finishing,//!< Finishing
+	Finished  //!< Finished
 };
 
 /*!
  * \class Executor
  * \brief Executor object holds \ref Base::Component "components" and implements message queue.
  *
- * Executor is only interface for concrete implementations. These implementations
- * can differ in the way components are managed etc.
- *
- * \author mstefanc
+ * TODO: Finish documentation
  */
 class Executor : public Common::Thread {
 public:
 
-	Executor(const std::string & n) :  m_name(n), m_state(Loaded), m_period(2) {
-	}
+	/*!
+	 * Initialize all member variables.
+	 *
+	 * By default, Executor has period set to 0, and after
+	 * creation its state is set to Loaded.
+	 *
+	 * @param n name of created Executor
+	 */
+	Executor(const std::string & n);
 
-	virtual ~Executor() {
-	}
+	/*!
+	 * Destroy executor.
+	 *
+	 * Executor is not owner of components it's holding,
+	 * so none of them are released at this point.
+	 */
+	virtual ~Executor();
 
 	/*!
 	 * Add new Component to Executor.
 	 * \param name name of component
 	 * \param component component to be added to executor
 	 */
-	void addComponent(const std::string & name, Base::Component * component, int priority) {
-		// TODO: implement priority queue
-		if (priority > 0)
-			active_components.push_back(component);
-
-		components[name] = component;
-	}
+	void addComponent(const std::string & name, Base::Component * component, int priority);
 
 	/*!
 	 * Queue event handler in internal FIFO buffer
 	 */
-	void queueEvent(Base::EventHandlerInterface * h) {
-		mtx.lock();
-		queue.push_back(h);
-		mtx.unlock();
-	}
+	void queueEvent(Base::EventHandlerInterface * h);
 
 	/*!
 	 * Returns event handler scheduler for given handler.
 	 * \param h event handler to be scheduled
 	 * \returns pointer to event handler scheduler
 	 */
-	Base::EventHandlerInterface * scheduleHandler(Base::EventHandlerInterface * h) {
-		Base::EventScheduler<Executor> * handler = new Base::EventScheduler<Executor>();
-		handler->setup(this, &Executor::queueEvent);
-		handler->registerHandler(h);
-		return handler;
-	}
+	Base::EventHandlerInterface * scheduleHandler(Base::EventHandlerInterface * h);
 
+	/*!
+	 *
+	 */
 	void restart();
 
+	/*!
+	 * Pause Executor.
+	 *
+	 * After calling this method, state is set to Pausing, and only after
+	 * Executor actually pause, state is set to Paused.
+	 */
 	void pause();
 
 	/*!
@@ -105,13 +110,17 @@ public:
 	void finish();
 
 	/*!
-	 * Return name
+	 * Return name of Executor
 	 */
 	const std::string & name() const {
 		return m_name;
 	}
 
-
+	/*!
+	 * Return names of all components handled in this Executor.
+	 *
+	 * @return vector containing names of components
+	 */
 	std::vector<std::string> listComponents();
 
 	/*!
@@ -122,12 +131,24 @@ public:
 		m_period = period;
 	}
 
+	/*!
+	 *
+	 * @return state of Executor
+	 */
 	ExecutorState state() const {
 		return m_state;
 	}
 
 protected:
 
+	/*!
+	 * Check if state is as expected, and print message if it's not.
+	 *
+	 * @param st expected state
+	 * @param errmsg message to print in case of unexpected state
+	 *
+	 * @return true if state() == st, false otherwise
+	 */
 	bool ensureState(ExecutorState st, const std::string & errmsg);
 
 	/*!
@@ -138,20 +159,7 @@ protected:
 	/**
 	 * Execute all pending events.
 	 */
-	void executeEvents() {
-		mtx.lock();
-		loc_queue = queue;
-		queue.clear();
-		mtx.unlock();
-
-		while (!loc_queue.empty()) {
-			Base::EventHandlerInterface * h;
-			h = loc_queue.front();
-			loc_queue.pop_front();
-			h->execute();
-		}
-	}
-
+	void executeEvents();
 
 	typedef std::pair<std::string, Base::Component*> ComponentPair;
 
@@ -174,14 +182,20 @@ protected:
 	boost::mutex mtx;
 
 	///
-	boost::mutex ev_mtx;
+	boost::condition_variable m_event_cond;
+	boost::mutex m_event_cond_mtx;
 
 	boost::condition_variable m_cond;
 	boost::mutex m_cond_mtx;
 
+	/// current state
 	ExecutorState m_state;
 
+	/// period
 	float m_period;
+
+	/// time of next wake-up, used when period > 0
+	boost::system_time next_wakeup;
 };
 
 }//: namespace Core

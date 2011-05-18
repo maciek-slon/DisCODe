@@ -6,6 +6,7 @@
 
 #include "Task.hpp"
 #include "Executor.hpp"
+#include "Logger.hpp"
 
 #include <boost/foreach.hpp>
 
