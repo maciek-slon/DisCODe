@@ -11,8 +11,35 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/function.hpp>
 
+#include <boost/preprocessor/list/for_each.hpp>
+#include <boost/preprocessor/tuple/to_list.hpp>
+
 #include <typeinfo>
 #include <vector>
+
+
+#define INSIDE_IF(_, PREFIX, VAL) if(s == #VAL) return PREFIX##VAL;
+#define INSIDE_CASE(_, PREFIX, VAL) case PREFIX##VAL: return #VAL;
+
+
+#define GENERATE_ENUM_TRANSLATOR(TranslatorName, TranslatorType, Elems, Prefix) \
+	class TranslatorName { \
+	public:\
+		static TranslatorType fromStr(const std::string & s) {\
+			BOOST_PP_LIST_FOR_EACH(INSIDE_IF, Prefix, Elems); \
+			return BOOST_PP_CAT(Prefix, BOOST_PP_LIST_FIRST(Elems));\
+		}\
+		\
+		static std::string toStr(TranslatorType t) {\
+			switch(t) {\
+			BOOST_PP_LIST_FOR_EACH(INSIDE_CASE, Prefix, Elems); \
+			default: return BOOST_PP_STRINGIZE(BOOST_PP_LIST_FIRST(Elems));\
+			}\
+		}\
+	};
+
+#define ADD_CONSTRAINT(_, Property, Value) Property.addConstraint(#Value);
+#define PROP_ADD_COMBO_ITEMS(Property, Elems) BOOST_PP_LIST_FOR_EACH(ADD_CONSTRAINT, Property, Elems)
 
 namespace Base {
 
