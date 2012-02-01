@@ -13,6 +13,19 @@
 
 namespace Utils {
 
+#if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
+#define MARK_DEPRECATED(MSG) __attribute__((__deprecated__))
+#elif defined(_MSC_VER)
+#define MARK_DEPRECATED(MSG) __declspec(deprecated)
+#else
+#define MARK_DEPRECATED(MSG)
+#endif /* __GNUC__ */
+
+
+
+
+
+
 #if defined (_WIN32)
   #if defined(COMPILING_DLL)
     #define  MYLIB_EXPORT __declspec(dllexport)
