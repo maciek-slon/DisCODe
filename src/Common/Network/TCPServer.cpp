@@ -180,6 +180,7 @@ void TCPServer::start()
 			switch(errno) {
 			case EBADF:
 				// An invalid file descriptor was given in one of the sets. (Perhaps a file descriptor that was already closed, or one on which an error has occurred.)
+				std::cout << "An invalid file descriptor was given in one of the sets. (Perhaps a file descriptor that was already closed, or one on which an error has occurred.)\n";
 				break;
 			case EINTR:
 				// A signal was caught; see signal(7).
