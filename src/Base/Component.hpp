@@ -256,6 +256,8 @@ protected:
 
 	void addDependency(const std::string & name, DataStreamInterface * stream);
 
+	void sortHandlers();
+
 	/*!
 	 * Register new data stream under specified name.
 	 * \param name stream name
@@ -295,6 +297,9 @@ private:
 
 	/// triggers for handlers
 	std::map<std::string , std::vector<DataStreamInterface * > > triggers;
+
+	/// sorted triggers for handlers
+	std::vector< std::pair<std::string , std::vector<DataStreamInterface * > > > sorted_triggers;
 
 	/// severity level bump
 	int m_bump;

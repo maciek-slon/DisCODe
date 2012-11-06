@@ -54,6 +54,8 @@ bool Component::initialize() {
 
 bool Component::start() {
 	if (state == Ready) {
+		sortHandlers();
+
 		if (onStart()) {
 			state = Running;
 			return true;
@@ -249,6 +251,18 @@ void Component::addDependency(const std::string & name, DataStreamInterface* str
 		triggers[name].push_back(stream);
 	else
 		CLOG(LWARNING) << "Handlers can only depend on input streams.";
+}
+
+void Component::sortHandlers() {
+	typedef std::pair<std::string, std::vector<DataStreamInterface *> > HandlerTriggers;
+
+	BOOST_FOREACH(HandlerTriggers ht, triggers) {
+		int i = 0;
+		for (i = 0; i < sorted_triggers.size(); ++i) {
+			if (sorted_triggers[i].second.size() < ht.second.size()) break;
+		}
+		sorted_triggers.insert(sorted_triggers.begin() + i, ht);
+	}
 }
 
 //------------------------------------------------------------------------------------
