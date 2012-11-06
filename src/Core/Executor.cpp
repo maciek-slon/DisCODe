@@ -31,9 +31,14 @@ std::vector<std::string> Executor::listComponents() {
 }
 
 void Executor::addComponent(const std::string & name, Base::Component * component, int priority) {
-	// TODO: implement priority queue
-	if (priority > 0)
-		active_components.push_back(component);
+	if (priority > 0) {
+		int i = 0;
+		for (i = 0; i < active_components.size(); ++i) {
+			if (active_components[i].first > priority) break;
+		}
+
+		active_components.insert(active_components.begin() + i, std::make_pair(priority, component));
+	}
 
 	components[name] = component;
 }
@@ -223,11 +228,18 @@ void Executor::run() {
 				executeEvents();
 
 			if (timeout && !active_components.empty()) {
-				active_components[current_component]->step();
-				++current_component;
-				current_component = current_component+1 >= active_components.size() ? 0 : current_component+1;
-
-				LOG(LTRACE) << "Executor " << name() << ": current=" << current_component;
+//				bool end = false;
+//				while(!end) {
+//					if (active_components[current_component].second->step() == 0) end = true;
+//
+//					//++current_component;
+//					current_component = current_component+1 >= active_components.size() ? 0 : current_component+1;
+//
+//					LOG(LNOTICE) << "Executor " << name() << ": current=" << current_component;
+//				}
+				BOOST_FOREACH(ComponentPriority cp, active_components) {
+					cp.second->step();
+				}
 			}
 
 			// if period set, then sleep until next wake-up

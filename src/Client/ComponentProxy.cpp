@@ -19,7 +19,7 @@ void ComponentProxy::refreshPropertyConstraints(int i) {
 	std::string str = m_client->send(request);
 
 	size_t start = 0, end = 0;
-	std::string separator = "\n";
+	const std::string separator = "\n";
 
 	std::string tmp;
 

@@ -67,8 +67,6 @@ private:
 	std::string & substitute(std::string & text, const std::vector<std::pair<std::string, std::string> > & dict);
 
 public:
-	Configurator();
-
 	virtual ~Configurator();
 
 	/*!

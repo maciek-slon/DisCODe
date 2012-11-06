@@ -218,7 +218,7 @@ int main(int argc, char* argv[])
 	}
 
 	std::vector<std::pair<std::string, std::string> > overrides;
-	for (size_t i = 0; i < task_overrides.size(); ++i) {
+	for (std::size_t i = 0; i < task_overrides.size(); ++i) {
 		std::vector<std::string> strs;
 		boost::split(strs, task_overrides[i], boost::is_any_of("="));
 		if (strs.size() == 1) {

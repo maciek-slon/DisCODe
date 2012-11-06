@@ -162,13 +162,13 @@ protected:
 	void executeEvents();
 
 	typedef std::pair<std::string, Base::Component*> ComponentPair;
+	typedef std::pair<int, Base::Component*> ComponentPriority;
 
 	/// List of components managed by this Executor
 	std::map<std::string, Base::Component *> components;
 
-
 	/// List of components managed by this Executor
-	std::vector<Base::Component *> active_components;
+	std::vector<ComponentPriority> active_components;
 
 	/// FIFO queue for incoming events
 	std::deque<Base::EventHandlerInterface *> queue;

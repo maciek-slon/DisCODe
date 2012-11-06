@@ -122,6 +122,13 @@ public:
 	double step();
 
 
+	/*!
+	 * Check, if any handler can be triggered.
+	 *
+	 * \return pointer to ready handler or NULL if none can be triggered.
+	 */
+	EventHandlerInterface * getReadyHandler();
+
 
 	/*!
 	 * Prepare all events and data streams
@@ -247,6 +254,8 @@ protected:
 	 */
 	EventHandlerInterface * registerHandler(const std::string& name, EventHandlerInterface * handler);
 
+	void addDependency(const std::string & name, DataStreamInterface * stream);
+
 	/*!
 	 * Register new data stream under specified name.
 	 * \param name stream name
@@ -283,6 +292,9 @@ private:
 
 	/// all registered properties
 	std::map<std::string, PropertyInterface *> properties;
+
+	/// triggers for handlers
+	std::map<std::string , std::vector<DataStreamInterface * > > triggers;
 
 	/// severity level bump
 	int m_bump;

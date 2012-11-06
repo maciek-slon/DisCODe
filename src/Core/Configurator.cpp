@@ -31,11 +31,6 @@ namespace Core {
 
 using namespace boost;
 
-Configurator::Configurator()
-{
-
-}
-
 Configurator::~Configurator()
 {
 
@@ -118,7 +113,7 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 		}
 
 		// Take overrides into account
-		for (size_t i = 0; i < overrides.size(); ++i) {
+		for (std::size_t i = 0; i < overrides.size(); ++i) {
 			std::cout << overrides[i].first << " set to " << overrides[i].second << std::endl;
 			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
@@ -137,14 +132,14 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 			LOG(LERROR) << "No Subtasks branch in configuration file!\n";
 		}
 
-
-		try {
-			tmp_node = &(configuration.get_child("Task.Events"));
-			loadEvents(tmp_node);
-		}
-		catch(ptree_bad_path&) {
-			LOG(LFATAL) << "No Events branch in configuration file!\n";
-		}
+		// In new approach - no events exists
+		//try {
+		//	tmp_node = &(configuration.get_child("Task.Events"));
+		//	loadEvents(tmp_node);
+		//}
+		//catch(ptree_bad_path&) {
+		//	LOG(LFATAL) << "No Events branch in configuration file!\n";
+		//}
 
 		try {
 			tmp_node = &(configuration.get_child("Task.DataStreams"));

@@ -16,10 +16,9 @@
 	<Subtasks>
 		<Subtask name="Processing">
 			<Executor name="Exec1"  period="1.5">
-				<Component name="Source" type="CvBasic_2:Sequence" priority="1" bump="-3">
+				<Component name="Source" type="CvBasic_2:Sequence" priority="1" bump="5">
 					<param name="device">0</param>
 					<param name="directory">/usr/share/pixmaps</param>
-					<param name="device">0</param>-->
 				</Component>
 			</Executor>
 		</Subtask>

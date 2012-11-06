@@ -132,14 +132,42 @@ double Component::step() {
 	Common::Timer timer;
 	if (state == Running) {
 		timer.restart();
-		onStep();
-		return timer.elapsed();
+		// Old way - one onStep method
+		//onStep();
+
+		// New way - check, which handler is ready and call it
+		Base::EventHandlerInterface * handler = getReadyHandler();
+		if (handler) {
+			handler->execute();
+			return timer.elapsed();
+		} else {
+			CLOG(LDEBUG) << name_ << " has no active handler. Skipping.";
+			return 0;
+		}
 	} else {
-		LOG(LWARNING) << name_ << " is not running. Step can't be done.\n";
+		CLOG(LWARNING) << name_ << " is not running. Step can't be done.\n";
 		return 0;
 	}
 
 	return 0;
+}
+
+EventHandlerInterface* Component::getReadyHandler() {
+	typedef std::pair<std::string, std::vector<DataStreamInterface *> > HandlerTriggers;
+
+	BOOST_FOREACH(HandlerTriggers ht, triggers) {
+		bool allready = true;
+		CLOG(LDEBUG) << name() << "::" << ht.first;
+		BOOST_FOREACH(DataStreamInterface * ds, ht.second) {
+			CLOG(LDEBUG) << ds->name() << " is " << ds->fresh()?"fresh":"old";
+			if (!ds->fresh()) {
+				allready = false;
+				break;
+			}
+		}
+		if (allready) return handlers[ht.first];
+	}
+	return NULL;
 }
 
 //------------------------------------------------------------------------------------
@@ -211,6 +239,16 @@ EventHandlerInterface * Component::registerHandler(const std::string& name, Even
 	/// \todo check, if handler already exists
 	handlers[name] = handler;
 	return handler;
+}
+
+void Component::addDependency(const std::string & name, DataStreamInterface* stream) {
+	if (!stream) {
+		triggers[name].clear();
+	} else
+	if (stream->type() == DataStreamInterface::dsIn)
+		triggers[name].push_back(stream);
+	else
+		CLOG(LWARNING) << "Handlers can only depend on input streams.";
 }
 
 //------------------------------------------------------------------------------------
