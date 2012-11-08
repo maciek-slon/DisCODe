@@ -161,7 +161,7 @@ EventHandlerInterface* Component::getReadyHandler() {
 		bool allready = true;
 		CLOG(LDEBUG) << name() << "::" << ht.first;
 		BOOST_FOREACH(DataStreamInterface * ds, ht.second) {
-			CLOG(LDEBUG) << ds->name() << " is " << ds->fresh()?"fresh":"old";
+			CLOG(LDEBUG) << ds->name() << " is " << (ds->fresh()?"fresh":"old");
 			if (!ds->fresh()) {
 				allready = false;
 				break;

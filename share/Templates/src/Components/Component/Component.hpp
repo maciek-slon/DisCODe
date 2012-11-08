@@ -31,6 +31,10 @@ public:
 	 */
 	virtual ~Example();
 
+	/*!
+	 * Prepare interface
+	 */
+	virtual void prepareInterface();
 
 protected:
 

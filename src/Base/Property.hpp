@@ -23,6 +23,10 @@ public:
 
 	PropertyInterface(const std::string & n) : name_(n), persistent(true), m_tool_tip(n) {}
 
+	virtual ~PropertyInterface() {
+
+	}
+
 	/*
 	template <typename T>
 	T get() {
@@ -107,6 +111,9 @@ public:
 	}
 
 	Property(const std::string& name, boost::function<void(T, T)> callback, const T & initializer = T(), std::string type = typeid(T).name()) : PropertyInterface(name), data(initializer), m_onChange(callback),  m_type(type) {
+	}
+
+	virtual ~Property() {
 	}
 
 	void setCallback(boost::function<void(T, T)> callback) {

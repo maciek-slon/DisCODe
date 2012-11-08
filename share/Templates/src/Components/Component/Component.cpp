@@ -22,11 +22,14 @@ Example::~Example()
 	LOG(LTRACE) << "Good bye Example\n";
 }
 
+void Example::prepareInterface() {
+	// Register data streams, events and event handlers HERE!
+}
+
 bool Example::onInit()
 {
 	LOG(LTRACE) << "Example::initialize\n";
 
-	// Register data streams, events and event handlers HERE!
 
 	return true;
 }

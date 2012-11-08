@@ -63,6 +63,7 @@ public:
 	 */
 	EventHandler() {
 		owner = NULL;
+		method = NULL;
 	}
 
 	/*!
@@ -136,6 +137,7 @@ public:
 	EventScheduler() {
 		owner = NULL;
 		handler = NULL;
+		method = NULL;
 	}
 
 	/*!
