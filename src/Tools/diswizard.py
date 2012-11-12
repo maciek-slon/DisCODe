@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from PySide import QtGui  
 from PySide import QtCore
 from PySide import QtUiTools
@@ -42,7 +44,7 @@ class MyWidget(QtGui.QMainWindow):
        apply(QtGui.QMainWindow.__init__, (self,) + args)
 
        loader = QtUiTools.QUiLoader()
-       file = QtCore.QFile("diswizard.ui")
+       file = QtCore.QFile("@CMAKE_INSTALL_PREFIX@/bin/diswizard.ui")
        file.open(QtCore.QFile.ReadOnly)
        self.ui = loader.load(file, self)
        file.close()
@@ -61,6 +63,10 @@ class DisCODeWizard(object):
 		
 		self.app.connect(self.app, QtCore.SIGNAL("lastWindowClosed()"), self.app, QtCore.SLOT("quit()"))
 		
+		widgets = self.win.findChildren(QtGui.QWidget);
+		for w in widgets:
+			print w.objectName()
+		
 	def run(self):
 		self.win.show()
 		self.app.exec_()
@@ -71,11 +77,11 @@ class DisCODeWizard(object):
 		DISCODE_PATH="@CMAKE_INSTALL_PREFIX@"
 
 		fullpath = os.path.abspath(os.getcwd())
-		dcl_name = self.win.ui.cbDCL.text()
+		dcl_name = self.win.ui.cbDCL.currentText()
 		cmp_name = self.win.ui.edName.text()
 
 		dir = fullpath+'/'+dcl_name+'/src/Components/'+cmp_name
-		if !os.path.exists(fullpath+'/'+dcl_name):
+		if not os.path.exists(fullpath+'/'+dcl_name):
 			sys.exit("DCL doesn't exist!")
 		if os.path.exists(dir):
 			sys.exit("Folder already exists! Choose different name of component.")
