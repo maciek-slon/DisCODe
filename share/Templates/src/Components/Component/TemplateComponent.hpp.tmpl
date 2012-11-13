@@ -3,8 +3,8 @@
  * \brief
  */
 
-#ifndef EXAMPLE_HPP_
-#define EXAMPLE_HPP_
+#ifndef TEMPLATECOMPONENT_HPP_
+#define TEMPLATECOMPONENT_HPP_
 
 #include "Component_Aux.hpp"
 #include "Component.hpp"
@@ -13,11 +13,11 @@
 #include "Property.hpp"
 
 namespace Processors {
-namespace Example {
+namespace TemplateComponent {
 
 /*!
- * \class Example
- * \brief Example processor class.
+ * \class TemplateComponent
+ * \brief TemplateComponent processor class.
  */
 class TemplateComponent: public Base::Component {
 public:
@@ -58,19 +58,18 @@ protected:
 	 */
 	bool onStop();
 
-	TMPLProperties
-	TMPLDataStreams
-	TMPLEvents
-	TMPLEventHandlers
+	TMPLFields
+	
+	TMPLMethodsHeaders
 };
 
-} //: namespace Example
+} //: namespace TemplateComponent
 } //: namespace Processors
 
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("Example", Processors::Example::Example,
+REGISTER_PROCESSOR_COMPONENT("TemplateComponent", Processors::TemplateComponent::TemplateComponent,
 		Common::Panel_Empty)
 
-#endif /* EXAMPLE_HPP_ */
+#endif /* TEMPLATECOMPONENT_HPP_ */
