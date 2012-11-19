@@ -1,6 +1,7 @@
 /*!
  * \file
  * \brief
+ * \author @TMPLAuthor@
  */
 
 #include <memory>
@@ -13,31 +14,24 @@ namespace Processors {
 namespace TemplateComponent {
 
 TemplateComponent::TemplateComponent(const std::string & name) :
-		Base::Component(name) TMPLInitializer {
-	LOG(LTRACE) << "Hello Example\n";
-	TMPLConstructor
+		Base::Component(name) @TMPLInitializer@ {
+	@TMPLConstructor@
 }
 
 TemplateComponent::~TemplateComponent() {
-	LOG(LTRACE) << "Good bye Example\n";
+}
+
+void TemplateComponent::prepareInterface() {
+	// Register data streams, events and event handlers HERE!
+	@TMPLPrepareInterface@
 }
 
 bool TemplateComponent::onInit() {
-	LOG(LTRACE) << "Example::initialize\n";
-
-	// Register data streams, events and event handlers HERE!
-	TMPLInit
+	@TMPLInit@
 	return true;
 }
 
 bool TemplateComponent::onFinish() {
-	LOG(LTRACE) << "Example::finish\n";
-
-	return true;
-}
-
-bool TemplateComponent::onStep() {
-	LOG(LTRACE) << "Example::step\n";
 	return true;
 }
 
@@ -49,7 +43,7 @@ bool TemplateComponent::onStart() {
 	return true;
 }
 
-TMPLMethodsCode
+@TMPLMethodsCode@
 
 } //: namespace TemplateComponent
 } //: namespace Processors

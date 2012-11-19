@@ -27,7 +27,7 @@ import re
 
 def replace_words(text, word_dic):
     """
-    take a text and <strong class="highlight">replace</strong> words that match a key <strong class="highlight">in</strong> a dictionary with
+    take a text and replace words that match a key in a dictionary with
     the associated value, return the changed text
     """
     rc = re.compile('|'.join(map(re.escape, word_dic)))

@@ -67,7 +67,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <property name="documentMode">
       <bool>true</bool>
@@ -280,26 +280,19 @@ QTabWidget&gt;QWidget&gt;QWidget {
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QTableWidget" name="tblStreams">
+        <widget class="QTableWidget" name="tblStreamIn">
          <property name="tabKeyNavigation">
           <bool>false</bool>
          </property>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>200</number>
+         </attribute>
          <attribute name="horizontalHeaderStretchLastSection">
           <bool>true</bool>
          </attribute>
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
-         <row>
-          <property name="text">
-           <string>Nowy wiersz</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Nowy wiersz</string>
-          </property>
-         </row>
          <column>
           <property name="text">
            <string>Name</string>
@@ -310,54 +303,22 @@ QTabWidget&gt;QWidget&gt;QWidget {
            <string>Data type</string>
           </property>
          </column>
-         <column>
-          <property name="text">
-           <string>Direction</string>
-          </property>
-         </column>
-         <item row="0" column="0">
-          <property name="text">
-           <string>in_img</string>
-          </property>
-         </item>
-         <item row="0" column="1">
-          <property name="text">
-           <string>cv::Mat</string>
-          </property>
-         </item>
-         <item row="0" column="2">
-          <property name="text">
-           <string>in</string>
-          </property>
-         </item>
-         <item row="1" column="0">
-          <property name="text">
-           <string>out_img</string>
-          </property>
-         </item>
-         <item row="1" column="1">
-          <property name="text">
-           <string>cv::Mat</string>
-          </property>
-         </item>
-         <item row="1" column="2">
-          <property name="text">
-           <string>out</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="0" column="2">
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QPushButton" name="btnAddStream">
+          <widget class="QPushButton" name="btnAddStreamIn">
+           <property name="toolTip">
+            <string>test</string>
+           </property>
            <property name="text">
             <string>Add...</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btnRemoveStream">
+          <widget class="QPushButton" name="btnRemoveStreamIn">
            <property name="text">
             <string>Remove</string>
            </property>
@@ -389,19 +350,39 @@ QTabWidget&gt;QWidget&gt;QWidget {
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QTableWidget" name="tableWidget"/>
+        <widget class="QTableWidget" name="tblStreamOut">
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>200</number>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Data type</string>
+          </property>
+         </column>
+        </widget>
        </item>
        <item row="2" column="2">
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="btnAddStreamOut">
            <property name="text">
             <string>Add</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="btnRemoveStreamOut">
            <property name="text">
             <string>Remove</string>
            </property>
@@ -728,10 +709,10 @@ QTabWidget&gt;QWidget&gt;QWidget {
    <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
      <property name="spacing">
-      <number>3</number>
+      <number>6</number>
      </property>
      <property name="leftMargin">
-      <number>9</number>
+      <number>12</number>
      </property>
      <property name="bottomMargin">
       <number>0</number>
@@ -741,18 +722,18 @@ QTabWidget&gt;QWidget&gt;QWidget {
        <property name="text">
         <string/>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
        <property name="indent">
         <number>-1</number>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="lblHelp">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <italic>true</italic>
-        </font>
+      <widget class="QLabel" name="lblInfo">
+       <property name="enabled">
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>Help</string>
@@ -776,12 +757,12 @@ QTabWidget&gt;QWidget&gt;QWidget {
   <tabstop>btnRemoveDep</tabstop>
   <tabstop>lineEdit</tabstop>
   <tabstop>textEdit</tabstop>
-  <tabstop>tblStreams</tabstop>
-  <tabstop>btnAddStream</tabstop>
-  <tabstop>btnRemoveStream</tabstop>
-  <tabstop>tableWidget</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_2</tabstop>
+  <tabstop>tblStreamIn</tabstop>
+  <tabstop>btnAddStreamIn</tabstop>
+  <tabstop>btnRemoveStreamIn</tabstop>
+  <tabstop>tblStreamOut</tabstop>
+  <tabstop>btnAddStreamOut</tabstop>
+  <tabstop>btnRemoveStreamOut</tabstop>
   <tabstop>tblEvents</tabstop>
   <tabstop>btnAddEvent</tabstop>
   <tabstop>btnRemoveEvent</tabstop>

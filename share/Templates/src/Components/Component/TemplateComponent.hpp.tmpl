@@ -1,6 +1,7 @@
 /*!
  * \file
- * \brief
+ * \brief 
+ * \author @TMPLAuthor@
  */
 
 #ifndef TEMPLATECOMPONENT_HPP_
@@ -12,19 +13,23 @@
 #include "DataStream.hpp"
 #include "Property.hpp"
 
+@TMPLDeps@
+
 namespace Processors {
 namespace TemplateComponent {
 
 /*!
  * \class TemplateComponent
  * \brief TemplateComponent processor class.
+ *
+ * @TMPLDescription@
  */
 class TemplateComponent: public Base::Component {
 public:
 	/*!
 	 * Constructor.
 	 */
-	TemplateComponent(const std::string & name = "");
+	TemplateComponent(const std::string & name = "TemplateComponent");
 
 	/*!
 	 * Destructor
@@ -44,11 +49,6 @@ protected:
 	bool onFinish();
 
 	/*!
-	 * Retrieves data from device.
-	 */
-	bool onStep();
-
-	/*!
 	 * Start component
 	 */
 	bool onStart();
@@ -58,9 +58,9 @@ protected:
 	 */
 	bool onStop();
 
-	TMPLFields
+	@TMPLFields@
 	
-	TMPLMethodsHeaders
+	@TMPLMethodsHeaders@
 };
 
 } //: namespace TemplateComponent
