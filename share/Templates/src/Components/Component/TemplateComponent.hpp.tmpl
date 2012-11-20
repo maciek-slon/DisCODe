@@ -1,7 +1,7 @@
 /*!
  * \file
  * \brief 
- * \author @TMPLAuthor@
+ * \author %TMPLAuthor%
  */
 
 #ifndef TEMPLATECOMPONENT_HPP_
@@ -12,8 +12,9 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Property.hpp"
+#include "EventHandler2.hpp"
 
-@TMPLDeps@
+%TMPLDeps%
 
 namespace Processors {
 namespace TemplateComponent {
@@ -22,7 +23,7 @@ namespace TemplateComponent {
  * \class TemplateComponent
  * \brief TemplateComponent processor class.
  *
- * @TMPLDescription@
+ * %TMPLDescription%
  */
 class TemplateComponent: public Base::Component {
 public:
@@ -58,9 +59,9 @@ protected:
 	 */
 	bool onStop();
 
-	@TMPLFields@
+%TMPLFields%
 	
-	@TMPLMethodsHeaders@
+%TMPLMethodsHeaders%
 };
 
 } //: namespace TemplateComponent
@@ -69,7 +70,6 @@ protected:
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("TemplateComponent", Processors::TemplateComponent::TemplateComponent,
-		Common::Panel_Empty)
+REGISTER_COMPONENT("TemplateComponent", Processors::TemplateComponent::TemplateComponent)
 
 #endif /* TEMPLATECOMPONENT_HPP_ */

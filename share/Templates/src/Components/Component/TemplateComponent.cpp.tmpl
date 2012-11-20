@@ -1,7 +1,7 @@
 /*!
  * \file
  * \brief
- * \author @TMPLAuthor@
+ * \author %TMPLAuthor%
  */
 
 #include <memory>
@@ -10,12 +10,14 @@
 #include "TemplateComponent.hpp"
 #include "Common/Logger.hpp"
 
+#include <boost/bind.hpp>
+
 namespace Processors {
 namespace TemplateComponent {
 
 TemplateComponent::TemplateComponent(const std::string & name) :
-		Base::Component(name) @TMPLInitializer@ {
-	@TMPLConstructor@
+		Base::Component(name) %TMPLInitializer% {
+%TMPLConstructor%
 }
 
 TemplateComponent::~TemplateComponent() {
@@ -23,11 +25,11 @@ TemplateComponent::~TemplateComponent() {
 
 void TemplateComponent::prepareInterface() {
 	// Register data streams, events and event handlers HERE!
-	@TMPLPrepareInterface@
+%TMPLPrepInterface%
 }
 
 bool TemplateComponent::onInit() {
-	@TMPLInit@
+%TMPLInit%
 	return true;
 }
 
@@ -43,7 +45,7 @@ bool TemplateComponent::onStart() {
 	return true;
 }
 
-@TMPLMethodsCode@
+%TMPLMethodsCode%
 
 } //: namespace TemplateComponent
 } //: namespace Processors

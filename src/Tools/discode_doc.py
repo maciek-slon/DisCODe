@@ -8,7 +8,7 @@ def getDclDir(dcl_name):
 
 	dcl_dir = os.getenv("DISCODE_DCL_DIR", "")
 	if (dcl_dir == ""):
-		#print "Warning: DISCODE_DCL_DIR not set. Searching only in current directory."
+		print >> sys.stderr, "Warning: DISCODE_DCL_DIR not set. Searching only in current directory."
 		dcl_dir = "./"
 
 	dcl_dir = os.path.abspath(dcl_dir)
