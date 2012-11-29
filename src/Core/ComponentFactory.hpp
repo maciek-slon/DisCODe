@@ -122,10 +122,10 @@ public:
 				throw Common::DisCODeException(std::string("Library open error: ") + lib.error());
 
 			// Try to retrieve method returning type.
-			Base::returnType ret_type;
+			/*Base::returnType ret_type;
 			ret_type = lib.get<Base::componentType>("returnType");
 			if (!ret_type)
-				throw Common::DisCODeException(std::string("Can't find returnType() in library: ") + lib.error());
+				throw Common::DisCODeException(std::string("Can't find returnType() in library: ") + lib.error());*/
 			// Check type.
 			/*if (ret_type() != COMPONENT_TYPE)
 				throw Common::DisCODeException(filename_ + string(" doesn't contain a component of given type."));*/
@@ -146,9 +146,9 @@ public:
 				throw Common::DisCODeException(std::string("Can't load ret_object from library: ") + lib.error());
 
 			// Try to retrieve method returning panel.
-			ret_panel = lib.get<Base::Panel*>("returnPanel");
+			/*ret_panel = lib.get<Base::Panel*>("returnPanel");
 			if (!ret_panel)
-				throw Common::DisCODeException(std::string("Can't load ret_panel from library: ") + lib.error());
+				throw Common::DisCODeException(std::string("Can't load ret_panel from library: ") + lib.error());*/
 
 			// Component initialized properly.
 			LOG(LINFO) << "ComponentFactory: Dynamic library " << filename_ << " containing " << name

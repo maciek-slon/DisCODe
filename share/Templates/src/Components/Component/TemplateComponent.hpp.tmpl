@@ -37,6 +37,13 @@ public:
 	 */
 	virtual ~TemplateComponent();
 
+	/*!
+	 * Prepare components interface (register streams and handlers).
+	 * At this point, all properties are already initialized and loaded to 
+	 * values set in config file.
+	 */
+	void prepareInterface();
+
 protected:
 
 	/*!

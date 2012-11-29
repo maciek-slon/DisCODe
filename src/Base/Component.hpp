@@ -236,7 +236,7 @@ protected:
 	 * Method called when step is called
 	 * \return true on success
 	 */
-	virtual bool onStep() = 0;
+	//virtual bool onStep() = 0;
 
 
 	/*!

@@ -103,15 +103,17 @@ def prepareStreams(dic, inputs, outputs):
 	TMPLFields = "\t// Data streams\n"
 	TMPLPrepInterface = "\t// Register data streams\n"
 	
-	classname = "Base::DataStreamIn"
-	for s in inputs:
-		TMPLFields += "\t{}<{}> {};\n".format(classname, s['type'], s['name'])
-		TMPLPrepInterface += '\tregisterStream("{0}", &{0});\n'.format(s['name'])
+	if inputs:
+		classname = "Base::DataStreamIn"
+		for s in inputs:
+			TMPLFields += "\t{}< {} > {};\n".format(classname, s['type'], s['name'])
+			TMPLPrepInterface += '\tregisterStream("{0}", &{0});\n'.format(s['name'])
 		
-	classname = "Base::DataStreamOut"
-	for s in outputs:
-		TMPLFields += "\t{}<{}> {};\n".format(classname, s['type'], s['name'])
-		TMPLPrepInterface += '\tregisterStream("{0}", &{0});\n'.format(s['name'])
+	if outputs:
+		classname = "Base::DataStreamOut"
+		for s in outputs:
+			TMPLFields += "\t{}< {} > {};\n".format(classname, s['type'], s['name'])
+			TMPLPrepInterface += '\tregisterStream("{0}", &{0});\n'.format(s['name'])
 		
 	dic['%TMPLFields%'] = dic['%TMPLFields%'] + TMPLFields + "\n"
 	dic['%TMPLPrepInterface%'] = dic['%TMPLPrepInterface%'] + TMPLPrepInterface + "\n"
@@ -129,14 +131,14 @@ def prepareHandlers(dic, handlers, cmp_name):
 	for h in handlers:
 		TMPLFields += "\tBase::EventHandler2 h_{};\n".format(h['name'])
 		TMPLMethodsHeaders += "\tvoid {}();\n".format(h['name'])
-		TMPLPrepInterface += '\th_{0}->setup(boost::bind(&{1}::{0}, this));\n'.format(h['name'], cmp_name)
+		TMPLPrepInterface += '\th_{0}.setup(boost::bind(&{1}::{0}, this));\n'.format(h['name'], cmp_name)
 		TMPLPrepInterface += '\tregisterHandler("{0}", &h_{0});\n'.format(h['name'])
 		TMPLMethodsCode += "void {}::{}()".format(cmp_name, h['name']) + " {\n}\n\n"
 		if 'triggeredBy' in h:
 			for d in h['triggeredBy']:
-				TMPLPrepInterface += '\taddDependency("{}", &{})\n'.format(h['name'], d)
+				TMPLPrepInterface += '\taddDependency("{}", &{});\n'.format(h['name'], d)
 		else:
-			TMPLPrepInterface += '\taddDependency("{}", NULL)\n'.format(h['name'])
+			TMPLPrepInterface += '\taddDependency("{}", NULL);\n'.format(h['name'])
 		
 	dic['%TMPLFields%'] = dic['%TMPLFields%'] + TMPLFields
 	dic['%TMPLPrepInterface%'] = dic['%TMPLPrepInterface%'] + TMPLPrepInterface
