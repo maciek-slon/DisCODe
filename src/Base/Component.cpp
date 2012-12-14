@@ -138,13 +138,28 @@ double Component::step() {
 		//onStep();
 
 		// New way - check, which handler is ready and call it
-		Base::EventHandlerInterface * handler = getReadyHandler();
+		/*Base::EventHandlerInterface * handler = getReadyHandler();
 		if (handler) {
 			handler->execute();
 			return timer.elapsed();
 		} else {
 			CLOG(LDEBUG) << name_ << " has no active handler. Skipping.";
 			return 0;
+		}*/
+
+		typedef std::pair<std::string, std::vector<DataStreamInterface *> > HandlerTriggers;
+
+		BOOST_FOREACH(HandlerTriggers ht, triggers) {
+			bool allready = true;
+			CLOG(LDEBUG) << name() << "::" << ht.first;
+			BOOST_FOREACH(DataStreamInterface * ds, ht.second) {
+				CLOG(LDEBUG) << ds->name() << " is " << (ds->fresh()?"fresh":"old");
+				if (!ds->fresh()) {
+					allready = false;
+					break;
+				}
+			}
+			if (allready) handlers[ht.first]->execute();
 		}
 	} else {
 		CLOG(LWARNING) << name_ << " is not running. Step can't be done.\n";
