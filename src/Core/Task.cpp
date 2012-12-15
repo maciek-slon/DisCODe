@@ -64,5 +64,14 @@ std::vector<std::string> Task::listSubtasks() {
 	return ret;
 }
 
+std::vector<std::string> Task::listExecutors() {
+	std::vector<std::string> ret, tmp;
+	BOOST_FOREACH(SubtaskPair sp, subtasks) {
+		tmp = sp.second.listExecutors();
+		ret.insert(ret.end(), tmp.begin(), tmp.end());
+	}
+	return ret;
+}
+
 } //: namespace Core
 

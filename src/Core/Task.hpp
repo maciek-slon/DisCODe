@@ -60,6 +60,7 @@ public:
 	}
 
 	std::vector<std::string> listSubtasks();
+	std::vector<std::string> listExecutors();
 
 private:
 	/// All subtasks

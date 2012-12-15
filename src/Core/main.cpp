@@ -251,15 +251,15 @@ int main(int argc, char* argv[])
 		ExecutorInformer executor_informer(em);
 
 
-		//CommandServer server;
+		CommandServer server;
 
-		/*server.addInformer(&task_informer);
+		server.addInformer(&task_informer);
 		server.addInformer(&component_informer);
 		server.addInformer(&system_informer);
 		server.addInformer(&executor_informer);
 		server.printCommands();
 
-		server.start();*/
+		server.start();
 
 		km.initializeComponentsList(configurator.getDCLLocations());
 
@@ -288,7 +288,7 @@ int main(int argc, char* argv[])
 
 		km.deactivateComponentList();
 
-		//server.stop();
+		server.stop();
 	}//: try
 
 	// =========================================================================

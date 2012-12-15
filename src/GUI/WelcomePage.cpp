@@ -39,11 +39,16 @@ void WelcomePage::on_btnSpawn_clicked()
 
 void WelcomePage::on_btnSpawnOk_clicked()
 {
-	QString program = "./discode";
+	std::cout << "Spawn?\n";
+	QString program = "discode";
 	QStringList arguments;
 	arguments << "-T" << ui.editTaskName->text();
 
-	QProcess::startDetached(program, arguments);
+	if (!QProcess::startDetached(program, arguments))
+		QMessageBox::critical(this, tr("Error"), tr("Could not spawn discode!"));
+	else
+		QMessageBox::critical(this, tr("Info"), tr("Spawned"));
+
 
 	ui.stackedWidget->setCurrentIndex(0);
 }

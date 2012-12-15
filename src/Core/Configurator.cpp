@@ -62,9 +62,14 @@ void Configurator::expandMacros(ptree & pt, const std::vector<std::pair<std::str
 		std::string val = pt.get(p.first, "");
 		std::string oval = val;
 
+		val = p.second.data();
+		oval = val;
+		LOG(LINFO) << val;
+
 		if (val != "") {
 			substitute(val, dict);
-			pt.put(p.first, val);
+			//pt.put(p.first, val);
+			p.second.put("", val);
 			if (val != oval) {
 				LOG(LINFO) << "Configurator: " << p.first << " value substituted\n"
 							  "\tfrom '" << oval << "' to '" << val << "'";
