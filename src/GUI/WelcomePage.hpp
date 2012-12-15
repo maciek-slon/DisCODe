@@ -12,6 +12,8 @@ public:
     WelcomePage(QWidget *parent = 0);
     ~WelcomePage();
 
+    void reset();
+
 signals:
 	void do_connect_sig(const QString & host, const QString & port);
 

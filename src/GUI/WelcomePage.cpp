@@ -39,22 +39,26 @@ void WelcomePage::on_btnSpawn_clicked()
 
 void WelcomePage::on_btnSpawnOk_clicked()
 {
-	std::cout << "Spawn?\n";
 	QString program = "discode";
 	QStringList arguments;
 	arguments << "-T" << ui.editTaskName->text();
 
 	if (!QProcess::startDetached(program, arguments))
-		QMessageBox::critical(this, tr("Error"), tr("Could not spawn discode!"));
-	else
-		QMessageBox::critical(this, tr("Info"), tr("Spawned"));
-
+		QMessageBox::critical(this, tr("Error"), tr("Could not spawn DisCODe!"));
+	else {
+		QMessageBox::information(this, tr("Info"), tr("DisCODe spawned."));
+		emit do_connect_sig(ui.editConnectHost->text(), ui.editConnectPort->text());
+	}
 
 	ui.stackedWidget->setCurrentIndex(0);
 }
 
 void WelcomePage::on_btnSpawnCancel_clicked()
 {
+	ui.stackedWidget->setCurrentIndex(0);
+}
+
+void WelcomePage::reset() {
 	ui.stackedWidget->setCurrentIndex(0);
 }
 

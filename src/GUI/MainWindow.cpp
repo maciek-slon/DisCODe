@@ -83,6 +83,7 @@ void MainWindow::do_disconnect() {
 	ui->dockWidget_2->hide();
 	ui->mainToolBar->hide();
 	ui->menuBar->hide();
+	wp.reset();
 	ui->scrollArea->setWidget(&wp);
 }
 
@@ -139,4 +140,5 @@ void MainWindow::on_actionConnect_triggered(bool /*checked*/) {
 
 void MainWindow::on_actionFinish_triggered(bool /*checked*/) {
 	system->finish();
+	do_disconnect();
 }

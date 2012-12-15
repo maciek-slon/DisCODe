@@ -79,16 +79,16 @@ public:
 
 protected:
 	int check(const unsigned char * msg, int size) {
-		std::cout << "Check...\n";
-		int ss = msg[0] * 256 + msg[1];
-		std::cout << "Computed: " << ss << "(" << (int)msg[0] << "+" << (int)msg[1] << "), got: " << size << std::endl;
-		std::cout << msg+2 << std::endl;
+		//std::cout << "Check...\n";
+		//int ss = msg[0] * 256 + msg[1];
+		//std::cout << "Computed: " << ss << "(" << (int)msg[0] << "+" << (int)msg[1] << "), got: " << size << std::endl;
+		//std::cout << msg+2 << std::endl;
 		return size > 1 ? msg[0] * 256 + msg[1] : 2;
 	}
 
-	int service(const unsigned char * msg, int size) {
-		std::cout << "Service... " << size << "\n";
-		std::cout << msg+2 << std::endl;
+	int service(const unsigned char * msg, int /*size*/) {
+		//std::cout << "Service... " << size << "\n";
+		//std::cout << msg+2 << std::endl;
 
 		strcpy((char*)buf, (char*)msg+2);
 

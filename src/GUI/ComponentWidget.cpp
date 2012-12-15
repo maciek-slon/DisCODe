@@ -156,7 +156,7 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, QWidget *paren
 			{
 				QLineEdit * edit = new QLineEdit(proxy->getPropertyValue(i).c_str());
 
-				connect(edit, SIGNAL(returnPressed()), signalMapper, SLOT (map()));
+				connect(edit, SIGNAL(editingFinished()), signalMapper, SLOT (map()));
 
 				widget = edit;
 			}
