@@ -20,7 +20,7 @@ public:
 		ci.addHandler("stop",  boost::bind(&TaskInformer::stop,  this, _1));
 	}
 
-	std::string listExecutors(std::vector<std::string> args) {
+	std::string listExecutors(std::vector<std::string> /* args */) {
 		std::string ret;
 		std::vector<std::string> tmp = task.listExecutors();
 		BOOST_FOREACH(std::string s, tmp) {

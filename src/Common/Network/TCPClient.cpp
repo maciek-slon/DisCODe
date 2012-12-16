@@ -107,7 +107,7 @@ int TCPClient::recv(int msec_timeout)
 
 //		std::cout << "Got sth...\n";
 		if (FD_ISSET(m_sock, &sock)) {
-			recvd = ::recv(m_sock, m_buf+m_size, m_buffer_size - m_size, NULL);
+			recvd = ::recv(m_sock, m_buf+m_size, m_buffer_size - m_size, 0);
 			m_size += recvd;
 
 			int expected_packet_size = m_completion_hook(m_buf, m_size);

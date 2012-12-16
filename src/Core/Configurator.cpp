@@ -20,6 +20,7 @@
 #include "ExecutorManager.hpp"
 #include "ConnectionManager.hpp"
 
+#include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/algorithm/string.hpp>
@@ -167,7 +168,7 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 	std::string key;
 	Subtask * subtask;
 
-	BOOST_FOREACH( TreeNode nd, *node) {
+	BOOST_FOREACH(TreeNode nd, *node) {
 		ptree tmp = nd.second;
 		key = nd.first;
 

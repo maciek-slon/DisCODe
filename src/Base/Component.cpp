@@ -272,7 +272,7 @@ void Component::sortHandlers() {
 	typedef std::pair<std::string, std::vector<DataStreamInterface *> > HandlerTriggers;
 
 	BOOST_FOREACH(HandlerTriggers ht, triggers) {
-		int i = 0;
+		size_t i = 0;
 		for (i = 0; i < sorted_triggers.size(); ++i) {
 			if (sorted_triggers[i].second.size() < ht.second.size()) break;
 		}
