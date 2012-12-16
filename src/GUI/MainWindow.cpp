@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->scrollArea->setWidget(&wp);
 
 	connect(&wp, SIGNAL(do_connect_sig(const QString &, const QString &)), this, SLOT(do_connect(const QString &, const QString &)));
+
+	//setStyleSheet("background-image: url(:/splash/puzz); background-position: bottom right;  background-repeat: no-repeat;");
 }
 
 MainWindow::~MainWindow()
