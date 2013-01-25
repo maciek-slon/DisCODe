@@ -32,3 +32,8 @@ INSTALL(
   PROGRAMS ${CMAKE_BINARY_DIR}/create_dcl ${CMAKE_BINARY_DIR}/create_component ${CMAKE_BINARY_DIR}/diswizard
   DESTINATION bin COMPONENT applications
 ) 
+
+install(
+  FILES "${CMAKE_CURRENT_SOURCE_DIR}/diswizard.ui"
+  DESTINATION bin
+)
