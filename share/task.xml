@@ -1,0 +1,54 @@
+<Task>
+	<!-- reference task information -->
+	<Reference>
+		<Author>
+			<name>Maciej Stefańczyk</name>
+			<link></link>
+		</Author>
+		
+		<Description>
+			<brief>Simple camera viewer</brief>
+			<full>Simple camera viewer</full>	
+		</Description>
+	</Reference>
+	
+	<!-- task definition -->
+	<Subtasks>
+		<Subtask name="Processing">
+			<Executor name="Exec1"  period="1.5">
+				<Component name="Source" type="CvBasic_2:Sequence" priority="1" bump="5">
+					<param name="device">0</param>
+					<param name="directory">/usr/share/pixmaps</param>
+				</Component>
+			</Executor>
+		</Subtask>
+		
+		<Subtask name="Visualisation">
+			<Executor name="Exec2" period="10.0">
+				<Component name="Window" type="CvBasic_2:CvWindow" priority="1" bump="-3">
+					<param name="count">1</param>
+					<param name="title">Okienko</param>
+				</Component>
+			</Executor>
+		</Subtask>	
+	
+	</Subtasks>
+	
+	<!-- connections between events and handelrs -->
+	<Events>
+		<Emitter name="Source.newImage">
+			<handler>Window.onNewImage</handler>	
+		</Emitter>
+	</Events>
+	
+	<!-- pipes connecting datastreams -->
+	<DataStreams>
+		<Source name="Source.out_img">
+			<sink>Window.in_img</sink>	
+		</Source>
+	</DataStreams>
+</Task>
+
+
+
+

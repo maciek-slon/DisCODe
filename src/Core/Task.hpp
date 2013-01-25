@@ -23,20 +23,22 @@ class Executor;
 class Task {
 public:
 	/*!
-	 * Start all threads of execution.
+	 * Start all subtasks.
 	 */
 	bool start();
 
 	/*!
-	 * Stop all threads of execution
+	 * Stop all subtasks.
 	 */
 	bool stop();
 
 	/*!
-	 * Prepare task to unload.
-	 *
-	 * All components are stopped and finished, threads are terminated.
-	 * Task can't be started again after calling finish.
+	 * Initialize all subtasks.
+	 */
+	void initialize();
+
+	/*!
+	 * Finish task. Stop all subtasks and prepare to unload (or start over again).
 	 */
 	bool finish();
 
@@ -57,24 +59,12 @@ public:
 		return *this;
 	}
 
-	/*!
-	 * Add executor to task
-	 * \param ex pointer to executor to be added
-	 */
-	Task & operator += (Executor * ex);
-
 	std::vector<std::string> listSubtasks();
-
 	std::vector<std::string> listExecutors();
 
 private:
 	/// All subtasks
 	std::map<std::string, Subtask> subtasks;
-
-	/// All executors in task
-	std::map<std::string, Executor*> executors;
-
-	typedef std::pair<std::string, Executor*> ExecutorPair;
 
 	typedef std::pair<std::string, Subtask> SubtaskPair;
 };

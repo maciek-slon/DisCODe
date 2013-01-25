@@ -35,6 +35,8 @@ public:
 
     }
 
+    virtual bool fresh() = 0;
+
     virtual dsType type() = 0;
 
     template <class T>

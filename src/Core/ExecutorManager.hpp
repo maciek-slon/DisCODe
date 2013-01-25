@@ -10,11 +10,8 @@
 #define EXECUTORMANAGER_HPP_
 
 #include "Executor.hpp"
-#include "ContinuousExecutor.hpp"
-#include "PassiveExecutor.hpp"
-#include "PeriodicExecutor.hpp"
 #include "Logger.hpp"
-#include "Utils.hpp"
+#include "DisCODeException.hpp"
 
 #include <map>
 #include <string>
@@ -30,9 +27,6 @@ class ExecutorManager {
 
 public:
 	ExecutorManager() {
-		types.push_back("continuous");
-		types.push_back("periodic");
-		types.push_back("passive");
 	}
 
 	~ExecutorManager() {
@@ -44,38 +38,16 @@ public:
 			delete e.second;
 	}
 
-	Executor * createExecutor(const std::string & name, const std::string & type) {
+	Executor * createExecutor(const std::string & name) {
 		if (executors.count(name) > 0) {
 			LOG(LWARNING) << "Executor " << name << " already created. Returning previous one.\n";
 			return executors[name];
 		}
 
-		Executor * ex;
-		if (type == "continuous") {
-			ex = new ContinuousExecutor(name);
-		} else if (type == "passive") {
-			ex = new PassiveExecutor(name);
-		} else if (type == "periodic") {
-			ex = new PeriodicExecutor(name);
-		} else {
-			LOG(LERROR) << "Executor type " << type << " not allowed!\n";
-			LOG(LNOTICE) << "Check executor type for " << name;
-
-			int id = -1, val = 100000;
-			for (size_t i = 0; i < types.size(); ++i) {
-				int tmp = Utils::distLevenshtein(type, types[i]);
-				if (tmp < val) {
-					val = tmp;
-					id = i;
-				}
-			}
-
-			LOG(LNOTICE) << "Did you mean " << types[id] << " type?";
-			throw Common::DisCODeException("createExecutor");
-		}
+		Executor * ex = new Executor(name);
 
 		executors[name] = ex;
-		LOG(LINFO) << name << " (" << type << ") executor created.\n";
+		LOG(LINFO) << name << " executor created.\n";
 
 		return ex;
 	}

@@ -63,7 +63,7 @@ std::string print(std::vector<std::string> args) {
 
 
 
-void terminate (int param) {
+void terminate (int /* param */ ) {
 	if (unstoppable) {
 		std::cout << "\rGet lost! WMAHAHA!\n";
 		return;
@@ -218,7 +218,7 @@ int main(int argc, char* argv[])
 	}
 
 	std::vector<std::pair<std::string, std::string> > overrides;
-	for (size_t i = 0; i < task_overrides.size(); ++i) {
+	for (std::size_t i = 0; i < task_overrides.size(); ++i) {
 		std::vector<std::string> strs;
 		boost::split(strs, task_overrides[i], boost::is_any_of("="));
 		if (strs.size() == 1) {
@@ -232,24 +232,25 @@ int main(int argc, char* argv[])
 	// === Main program part
 	// =========================================================================
 
-	Configurator configurator;
-	ComponentManager km;
-	ExecutorManager em;
-	ConnectionManager cm;
-
-	Task task;
-
-	configurator.loadConfiguration(&conf);
-	configurator.setExecutorManager(&em);
-	configurator.setComponentManager(&km);
-	configurator.setConnectionManager(&cm);
-
-	TaskInformer task_informer(task);
-	ComponentInformer component_informer(km);
-	SystemInformer system_informer(running);
-	ExecutorInformer executor_informer(em);
-
 	try {
+		Configurator configurator;
+		ComponentManager km;
+		ExecutorManager em;
+		ConnectionManager cm;
+
+		Task task;
+
+		configurator.loadConfiguration(&conf);
+		configurator.setExecutorManager(&em);
+		configurator.setComponentManager(&km);
+		configurator.setConnectionManager(&cm);
+
+		TaskInformer task_informer(task);
+		ComponentInformer component_informer(km);
+		SystemInformer system_informer(running);
+		ExecutorInformer executor_informer(em);
+
+
 		CommandServer server;
 
 		server.addInformer(&task_informer);
@@ -263,11 +264,14 @@ int main(int argc, char* argv[])
 		km.initializeComponentsList(configurator.getDCLLocations());
 
 		task = configurator.loadTask(task_name, overrides);
-		if (!task.start()) {
-			LOG(LFATAL) << "Task::start() returned false\n";
-			running = false;
-		}
 
+		Thread::msleep(2000);
+
+		task.initialize();
+
+		Thread::msleep(2000);
+
+		task.start();
 
 		while(running) {
 			Common::Thread::msleep(50);
@@ -275,6 +279,7 @@ int main(int argc, char* argv[])
 
 		Common::Thread::msleep(500);
 
+		task.stop();
 		task.finish();
 
 		km.release();

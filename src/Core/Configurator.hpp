@@ -67,8 +67,6 @@ private:
 	std::string & substitute(std::string & text, const std::vector<std::pair<std::string, std::string> > & dict);
 
 public:
-	Configurator();
-
 	virtual ~Configurator();
 
 	/*!
@@ -84,10 +82,14 @@ public:
 	 */
 	Task loadTask(std::string filename, const std::vector<std::pair<std::string, std::string> > & overrides);
 
-	void loadExecutors(const ptree * node, Task & task);
-	void loadComponents(const ptree * node, Task & task);
+	void loadSubtasks(const ptree * node, Task & task);
+	void loadExecutors(const ptree * node, Subtask & subtask);
+	void loadComponents(const ptree * node, Executor & executor);
+	void loadProperties(const ptree * node, Base::Component & component);
 	void loadEvents(const ptree * node);
 	void loadConnections(const ptree * node);
+
+
 
 	void setExecutorManager(ExecutorManager * em) {
 		executorManager = em;

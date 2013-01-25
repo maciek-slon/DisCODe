@@ -40,6 +40,9 @@ class DataStreamIn : public DataStreamInterface, public BufferingPolicy<T>
 	Sync sync;
 
 public:
+
+	using BufferingPolicy<T>::empty;
+
 	virtual dsType type() {
 		return dsIn;
 	}
@@ -50,6 +53,10 @@ public:
 		T t = retrieve();
 		//sync.unlock();
 		return t;
+	}
+
+	bool fresh() {
+		return !empty();
 	}
 
 protected:
@@ -79,6 +86,10 @@ public:
 	void write (const T & t) {
 		if (conn)
 			conn->send(t);
+	}
+
+	bool fresh() {
+		return false;
 	}
 
 protected:
@@ -114,6 +125,8 @@ class DataStreamInPtr : public DataStreamInterface, public BufferingPolicy< boos
 	Sync sync;
 
 public:
+	using BufferingPolicy< boost::shared_ptr<T> >::empty;
+
 	virtual dsType type() {
 		return dsIn;
 	}
@@ -124,6 +137,10 @@ public:
 		boost::shared_ptr<T> t = retrieve();
 		//sync.unlock();
 		return t;
+	}
+
+	bool fresh() {
+		return !empty();
 	}
 
 protected:

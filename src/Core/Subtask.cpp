@@ -7,6 +7,9 @@
 #include "Subtask.hpp"
 #include "Component.hpp"
 #include "Logger.hpp"
+#include "Executor.hpp"
+
+#include <boost/foreach.hpp>
 
 namespace Core {
 
@@ -16,36 +19,60 @@ Subtask::~Subtask()
 
 }
 
-Subtask & Subtask::operator +=(Base::Component *comp)
+void Subtask::stop()
 {
-	components.push_back(comp);
-	return *this;
-}
-
-bool Subtask::stop()
-{
-	bool ret = true;
-	for (comp_it it = components.begin(); it != components.end(); ++it) {
-		if (! (*it)->stop()) ret = false;
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		if (executor.second->state() != Paused)
+			executor.second->pause();
 	}
-	return ret;
+
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		while (executor.second->state() != Paused);
+	}
 }
 
 bool Subtask::start()
 {
 	bool ret = true;
-	for (comp_it it = components.begin(); it != components.end(); ++it) {
-		if (! (*it)->start()) ret = false;
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		executor.second->restart();
 	}
+
+
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		while (executor.second->state() != Running);
+	}
+
 	return ret;
 }
 
-bool Subtask::finish()
+void Subtask::initialize()
 {
-	bool ret = true;
-	for (comp_it it = components.begin(); it != components.end(); ++it) {
-		LOG(LTRACE) << "Finishing " << (*it)->name();
-		if (! (*it)->finish()) ret = false;
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		executor.second->initialize();
+	}
+}
+
+void Subtask::finish()
+{
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		executor.second->finish();
+	}
+
+	BOOST_FOREACH(ExecutorPair executor, executors) {
+		while (executor.second->state() != Finished);
+	}
+}
+
+Subtask & Subtask::operator += (Executor * ex) {
+	executors[ex->name()] = ex;
+	return *this;
+}
+
+std::vector<std::string> Subtask::listExecutors() {
+	std::vector<std::string> ret;
+	BOOST_FOREACH(ExecutorPair ep, executors) {
+		ret.push_back(ep.first);
 	}
 	return ret;
 }

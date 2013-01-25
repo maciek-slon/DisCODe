@@ -21,8 +21,6 @@
  * \author tkornuta
  */
 
-#include "DataProcessor.hpp"
-#include "DataSource.hpp"
 #include "Component_Aux.hpp"
 #include "Panel.hpp"
 #include "Singleton.hpp"

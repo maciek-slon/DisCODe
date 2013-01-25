@@ -6,6 +6,7 @@
  * \date 04.03.2008
  */
 
+#warning "Panel_Empty class is deprecated. Please use REGISTER_COMPONENT macros instead of REGISTER_XXX_COMPONENT."
 
 #ifndef PANEL_EMPTY_HPP_
 #define PANEL_EMPTY_HPP_
@@ -30,7 +31,7 @@ public:
 		cout << "Panel_Empty::createContent()\n";
 	}
 
-};
+} __attribute__ ((deprecated));
 
 }//: namespace Common
 

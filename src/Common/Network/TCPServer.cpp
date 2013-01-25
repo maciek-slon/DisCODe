@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
+#include <cerrno>
 
 #include "DisCODeException.hpp"
 
@@ -127,12 +128,12 @@ void TCPServer::handleClient(int i) {
 
 		// handle all completed packets from buffer
 		while (expected_packet_size <= buffer.size) {
-			std::cout << "Expected packet size: " << expected_packet_size << std::endl;
+			//std::cout << "Expected packet size: " << expected_packet_size << std::endl;
 			if ( (reply_size = m_service_hook(buffer.buf+skip, expected_packet_size, m_reply_buffer, m_buffer_size)) > 0) {
-				std::cout << "Got reply in TCPServer. Sending...\n";
-				int ss = m_reply_buffer[0] * 256 + m_reply_buffer[1];
-				std::cout << "Reply size: " << reply_size << "=" << ss << std::endl;
-				std::cout << m_reply_buffer+2 << std::endl;
+				//std::cout << "Got reply in TCPServer. Sending...\n";
+				//int ss = m_reply_buffer[0] * 256 + m_reply_buffer[1];
+				//std::cout << "Reply size: " << reply_size << "=" << ss << std::endl;
+				//std::cout << m_reply_buffer+2 << std::endl;
 				send(i, m_reply_buffer, reply_size, MSG_NOSIGNAL);
 			}
 			skip += expected_packet_size;

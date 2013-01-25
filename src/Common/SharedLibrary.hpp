@@ -145,7 +145,7 @@ public:
 	#else /* DOXYGEN_INVOKED */
 
 	#define BOOST_PP_ITERATION_LIMITS (0, BOOST_PP_INC(SHARED_LIBRARY_MAX_FUNCTOR_PARAMS) - 1)
-	#define BOOST_PP_FILENAME_1 <SharedLibraryInc.hpp>
+	#define BOOST_PP_FILENAME_1 <SharedLibrary.inc>
 	#include BOOST_PP_ITERATE()
 
 	#endif /* DOXYGEN_INVOKED */

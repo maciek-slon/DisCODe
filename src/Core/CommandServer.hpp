@@ -35,12 +35,12 @@ protected:
 		m_server.start();
 	}
 
-	int service(const unsigned char * msg, int msg_size, unsigned char * reply, int reply_limit) {
+	int service(const unsigned char * msg, int /* msg_size */, unsigned char * reply, int reply_limit) {
 		std::string rep = m_interpreter.execute((char*)msg+2);
 
 		if (!rep.empty()) {
 			std::cout << "Reply: " << rep << std::endl;
-			int rep_size = rep.size() < reply_limit - 3 ? rep.size() + 3 : reply_limit;
+			int rep_size = (int)rep.size() < reply_limit - 3 ? rep.size() + 3 : reply_limit;
 			reply[0] = rep_size / 256;
 			reply[1] = rep_size % 256;
 			std::cout << "Reply size: " << rep_size << "=" << (int)reply[0] << "*256+" << (int)reply[1] << std::endl;

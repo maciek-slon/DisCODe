@@ -19,7 +19,7 @@ endif(WIN32)
 SET(Boost_DEBUG FALSE)
 
 # Find all required packages
-FIND_PACKAGE( Boost 1.41.0 REQUIRED thread filesystem system regex program_options)
+FIND_PACKAGE( Boost 1.41.0 REQUIRED thread filesystem system regex program_options date_time)
 
 # Make makefiles more verbose
 SET(CMAKE_VERBOSE_MAKEFILE OFF)
@@ -31,6 +31,7 @@ SET(DisCODe_LIBRARIES
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_REGEX_LIBRARY}
     ${Boost_PROGRAM_OPTIONS_LIBRARY}
+    ${Boost_DATE_TIME_LIBRARY}
 )
 
 # Specify include directories for the build

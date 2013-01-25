@@ -44,17 +44,48 @@ def configure_file(in_name, out_name, word_dic):
 
 
 class MyWidget(QtGui.QMainWindow):
-    def __init__(self, *args):  
-       apply(QtGui.QMainWindow.__init__, (self,) + args)
+	def __init__(self, *args):  
+		apply(QtGui.QMainWindow.__init__, (self,) + args)
 
-       loader = QtUiTools.QUiLoader()
-       file = QtCore.QFile(DISCODE_PATH+"/bin/diswizard.ui")
-       file.open(QtCore.QFile.ReadOnly)
-       self.ui = loader.load(file, self)
-       file.close()
+		loader = QtUiTools.QUiLoader()
+		file = QtCore.QFile(DISCODE_PATH+"/bin/diswizard.ui")
+		file.open(QtCore.QFile.ReadOnly)
+		self.ui = loader.load(file, self)
+		file.close()
 
-       self.setCentralWidget(self.ui)
-       self.resize(640, 720)
+		self.setCentralWidget(self.ui)
+		self.resize(640, 720)
+
+		ICON_PATH=DISCODE_PATH+"/share/DisCODe/resources/icons/10/"
+
+		self.ui.lblInfoIcon.setPixmap(QtGui.QPixmap(ICON_PATH+"028.png"))
+		self.ui.lblInfo.setText("Info about current focus")
+
+		widgets = self.findChildren(QtGui.QWidget);
+		for w in widgets:
+			print w.installEventFilter(self)
+			
+		self.lastText = ""
+		self.lastIcon = None
+		self.infoVisible = False
+			
+	def eventFilter(self, object, event):
+		ICON_PATH=DISCODE_PATH+"/share/DisCODe/resources/icons/10/"
+		
+		if (event.type() == QtCore.QEvent.Leave) and self.infoVisible:
+			self.ui.lblInfo.setText(self.lastText)
+			self.ui.lblInfoIcon.setPixmap(self.lastIcon)
+			self.infoVisible = False
+			
+		if (event.type() == QtCore.QEvent.Enter) and (object.toolTip() != ""):
+			if not self.infoVisible:
+				self.lastText = self.ui.lblInfo.text() 
+				self.lastIcon = self.ui.lblInfoIcon.pixmap().copy()
+			self.infoVisible = True
+			self.ui.lblInfo.setText(object.toolTip())
+			self.ui.lblInfoIcon.setPixmap(QtGui.QPixmap(ICON_PATH+"028.png"))
+
+		return QtGui.QWidget.eventFilter(self, object, event)
 
     
 class DisCODeWizard(object):
@@ -64,16 +95,31 @@ class DisCODeWizard(object):
 		
 		QtCore.QObject.connect(self.win.ui.btnGenerate, QtCore.SIGNAL('clicked()'), self.generate)
 		
-		QtCore.QObject.connect(self.win.ui.btnAddStream, QtCore.SIGNAL('clicked()'), self.addStream)
-		QtCore.QObject.connect(self.win.ui.btnRemoveStream, QtCore.SIGNAL('clicked()'), self.remStream)
+		QtCore.QObject.connect(self.win.ui.btnAddStreamIn, QtCore.SIGNAL('clicked()'), lambda: self.addStream(self.win.ui.tblStreamIn))
+		QtCore.QObject.connect(self.win.ui.btnRemoveStreamIn, QtCore.SIGNAL('clicked()'), lambda: self.remStream(self.win.ui.tblStreamIn))
+		QtCore.QObject.connect(self.win.ui.btnAddStreamOut, QtCore.SIGNAL('clicked()'), lambda: self.addStream(self.win.ui.tblStreamOut))
+		QtCore.QObject.connect(self.win.ui.btnRemoveStreamOut, QtCore.SIGNAL('clicked()'), lambda: self.remStream(self.win.ui.tblStreamOut))
 		
 		QtCore.QObject.connect(self.win.ui.btnAddProp, QtCore.SIGNAL('clicked()'), self.addProp)
 		QtCore.QObject.connect(self.win.ui.btnRemoveProp, QtCore.SIGNAL('clicked()'), self.remProp)
 		
 		self.app.connect(self.app, QtCore.SIGNAL("lastWindowClosed()"), self.app, QtCore.SLOT("quit()"))
 		self.app.connect(self.win.ui.btnCancel, QtCore.SIGNAL('clicked()'), self.app, QtCore.SLOT("quit()"))
-		
+
 		self.loadDCL()
+		
+		self.showMessage("Error!", "E")
+		
+	def showMessage(self, minfo, mtype):
+		ICON_PATH=DISCODE_PATH+"/share/DisCODe/resources/icons/10/"
+		self.messageInfo = minfo
+		self.messageType = mtype
+		
+		self.win.ui.lblInfo.setText(minfo)
+		if mtype == "E":
+			self.win.ui.lblInfoIcon.setPixmap(QtGui.QPixmap(ICON_PATH+"150.png"))
+		else:
+			self.win.ui.lblInfoIcon.setPixmap(QtGui.QPixmap(ICON_PATH+"050.png"))
 		
 	def loadDCL(self):
 		for o in os.listdir(DISCODE_DCL_DIR):
@@ -86,6 +132,7 @@ class DisCODeWizard(object):
 		self.app.exec_()
 		
 		
+		
 	def generateStreams(self):
 		tbl = self.win.ui.tblStreams
 		allRows = tbl.rowCount()
@@ -93,11 +140,11 @@ class DisCODeWizard(object):
 		for row in xrange(0,allRows):
 			stream_name = tbl.item(row,0).text()
 			stream_data = tbl.item(row,1).text()
-			stream_type = tbl.item(row,2).currentText()
+			stream_type = tbl.cellWidget(row,2).currentText()
 			if (stream_type == "Input"):
-				stream_type = "Base::DataStreamIn"
+				stream_type = "DataStreamIn"
 			else:
-				stream_type = "Base::DataStreamOut"
+				stream_type = "DataStreamOut"
 				
 			self.TMPLFields += "\t\tBase::%s<%s> %s;\n"%(stream_type, stream_data, stream_name)
 			self.TMPLInit += "registerStream(\"%s\", &%s);"%(stream_name, stream_name)
@@ -107,6 +154,9 @@ class DisCODeWizard(object):
 		
 	def generateProperties(self):
 		print "Properties:\n"
+		props_header = ""
+		props_initializer = ""
+		props_constructor = ""
 		
 		tbl = self.win.ui.tblProps
 		allRows = tbl.rowCount()
@@ -116,7 +166,7 @@ class DisCODeWizard(object):
 			prop_default = tbl.item(row,2)
 			prop_display = tbl.item(row,3)
 			if (prop_display):
-				prop_display = ", " + prop_display.text()
+				prop_display = ", \"" + prop_display.text() + "\""
 			else:
 				prop_display = ""
 			self.TMPLFields += "\t\tBase::Property<" + prop_type.text() + "> " + prop_name.text() + ";\n";
@@ -148,7 +198,7 @@ class DisCODeWizard(object):
 			print "Component already exists! Choose different name of component."
 			return
 		else:
-			print "Creating component", cmp_name
+			print "Creating component", cmp_name, "in", dir
 		
 		self.TMPLFields = ""
 		self.TMPLMethodsHeaders = ""
@@ -165,7 +215,7 @@ class DisCODeWizard(object):
 		# Preparing component source files
 		#===============================================================================
 		 
-		os.makedirs(dir)
+		#os.makedirs(dir)
 		 
 		dic = {
 		'TemplateComponent'  : cmp_name,
@@ -177,10 +227,12 @@ class DisCODeWizard(object):
 		'TMPLInit'           : self.TMPLInit,
 		'TMPLMethodsCode'    : self.TMPLMethodsCode
 		}
+		
+		print dic
 
-		configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.hpp', dir+'/'+cmp_name+'.hpp', dic)
-		configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.cpp', dir+'/'+cmp_name+'.cpp', dic)
-		configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/CMakeLists.txt', dir+'/CMakeLists.txt', dic)
+		#configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.hpp', dir+'/'+cmp_name+'.hpp', dic)
+		#configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.cpp', dir+'/'+cmp_name+'.cpp', dic)
+		#configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/CMakeLists.txt', dir+'/CMakeLists.txt', dic)
 
 		#===============================================================================
 		# Adding new component to DCL CMakeLists file
@@ -200,18 +252,13 @@ class DisCODeWizard(object):
 	def remProp(self):
 		self.win.ui.tblProps.removeRow(self.win.ui.tblProps.currentRow())
 
-	def addStream(self):
-		rc = self.win.ui.tblStreams.rowCount()
-		self.win.ui.tblStreams.insertRow(rc)
+	def addStream(self, table):
+		rc = table.rowCount()
+		table.insertRow(rc)
+		table.setItem(rc, 0, QtGui.QTableWidgetItem("stream_%d"%(rc)))
 		
-		self.win.ui.tblStreams.setItem(rc, 0, QtGui.QTableWidgetItem("stream_%d"%(rc)))
-		streamType = QtGui.QComboBox()
-		streamType.addItem("Input")
-		streamType.addItem("Output")
-		self.win.ui.tblStreams.setCellWidget(rc, 2, streamType)
-		
-	def remStream(self):
-		self.win.ui.tblStreams.removeRow(self.win.ui.tblStreams.currentRow())
+	def remStream(self, table):
+		table.removeRow(table.currentRow())
 
 
 

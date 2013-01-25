@@ -29,7 +29,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/create_component.py" "${CMAKE_BINARY
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/diswizard.py" "${CMAKE_BINARY_DIR}/diswizard" IMMEDIATE @ONLY)
 
 INSTALL(
-  PROGRAMS ${CMAKE_BINARY_DIR}/create_dcl ${CMAKE_BINARY_DIR}/create_component ${CMAKE_BINARY_DIR}/diswizard
+  PROGRAMS ${CMAKE_BINARY_DIR}/create_dcl ${CMAKE_BINARY_DIR}/create_component ${CMAKE_BINARY_DIR}/diswizard ${CMAKE_BINARY_DIR}/discode_helper.py
   DESTINATION bin COMPONENT applications
 ) 
 

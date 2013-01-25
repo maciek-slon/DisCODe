@@ -22,7 +22,10 @@
 #define LCRITICAL Utils::Logger::Critical
 #define LFATAL    Utils::Logger::Fatal
 
-/// Start message printing
-#define LOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level).get())
+
+#if !defined(LOG)
+	/// Start message printing
+	#define LOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level, 0).get())
+#endif
 
 #endif /* LOGGER_HPP_ */

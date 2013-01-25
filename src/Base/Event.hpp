@@ -60,7 +60,7 @@ public:
 protected:
 	std::list<EventHandlerInterface *> handlers;
 
-};
+} __attribute__ ((deprecated)) ;
 
 }//: namespace Base
 

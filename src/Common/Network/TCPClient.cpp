@@ -75,7 +75,7 @@ bool TCPClient::connect(const std::string & host, const std::string & port)
 
 int TCPClient::recv(int msec_timeout)
 {
-	int recvd = 0, res;
+	int recvd = 0;
 	bool ready = false;
 	int select_return;
 	fd_set sock;
@@ -107,7 +107,7 @@ int TCPClient::recv(int msec_timeout)
 
 //		std::cout << "Got sth...\n";
 		if (FD_ISSET(m_sock, &sock)) {
-			recvd = ::recv(m_sock, m_buf+m_size, m_buffer_size - m_size, NULL);
+			recvd = ::recv(m_sock, m_buf+m_size, m_buffer_size - m_size, 0);
 			m_size += recvd;
 
 			int expected_packet_size = m_completion_hook(m_buf, m_size);

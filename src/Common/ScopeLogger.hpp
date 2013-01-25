@@ -21,12 +21,12 @@ namespace Logger {
 class ScopeLogger
 {
 public:
-	ScopeLogger(Logger & p, const std::string & f, int l, Severity s) : parent(p), file(f), line(l), sev(s) {
+	ScopeLogger(Logger & p, const std::string & f, int l, Severity s, int b) : parent(p), file(f), line(l), sev(s), bump(b) {
 
 	}
 
 	~ScopeLogger() {
-		parent.log(file, line, sev, os.str());
+		parent.log(file, line, sev, os.str(), bump);
 	}
 
 	std::ostringstream& get()
@@ -56,6 +56,9 @@ private:
 
 	///
 	Severity sev;
+
+	/// severity bump
+	int bump;
 
 };
 

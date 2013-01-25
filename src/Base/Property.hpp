@@ -19,6 +19,8 @@
 #include <typeinfo>
 #include <vector>
 
+#include <iostream>
+
 #define INSIDE_IF(_, PREFIX, VAL) if(s == #VAL) return PREFIX##VAL;
 #define INSIDE_CASE(_, PREFIX, VAL) case PREFIX##VAL: return #VAL;
 
@@ -111,6 +113,7 @@ public:
 
 	virtual void retrieve(const std::string & str) = 0;
 
+
 	const std::string & name() const {
 		return name_;
 	}
@@ -148,6 +151,7 @@ private:
 
 	std::vector<std::string> m_constraints;
 };
+
 
 /*!
  *
@@ -202,6 +206,7 @@ public:
 		return data;
 	}
 
+
 	/*!
 	 * Return string representation of current value
 	 *
@@ -229,6 +234,11 @@ public:
 
 	/// Might be useful for template deductions
 	typedef T value_type;
+
+	friend std::ostream & operator<<(std::ostream & os, const Property & prop) {
+		os << prop.data;
+		return os;
+	}
 
 	template<typename U>
 	void setNamedConstraint(const std::string & name, const U & value,
@@ -259,6 +269,7 @@ protected:
 
 	std::map<std::string, std::string> m_named_constraints;
 };
+
 
 }
 

@@ -19,7 +19,7 @@ void ComponentProxy::refreshPropertyConstraints(int i) {
 	std::string str = m_client->send(request);
 
 	size_t start = 0, end = 0;
-	std::string separator = "\n";
+	const std::string separator = "\n";
 
 	std::string tmp;
 
@@ -125,7 +125,7 @@ void ComponentProxy::print(int indent) {
 }
 
 void ComponentProxy::triggerHandler(const std::string & handler) {
-	for (int i = 0; i < handlers.size(); ++i) {
+	for (size_t i = 0; i < handlers.size(); ++i) {
 		if (handlers[i] == handler) {
 			triggerHandler(i);
 			break;

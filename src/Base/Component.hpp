@@ -13,9 +13,12 @@
 #include <string>
 #include <vector>
 
+#include "Logger.hpp"
+
+#define CLOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level, this->getBump()).get())
+
 namespace Base {
 
-class Props;
 class Event;
 class EventHandlerInterface;
 class DataStreamInterface;
@@ -71,7 +74,7 @@ public:
 	 */
 	Component(const std::string & n) : name_(n), state(Unready)
 	{
-
+		m_bump = 0;
 	}
 
 	void setName(const std::string & n) {
@@ -117,6 +120,20 @@ public:
 	 * \return execution time
 	 */
 	double step();
+
+
+	/*!
+	 * Check, if any handler can be triggered.
+	 *
+	 * \return pointer to ready handler or NULL if none can be triggered.
+	 */
+	EventHandlerInterface * getReadyHandler();
+
+
+	/*!
+	 * Prepare all events and data streams
+	 */
+	virtual void prepareInterface() = 0;
 
 	/*!
 	 * Print list of all registered events.
@@ -172,16 +189,6 @@ public:
 	 */
 	PropertyInterface * getProperty(const std::string& name);
 
-
-	/*!
-	 * Return pointer to properties of this object.
-	 *
-	 * Should be overridden in derived classes containing specific properties.
-	 *
-	 * \deprecated
-	 */
-	virtual Props * getProperties();
-
 	/*!
 	 * Check, if component is running
 	 */
@@ -191,6 +198,14 @@ public:
 	 * Check, if component is initialized
 	 */
 	bool initialized() const;
+
+	void setBump(int bump) {
+		m_bump = bump;
+	}
+
+	int getBump() const {
+		return m_bump;
+	}
 
 protected:
 	/*!
@@ -221,7 +236,7 @@ protected:
 	 * Method called when step is called
 	 * \return true on success
 	 */
-	virtual bool onStep() = 0;
+	//virtual bool onStep() = 0;
 
 
 	/*!
@@ -238,6 +253,10 @@ protected:
 	 * \returns pointer to handler.
 	 */
 	EventHandlerInterface * registerHandler(const std::string& name, EventHandlerInterface * handler);
+
+	void addDependency(const std::string & name, DataStreamInterface * stream);
+
+	void sortHandlers();
 
 	/*!
 	 * Register new data stream under specified name.
@@ -276,6 +295,14 @@ private:
 	/// all registered properties
 	std::map<std::string, PropertyInterface *> properties;
 
+	/// triggers for handlers
+	std::map<std::string , std::vector<DataStreamInterface * > > triggers;
+
+	/// sorted triggers for handlers
+	std::vector< std::pair<std::string , std::vector<DataStreamInterface * > > > sorted_triggers;
+
+	/// severity level bump
+	int m_bump;
 };
 
 }//: namespace Base

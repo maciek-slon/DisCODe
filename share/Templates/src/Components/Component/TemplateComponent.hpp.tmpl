@@ -1,6 +1,7 @@
 /*!
  * \file
- * \brief
+ * \brief 
+ * \author %TMPLAuthor%
  */
 
 #ifndef TEMPLATECOMPONENT_HPP_
@@ -11,6 +12,9 @@
 #include "Panel_Empty.hpp"
 #include "DataStream.hpp"
 #include "Property.hpp"
+#include "EventHandler2.hpp"
+
+%TMPLDeps%
 
 namespace Processors {
 namespace TemplateComponent {
@@ -18,18 +22,27 @@ namespace TemplateComponent {
 /*!
  * \class TemplateComponent
  * \brief TemplateComponent processor class.
+ *
+ * %TMPLDescription%
  */
 class TemplateComponent: public Base::Component {
 public:
 	/*!
 	 * Constructor.
 	 */
-	TemplateComponent(const std::string & name = "");
+	TemplateComponent(const std::string & name = "TemplateComponent");
 
 	/*!
 	 * Destructor
 	 */
 	virtual ~TemplateComponent();
+
+	/*!
+	 * Prepare components interface (register streams and handlers).
+	 * At this point, all properties are already initialized and loaded to 
+	 * values set in config file.
+	 */
+	void prepareInterface();
 
 protected:
 
@@ -44,11 +57,6 @@ protected:
 	bool onFinish();
 
 	/*!
-	 * Retrieves data from device.
-	 */
-	bool onStep();
-
-	/*!
 	 * Start component
 	 */
 	bool onStart();
@@ -58,9 +66,9 @@ protected:
 	 */
 	bool onStop();
 
-	TMPLFields
+%TMPLFields%
 	
-	TMPLMethodsHeaders
+%TMPLMethodsHeaders%
 };
 
 } //: namespace TemplateComponent
@@ -69,7 +77,6 @@ protected:
 /*
  * Register processor component.
  */
-REGISTER_PROCESSOR_COMPONENT("TemplateComponent", Processors::TemplateComponent::TemplateComponent,
-		Common::Panel_Empty)
+REGISTER_COMPONENT("TemplateComponent", Processors::TemplateComponent::TemplateComponent)
 
 #endif /* TEMPLATECOMPONENT_HPP_ */

@@ -51,7 +51,7 @@ public:
 	 * Start message. Prints severity info and - if required - file name and line number
 	 * from where printing is called.
 	 */
-	Logger & log(const std::string & file, int line, Severity sev, const std::string & msg);
+	Logger & log(const std::string & file, int line, Severity sev, const std::string & msg, int bump);
 
 	/*static Logger& instance() {
 		if (!inst) {

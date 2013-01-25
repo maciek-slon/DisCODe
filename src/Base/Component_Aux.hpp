@@ -13,8 +13,6 @@
 
 #include "Component.hpp"
 #include "Panel.hpp"
-#include "Props.hpp"
-#include "Event.hpp"
 #include "EventHandler.hpp"
 #include "DataStreamInterface.hpp"
 #include "DataStream.hpp"
@@ -130,6 +128,31 @@ extern "C" { \
   Base::Panel* returnPanel() \
   { \
     return new PANEL_CLASS_NAME(); \
+  } \
+} /* extern "C" */
+
+/*!
+ * Use this macro to register a task component. The must be exactly only one macro call for every component (shared library).
+ * It adds four basic functions:
+ *  - 'returnType', which returns component type (in this case COMPONENT_PROCESSOR),
+ *  - 'returnName', which returns component name (COMPONENT_NAME),
+ *  - 'returnProcessor', which will return a new instance of PROCESSOR_CLASS_NAME source,
+ *  - 'returnPanel', which will return a new instance of PANEL_CLASS_NAME panel.
+ *
+ * \param COMPONENT_NAME the component name.
+ * \param PROCESSOR_CLASS_NAME the class name of the processor you are adding to the library.
+ * \param PANEL_CLASS_NAME the class name of the panel you are adding to the library.
+ * \author tkornuta
+ */
+#define REGISTER_COMPONENT(COMPONENT_NAME, PROCESSOR_CLASS_NAME) \
+extern "C" { \
+  std::string returnName() \
+  { \
+    return COMPONENT_NAME; \
+  } \
+  Base::Component* returnComponent(const std::string & name) \
+  { \
+    return new PROCESSOR_CLASS_NAME(name); \
   } \
 } /* extern "C" */
 

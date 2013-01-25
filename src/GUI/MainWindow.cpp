@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->scrollArea->setWidget(&wp);
 
 	connect(&wp, SIGNAL(do_connect_sig(const QString &, const QString &)), this, SLOT(do_connect(const QString &, const QString &)));
+
+	//setStyleSheet("background-image: url(:/splash/puzz); background-position: bottom right;  background-repeat: no-repeat;");
 }
 
 MainWindow::~MainWindow()
@@ -83,6 +85,7 @@ void MainWindow::do_disconnect() {
 	ui->dockWidget_2->hide();
 	ui->mainToolBar->hide();
 	ui->menuBar->hide();
+	wp.reset();
 	ui->scrollArea->setWidget(&wp);
 }
 
@@ -120,7 +123,7 @@ void MainWindow::setup(DisCODe::Client * c) {
 	ui->treeWidget->expandAll();
 }
 
-void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int column) {
+void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int /*column*/) {
 	if (!item->parent()) { // Task
 	} else if (!item->parent()->parent()) { // Executor
 	} else { // Component
@@ -129,7 +132,7 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int column) {
 	}
 }
 
-void MainWindow::on_actionConnect_triggered(bool checked) {
+void MainWindow::on_actionConnect_triggered(bool /*checked*/) {
 	if (m_connected) {
 		do_disconnect();
 	} else {
@@ -137,6 +140,7 @@ void MainWindow::on_actionConnect_triggered(bool checked) {
 	}
 }
 
-void MainWindow::on_actionFinish_triggered(bool checked) {
+void MainWindow::on_actionFinish_triggered(bool /*checked*/) {
 	system->finish();
+	do_disconnect();
 }

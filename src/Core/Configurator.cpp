@@ -20,6 +20,7 @@
 #include "ExecutorManager.hpp"
 #include "ConnectionManager.hpp"
 
+#include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/algorithm/string.hpp>
@@ -31,17 +32,12 @@ namespace Core {
 
 using namespace boost;
 
-Configurator::Configurator()
-{
-
-}
-
 Configurator::~Configurator()
 {
 
 }
 
-void Configurator::loadConfiguration(const ptree * config) {
+void Configurator::loadConfiguration(const ptree * /* config */) {
 	// get enviroment variable containing DCL directory
 	char * env_dcldir_tmp = std::getenv("DISCODE_DCL_DIR");
 	std::string env_dcldir;
@@ -67,9 +63,14 @@ void Configurator::expandMacros(ptree & pt, const std::vector<std::pair<std::str
 		std::string val = pt.get(p.first, "");
 		std::string oval = val;
 
+		val = p.second.data();
+		oval = val;
+		LOG(LINFO) << val;
+
 		if (val != "") {
 			substitute(val, dict);
-			pt.put(p.first, val);
+			//pt.put(p.first, val);
+			p.second.put("", val);
 			if (val != oval) {
 				LOG(LINFO) << "Configurator: " << p.first << " value substituted\n"
 							  "\tfrom '" << oval << "' to '" << val << "'";
@@ -118,7 +119,7 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 		}
 
 		// Take overrides into account
-		for (size_t i = 0; i < overrides.size(); ++i) {
+		for (std::size_t i = 0; i < overrides.size(); ++i) {
 			std::cout << overrides[i].first << " set to " << overrides[i].second << std::endl;
 			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
@@ -130,29 +131,21 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 		expandMacros(configuration, dict);
 
 		try {
-			tmp_node = &(configuration.get_child("Task.Executors"));
-			loadExecutors(tmp_node, task);
+			tmp_node = &(configuration.get_child("Task.Subtasks"));
+			loadSubtasks(tmp_node, task);
 		}
 		catch(ptree_bad_path&) {
-			LOG(LERROR) << "No Executors branch in configuration file!\n";
+			LOG(LERROR) << "No Subtasks branch in configuration file!\n";
 		}
 
-		try {
-			tmp_node = &(configuration.get_child("Task.Components"));
-			loadComponents(tmp_node, task);
-		}
-		catch(const ptree_bad_path& ex) {
-			LOG(LERROR) << "No Components branch in configuration file!\n";
-		}
-
-
-		try {
-			tmp_node = &(configuration.get_child("Task.Events"));
-			loadEvents(tmp_node);
-		}
-		catch(ptree_bad_path&) {
-			LOG(LFATAL) << "No Events branch in configuration file!\n";
-		}
+		// In new approach - no events exists
+		//try {
+		//	tmp_node = &(configuration.get_child("Task.Events"));
+		//	loadEvents(tmp_node);
+		//}
+		//catch(ptree_bad_path&) {
+		//	LOG(LFATAL) << "No Events branch in configuration file!\n";
+		//}
 
 		try {
 			tmp_node = &(configuration.get_child("Task.DataStreams"));
@@ -168,212 +161,329 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 	}//: else
 }
 
-void Configurator::loadExecutors(const ptree * node, Task & task) {
-	LOG(LINFO) << "Creating execution threads\n";
+void Configurator::loadSubtasks(const ptree * node, Task & task) {
+	LOG(LINFO) << "Loading subtasks\n";
 
-	Executor * ex;
+	std::string name;
+	std::string key;
+	Subtask * subtask;
 
-	BOOST_FOREACH( TreeNode nd, *node) {
-		if (nd.first == "<xmlcomment>") continue;
+	BOOST_FOREACH(TreeNode nd, *node) {
 		ptree tmp = nd.second;
-		ex = executorManager->createExecutor(nd.first, tmp.get("<xmlattr>.type", "UNKNOWN"));
-		ex->load(tmp);
+		key = nd.first;
 
-		task+=ex;
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "Subtask") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
+
+		name = tmp.get("<xmlattr>.name", "");
+
+		subtask = &task[name];
+		LOG(LNOTICE) << "" << name;
+
+		loadExecutors(&tmp, *subtask);
 	}
 }
 
-void Configurator::loadComponents(const ptree * node, Task & task) {
-	LOG(LINFO) << "Loading required components\n";
+void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
+	LOG(LINFO) << "Creating execution threads\n";
 
-	Base::Component * kern;
 	Executor * ex;
 	std::string name;
+	std::string key;
 	std::string type;
-	std::string thread;
-	std::string group;
-	std::string include;
+	float period;
+
+	BOOST_FOREACH( TreeNode nd, *node ) {
+		ptree tmp = nd.second;
+		key = nd.first;
+
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "Executor") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
+
+		name = tmp.get("<xmlattr>.name", "");
+		type = tmp.get("<xmlattr>.type", "");
+		period = tmp.get("<xmlattr>.period", 0.0f);
+
+		ex = executorManager->createExecutor(name);
+		ex->setPeriod(period);
+
+		subtask+=ex;
+		LOG(LNOTICE) << "\t" << name;
+
+		loadComponents(&tmp, *ex);
+
+		ex->start();
+	}
+}
+
+void Configurator::loadComponents(const ptree * node, Executor & executor) {
+	LOG(LINFO) << "Loading required components\n";
+
+	std::string name;
+	std::string type;
+	std::string key;
+	Base::Component * cmp;
+	int prio;
+	int bump;
+
+	BOOST_FOREACH( TreeNode nd, *node) {
+		ptree tmp = nd.second;
+		key = nd.first;
+
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "Component") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
+
+		name = tmp.get("<xmlattr>.name", "");
+		type = tmp.get("<xmlattr>.type", "");
+		prio = tmp.get("<xmlattr>.priority", 0);
+		bump = tmp.get("<xmlattr>.bump", 0);
+
+		// split component type into dcl and type
+		std::vector<std::string> dcl_comp;
+		boost::split(dcl_comp, type, boost::is_any_of(":"));
+
+		// check, if type is properly formed
+		if (dcl_comp.size() != 2) {
+			LOG(LERROR) << "Bad component type definition: '" << type << "'";
+			LOG(LNOTICE) << "Should be in form DCL:COMPONENT";
+			throw Common::DisCODeException("Task loading error.");
+		} else {
+			LOG(LNOTICE) << "\t\t" << name << " [" << dcl_comp[1] << " from " << dcl_comp[0] << "]";
+		}
+
+		// try to create requested component
+		cmp = componentManager->createComponent(name, dcl_comp[0], dcl_comp[1]);
+		cmp->setBump(bump);
+
+		// iterate through properties defined in xml, check if component has them
+		// and set them if property is persistent
+		loadProperties(&tmp, *cmp);
+
+		executor.addComponent(name, cmp, prio);
+
+		component_executor[name] = executor.name();
+	}
+}
+
+void Configurator::loadProperties(const ptree * node, Base::Component & component) {
+	LOG(LINFO) << "Loading properties";
+
+	std::string name;
+	std::string value;
+	std::string key;
 
 	Base::PropertyInterface * prop;
 
 	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
-		name = nd.first;
+		key = nd.first;
 
-		// ignore coments in tast file
-		if (name == "<xmlcomment>") continue;
-
-		type = tmp.get("<xmlattr>.type", "UNKNOWN");
-		thread = tmp.get("<xmlattr>.thread", "UNKNOWN");
-		group = tmp.get("<xmlattr>.group", "DEFAULT");
-		include = tmp.get("<xmlattr>.include", "");
-
-		LOG(LTRACE) << "Component to be created: " << name << " of type " << type << " in thread " << thread << ", subtask " << group << "\n";
-
-		kern = componentManager->createComponent(name, type);
-
-		if (include != "") {
-			try {
-				read_xml(include, tmp);
-			}
-			catch(const xml_parser_error& ex) {
-				LOG(LERROR) << "Configuration: Couldn't parse include file '" << include << "' for component " << name << ".\n";
-				LOG(LERROR) << ex.what();
-				throw Common::DisCODeException(std::string("Configuration: Couldn't parse '") + include + "' file.\n");
-			}
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "param") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
 		}
 
-		// loading old-style properties
-		if (kern->getProperties()) {
-			try {
-				kern->getProperties()->load(tmp);
-			}
-			catch(const ptree_bad_path& ex) {
-				LOG(LERROR) << name << ": " << ex.what();
-				LOG(LNOTICE) << "Set this property in config file!";
+		name = tmp.get("<xmlattr>.name", "");
+		value = tmp.data();
 
-				throw Common::DisCODeException(name + ": failed to load component");
-			}
-			catch(const ptree_bad_data& ex) {
-				LOG(LERROR) << name << ": " << ex.what();
-				LOG(LNOTICE) << "Check properties in configuration file!";
+		LOG(LNOTICE) << "Property: " << name << "=" << value;
 
-				throw Common::DisCODeException(name + ": failed to load component");
-			}
+		prop = component.getProperty(name);
+		if (!prop) {
+			LOG(LWARNING) << "Component " << component.name() << " has no property named " << name << ", but it is defined in task file.";
+			continue;
 		}
 
-		kern->printProperties();
-
-		std::vector<std::string> props = kern->getAllProperties();
-		std::string s;
-
-		BOOST_FOREACH( std::string pr, props) {
-			prop = kern->getProperty(pr);
-			if (prop != NULL) {
-				if (prop->isPersistent()) {
-					s = tmp.get(pr, "");
-					if (s != "") prop->retrieve(s);
-					LOG(LINFO) << pr << "=[" << prop->store() << "] from [" << s << "]";
-				} else {
-					LOG(LINFO) << pr << "=[" << prop->store() << "]";
-				}
-			}
+		if (!prop->isPersistent()) {
+			LOG(LWARNING) << "Property " << name << "in " << component.name() << " is not persistent, but is set in task file.";
+			continue;
 		}
 
-
-		kern->initialize();
-
-		ex = executorManager->getExecutor(thread);
-		ex->addComponent(name, kern);
-
-		LOG(LINFO) << "Adding component " << name << " to subtask " << group << "\n";
-
-		task[group] += kern;
-
-		component_executor[name] = thread;
+		prop->retrieve(value);
 	}
+
+	component.prepareInterface();
 }
 
 void Configurator::loadEvents(const ptree * node) {
 	LOG(LTRACE) << "Connecting events\n";
-	std::string src, dst, name, caller, receiver, type;
-	Base::Component * src_k, * dst_k;
-	Base::EventHandlerInterface * h;
+
+	std::string src_name, src_evt;
+	Base::Component * src_cmp;
 	Base::Event * e;
-	BOOST_FOREACH( TreeNode nd, *node ) {
+
+	std::string dst_name, dst_hand;
+	Base::Component * dst_cmp;
+	Base::EventHandlerInterface * h;
+
+	std::string key, type;
+
+	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
-		name = nd.first;
-		if (name == "<xmlcomment>") continue;
+		key = nd.first;
 
-		src = tmp.get("<xmlattr>.source", "");
-		if (src == "") {
-			LOG(LERROR) << "No event source specified...\n";
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "Emitter") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
 			continue;
 		}
 
-		dst = tmp.get("<xmlattr>.destination", "");
-		if (dst == "") {
-			LOG(LERROR) << "No event destination specified...\n";
-			continue;
-		}
+		src_evt = tmp.get("<xmlattr>.name", "");
 
-		type=tmp.get("type", "");
-
-		caller = src.substr(0, src.find_first_of("."));
-		src = src.substr(src.find_first_of(".")+1);
-
-		receiver = dst.substr(0, dst.find_first_of("."));
-		dst = dst.substr(dst.find_first_of(".")+1);
-
-		src_k = componentManager->getComponent(caller);
-		dst_k = componentManager->getComponent(receiver);
-
-		h = dst_k->getHandler(dst);
-		if (!h) {
-			LOG(LERROR) << "Component " << receiver << " has no event handler named '" << dst << "'!\n";
-			continue;
-		}
-
-		e = src_k->getEvent(src);
+		src_name = src_evt.substr(0, src_evt.find_first_of("."));
+		src_evt = src_evt.substr(src_evt.find_first_of(".")+1);
+		src_cmp = componentManager->getComponent(src_name);
+		e = src_cmp->getEvent(src_evt);
+		src_cmp->printEvents();
 		if (!e) {
-			LOG(LERROR) << "Component " << caller << " has no event named '" << src << "'!\n";
+			LOG(LERROR) << "Component " << src_name << " has no event named '" << src_evt << "'!\n";
 			continue;
 		}
 
-		// asynchronous connection
-		if ( (component_executor[caller] != component_executor[receiver]) || (type=="async")) {
-			Executor * ex = executorManager->getExecutor(component_executor[receiver]);
-			h = ex->scheduleHandler(h);
-			e->addAsyncHandler(h);
-		} else {
-			e->addHandler(h);
-		}
+		BOOST_FOREACH( TreeNode nd2, tmp) {
+			key = nd2.first;
 
-		LOG(LTRACE) << name << ": src=" << src << ", dst=" << dst << "\n";
+			// ignore comments in task file
+			if (key == "<xmlcomment>" || key == "<xmlattr>") {
+				continue;
+			} else
+			if (key != "handler") {
+				LOG(LWARNING) << "Skipping unknown entry: " << key;
+				continue;
+			}
+
+			type = nd2.second.get("<xmlattr>.type", "sync");
+
+			dst_hand = nd2.second.data();
+			dst_name = dst_hand.substr(0, dst_hand.find_first_of("."));
+			dst_hand = dst_hand.substr(dst_hand.find_first_of(".")+1);
+			dst_cmp = componentManager->getComponent(dst_name);
+
+			dst_cmp->printHandlers();
+
+			h = dst_cmp->getHandler(dst_hand);
+			if (!h) {
+				LOG(LERROR) << "Component " << dst_name << " has no handler named '" << dst_hand << "'!\n";
+				continue;
+			}
+
+			// asynchronous connection
+			if ( (component_executor[src_name] != component_executor[dst_name]) || (type=="async")) {
+				Executor * ex = executorManager->getExecutor(component_executor[dst_name]);
+				h = ex->scheduleHandler(h);
+				e->addAsyncHandler(h);
+				type = "async";
+			} else {
+				e->addHandler(h);
+			}
+
+			LOG(LINFO) << src_name << " : " << src_evt << " -> " << dst_name << " : " << dst_hand << " (" << type << ")";
+		}
 	}
 }
 
 void Configurator::loadConnections(const ptree * node) {
 	LOG(LINFO) << "Connecting data streams\n";
-	std::string name, ds_name;
-	Base::Component * kern;
-	std::string type, con_name;
+
+	std::string src_name, src_port;
+	Base::Component * src_cmp;
+	Base::DataStreamInterface * src_ds;
+
+	std::string dst_name, dst_port;
+	Base::Component * dst_cmp;
+	Base::DataStreamInterface * dst_ds;
+
+	std::string key;
+
 	Base::Connection * con;
-	Base::DataStreamInterface * ds;
 
-
-	BOOST_FOREACH( TreeNode nd, *node ) {
+	BOOST_FOREACH( TreeNode nd, *node) {
 		ptree tmp = nd.second;
-		name = nd.first;
-		if (name == "<xmlcomment>") continue;
+		key = nd.first;
 
-		kern = componentManager->getComponent(name);
-		BOOST_FOREACH( TreeNode ds_nd, tmp ) {
-			ds_name = ds_nd.first;
-			if (ds_name == "<xmlcomment>") continue;
+		// ignore comments in task file
+		if (key == "<xmlcomment>" || key == "<xmlattr>") {
+			continue;
+		} else
+		if (key != "Source") {
+			LOG(LWARNING) << "Skipping unknown entry: " << key;
+			continue;
+		}
 
-			ptree ds_tmp = ds_nd.second;
-			type = ds_tmp.get("<xmlattr>.type", "out");
-			con_name = ds_tmp.get("<xmlattr>.group", "DefaultGroup");
+		src_port = tmp.get("<xmlattr>.name", "");
 
-			con = connectionManager->get(con_name);
+		src_name = src_port.substr(0, src_port.find_first_of("."));
+		src_port = src_port.substr(src_port.find_first_of(".")+1);
+		src_cmp = componentManager->getComponent(src_name);
+		src_ds = src_cmp->getStream(src_port);
+		if (!src_ds) {
+			LOG(LERROR) << "Component " << src_name << " has no data stream named '" << src_port << "'!\n";
+			continue;
+		}
 
-			ds = kern->getStream(ds_name);
-			if (!ds) {
-				LOG(LERROR) << "Component " << name << " has no data stream named '" << ds_name << "'!\n";
-			}
+		if (src_ds->type() == Base::DataStreamInterface::dsIn) {
+			LOG(LERROR) << "Component " << src_name << ": trying to set input data stream '" << src_port<< "' as output!";
+			continue;
+		}
 
-			LOG(LINFO) << name << ": str=" << ds_name << " [" << type << "] in " << con_name;
+		con = connectionManager->get(src_name + ":" + src_port);
+		src_ds->setConnection(con);
 
-			if (type == "out") {
-				ds->setConnection(con);
+		BOOST_FOREACH( TreeNode nd2, tmp) {
+			key = nd2.first;
+
+			// ignore comments in task file
+			if (key == "<xmlcomment>" || key == "<xmlattr>") {
+				continue;
 			} else
-			if (type == "in") {
-				con->addListener(ds);
-			} else {
-				LOG(LERROR) << "Unknown data stream type: " << type << "\n";
+			if (key != "sink") {
+				LOG(LWARNING) << "Skipping unknown entry: " << key;
 				continue;
 			}
+
+			dst_port = nd2.second.data();
+			dst_name = dst_port.substr(0, dst_port.find_first_of("."));
+			dst_port = dst_port.substr(dst_port.find_first_of(".")+1);
+			dst_cmp = componentManager->getComponent(dst_name);
+			dst_ds = dst_cmp->getStream(dst_port);
+			if (!dst_ds) {
+				LOG(LERROR) << "Component " << dst_name << " has no data stream named '" << dst_port << "'!\n";
+				continue;
+			}
+
+			if (dst_ds->type() == Base::DataStreamInterface::dsOut) {
+				LOG(LERROR) << "Component " << src_name << ": trying to set output data stream '" << dst_port << "' as input!";
+				continue;
+			}
+
+			con->addListener(dst_ds);
+
+			LOG(LINFO) << src_name << " : " << src_port << " -> " << dst_name << " : " << dst_port;
 		}
 	}
 }
