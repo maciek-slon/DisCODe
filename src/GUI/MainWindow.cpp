@@ -144,3 +144,35 @@ void MainWindow::on_actionFinish_triggered(bool /*checked*/) {
 	system->finish();
 	do_disconnect();
 }
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+	if (m_connected) {
+		QMessageBox msgBox;
+		msgBox.setText("DisCODe is still runnig.");
+		msgBox.setInformativeText("Do you want to terminate DisCODe?");
+		msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+		msgBox.setDefaultButton(QMessageBox::Yes);
+		int ret = msgBox.exec();
+		
+		switch (ret) {
+		case QMessageBox::Yes:
+			system->finish();
+			event->accept();
+			break;
+			
+		case QMessageBox::No:
+			event->accept();
+			break;
+		
+		case QMessageBox::Cancel:
+			event->ignore();
+			break;
+		default:
+			// should never be reached
+			break;
+		}
+		
+	} else {
+		event->accept();
+	}
+}

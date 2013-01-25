@@ -33,6 +33,9 @@ public:
 
     void setup(DisCODe::Client * c);
 
+protected:
+	void closeEvent(QCloseEvent *event);
+
 public slots:
 	void on_treeWidget_itemClicked(QTreeWidgetItem * item, int column);
 
