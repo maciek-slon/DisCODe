@@ -25,7 +25,6 @@ INSTALL(
 
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/create_dcl.py" "${CMAKE_BINARY_DIR}/create_dcl" IMMEDIATE @ONLY)
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/discode_helper.py" "${CMAKE_BINARY_DIR}/discode_helper.py" IMMEDIATE @ONLY)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/create_component.py" "${CMAKE_BINARY_DIR}/create_component" IMMEDIATE @ONLY)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/diswizard.py" "${CMAKE_BINARY_DIR}/diswizard" IMMEDIATE @ONLY)
 
@@ -34,5 +33,7 @@ INSTALL(
   DESTINATION bin COMPONENT applications
 ) 
 
-
-install(FILES diswizard.ui DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)
+install(
+  FILES "${CMAKE_CURRENT_SOURCE_DIR}/diswizard.ui"
+  DESTINATION bin
+)
