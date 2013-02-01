@@ -19,7 +19,6 @@
 
 namespace Base {
 
-class Event;
 class EventHandlerInterface;
 class DataStreamInterface;
 class PropertyInterface;
@@ -48,7 +47,6 @@ class PropertyInterface;
  */
 class Component
 {
-	typedef std::pair<std::string, Event *> EventPair;
 	typedef std::pair<std::string, EventHandlerInterface *> HandlerPair;
 	typedef std::pair<std::string, DataStreamInterface *> StreamPair;
 	typedef std::pair<std::string, PropertyInterface *> PropertyPair;
@@ -135,17 +133,6 @@ public:
 	 */
 	virtual void prepareInterface() = 0;
 
-	/*!
-	 * Print list of all registered events.
-	 */
-	void printEvents();
-
-	/*!
-	 * Returns event with specified name if registered or NULL.
-	 * \param name event name
-	 * \returns pointer to event with specified name or NULL if no such event is registered.
-	 */
-	Event * getEvent(const std::string& name);
 
 	/*!
 	 * Print list of all registered event handlers.
@@ -238,14 +225,6 @@ protected:
 	 */
 	//virtual bool onStep() = 0;
 
-
-	/*!
-	 * Register new event under specified name.
-	 * \param name event name
-	 * \returns pointer to newly created event.
-	 */
-	Event * registerEvent(const std::string& name);
-
 	/*!
 	 * Register new event handler under specified name.
 	 * \param name event handler name
@@ -282,9 +261,6 @@ private:
 
 	/// state of component
 	State state;
-
-	/// all registered events
-	std::map<std::string, Event *> events;
 
 	/// all registered event handlers
 	std::map<std::string, EventHandlerInterface *> handlers;

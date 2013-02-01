@@ -11,7 +11,6 @@
 #include "Logger.hpp"
 
 #include "Component.hpp"
-#include "Event.hpp"
 #include "EventHandler.hpp"
 #include "Property.hpp"
 #include "DataStreamInterface.hpp"
@@ -137,15 +136,6 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 		catch(ptree_bad_path&) {
 			LOG(LERROR) << "No Subtasks branch in configuration file!\n";
 		}
-
-		// In new approach - no events exists
-		//try {
-		//	tmp_node = &(configuration.get_child("Task.Events"));
-		//	loadEvents(tmp_node);
-		//}
-		//catch(ptree_bad_path&) {
-		//	LOG(LFATAL) << "No Events branch in configuration file!\n";
-		//}
 
 		try {
 			tmp_node = &(configuration.get_child("Task.DataStreams"));
@@ -325,86 +315,6 @@ void Configurator::loadProperties(const ptree * node, Base::Component & componen
 	}
 
 	component.prepareInterface();
-}
-
-void Configurator::loadEvents(const ptree * node) {
-	LOG(LTRACE) << "Connecting events\n";
-
-	std::string src_name, src_evt;
-	Base::Component * src_cmp;
-	Base::Event * e;
-
-	std::string dst_name, dst_hand;
-	Base::Component * dst_cmp;
-	Base::EventHandlerInterface * h;
-
-	std::string key, type;
-
-	BOOST_FOREACH( TreeNode nd, *node) {
-		ptree tmp = nd.second;
-		key = nd.first;
-
-		// ignore comments in task file
-		if (key == "<xmlcomment>" || key == "<xmlattr>") {
-			continue;
-		} else
-		if (key != "Emitter") {
-			LOG(LWARNING) << "Skipping unknown entry: " << key;
-			continue;
-		}
-
-		src_evt = tmp.get("<xmlattr>.name", "");
-
-		src_name = src_evt.substr(0, src_evt.find_first_of("."));
-		src_evt = src_evt.substr(src_evt.find_first_of(".")+1);
-		src_cmp = componentManager->getComponent(src_name);
-		e = src_cmp->getEvent(src_evt);
-		src_cmp->printEvents();
-		if (!e) {
-			LOG(LERROR) << "Component " << src_name << " has no event named '" << src_evt << "'!\n";
-			continue;
-		}
-
-		BOOST_FOREACH( TreeNode nd2, tmp) {
-			key = nd2.first;
-
-			// ignore comments in task file
-			if (key == "<xmlcomment>" || key == "<xmlattr>") {
-				continue;
-			} else
-			if (key != "handler") {
-				LOG(LWARNING) << "Skipping unknown entry: " << key;
-				continue;
-			}
-
-			type = nd2.second.get("<xmlattr>.type", "sync");
-
-			dst_hand = nd2.second.data();
-			dst_name = dst_hand.substr(0, dst_hand.find_first_of("."));
-			dst_hand = dst_hand.substr(dst_hand.find_first_of(".")+1);
-			dst_cmp = componentManager->getComponent(dst_name);
-
-			dst_cmp->printHandlers();
-
-			h = dst_cmp->getHandler(dst_hand);
-			if (!h) {
-				LOG(LERROR) << "Component " << dst_name << " has no handler named '" << dst_hand << "'!\n";
-				continue;
-			}
-
-			// asynchronous connection
-			if ( (component_executor[src_name] != component_executor[dst_name]) || (type=="async")) {
-				Executor * ex = executorManager->getExecutor(component_executor[dst_name]);
-				h = ex->scheduleHandler(h);
-				e->addAsyncHandler(h);
-				type = "async";
-			} else {
-				e->addHandler(h);
-			}
-
-			LOG(LINFO) << src_name << " : " << src_evt << " -> " << dst_name << " : " << dst_hand << " (" << type << ")";
-		}
-	}
 }
 
 void Configurator::loadConnections(const ptree * node) {

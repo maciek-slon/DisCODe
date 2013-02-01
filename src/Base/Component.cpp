@@ -5,7 +5,6 @@
 
 #include "Component.hpp"
 
-#include "Event.hpp"
 #include "EventHandler.hpp"
 #include "DataStreamInterface.hpp"
 #include "Logger.hpp"
@@ -20,10 +19,6 @@ namespace Base {
 
 Component::~Component()
 {
-	// delete all events and handlers
-	BOOST_FOREACH(EventPair event, events) {
-		delete event.second;
-	}
 }
 
 //------------------------------------------------------------------------------------
@@ -197,32 +192,6 @@ bool Component::running() const {
 
 bool Component::initialized() const {
 	return state == Ready;
-}
-
-//------------------------------------------------------------------------------------
-// Event related methods
-//------------------------------------------------------------------------------------
-
-void Component::printEvents() {
-	LOG(LINFO) << "Registered events:\n";
-	BOOST_FOREACH(EventPair event, events) {
-		LOG(LINFO) << "\t" << event.first << "\n";
-	}
-}
-
-Event * Component::getEvent(const std::string& name) {
-	if (events.count(name) > 0) {
-		return events[name];
-	} else {
-		return NULL;
-	}
-}
-
-Event * Component::registerEvent(const std::string& name) {
-	/// \todo check, if event already exists
-	Event * event = new Event();
-	events[name] = event;
-	return event;
 }
 
 //------------------------------------------------------------------------------------
