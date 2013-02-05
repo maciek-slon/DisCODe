@@ -9,6 +9,7 @@
         <file alias="wizard">resources/Nuvola_actions_wizard.png</file>
         <file alias="cancel">resources/Nuvola_actions_cancel.png</file>
         <file alias="exit">resources/Exit.png</file>
+        <file alias="app">resources/icon.png</file>
     </qresource>
     <qresource prefix="/splash">  
         <file alias="puzz">resources/puzz.png</file>

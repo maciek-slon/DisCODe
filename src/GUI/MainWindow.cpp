@@ -20,14 +20,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->treeWidget->clear();
 
 	ui->dockWidget->hide();
-	ui->dockWidget_2->hide();
 	ui->mainToolBar->hide();
 	ui->menuBar->hide();
 	ui->scrollArea->setWidget(&wp);
 
 	connect(&wp, SIGNAL(do_connect_sig(const QString &, const QString &)), this, SLOT(do_connect(const QString &, const QString &)));
 
-	//setStyleSheet("background-image: url(:/splash/puzz); background-position: bottom right;  background-repeat: no-repeat;");
+	QIcon * appicon = new QIcon;
+	appicon->addFile(":/icons/app", QSize(256,256));
+	QApplication::setWindowIcon(*appicon);
 }
 
 MainWindow::~MainWindow()
@@ -59,8 +60,6 @@ void MainWindow::do_connect(const QString & host, const QString & port) {
 		ui->actionConnect->setIcon(QIcon(":/icons/disconnect"));
 
 		ui->dockWidget->show();
-		ui->dockWidget_2->show();
-		ui->mainToolBar->show();
 		ui->menuBar->show();
 		ui->scrollArea->takeWidget();
 	}
@@ -83,7 +82,6 @@ void MainWindow::do_disconnect() {
 	m_connected = false;
 
 	ui->dockWidget->hide();
-	ui->dockWidget_2->hide();
 	ui->mainToolBar->hide();
 	ui->menuBar->hide();
 	wp.reset();
