@@ -49,6 +49,7 @@ SET(GUI_CXX_SRCS
 	HostSelector.cpp
 	WelcomePage.cpp
 	TaskWidget.cpp
+	ComponentItem.cpp
 )
 
 # Class headers that have to be MOCed (i.e. classes derived from QObject)
@@ -58,6 +59,7 @@ SET(GUI_MOC_SRCS
 	HostSelector.hpp
 	WelcomePage.hpp
 	TaskWidget.hpp
+	ComponentItem.hpp
 )
 
 # Generate MOC files
@@ -69,6 +71,7 @@ SET(GUI_UI
 	HostSelector.ui
 	WelcomePage.ui
 	TaskWidget.ui
+	ComponentItem.ui
 )
 
 # Generate UI include files

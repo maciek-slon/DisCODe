@@ -2,6 +2,7 @@
 #include "ui_MainWindow.h"
 
 #include "ComponentWidget.hpp"
+#include "ComponentItem.hpp"
 
 #include <QtGui>
 
@@ -114,6 +115,15 @@ void MainWindow::setup(DisCODe::Client * c) {
 			i_ex->addChild(i_cp);
 
 			component_props[cp->name().c_str()] = new ComponentWidget(cp);
+
+
+
+
+			ComponentItem *myItem = new ComponentItem(cp->name().c_str(), "type", ex->name().c_str(), 0);
+			QListWidgetItem *item = new QListWidgetItem();
+			item->setSizeHint(QSize(0,50));
+			ui->listComponents->addItem(item);
+			ui->listComponents->setItemWidget(item,myItem);
 		}
 
 		i_task->addChild(i_ex);
@@ -130,6 +140,11 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem * item, int /*column*
 		ui->scrollArea->takeWidget();
 		ui->scrollArea->setWidget(component_props[item->text(0)]);
 	}
+}
+
+void MainWindow::on_listComponents_itemClicked(QListWidgetItem * item) {
+	ui->scrollArea->takeWidget();
+	ui->scrollArea->setWidget(component_props[dynamic_cast<ComponentItem*>(ui->listComponents->itemWidget(item))->getName()]);
 }
 
 void MainWindow::on_actionConnect_triggered(bool /*checked*/) {

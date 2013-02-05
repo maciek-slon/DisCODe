@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtGui>
 #include <QMainWindow>
 #include <QMap>
 
@@ -38,6 +39,7 @@ protected:
 
 public slots:
 	void on_treeWidget_itemClicked(QTreeWidgetItem * item, int column);
+	void on_listComponents_itemClicked(QListWidgetItem * item);
 
 	void on_actionConnect_triggered(bool checked);
 	void on_actionFinish_triggered(bool checked);
