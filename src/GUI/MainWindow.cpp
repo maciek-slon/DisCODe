@@ -61,6 +61,7 @@ void MainWindow::do_connect(const QString & host, const QString & port) {
 
 		ui->dockWidget->show();
 		ui->menuBar->show();
+		ui->mainToolBar->show();
 		ui->scrollArea->takeWidget();
 	}
 }
