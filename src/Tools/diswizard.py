@@ -106,9 +106,12 @@ class DisCODeWizard(object):
 		self.app.connect(self.app, QtCore.SIGNAL("lastWindowClosed()"), self.app, QtCore.SLOT("quit()"))
 		self.app.connect(self.win.ui.btnCancel, QtCore.SIGNAL('clicked()'), self.app, QtCore.SLOT("quit()"))
 
+		self.win.ui.btnBrowseDCL.hide()
+
 		self.loadDCL()
 		
-		self.showMessage("Error!", "E")
+		#self.showMessage("Error!", "E")
+		self.showMessage("", "")
 		
 	def showMessage(self, minfo, mtype):
 		ICON_PATH=DISCODE_PATH+"/share/DisCODe/resources/icons/10/"
@@ -118,8 +121,10 @@ class DisCODeWizard(object):
 		self.win.ui.lblInfo.setText(minfo)
 		if mtype == "E":
 			self.win.ui.lblInfoIcon.setPixmap(QtGui.QPixmap(ICON_PATH+"150.png"))
-		else:
+		if mtype == "W":
 			self.win.ui.lblInfoIcon.setPixmap(QtGui.QPixmap(ICON_PATH+"050.png"))
+		if mtype == "":
+			self.win.ui.lblInfoIcon.setPixmap(QtGui.QPixmap(ICON_PATH+"000.png"))
 		
 	def loadDCL(self):
 		for o in os.listdir(DISCODE_DCL_DIR):
@@ -243,7 +248,11 @@ class DisCODeWizard(object):
 		
 		
 		
+	def addDep(self):
+		pass
 		
+	def remDep(self):
+		pass
 		
 		
 	def addProp(self):

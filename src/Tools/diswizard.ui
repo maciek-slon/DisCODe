@@ -30,6 +30,9 @@
      <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>
+     <property name="toolTip">
+      <string/>
+     </property>
      <property name="styleSheet">
       <string notr="true"> QTabWidget::tab-bar {
 
@@ -67,12 +70,15 @@ QTabWidget&gt;QWidget&gt;QWidget {
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="documentMode">
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="tab">
+      <property name="toolTip">
+       <string/>
+      </property>
       <attribute name="title">
        <string>General</string>
       </attribute>
@@ -121,11 +127,6 @@ QTabWidget&gt;QWidget&gt;QWidget {
          <attribute name="verticalHeaderVisible">
           <bool>false</bool>
          </attribute>
-         <row>
-          <property name="text">
-           <string>Nowy wiersz</string>
-          </property>
-         </row>
          <column>
           <property name="text">
            <string>Use</string>
@@ -136,19 +137,6 @@ QTabWidget&gt;QWidget&gt;QWidget {
            <string>Library</string>
           </property>
          </column>
-         <item row="0" column="0">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="checkState">
-           <enum>Unchecked</enum>
-          </property>
-         </item>
-         <item row="0" column="1">
-          <property name="text">
-           <string>OpenCV</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="1" column="1">
@@ -158,6 +146,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <widget class="QPushButton" name="btnAddDep">
+           <property name="toolTip">
+            <string>Add new library to dependencies</string>
+           </property>
            <property name="text">
             <string>Add...</string>
            </property>
@@ -165,6 +156,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
          </item>
          <item>
           <widget class="QPushButton" name="btnRemoveDep">
+           <property name="toolTip">
+            <string>Remove selected dependency</string>
+           </property>
            <property name="text">
             <string>Remove</string>
            </property>
@@ -258,6 +252,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2">
+      <property name="toolTip">
+       <string/>
+      </property>
       <attribute name="title">
        <string>Streams</string>
       </attribute>
@@ -310,7 +307,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
          <item>
           <widget class="QPushButton" name="btnAddStreamIn">
            <property name="toolTip">
-            <string>test</string>
+            <string>Add new input stream</string>
            </property>
            <property name="text">
             <string>Add...</string>
@@ -319,6 +316,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
          </item>
          <item>
           <widget class="QPushButton" name="btnRemoveStreamIn">
+           <property name="toolTip">
+            <string>Remove selected stream</string>
+           </property>
            <property name="text">
             <string>Remove</string>
            </property>
@@ -376,6 +376,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
           <widget class="QPushButton" name="btnAddStreamOut">
+           <property name="toolTip">
+            <string>Add new output stream</string>
+           </property>
            <property name="text">
             <string>Add</string>
            </property>
@@ -383,6 +386,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
          </item>
          <item>
           <widget class="QPushButton" name="btnRemoveStreamOut">
+           <property name="toolTip">
+            <string>Remove selected stream</string>
+           </property>
            <property name="text">
             <string>Remove</string>
            </property>
@@ -406,6 +412,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
       </layout>
      </widget>
      <widget class="QWidget" name="tab_3">
+      <property name="toolTip">
+       <string/>
+      </property>
       <attribute name="title">
        <string>Handlers</string>
       </attribute>
@@ -477,6 +486,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QPushButton" name="btnAddEvent">
+           <property name="toolTip">
+            <string>Add new handler</string>
+           </property>
            <property name="text">
             <string>Add...</string>
            </property>
@@ -484,6 +496,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
          </item>
          <item>
           <widget class="QPushButton" name="btnRemoveEvent">
+           <property name="toolTip">
+            <string>Remove selected handler</string>
+           </property>
            <property name="text">
             <string>Remove</string>
            </property>
@@ -498,6 +513,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_3">
+           <property name="toolTip">
+            <string>Move selected handler up</string>
+           </property>
            <property name="text">
             <string>Up</string>
            </property>
@@ -505,6 +523,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_4">
+           <property name="toolTip">
+            <string>Move selected handler down</string>
+           </property>
            <property name="text">
             <string>Down</string>
            </property>
@@ -552,6 +573,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
       </layout>
      </widget>
      <widget class="QWidget" name="tab_4">
+      <property name="toolTip">
+       <string/>
+      </property>
       <attribute name="title">
        <string>Properties</string>
       </attribute>
@@ -612,6 +636,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
           <widget class="QPushButton" name="btnAddProp">
+           <property name="toolTip">
+            <string>Add new property</string>
+           </property>
            <property name="text">
             <string>Add...</string>
            </property>
@@ -619,6 +646,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
          </item>
          <item>
           <widget class="QPushButton" name="btnRemoveProp">
+           <property name="toolTip">
+            <string>Remove selected property</string>
+           </property>
            <property name="text">
             <string>Remove</string>
            </property>
@@ -671,6 +701,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
      </item>
      <item>
       <widget class="QPushButton" name="btnCancel">
+       <property name="toolTip">
+        <string>Close Wizard without saving changes</string>
+       </property>
        <property name="text">
         <string>&amp;Cancel</string>
        </property>
@@ -678,6 +711,9 @@ QTabWidget&gt;QWidget&gt;QWidget {
      </item>
      <item>
       <widget class="QPushButton" name="btnGenerate">
+       <property name="toolTip">
+        <string>Generate new component</string>
+       </property>
        <property name="text">
         <string>&amp;Generate</string>
        </property>
