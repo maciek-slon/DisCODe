@@ -4,6 +4,9 @@ from PySide import QtGui
 from PySide import QtCore
 from PySide import QtUiTools
 
+from diswizard_library import LibraryWidget
+from Library import Library
+
 import sys
 import os
 import re
@@ -63,11 +66,12 @@ class MyWidget(QtGui.QMainWindow):
 
 		widgets = self.findChildren(QtGui.QWidget);
 		for w in widgets:
-			print w.installEventFilter(self)
+			w.installEventFilter(self)
 			
 		self.lastText = ""
 		self.lastIcon = None
 		self.infoVisible = False
+
 			
 	def eventFilter(self, object, event):
 		ICON_PATH=DISCODE_PATH+"/share/DisCODe/resources/icons/10/"
@@ -95,6 +99,8 @@ class DisCODeWizard(object):
 		
 		QtCore.QObject.connect(self.win.ui.btnGenerate, QtCore.SIGNAL('clicked()'), self.generate)
 		
+		QtCore.QObject.connect(self.win.ui.btnAddDep, QtCore.SIGNAL('clicked()'), self.addDep)
+		
 		QtCore.QObject.connect(self.win.ui.btnAddStreamIn, QtCore.SIGNAL('clicked()'), lambda: self.addStream(self.win.ui.tblStreamIn))
 		QtCore.QObject.connect(self.win.ui.btnRemoveStreamIn, QtCore.SIGNAL('clicked()'), lambda: self.remStream(self.win.ui.tblStreamIn))
 		QtCore.QObject.connect(self.win.ui.btnAddStreamOut, QtCore.SIGNAL('clicked()'), lambda: self.addStream(self.win.ui.tblStreamOut))
@@ -107,6 +113,17 @@ class DisCODeWizard(object):
 		self.app.connect(self.win.ui.btnCancel, QtCore.SIGNAL('clicked()'), self.app, QtCore.SLOT("quit()"))
 
 		self.win.ui.btnBrowseDCL.hide()
+
+		
+		self.libs = LibraryWidget(None)
+		libs = []
+		lib = Library()
+		lib.name="OpenCV"
+		libs.append(lib)
+		lib = Library()
+		lib.name="Pointcloud"
+		libs.append(lib)
+		self.libs.setLibraries(libs)
 
 		self.loadDCL()
 		
@@ -268,7 +285,9 @@ class DisCODeWizard(object):
 		
 	def remStream(self, table):
 		table.removeRow(table.currentRow())
-
+	
+	def addDep(self):
+		self.libs.show()
 
 
 
