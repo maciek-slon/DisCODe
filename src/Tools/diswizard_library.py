@@ -52,6 +52,8 @@ class LibraryWidget(QtGui.QWidget):
 		self.resize(500, 500)
 		
 		self.libs=None
+		
+		self.setWindowTitle("DisCODe Wizard: Choose Library")
 			
 	def eventFilter(self, object, event):
 		ICON_PATH=DISCODE_PATH+"/share/DisCODe/resources/icons/10/"
@@ -97,7 +99,16 @@ class LibraryWidget(QtGui.QWidget):
 		try:
 			n=self.ui.lstLibs.currentItem().text()
 		finally:
-			lib = self.getLib(n)
+			self.selected_lib = self.getLib(n)
+			lib = self.selected_lib
 			if lib == None:
 				return
 			self.ui.edName.setText(lib.name)
+			self.ui.edDesc.setPlainText(lib.desc)
+			self.ui.edPckg.setText(lib.pckg)
+			self.ui.edLibs.setText(lib.libs)
+			self.ui.edAdds.setPlainText(lib.adds)
+			self.ui.edIncl.setPlainText(lib.incl)
+
+	def getSelectedLib(self):
+		return self.selected_lib

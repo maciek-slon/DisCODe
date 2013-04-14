@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>836</width>
-    <height>713</height>
+    <width>500</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -70,7 +70,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="documentMode">
       <bool>true</bool>
@@ -282,7 +282,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
           <bool>false</bool>
          </property>
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>200</number>
+          <number>150</number>
          </attribute>
          <attribute name="horizontalHeaderStretchLastSection">
           <bool>true</bool>
@@ -352,7 +352,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
        <item row="2" column="1">
         <widget class="QTableWidget" name="tblStreamOut">
          <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>200</number>
+          <number>150</number>
          </attribute>
          <attribute name="horizontalHeaderStretchLastSection">
           <bool>true</bool>
@@ -419,57 +419,36 @@ QTabWidget&gt;QWidget&gt;QWidget {
        <string>Handlers</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout" columnminimumwidth="100,0,0">
-       <item row="0" column="1">
-        <widget class="QTableWidget" name="tblEvents">
-         <property name="tabKeyNavigation">
-          <bool>false</bool>
+       <item row="4" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QRadioButton" name="rdAct">
+           <property name="text">
+            <string>Active</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rdPas">
+           <property name="text">
+            <string>Passive</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rdTri">
+           <property name="text">
+            <string>Triggered</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Type</string>
          </property>
-         <attribute name="horizontalHeaderStretchLastSection">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="verticalHeaderVisible">
-          <bool>false</bool>
-         </attribute>
-         <row>
-          <property name="text">
-           <string>Nowy wiersz</string>
-          </property>
-         </row>
-         <row>
-          <property name="text">
-           <string>Nowy wiersz</string>
-          </property>
-         </row>
-         <column>
-          <property name="text">
-           <string>Name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Type</string>
-          </property>
-         </column>
-         <item row="0" column="0">
-          <property name="text">
-           <string>newImage</string>
-          </property>
-         </item>
-         <item row="0" column="1">
-          <property name="text">
-           <string>event</string>
-          </property>
-         </item>
-         <item row="1" column="0">
-          <property name="text">
-           <string>onNewImage</string>
-          </property>
-         </item>
-         <item row="1" column="1">
-          <property name="text">
-           <string>handler</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="0" column="0">
@@ -485,7 +464,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
        <item row="0" column="2">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QPushButton" name="btnAddEvent">
+          <widget class="QPushButton" name="btnAddHandler">
            <property name="toolTip">
             <string>Add new handler</string>
            </property>
@@ -495,7 +474,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btnRemoveEvent">
+          <widget class="QPushButton" name="btnRemoveHandler">
            <property name="toolTip">
             <string>Remove selected handler</string>
            </property>
@@ -512,7 +491,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="btnHandlerUp">
            <property name="toolTip">
             <string>Move selected handler up</string>
            </property>
@@ -522,7 +501,7 @@ QTabWidget&gt;QWidget&gt;QWidget {
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="btnHandlerDown">
            <property name="toolTip">
             <string>Move selected handler down</string>
            </property>
@@ -546,29 +525,28 @@ QTabWidget&gt;QWidget&gt;QWidget {
          </item>
         </layout>
        </item>
-       <item row="1" column="0" colspan="3">
+       <item row="3" column="0" colspan="3">
         <widget class="Line" name="line_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
+       <item row="5" column="0">
         <widget class="QLabel" name="label_7">
          <property name="text">
-          <string>Triggers</string>
+          <string>Depends on</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QTableWidget" name="tableWidget_2">
-         <property name="tabKeyNavigation">
-          <bool>false</bool>
-         </property>
-        </widget>
+       <item row="0" column="1">
+        <widget class="QListWidget" name="lstHandlers"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QListWidget" name="lstHandDeps"/>
        </item>
       </layout>
      </widget>
@@ -595,9 +573,6 @@ QTabWidget&gt;QWidget&gt;QWidget {
          <property name="tabKeyNavigation">
           <bool>false</bool>
          </property>
-         <attribute name="horizontalHeaderDefaultSectionSize">
-          <number>100</number>
-         </attribute>
          <attribute name="horizontalHeaderMinimumSectionSize">
           <number>60</number>
          </attribute>
@@ -670,11 +645,6 @@ QTabWidget&gt;QWidget&gt;QWidget {
         </layout>
        </item>
       </layout>
-     </widget>
-     <widget class="QWidget" name="tab_5">
-      <attribute name="title">
-       <string>Preview</string>
-      </attribute>
      </widget>
     </widget>
    </item>
@@ -799,12 +769,10 @@ QTabWidget&gt;QWidget&gt;QWidget {
   <tabstop>tblStreamOut</tabstop>
   <tabstop>btnAddStreamOut</tabstop>
   <tabstop>btnRemoveStreamOut</tabstop>
-  <tabstop>tblEvents</tabstop>
-  <tabstop>btnAddEvent</tabstop>
-  <tabstop>btnRemoveEvent</tabstop>
-  <tabstop>pushButton_3</tabstop>
-  <tabstop>pushButton_4</tabstop>
-  <tabstop>tableWidget_2</tabstop>
+  <tabstop>btnAddHandler</tabstop>
+  <tabstop>btnRemoveHandler</tabstop>
+  <tabstop>btnHandlerUp</tabstop>
+  <tabstop>btnHandlerDown</tabstop>
   <tabstop>tblProps</tabstop>
   <tabstop>btnAddProp</tabstop>
   <tabstop>btnRemoveProp</tabstop>

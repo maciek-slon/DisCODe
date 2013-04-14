@@ -15,6 +15,13 @@ import re
 DISCODE_PATH="@CMAKE_INSTALL_PREFIX@"
 DISCODE_DCL_DIR = os.environ["DISCODE_DCL_DIR"]
 
+class Handler:
+	def __init__(self):
+		self.name = "<New Handler>"
+		self.type = 0 #0 - active, 1 - passive, 2 - triggered
+		self.deps = []
+
+
 def replace_words(text, word_dic):
 	"""
 	take a text and replace words that match a key in a dictionary with
@@ -57,7 +64,7 @@ class MyWidget(QtGui.QMainWindow):
 		file.close()
 
 		self.setCentralWidget(self.ui)
-		self.resize(640, 720)
+		self.resize(500, 500)
 
 		ICON_PATH=DISCODE_PATH+"/share/DisCODe/resources/icons/10/"
 
@@ -71,6 +78,7 @@ class MyWidget(QtGui.QMainWindow):
 		self.lastText = ""
 		self.lastIcon = None
 		self.infoVisible = False
+		self.setWindowTitle("DisCODe Wizard")
 
 			
 	def eventFilter(self, object, event):
@@ -114,11 +122,29 @@ class DisCODeWizard(object):
 
 		self.win.ui.btnBrowseDCL.hide()
 
+		self.win.ui.btnAddHandler.clicked.connect(self.addHandler)
+		
+		self.win.ui.tblStreamIn.itemChanged.connect(self.processStreams)
+		
+		self.win.ui.lstHandlers.currentItemChanged.connect(self.getCurrentHandler)
+		self.win.ui.lstHandlers.itemChanged.connect(self.changeHandler)
+		
+		self.win.ui.rdAct.toggled.connect(self.changeHandlerProps)
+		self.win.ui.rdPas.toggled.connect(self.changeHandlerProps)
+		self.win.ui.rdTri.toggled.connect(self.changeHandlerProps)
+		self.win.ui.lstHandDeps.itemChanged.connect(self.changeHandlerProps)
+		
+		self.currentHandler = None
+		self.processHandlers()
 		
 		self.libs = LibraryWidget(None)
 		libs = []
 		lib = Library()
 		lib.name="OpenCV"
+		lib.desc="Open source compute vision library"
+		lib.pckg="OpenCV"
+		lib.libs="${OpenCV_LIBS}"
+		lib.incl="opencv2/opencv.hpp"
 		libs.append(lib)
 		lib = Library()
 		lib.name="Pointcloud"
@@ -126,6 +152,8 @@ class DisCODeWizard(object):
 		self.libs.setLibraries(libs)
 
 		self.loadDCL()
+		
+		self.handlers=[]
 		
 		#self.showMessage("Error!", "E")
 		self.showMessage("", "")
@@ -266,7 +294,7 @@ class DisCODeWizard(object):
 		
 		
 	def addDep(self):
-		pass
+		self.libs.show()
 		
 	def remDep(self):
 		pass
@@ -282,18 +310,100 @@ class DisCODeWizard(object):
 		rc = table.rowCount()
 		table.insertRow(rc)
 		table.setItem(rc, 0, QtGui.QTableWidgetItem("stream_%d"%(rc)))
+		#self.processStreams()
 		
 	def remStream(self, table):
 		table.removeRow(table.currentRow())
+		self.processStreams()
 	
-	def addDep(self):
-		self.libs.show()
+	def addHandler(self):
+		handler = Handler()
+		self.handlers.append(handler)
+		item = QtGui.QListWidgetItem( handler.name );
+		item.setFlags( item.flags() | QtCore.Qt.ItemIsEditable );
+		self.win.ui.lstHandlers.addItem(item)
+		self.win.ui.lstHandlers.setCurrentItem(item)
+		self.win.ui.lstHandlers.editItem(item)
+		pass
+		
+	def remHandler(self):
+		pass
+		
+	def processStreams(self):
+		self.win.ui.lstHandDeps.clear()
+		for i in range(self.win.ui.tblStreamIn.rowCount()):
+			txt = self.win.ui.tblStreamIn.item(i, 0).text()
+			item = QtGui.QListWidgetItem(txt, self.win.ui.lstHandDeps)
+			item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
+			item.setCheckState(QtCore.Qt.Unchecked)
 
+	def checkHandDeps(self):
+		for i in range(self.win.ui.lstHandDeps.count()):
+			item = self.win.ui.lstHandDeps.item(i)
+			if item.text() in self.currentHandler.deps:
+				item.setCheckState(QtCore.Qt.Checked)
+			else:
+				item.setCheckState(QtCore.Qt.Unchecked)
 
+	def getHandler(self, name):
+		for hand in self.handlers:
+			if hand.name == name:
+				return hand
+		
+		return None
 
+	def getCurrentHandler(self):
+		self.currentHandler = self.getHandler(self.win.ui.lstHandlers.currentItem().text())
+		if self.currentHandler != None:
+			print "Cur hand:", self.currentHandler.name, self.currentHandler.type, self.currentHandler.deps
+		self.processHandlers()
+		self.checkHandDeps()
 
+	def changeHandlerProps(self):
+		if self.currentHandler == None:
+			return
+		if self.win.ui.rdAct.isChecked():
+			self.currentHandler.type = 0
+			self.win.ui.lstHandDeps.setEnabled(False)
+		if self.win.ui.rdPas.isChecked():
+			self.currentHandler.type = 1
+			self.win.ui.lstHandDeps.setEnabled(False)
+		if self.win.ui.rdTri.isChecked():
+			self.currentHandler.type = 2
+			self.win.ui.lstHandDeps.setEnabled(True)
+		for i in range(self.win.ui.lstHandDeps.count()):
+			item = self.win.ui.lstHandDeps.item(i);
+			text = item.text()
+			if (item.checkState() == QtCore.Qt.Checked) and not (text in self.currentHandler.deps):
+				self.currentHandler.deps.append(text)
+			if (item.checkState() == QtCore.Qt.Unchecked) and (text in self.currentHandler.deps):
+				self.currentHandler.deps.remove(text)
 
+	def processHandlers(self):
+		if self.currentHandler == None:
+			self.currentHandler = None
+			self.win.ui.rdAct.setEnabled(False)
+			self.win.ui.rdAct.setChecked(False)
+			self.win.ui.rdPas.setEnabled(False)
+			self.win.ui.rdPas.setChecked(False)
+			self.win.ui.rdTri.setEnabled(False)
+			self.win.ui.rdTri.setChecked(False)
+			self.win.ui.lstHandDeps.setEnabled(False)
+		else:		
+			self.win.ui.rdAct.setEnabled(True)
+			self.win.ui.rdAct.setChecked(self.currentHandler.type == 0)
+			self.win.ui.rdPas.setEnabled(True)
+			self.win.ui.rdPas.setChecked(self.currentHandler.type == 1)
+			self.win.ui.rdTri.setEnabled(True)
+			self.win.ui.rdTri.setChecked(self.currentHandler.type == 2)
+			self.win.ui.lstHandDeps.setEnabled(self.currentHandler.type == 2)
 
+	def changeHandler(self, item):
+		self.currentHandler.name = item.text()
+		
+		print "Hands:"
+		for h in self.handlers:
+			print h.name, h.type, h.deps
 
 
 
