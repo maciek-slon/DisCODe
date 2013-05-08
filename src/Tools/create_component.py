@@ -47,4 +47,11 @@ if __name__ == '__main__':
 	dcl_name = os.path.basename(dcl_path)
 	cmp_name = sys.argv[2]
 
-	createComponent(cmp_name, dcl_name, dcl_path)
+	dic = {}
+	yml_name = cmp_name+".yml"
+	if (os.path.exists(yml_name)):
+		dic = prepareDicFromFile(yml_name)
+	else:
+		dic = prepareDefaultDic(cmp_name)
+
+	createComponent(cmp_name, dcl_name, dcl_path, dic)

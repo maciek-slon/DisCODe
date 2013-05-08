@@ -1,6 +1,10 @@
 import re
 import logging
 import os
+import pwd
+import tempfile
+import shutil
+import sys
 
 # Absolute path of directory DisCODe was installed in
 DISCODE_PATH="@CMAKE_INSTALL_PREFIX@"
@@ -174,7 +178,7 @@ def prepareHandlers(dic, handlers, cmp_name):
 
 ########################################################################
 
-def createComponent(cmp_name, dcl_name, dcl_path, yml_name=""):
+def createComponent(cmp_name, dcl_name, dcl_path, dic):
 	dir = os.path.join(dcl_path, 'src/Components/', cmp_name)
 	if os.path.exists(dir):
 		logging.error("Folder already exists! Choose different name of component.")
@@ -183,13 +187,7 @@ def createComponent(cmp_name, dcl_name, dcl_path, yml_name=""):
 		logging.debug("Creating [{}] in [{}]".format(cmp_name, dir))
 	
 		
-	dic = {}
-	if yml_name == "":
-		yml_name = cmp_name+".yml"
-	if (os.path.exists(yml_name)):
-		dic = prepareDicFromFile(yml_name)
-	else:
-		dic = prepareDefaultDic(cmp_name)
+	
 
 	tmp_dir = ""
 	

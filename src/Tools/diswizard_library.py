@@ -106,7 +106,7 @@ class LibraryWidget(QtGui.QWidget):
 			self.ui.edName.setText(lib.name)
 			self.ui.edDesc.setPlainText(lib.desc)
 			self.ui.edPckg.setText(lib.pckg)
-			self.ui.edLibs.setText(lib.libs)
+			self.ui.edLibs.setText(lib.link)
 			self.ui.edAdds.setPlainText(lib.adds)
 			self.ui.edIncl.setPlainText(lib.incl)
 

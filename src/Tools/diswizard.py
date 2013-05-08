@@ -7,9 +7,12 @@ from PySide import QtUiTools
 from diswizard_library import LibraryWidget
 from Library import Library
 
+
 import sys
 import os
 import re
+
+import discode_helper
 
 # Absolute path of directory DisCODe was installed in
 DISCODE_PATH="@CMAKE_INSTALL_PREFIX@"
@@ -183,24 +186,46 @@ class DisCODeWizard(object):
 		
 		
 		
-	def generateStreams(self):
-		tbl = self.win.ui.tblStreams
+	def generateStreams(self, tbl, inout):
 		allRows = tbl.rowCount()
-		self.TMPLFields += "// Data streams\n\n"
+		self.dic['%TMPLFields%'] += "\n// %sput data streams\n\n"%(inout)
 		for row in xrange(0,allRows):
 			stream_name = tbl.item(row,0).text()
 			stream_data = tbl.item(row,1).text()
-			stream_type = tbl.cellWidget(row,2).currentText()
-			if (stream_type == "Input"):
-				stream_type = "DataStreamIn"
-			else:
-				stream_type = "DataStreamOut"
-				
-			self.TMPLFields += "\t\tBase::%s<%s> %s;\n"%(stream_type, stream_data, stream_name)
-			self.TMPLInit += "registerStream(\"%s\", &%s);"%(stream_name, stream_name)
+			stream_type = "DataStream"+inout
+							
+			self.dic['%TMPLFields%'] += "\t\tBase::%s<%s> %s;\n"%(stream_type, stream_data, stream_name)
+			self.dic['%TMPLPrepInterface%'] += "registerStream(\"%s\", &%s);\n"%(stream_name, stream_name)
 	
-	def generateEvents(self):
-		pass
+	def generateEvents(self, cmp_name):
+		
+		TMPLFields = "\t// Handlers\n"
+		TMPLPrepInterface = "\t// Register handlers\n"
+		TMPLMethodsHeaders = "\t// Handlers\n"
+		TMPLMethodsCode = ""
+		
+		for h in self.handlers:
+			TMPLFields += "\tBase::EventHandler2 h_{};\n".format(h.name)
+			TMPLMethodsHeaders += "\tvoid {}();\n".format(h.name)
+			TMPLPrepInterface += '\th_{0}.setup(boost::bind(&{1}::{0}, this));\n'.format(h.name, cmp_name)
+			TMPLPrepInterface += '\tregisterHandler("{0}", &h_{0});\n'.format(h.name)
+			TMPLMethodsCode += "void {}::{}()".format(cmp_name, h.name) + " {\n}\n\n"
+			
+			if(h.type == 0):
+				pass
+				
+			if(h.type == 1):
+				TMPLPrepInterface += '\taddDependency("{}", NULL);\n'.format(h.name)
+				
+			if(h.type == 2):
+				for d in h.deps:
+					TMPLPrepInterface += '\taddDependency("{}", &{});\n'.format(h.name, d)
+			
+		self.dic['%TMPLFields%'] = self.dic['%TMPLFields%'] + TMPLFields
+		self.dic['%TMPLPrepInterface%'] = self.dic['%TMPLPrepInterface%'] + TMPLPrepInterface
+		self.dic['%TMPLMethodsHeaders%'] = self.dic['%TMPLMethodsHeaders%'] + TMPLMethodsHeaders
+		self.dic['%TMPLMethodsCode%'] = self.dic['%TMPLMethodsCode%'] + TMPLMethodsCode
+		
 		
 	def generateProperties(self):
 		print "Properties:\n"
@@ -215,13 +240,14 @@ class DisCODeWizard(object):
 			prop_type = tbl.item(row,1)
 			prop_default = tbl.item(row,2)
 			prop_display = tbl.item(row,3)
-			if (prop_display):
+			if (prop_display and prop_display.text()):
 				prop_display = ", \"" + prop_display.text() + "\""
 			else:
 				prop_display = ""
-			self.TMPLFields += "\t\tBase::Property<" + prop_type.text() + "> " + prop_name.text() + ";\n";
-			self.TMPLInitializer += ", \n\t\t" + prop_name.text() + "(\"" + prop_name.text() + "\", " + prop_default.text() + prop_display + ")"
-			self.TMPLConstructor += "\t\tregisterProperty(" + prop_name.text() + ");\n"
+			
+			self.dic['%TMPLFields%'] += "\t\tBase::Property<" + prop_type.text() + "> " + prop_name.text() + ";\n";
+			self.dic['%TMPLInitializer%'] += ", \n\t\t" + prop_name.text() + "(\"" + prop_name.text() + "\", " + prop_default.text() + prop_display + ")"
+			self.dic['%TMPLConstructor%'] += "\t\tregisterProperty(" + prop_name.text() + ");\n"
 		
 	def generate(self):
 
@@ -250,16 +276,16 @@ class DisCODeWizard(object):
 		else:
 			print "Creating component", cmp_name, "in", dir
 		
-		self.TMPLFields = ""
-		self.TMPLMethodsHeaders = ""
-		self.TMPLInitializer = ""
-		self.TMPLConstructor = ""
-		self.TMPLInit = ""
-		self.TMPLMethodsCode = ""
+		dcl_path = discode_helper.getDclDir(dcl_name)
 		
-		self.generateStreams()
-		self.generateEvents()
+		self.dic = discode_helper.prepareDefaultDic(cmp_name)
+		
+		self.generateStreams( self.win.ui.tblStreamIn, "In")
+		self.generateStreams( self.win.ui.tblStreamOut, "Out")
+		self.generateEvents(cmp_name)
 		self.generateProperties()
+				
+		discode_helper.createComponent(cmp_name, dcl_name, dcl_path, self.dic)
 				
 		#===============================================================================
 		# Preparing component source files
@@ -267,18 +293,19 @@ class DisCODeWizard(object):
 		 
 		#os.makedirs(dir)
 		 
-		dic = {
-		'TemplateComponent'  : cmp_name,
-		'EXAMPLE'            : cmp_name.upper(),
-		'TMPLFields'         : self.TMPLFields,
-		'TMPLMethodsHeaders' : self.TMPLMethodsHeaders,
-		'TMPLInitializer'    : self.TMPLInitializer,
-		'TMPLConstructor'    : self.TMPLConstructor,
-		'TMPLInit'           : self.TMPLInit,
-		'TMPLMethodsCode'    : self.TMPLMethodsCode
-		}
+		 
+		#~ dic = {
+		#~ 'TemplateComponent'  : cmp_name,
+		#~ 'EXAMPLE'            : cmp_name.upper(),
+		#~ 'TMPLFields'         : self.TMPLFields,
+		#~ 'TMPLMethodsHeaders' : self.TMPLMethodsHeaders,
+		#~ 'TMPLInitializer'    : self.TMPLInitializer,
+		#~ 'TMPLConstructor'    : self.TMPLConstructor,
+		#~ 'TMPLInit'           : self.TMPLInit,
+		#~ 'TMPLMethodsCode'    : self.TMPLMethodsCode
+		#~ }
 		
-		print dic
+		print self.dic
 
 		#configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.hpp', dir+'/'+cmp_name+'.hpp', dic)
 		#configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.cpp', dir+'/'+cmp_name+'.cpp', dic)
