@@ -141,6 +141,7 @@ class DisCODeWizard(object):
 		self.processHandlers()
 		
 		self.libs = LibraryWidget(None)
+		self.libs.setSelectedCb(self.addLibraryDep)
 		libs = []
 		lib = Library()
 		lib.name="OpenCV"
@@ -157,6 +158,8 @@ class DisCODeWizard(object):
 		self.loadDCL()
 		
 		self.handlers=[]
+		
+		self.deps=[]
 		
 		#self.showMessage("Error!", "E")
 		self.showMessage("", "")
@@ -249,6 +252,12 @@ class DisCODeWizard(object):
 			self.dic['%TMPLInitializer%'] += ", \n\t\t" + prop_name.text() + "(\"" + prop_name.text() + "\", " + prop_default.text() + prop_display + ")"
 			self.dic['%TMPLConstructor%'] += "\t\tregisterProperty(" + prop_name.text() + ");\n"
 		
+	def generateDeps(self):
+		for d in self.deps:
+			self.dic['%TMPLCMakePkg%'] += 'FIND_PACKAGE( ' + d.pckg + ' REQUIRED )\n'
+			self.dic['%TMPLCMakeLibs%'] += '\n\t' + d.libs;
+			self.dic['%TMPLDeps%'] += '#include <' + d.incl + '>\n';
+		
 	def generate(self):
 
 		fullpath = os.path.abspath(os.getcwd())
@@ -284,6 +293,7 @@ class DisCODeWizard(object):
 		self.generateStreams( self.win.ui.tblStreamOut, "Out")
 		self.generateEvents(cmp_name)
 		self.generateProperties()
+		self.generateDeps()
 				
 		discode_helper.createComponent(cmp_name, dcl_name, dcl_path, self.dic)
 				
@@ -322,6 +332,15 @@ class DisCODeWizard(object):
 		
 	def addDep(self):
 		self.libs.show()
+		
+	def addLibraryDep(self, lib):
+		self.deps.append(lib)
+		self.reloadDeps()
+		
+	def reloadDeps(self):
+		self.win.ui.lstDeps.clear()
+		for l in self.deps:
+			self.win.ui.lstDeps.addItem(l.name)
 		
 	def remDep(self):
 		pass

@@ -92,6 +92,10 @@ def getEmptyDic():
 		'%TMPLInit%'           : "",
 		# methods definition
 		'%TMPLMethodsCode%'    : "", 
+		# CMake packages to find
+		'%TMPLCMakePkg%'       : "",
+		# CMake libraries to link
+		'%TMPLCMakeLibs%'      : "",
 	}
 
 ########################################################################
@@ -196,7 +200,7 @@ def createComponent(cmp_name, dcl_name, dcl_path, dic):
 		src_dir = DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component'
 		configure_file(src_dir+'/TemplateComponent.hpp.tmpl', tmp_dir+'/'+cmp_name+'.hpp', dic)
 		configure_file(src_dir+'/TemplateComponent.cpp.tmpl', tmp_dir+'/'+cmp_name+'.cpp', dic)
-		configure_file(src_dir+'/CMakeLists.txt', tmp_dir+'/CMakeLists.txt', dic)
+		configure_file(src_dir+'/CMakeLists.txt.tmpl', tmp_dir+'/CMakeLists.txt', dic)
 
 		# Adding new component to DCL CMakeLists file
 		cmakefile = open(dcl_path+'/src/Components/CMakeLists.txt', "a")

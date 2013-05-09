@@ -3,6 +3,6 @@ class Library:
 		self.name=""
 		self.desc=""
 		self.pckg=""
-		self.link=""
+		self.libs=""
 		self.adds=""
 		self.incl=""

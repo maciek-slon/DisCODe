@@ -20,6 +20,7 @@ install(FILES Templates/src/Components/Component/Component.hpp DESTINATION ${CMA
 install(FILES Templates/src/Components/Component/TemplateComponent.cpp.tmpl DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src/Components/Component)
 install(FILES Templates/src/Components/Component/TemplateComponent.hpp.tmpl DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src/Components/Component)
 install(FILES Templates/src/Components/Component/CMakeLists.txt DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src/Components/Component)
+install(FILES Templates/src/Components/Component/CMakeLists.txt.tmpl DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/Templates/src/Components/Component)
 
 install( DIRECTORY resources
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe

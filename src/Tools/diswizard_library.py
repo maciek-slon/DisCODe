@@ -41,6 +41,9 @@ class LibraryWidget(QtGui.QWidget):
 		self.ui.lblInfoIcon.setPixmap(QtGui.QPixmap(ICON_PATH+"000.png"))
 		self.ui.lblInfo.setText("")
 
+	
+		QtCore.QObject.connect(self.ui.btnGenerate, QtCore.SIGNAL('clicked()'), self.selected)
+
 		widgets = self.findChildren(QtGui.QWidget);
 		for w in widgets:
 			w.installEventFilter(self)
@@ -54,6 +57,9 @@ class LibraryWidget(QtGui.QWidget):
 		self.libs=None
 		
 		self.setWindowTitle("DisCODe Wizard: Choose Library")
+		
+		self.fun_cb = None
+		
 			
 	def eventFilter(self, object, event):
 		ICON_PATH=DISCODE_PATH+"/share/DisCODe/resources/icons/10/"
@@ -106,9 +112,17 @@ class LibraryWidget(QtGui.QWidget):
 			self.ui.edName.setText(lib.name)
 			self.ui.edDesc.setPlainText(lib.desc)
 			self.ui.edPckg.setText(lib.pckg)
-			self.ui.edLibs.setText(lib.link)
+			self.ui.edLibs.setText(lib.libs)
 			self.ui.edAdds.setPlainText(lib.adds)
 			self.ui.edIncl.setPlainText(lib.incl)
 
 	def getSelectedLib(self):
 		return self.selected_lib
+		
+	def setSelectedCb(self, fun):
+		self.fun_cb = fun
+		
+	def selected(self):
+		self.fun_cb(self.selected_lib)
+		self.close()
+	
