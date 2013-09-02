@@ -89,6 +89,7 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 	if (task_parts.size() == 2) {
 		// retrieve task filename from dcl
 		std::string dcldir = Utils::findSubdir(task_parts[0], dcl_locations, true);
+		if (dcldir == "") dcldir = Utils::findSubdir(std::string("DCL_") + task_parts[0], dcl_locations, true);
 		if (dcldir != "") {
 			configuration_filename = dcldir + "/tasks/" + task_parts[1] + ".xml";
 		} else {
