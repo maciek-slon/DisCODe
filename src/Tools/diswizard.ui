@@ -34,11 +34,11 @@
       <string/>
      </property>
      <property name="styleSheet">
-      <string notr="true"> QTabWidget::tab-bar {
+      <string notr="true"> QTabWidget#tabWidget::tab-bar {
 
  }
 
-QTabBar::tab {
+QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QTabBar::tab {
     border: 1px solid #C4C4C3;
     border-bottom-color: palette(dark);
     border-top-left-radius: 4px;
@@ -50,18 +50,18 @@ QTabBar::tab {
 	color: palette(shadow);
 }
 
-QTabBar::tab:selected {
+QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QTabBar::tab:selected {
     background-color: palette(button);
     border-bottom-style: none;
 	color: palette(text);
 }
 
-QTabWidget&gt;QWidget {
+QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QWidget {
 	background-color: palette(light);
 	border-bottom: 1px solid palette(dark);
 }
 
-QTabWidget&gt;QWidget&gt;QWidget {
+QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QWidget&gt;QWidget {
 	background-color: palette(button);
 	border-bottom: 1px solid palette(dark);
 }</string>
@@ -620,6 +620,47 @@ QTabWidget&gt;QWidget&gt;QWidget {
           </spacer>
          </item>
         </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Preview</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QTabWidget" name="tabWidget_2">
+         <property name="tabPosition">
+          <enum>QTabWidget::South</enum>
+         </property>
+         <property name="tabShape">
+          <enum>QTabWidget::Rounded</enum>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <property name="documentMode">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="tab_6">
+          <attribute name="title">
+           <string>Tab 1</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QTextEdit" name="teCpp"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_7">
+          <attribute name="title">
+           <string>Tab 2</string>
+          </attribute>
+         </widget>
+        </widget>
        </item>
       </layout>
      </widget>

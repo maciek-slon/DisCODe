@@ -206,6 +206,14 @@ public:
 		return data;
 	}
 
+	bool operator==(T const & value) {
+		return data == value;
+	}
+
+	bool operator!=(T const & value) {
+		return data != value;
+	}
+
 
 	/*!
 	 * Return string representation of current value
