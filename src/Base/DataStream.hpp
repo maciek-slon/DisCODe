@@ -17,6 +17,9 @@
 
 namespace Base {
 
+class UnitType {int dupa;};
+
+
 
 /*!
  * \brief Input data stream.
@@ -69,6 +72,47 @@ protected:
 	}
 };
 
+/*template
+<
+	template <class T> class BufferingPolicy,
+    class Sync
+>
+class DataStreamIn<UnitType, BufferingPolicy, Sync> : public DataStreamInterface, public BufferingPolicy<UnitType>
+{
+	using BufferingPolicy<UnitType>::retrieve;
+	using BufferingPolicy<UnitType>::store;
+
+	/// Object used for synchronization of data reading
+	Sync sync;
+
+public:
+
+	using BufferingPolicy<UnitType>::empty;
+
+	virtual dsType type() {
+		return dsIn;
+	}
+
+	UnitType read() {
+		Synchronization::ScopeSync<Sync> ss(sync);
+		//sync.lock();
+		UnitType t = retrieve();
+		//sync.unlock();
+		return t;
+	}
+
+	bool fresh() {
+		return !empty();
+	}
+
+protected:
+	virtual void internalSet(void * ptr) {
+		Synchronization::ScopeSync<Sync> ss(sync);
+		//sync.lock();
+		store(UnitType());
+		//sync.unlock();
+	}
+};*/
 
 /*!
  * \class DataStreamOut
