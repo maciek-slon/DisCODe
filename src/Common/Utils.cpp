@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#define BOOST_FILESYSTEM_VERSION 2
 #include <boost/filesystem.hpp>
 using namespace boost::filesystem;
 
@@ -33,10 +32,10 @@ std::vector<std::string> searchFiles(const std::string & root, const std::string
 	directory_iterator end_itr; // default construction yields past-the-end
 	for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
 	{
-		std::string fname = itr->path().filename();
+		std::string fname = itr->path().filename().string();
 		if (regex_match(fname, e)) {
 			if (with_path)
-				ret.push_back(itr->path().file_string());
+				ret.push_back(itr->path().string());
 			else
 				ret.push_back(fname);
 		}
@@ -55,10 +54,10 @@ std::vector<std::string> getSubdirs(const std::string & root, bool with_path) {
 	directory_iterator end_itr; // default construction yields past-the-end
 	for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
 	{
-		std::string fname = itr->path().filename();
+		std::string fname = itr->path().filename().string();
 		if (is_directory(itr->status())) {
 			if (with_path)
-				ret.push_back(itr->path().file_string());
+				ret.push_back(itr->path().string());
 			else
 				ret.push_back(fname);
 		}
@@ -77,10 +76,10 @@ std::string findSubdir(const std::string & name, const std::vector<std::string> 
 		directory_iterator end_itr; // default construction yields past-the-end
 		for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
 		{
-			std::string fname = itr->path().filename();
+			std::string fname = itr->path().filename().string();
 			if (is_directory(itr->status()) && fname == name) {
 				if (with_path)
-					return itr->path().file_string();
+					return itr->path().string();
 				else
 					return fname;
 			}
