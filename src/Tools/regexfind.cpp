@@ -29,10 +29,10 @@ std::vector<std::string> searchFiles(const std::string & root, const std::string
 	directory_iterator end_itr; // default construction yields past-the-end
 	for ( directory_iterator itr( dir_path ); itr != end_itr; ++itr )
 	{
-		std::string fname = itr->path().filename();
+		std::string fname = itr->path().filename().string();
 		if (regex_match(fname, e)) {
 			if (with_path)
-				ret.push_back(itr->path().file_string());
+				ret.push_back(itr->path().string());
 			else
 				ret.push_back(fname);
 		}

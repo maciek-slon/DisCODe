@@ -93,7 +93,7 @@ public:
 
 		BOOST_FOREACH(dcl_location, dcls) {
 
-			std::string dcl_name = boost::filesystem::path(dcl_location).leaf();
+			std::string dcl_name = boost::filesystem::path(dcl_location).filename().string();
 			LOG(LINFO) << "Loading components from " << dcl_name;
 
 			// Get filenames.
