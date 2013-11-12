@@ -38,6 +38,7 @@ template
 class DataStreamIn : public DataStreamInterface, public BufferingPolicy<T>
 {
 	using BufferingPolicy<T>::retrieve;
+	using BufferingPolicy<T>::store;
 
 	/// Object used for synchronization of data reading
 	Sync sync;
@@ -164,6 +165,7 @@ template
 class DataStreamInPtr : public DataStreamInterface, public BufferingPolicy< boost::shared_ptr<T> >
 {
 	using BufferingPolicy< boost::shared_ptr<T> >::retrieve;
+	using BufferingPolicy< boost::shared_ptr<T> >::store;
 
 	/// Object used for synchronization of data reading
 	Sync sync;
