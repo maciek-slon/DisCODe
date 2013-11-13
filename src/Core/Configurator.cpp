@@ -316,6 +316,7 @@ void Configurator::loadProperties(const ptree * node, Base::Component & componen
 	}
 
 	component.prepareInterface();
+	component.sortHandlers();
 }
 
 void Configurator::loadConnections(const ptree * node) {
