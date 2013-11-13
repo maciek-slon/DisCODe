@@ -55,6 +55,10 @@ public:
 	const std::string & name() const {
 		return name_;
 	}
+	
+	void setName(const std::string & name) {
+		name_ = name;
+	}
 
 protected:
     virtual void internalSet(void * ptr) = 0;
@@ -62,7 +66,7 @@ protected:
     Connection * conn;
 
 private:
-    const std::string name_;
+    std::string name_;
 
 };
 
