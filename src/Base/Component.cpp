@@ -49,7 +49,8 @@ bool Component::initialize() {
 
 bool Component::start() {
 	if (state == Ready) {
-		sortHandlers();
+		// not needed anymore, done in configurator
+		//ortHandlers();
 
 		if (onStart()) {
 			state = Running;
