@@ -268,6 +268,9 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		// and set them if property is persistent
 		loadProperties(&tmp, *cmp);
 
+		cmp->prepareInterface();
+		cmp->sortHandlers();
+
 		executor.addComponent(name, cmp, prio);
 
 		component_executor[name] = executor.name();
@@ -315,7 +318,6 @@ void Configurator::loadProperties(const ptree * node, Base::Component & componen
 		prop->retrieve(value);
 	}
 
-	component.prepareInterface();
 }
 
 void Configurator::loadConnections(const ptree * node) {

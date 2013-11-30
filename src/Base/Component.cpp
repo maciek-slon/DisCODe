@@ -145,7 +145,7 @@ double Component::step() {
 
 		typedef std::pair<std::string, std::vector<DataStreamInterface *> > HandlerTriggers;
 
-		BOOST_FOREACH(HandlerTriggers ht, triggers) {
+		BOOST_FOREACH(HandlerTriggers ht, sorted_triggers) {
 			bool allready = true;
 			CLOG(LDEBUG) << name() << "::" << ht.first;
 			BOOST_FOREACH(DataStreamInterface * ds, ht.second) {
@@ -155,7 +155,11 @@ double Component::step() {
 					break;
 				}
 			}
-			if (allready) handlers[ht.first]->execute();
+			if (allready) {
+				CLOG(LDEBUG) << "All triggers ready for " << ht.first << ". Executing...";
+				handlers[ht.first]->execute();
+				CLOG(LDEBUG) << ht.first << " execution done.";
+			}
 		}
 	} else {
 		CLOG(LWARNING) << name_ << " is not running. Step can't be done.\n";
@@ -236,6 +240,10 @@ void Component::addDependency(const std::string & name, DataStreamInterface* str
 		triggers[name].push_back(stream);
 	else
 		CLOG(LWARNING) << "Handlers can only depend on input streams.";
+		
+	for (int i = 0; i < triggers[name].size(); ++i) {
+		CLOG(LDEBUG) << triggers[name][i]->name();
+	}
 }
 
 void Component::sortHandlers() {
@@ -272,6 +280,7 @@ DataStreamInterface * Component::getStream(const std::string& name) {
 DataStreamInterface * Component::registerStream(const std::string& name, DataStreamInterface * stream) {
 	/// \todo check, if handler already exists
 	streams[name] = stream;
+	stream->setName(name);
 	return stream;
 }
 
