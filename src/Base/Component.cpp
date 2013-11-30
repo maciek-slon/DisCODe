@@ -154,7 +154,11 @@ double Component::step() {
 					break;
 				}
 			}
-			if (allready) handlers[ht.first]->execute();
+			if (allready) {
+				CLOG(LDEBUG) << "All triggers ready for " << ht.first << ". Executing...";
+				handlers[ht.first]->execute();
+				CLOG(LDEBUG) << ht.first << " execution done.";
+			}
 		}
 	} else {
 		CLOG(LWARNING) << name_ << " is not running. Step can't be done.\n";

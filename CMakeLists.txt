@@ -58,8 +58,8 @@ list(GET DISCODE_VERSION_PARTS 2 DISCODE_VERSION_PATCH)
 # include directories
 set(CMAKE_INCLUDE_DIRS_CONFIGCMAKE 
 	"${CMAKE_INSTALL_PREFIX}/include/Base" 
-	"${CMAKE_INSTALL_PREFIX}/include/Common" 
-	"${CMAKE_INSTALL_PREFIX}/include/Types" 
+	"${CMAKE_INSTALL_PREFIX}/include/Common"
+	"${CMAKE_INSTALL_PREFIX}/include/Types"  
 	"${CMAKE_INSTALL_PREFIX}/include"
 )
 
