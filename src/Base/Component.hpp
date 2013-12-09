@@ -194,6 +194,8 @@ public:
 		return m_bump;
 	}
 
+	void sortHandlers();
+	
 protected:
 	/*!
 	 * Method called when component is started
@@ -235,7 +237,6 @@ protected:
 
 	void addDependency(const std::string & name, DataStreamInterface * stream);
 
-	void sortHandlers();
 
 	/*!
 	 * Register new data stream under specified name.

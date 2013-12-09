@@ -97,6 +97,7 @@ void MainWindow::setup(DisCODe::Client * c) {
 	system = new DisCODe::SystemProxy(client);
 
 	ui->treeWidget->clear();
+	ui->listComponents->clear();
 
 	QTreeWidgetItem * i_task = new QTreeWidgetItem;
 	i_task->setText(0, client->host().c_str());
