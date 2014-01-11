@@ -334,6 +334,10 @@ class DisCODeWizard(object):
 		self.libs.show()
 		
 	def addLibraryDep(self, lib):
+		for l in self.deps:
+			if l.name == lib.name:
+				return
+				
 		self.deps.append(lib)
 		self.reloadDeps()
 		
