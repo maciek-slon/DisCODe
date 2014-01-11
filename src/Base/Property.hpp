@@ -18,6 +18,7 @@
 
 #include <typeinfo>
 #include <vector>
+#include <sstream>
 
 #include <iostream>
 
@@ -52,11 +53,24 @@ template<typename T>
 class LexicalTranslator {
 public:
 	static std::string toStr(const T & val) {
-		return boost::lexical_cast<std::string>(val);
+		try {
+			return boost::lexical_cast<std::string>(val);
+		} catch(...) {
+			std::stringstream ss;
+			ss << val;
+			return ss.str();
+		}
 	}
 
 	static T fromStr(const std::string & str) {
-		return boost::lexical_cast<T>(str);
+		try {
+			return boost::lexical_cast<T>(str);
+		} catch (...) {
+			std::stringstream ss(str);
+			T ret;
+			ss >> ret;
+			return ret;
+		}
 	}
 };
 
