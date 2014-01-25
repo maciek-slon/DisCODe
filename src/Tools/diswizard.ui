@@ -160,7 +160,7 @@ QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QWidget&gt;QWidget {
         </layout>
        </item>
        <item row="5" column="1">
-        <widget class="QLineEdit" name="lineEdit"/>
+        <widget class="QLineEdit" name="edAuthor"/>
        </item>
        <item row="2" column="0" colspan="3">
         <widget class="Line" name="line_5">
@@ -175,7 +175,7 @@ QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QWidget&gt;QWidget {
           <string>&amp;Author</string>
          </property>
          <property name="buddy">
-          <cstring>lineEdit</cstring>
+          <cstring>edAuthor</cstring>
          </property>
         </widget>
        </item>
@@ -207,7 +207,7 @@ QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QWidget&gt;QWidget {
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QTextEdit" name="textEdit">
+        <widget class="QTextEdit" name="edDesc">
          <property name="tabChangesFocus">
           <bool>true</bool>
          </property>
@@ -225,7 +225,7 @@ QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QWidget&gt;QWidget {
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
          </property>
          <property name="buddy">
-          <cstring>textEdit</cstring>
+          <cstring>edDesc</cstring>
          </property>
         </widget>
        </item>
@@ -784,8 +784,8 @@ QTabWidget[objectName=&quot;tabWidget&quot;]&gt;QWidget&gt;QWidget {
   <tabstop>edName</tabstop>
   <tabstop>btnAddDep</tabstop>
   <tabstop>btnRemoveDep</tabstop>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>textEdit</tabstop>
+  <tabstop>edAuthor</tabstop>
+  <tabstop>edDesc</tabstop>
   <tabstop>tblStreamIn</tabstop>
   <tabstop>btnAddStreamIn</tabstop>
   <tabstop>btnRemoveStreamIn</tabstop>

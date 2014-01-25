@@ -11,6 +11,7 @@ from Library import Library
 import sys
 import os
 import re
+import pwd
 
 import discode_helper
 
@@ -82,6 +83,8 @@ class MyWidget(QtGui.QMainWindow):
 		self.lastIcon = None
 		self.infoVisible = False
 		self.setWindowTitle("DisCODe Wizard")
+
+		self.ui.edAuthor.setText(pwd.getpwuid( os.getuid() ).pw_gecos.split(',')[0])
 
 			
 	def eventFilter(self, object, event):
@@ -191,18 +194,18 @@ class DisCODeWizard(object):
 		
 	def generateStreams(self, tbl, inout):
 		allRows = tbl.rowCount()
-		self.dic['%TMPLFields%'] += "\n// %sput data streams\n\n"%(inout)
+		self.dic['%TMPLFields%'] += "\n\t// %sput data streams\n"%(inout)
 		for row in xrange(0,allRows):
 			stream_name = tbl.item(row,0).text()
 			stream_data = tbl.item(row,1).text()
 			stream_type = "DataStream"+inout
 							
-			self.dic['%TMPLFields%'] += "\t\tBase::%s<%s> %s;\n"%(stream_type, stream_data, stream_name)
-			self.dic['%TMPLPrepInterface%'] += "registerStream(\"%s\", &%s);\n"%(stream_name, stream_name)
+			self.dic['%TMPLFields%'] += "\tBase::%s<%s> %s;\n"%(stream_type, stream_data, stream_name)
+			self.dic['%TMPLPrepInterface%'] += "\tregisterStream(\"%s\", &%s);\n"%(stream_name, stream_name)
 	
 	def generateEvents(self, cmp_name):
 		
-		TMPLFields = "\t// Handlers\n"
+		TMPLFields = "\n\t// Handlers\n"
 		TMPLPrepInterface = "\t// Register handlers\n"
 		TMPLMethodsHeaders = "\t// Handlers\n"
 		TMPLMethodsCode = ""
@@ -236,6 +239,7 @@ class DisCODeWizard(object):
 		props_initializer = ""
 		props_constructor = ""
 		
+		self.dic['%TMPLFields%'] += "\n\t// Properties\n"
 		tbl = self.win.ui.tblProps
 		allRows = tbl.rowCount()
 		for row in xrange(0,allRows):
@@ -248,9 +252,9 @@ class DisCODeWizard(object):
 			else:
 				prop_display = ""
 			
-			self.dic['%TMPLFields%'] += "\t\tBase::Property<" + prop_type.text() + "> " + prop_name.text() + ";\n";
+			self.dic['%TMPLFields%'] += "\tBase::Property<" + prop_type.text() + "> " + prop_name.text() + ";\n";
 			self.dic['%TMPLInitializer%'] += ", \n\t\t" + prop_name.text() + "(\"" + prop_name.text() + "\", " + prop_default.text() + prop_display + ")"
-			self.dic['%TMPLConstructor%'] += "\t\tregisterProperty(" + prop_name.text() + ");\n"
+			self.dic['%TMPLConstructor%'] += "\tregisterProperty(" + prop_name.text() + ");\n"
 		
 	def generateDeps(self):
 		for d in self.deps:
@@ -294,39 +298,14 @@ class DisCODeWizard(object):
 		self.generateEvents(cmp_name)
 		self.generateProperties()
 		self.generateDeps()
+		self.dic['%TMPLAuthor%'] = self.win.ui.edAuthor.text()
+		self.dic['%TMPLDescription%'] = self.win.ui.edDesc.toPlainText()
 				
 		discode_helper.createComponent(cmp_name, dcl_name, dcl_path, self.dic)
-				
-		#===============================================================================
-		# Preparing component source files
-		#===============================================================================
-		 
-		#os.makedirs(dir)
-		 
-		 
-		#~ dic = {
-		#~ 'TemplateComponent'  : cmp_name,
-		#~ 'EXAMPLE'            : cmp_name.upper(),
-		#~ 'TMPLFields'         : self.TMPLFields,
-		#~ 'TMPLMethodsHeaders' : self.TMPLMethodsHeaders,
-		#~ 'TMPLInitializer'    : self.TMPLInitializer,
-		#~ 'TMPLConstructor'    : self.TMPLConstructor,
-		#~ 'TMPLInit'           : self.TMPLInit,
-		#~ 'TMPLMethodsCode'    : self.TMPLMethodsCode
-		#~ }
-		
-		print self.dic
 
-		#configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.hpp', dir+'/'+cmp_name+'.hpp', dic)
-		#configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/Component.cpp', dir+'/'+cmp_name+'.cpp', dic)
-		#configure_file(DISCODE_PATH+'/share/DisCODe/Templates/src/Components/Component/CMakeLists.txt', dir+'/CMakeLists.txt', dic)
+		# debug print
+		#print self.dic
 
-		#===============================================================================
-		# Adding new component to DCL CMakeLists file
-		#===============================================================================
-		#cmakefile = open(fullpath+'/src/Components/CMakeLists.txt', "a")
-		#cmakefile.write("\nADD_COMPONENT("+cmp_name+")\n")
-		#cmakefile.close()
 		
 		
 		
@@ -377,6 +356,7 @@ class DisCODeWizard(object):
 		pass
 		
 	def remHandler(self):
+		self.handlers.
 		pass
 		
 	def processStreams(self):
