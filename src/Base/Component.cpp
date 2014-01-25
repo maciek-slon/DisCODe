@@ -11,7 +11,6 @@
 #include "Timer.hpp"
 #include "Property.hpp"
 
-
 #include <boost/foreach.hpp>
 
 namespace Base {
@@ -49,8 +48,6 @@ bool Component::initialize() {
 
 bool Component::start() {
 	if (state == Ready) {
-		// not needed anymore, done in configurator
-		//ortHandlers();
 
 		if (onStart()) {
 			state = Running;
@@ -130,18 +127,6 @@ double Component::step() {
 	Common::Timer timer;
 	if (state == Running) {
 		timer.restart();
-		// Old way - one onStep method
-		//onStep();
-
-		// New way - check, which handler is ready and call it
-		/*Base::EventHandlerInterface * handler = getReadyHandler();
-		if (handler) {
-			handler->execute();
-			return timer.elapsed();
-		} else {
-			CLOG(LDEBUG) << name_ << " has no active handler. Skipping.";
-			return 0;
-		}*/
 
 		typedef std::pair<std::string, std::vector<DataStreamInterface *> > HandlerTriggers;
 
@@ -249,8 +234,9 @@ void Component::addDependency(const std::string & name, DataStreamInterface* str
 void Component::sortHandlers() {
 	typedef std::pair<std::string, std::vector<DataStreamInterface *> > HandlerTriggers;
 
+	sorted_triggers.clear();
 	BOOST_FOREACH(HandlerTriggers ht, triggers) {
-		size_t i = 0;
+		std::size_t i = 0;
 		for (i = 0; i < sorted_triggers.size(); ++i) {
 			if (sorted_triggers[i].second.size() < ht.second.size()) break;
 		}
