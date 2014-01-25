@@ -138,7 +138,7 @@ class DisCODeWizard(object):
 		self.win.ui.rdAct.toggled.connect(self.changeHandlerProps)
 		self.win.ui.rdPas.toggled.connect(self.changeHandlerProps)
 		self.win.ui.rdTri.toggled.connect(self.changeHandlerProps)
-		self.win.ui.lstHandDeps.itemChanged.connect(self.changeHandlerProps)
+		self.win.ui.lstHandDeps.itemChanged.connect(self.changeHandlerDeps)
 		
 		self.currentHandler = None
 		self.processHandlers()
@@ -356,24 +356,37 @@ class DisCODeWizard(object):
 		pass
 		
 	def remHandler(self):
-		self.handlers.
 		pass
 		
 	def processStreams(self):
+		print "processStreams"
+		self.win.ui.lstHandDeps.itemChanged.disconnect(self.changeHandlerDeps)
 		self.win.ui.lstHandDeps.clear()
 		for i in range(self.win.ui.tblStreamIn.rowCount()):
 			txt = self.win.ui.tblStreamIn.item(i, 0).text()
 			item = QtGui.QListWidgetItem(txt, self.win.ui.lstHandDeps)
 			item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
 			item.setCheckState(QtCore.Qt.Unchecked)
+		self.win.ui.lstHandDeps.itemChanged.connect(self.changeHandlerDeps)
+		self.checkHandDeps()
 
 	def checkHandDeps(self):
+		print "checkHandDeps"
+		if self.currentHandler == None:
+			return
+		try:
+			self.win.ui.lstHandDeps.itemChanged.disconnect(self.changeHandlerDeps)
+		except:
+			pass
 		for i in range(self.win.ui.lstHandDeps.count()):
 			item = self.win.ui.lstHandDeps.item(i)
 			if item.text() in self.currentHandler.deps:
 				item.setCheckState(QtCore.Qt.Checked)
+				print "Checking " + item.text()
 			else:
 				item.setCheckState(QtCore.Qt.Unchecked)
+				print "Unchecking " + item.text()
+		self.win.ui.lstHandDeps.itemChanged.connect(self.changeHandlerDeps)
 
 	def getHandler(self, name):
 		for hand in self.handlers:
@@ -390,6 +403,7 @@ class DisCODeWizard(object):
 		self.checkHandDeps()
 
 	def changeHandlerProps(self):
+		print "changeHandlerProps"
 		if self.currentHandler == None:
 			return
 		if self.win.ui.rdAct.isChecked():
@@ -401,6 +415,10 @@ class DisCODeWizard(object):
 		if self.win.ui.rdTri.isChecked():
 			self.currentHandler.type = 2
 			self.win.ui.lstHandDeps.setEnabled(True)
+
+	def changeHandlerDeps(self):
+		if self.currentHandler == None:
+			return
 		for i in range(self.win.ui.lstHandDeps.count()):
 			item = self.win.ui.lstHandDeps.item(i);
 			text = item.text()
