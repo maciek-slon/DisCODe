@@ -14,7 +14,7 @@ namespace Core {
 
 Subtask & Task::operator[](const std::string & name) {
 	if (subtasks.count(name) < 1) {
-		LOG(LWARNING) << "Subtask " << name << " absent. Creating new one...\n";
+		LOG(LDEBUG) << "Subtask " << name << " absent. Creating new one...";
 		subtasks[name] = Subtask(name);
 	}
 

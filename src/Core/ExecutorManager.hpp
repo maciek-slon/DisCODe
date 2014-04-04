@@ -47,7 +47,7 @@ public:
 		Executor * ex = new Executor(name);
 
 		executors[name] = ex;
-		LOG(LINFO) << name << " executor created.\n";
+		LOG(LDEBUG) << name << " executor created.";
 
 		return ex;
 	}
