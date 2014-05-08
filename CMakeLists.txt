@@ -90,7 +90,7 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY "DisCODe")
 #set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\doc_src\\\\discode.bmp")
 
 # License file
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 
 # Tell CPack all of the components to install. The "ALL"
 # refers to the fact that this is the set of components that
