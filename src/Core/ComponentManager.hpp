@@ -167,7 +167,7 @@ public:
 		}
 
 		components[name] = m_available_components[dcl][type]->create(name);
-		LOG(LINFO) << name << " [" << type << ":" << dcl << "] component created\n";
+		LOG(LDEBUG) << name << " [" << type << ":" << dcl << "] component created";
 		return components[name];
 	}
 
