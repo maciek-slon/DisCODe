@@ -29,7 +29,7 @@ public:
 	/*!
 	 *
 	 */
-	Subtask(const std::string & n = "") : name_(n) {}
+	Subtask(const std::string & n = "") : name_(n), init_started(false) {}
 
 	/*!
 	 *
@@ -69,6 +69,14 @@ public:
 
 	std::vector<std::string> listExecutors();
 
+	void setInitStarted(bool is) {
+		init_started = is;
+	}
+
+	bool initStarted() const {
+		return init_started;
+	}
+
 private:
 	typedef std::vector<Base::Component*>::iterator comp_it;
 
@@ -80,6 +88,7 @@ private:
 	/// All executors in task
 	std::map<std::string, Executor*> executors;
 
+	bool init_started;
 };
 
 } //: namespace Core

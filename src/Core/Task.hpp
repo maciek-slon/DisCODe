@@ -25,7 +25,7 @@ public:
 	/*!
 	 * Start all subtasks.
 	 */
-	bool start();
+	bool start(bool init = false);
 
 	/*!
 	 * Stop all subtasks.
@@ -57,6 +57,15 @@ public:
 	Task & operator += (Subtask & st) {
 		subtasks[st.name()] = st;
 		return *this;
+	}
+
+	/*!
+	 * Check, whether subtask exists
+	 * \arg name name of the subtask to check
+	 * \return
+	 */
+	bool checkSubtask(const std::string & name) {
+		return (subtasks.count(name) == 1);
 	}
 
 	std::vector<std::string> listSubtasks();

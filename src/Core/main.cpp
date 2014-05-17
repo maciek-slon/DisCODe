@@ -270,7 +270,7 @@ int main(int argc, char* argv[])
 
 		Thread::msleep(2000);
 
-		task.start();
+		task.start(true);
 
 		while(running) {
 			Common::Thread::msleep(50);

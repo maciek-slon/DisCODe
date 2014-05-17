@@ -156,6 +156,7 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 
 	std::string name;
 	std::string key;
+	std::string state;
 	Subtask * subtask;
 
 	BOOST_FOREACH(TreeNode nd, *node) {
@@ -172,9 +173,18 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 		}
 
 		name = tmp.get("<xmlattr>.name", "");
+		state = tmp.get("<xmlattr>.state", "running");
 
 		subtask = &task[name];
 		LOG(LDEBUG) << "Created subtask " << name;
+		if (state == "running") {
+			subtask->setInitStarted(true);
+		} else if (state == "stopped") {
+			subtask->setInitStarted(false);
+		} else {
+			LOG(LWARNING) << "Invalid value in STATE for subtask " << name << ". Subtask will start in RUNNING state.";
+			subtask->setInitStarted(true);
+		}
 
 		loadExecutors(&tmp, *subtask);
 	}

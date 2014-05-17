@@ -21,10 +21,11 @@ Subtask & Task::operator[](const std::string & name) {
 	return subtasks[name];
 }
 
-bool Task::start() {
+bool Task::start(bool init) {
 	LOG(LTRACE) << "Starting subtasks...";
 	BOOST_FOREACH(SubtaskPair sp, subtasks) {
-		sp.second.start();
+		if (!init || sp.second.initStarted())
+			sp.second.start();
 	}
 
 	LOG(LTRACE) << "Task started successfully";
