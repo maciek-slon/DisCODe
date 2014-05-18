@@ -60,6 +60,7 @@ public:
 			ss << val;
 			return ss.str();
 		}
+		return "";
 	}
 
 	static T fromStr(const std::string & str) {
@@ -71,6 +72,7 @@ public:
 			ss >> ret;
 			return ret;
 		}
+		return T();
 	}
 };
 
@@ -106,6 +108,8 @@ public:
 	PropertyInterface(const std::string & n) :
 			name_(n), persistent(true), m_tool_tip(n) {
 	}
+
+	virtual ~PropertyInterface() {}
 
 	/*
 	 template <typename T>

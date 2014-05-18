@@ -121,10 +121,13 @@ protected:
 		sum[0] = sum[1] = sum[2] = sum[3] = sum[4] = sum[5] = sum[6] = sum[7] = sum[8] = sum[9] = 0;
 
 		level = Notice;
+		curr_lvl = Notice;
 	}
 
 	Logger(const Logger &)
 	{
+		level = 0;
+		curr_lvl = 0;
 	}
 
 	/// sum of messages of each type

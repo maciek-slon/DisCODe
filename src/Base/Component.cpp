@@ -225,10 +225,6 @@ void Component::addDependency(const std::string & name, DataStreamInterface* str
 		triggers[name].push_back(stream);
 	else
 		CLOG(LWARNING) << "Handlers can only depend on input streams.";
-		
-	for (int i = 0; i < triggers[name].size(); ++i) {
-		CLOG(LDEBUG) << triggers[name][i]->name();
-	}
 }
 
 void Component::sortHandlers() {

@@ -8,6 +8,8 @@ class CommandInterpreter;
 class Informer {
 public:
 	virtual void registerHandlers(CommandInterpreter & ci) = 0;
+
+	virtual ~Informer() {}
 };
 
 }
