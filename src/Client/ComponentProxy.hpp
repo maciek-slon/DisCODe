@@ -56,6 +56,22 @@ public:
 		return m_name;
 	}
 
+	int getBump() const {
+		return m_bump;
+	}
+
+	void setBump(int bump) {
+		m_bump = bump;
+	}
+
+	int getPriority() const {
+		return m_priority;
+	}
+
+	const std::string& getType() const {
+		return m_type;
+	}
+
 private:
 	Client * m_client;
 
@@ -72,6 +88,11 @@ private:
 	void refreshPropertyConstraints(int i);
 
 	std::vector<std::vector<std::string> > constraints;
+
+	std::string m_type;
+
+	int m_priority;
+	int m_bump;
 };
 
 }

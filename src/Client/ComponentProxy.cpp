@@ -1,6 +1,9 @@
 #include "ComponentProxy.hpp"
 #include "DisCODeClient.hpp"
 
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
+
 namespace DisCODe {
 
 ComponentProxy::ComponentProxy(Client * client, const std::string & name) : m_client(client), m_name(name) {
@@ -104,6 +107,20 @@ void ComponentProxy::refresh() {
 		// If at end, use start=maxSize.  Else use start=end+delimiter.
 		start = ((end > (std::string::npos - separator.size())) ? std::string::npos : end + separator.size());
 	}
+
+	request = "getMetaInfo";
+	request += ":";
+	request += m_name;
+
+	str = m_client->send(request);
+
+	separator = "\n";
+	std::vector<std::string> strs;
+	boost::split(strs,str,boost::is_any_of(separator));
+
+	m_type = strs[0];
+	m_priority = boost::lexical_cast<int>(strs[1]);
+	m_bump = boost::lexical_cast<int>(strs[2]);
 }
 
 void ComponentProxy::print(int indent) {

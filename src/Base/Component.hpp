@@ -195,7 +195,23 @@ public:
 	}
 
 	void sortHandlers();
-	
+
+	int getPriority() const {
+		return m_priority;
+	}
+
+	void setPriority(int priority) {
+		m_priority = priority;
+	}
+
+	const std::string& getType() const {
+		return m_type;
+	}
+
+	void setType(const std::string& type) {
+		m_type = type;
+	}
+
 protected:
 	/*!
 	 * Method called when component is started
@@ -280,6 +296,12 @@ private:
 
 	/// severity level bump
 	int m_bump;
+
+	/// component priority in his executor
+	int m_priority;
+
+	/// component type
+	std::string m_type;
 };
 
 }//: namespace Base

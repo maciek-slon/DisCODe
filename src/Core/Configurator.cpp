@@ -271,6 +271,8 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		// try to create requested component
 		cmp = componentManager->createComponent(name, dcl_comp[0], dcl_comp[1]);
 		cmp->setBump(bump);
+		cmp->setType(type);
+		cmp->setPriority(prio);
 
 		// iterate through properties defined in xml, check if component has them
 		// and set them if property is persistent

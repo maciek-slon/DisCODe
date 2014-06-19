@@ -119,7 +119,7 @@ void MainWindow::setup(DisCODe::Client * c) {
 
 
 
-			ComponentItem *myItem = new ComponentItem(cp->name().c_str(), "type", ex->name().c_str(), 0);
+			ComponentItem *myItem = new ComponentItem(cp->name().c_str(), cp->getType().c_str(), ex->name().c_str(), cp->getPriority());
 			QListWidgetItem *item = new QListWidgetItem();
 			item->setSizeHint(QSize(0,50));
 			ui->listComponents->addItem(item);
