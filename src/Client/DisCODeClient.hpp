@@ -96,8 +96,8 @@ protected:
 	}
 
 	void fillBuffer(const std::string & msg) {
-		buf[0] = msg.size() / 256;
-		buf[1] = msg.size() % 256;
+		buf[0] = (msg.size()+1) / 256;
+		buf[1] = (msg.size()+1) % 256;
 
 		strcpy((char*)buf+2, msg.c_str());
 		buf[msg.size()+2] = 0;

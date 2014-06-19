@@ -38,21 +38,15 @@ protected:
 	int service(const unsigned char * msg, int /* msg_size */, unsigned char * reply, int reply_limit) {
 		std::string rep = m_interpreter.execute((char*)msg+2);
 
-		if (!rep.empty()) {
-			//std::cout << "Reply: " << rep << std::endl;
-			int rep_size = (int)rep.size() < reply_limit - 3 ? rep.size() + 3 : reply_limit;
-			reply[0] = rep_size / 256;
-			reply[1] = rep_size % 256;
-			//std::cout << "Reply size: " << rep_size << "=" << (int)reply[0] << "*256+" << (int)reply[1] << std::endl;
-			strncpy((char*)reply+2, rep.c_str(), reply_limit-2);
-			reply[reply_limit-1] = 0;
+		// empty reply is possible!
+		int rep_size = (int)rep.size() < reply_limit - 3 ? rep.size() + 3 : reply_limit;
+		reply[0] = rep_size / 256;
+		reply[1] = rep_size % 256;
 
-			/// \todo check, if correct value is returned
-			return rep_size;
-		} else {
-			//std::cout << "No reply\n";
-			return 0;
-		}
+		strncpy((char*)reply+2, rep.c_str(), reply_limit-2);
+		reply[reply_limit-1] = 0;
+
+		return rep_size;
 	}
 
 	int completion(const unsigned char * msg, int msg_size) {
