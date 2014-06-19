@@ -123,7 +123,7 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 			configuration.put(std::string("Task.")+overrides[i].first, overrides[i].second);
 		}
 
-		std::string task_path = boost::filesystem::path(configuration_filename).branch_path().string();
+		std::string task_path = boost::filesystem::absolute(boost::filesystem::path(configuration_filename)).branch_path().string();
 		dict.push_back(std::make_pair("%[TASK_LOCATION]%", task_path));
 
 		// expand macros used in config file
