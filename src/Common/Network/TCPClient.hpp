@@ -30,6 +30,13 @@ public:
 	bool connect(const std::string & host, const std::string & port);
 
 	/*!
+	 * Disconnect from remote server
+	 *
+	 * @return true if disconnect was succesful (server was still up), false otherwise; in any case client is disconnected
+	 */
+	bool disconnect();
+
+	/*!
 	 * Receive next packet.
 	 *
 	 * Method receives data from socket until whole packet is collected (m_completion_hook is used

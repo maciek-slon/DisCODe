@@ -29,7 +29,7 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, DisCODe::Syste
 		btn->setMinimumWidth(30);
 		log_lay->addWidget(btn);
 		logmapper->setMapping(btn, syslvl-i);
-		connect(btn, SIGNAL(clicked()), logmapper, SLOT(map()));
+		connect(btn, SIGNAL(clicked()), logmapper, SLOT(map()), Qt::QueuedConnection);
 	}
 	log_box->setLayout(log_lay);
 	connect(logmapper, SIGNAL(mapped(int)), this, SLOT(setBump(int)));
@@ -65,9 +65,6 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, DisCODe::Syste
 				group = pname.left(pname.indexOf(group_separator));
 				pname.remove(0, pname.indexOf(group_separator)+1);
 			}
-
-
-			std::cout << pname.toStdString() << "(" << group.toStdString() << "): " << ptype.toStdString() << std::endl;
 
 			if (!boxes.contains(group)) {
 				boxes[group] = new QGroupBox(group);
@@ -250,7 +247,6 @@ ComponentWidget::~ComponentWidget()
 
 void ComponentWidget::triggerHandler(const QString & name) {
 	m_proxy->triggerHandler(name.toStdString());
-	//std::cout << name.toStdString() << std::endl;
 }
 
 void ComponentWidget::setProperty(QWidget * widget) {

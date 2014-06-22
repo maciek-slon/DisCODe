@@ -16,7 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_connected = false;
 
-    client = NULL;
+    client = new DisCODe::Client;
+    client->setConnectionLostHandler(boost::bind(&MainWindow::onConnectionLost, this));
 	ui->treeWidget->clear();
 
 	ui->dockWidget->hide();
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->scrollArea->setWidget(&wp);
 
 	connect(&wp, SIGNAL(do_connect_sig(const QString &, const QString &)), this, SLOT(do_connect(const QString &, const QString &)));
+	connect(this, SIGNAL(connectionLost()), this, SLOT(do_disconnect_on_connectionlost()), Qt::QueuedConnection);
 
 	QIcon * appicon = new QIcon;
 	appicon->addFile(":/icons/app", QSize(256,256));
@@ -37,12 +39,9 @@ MainWindow::~MainWindow()
 }
 
 bool MainWindow::tryToConnect(const QString & host, const QString & port) {
-	client = new DisCODe::Client(host.toStdString(), port.toStdString());
-	if (client->connected())
+	if (client->connect(host.toStdString(), port.toStdString()))
 		return true;
 	else {
-		delete client;
-		client = NULL;
 		QMessageBox msgBox;
 		msgBox.setWindowTitle("Error");
 		msgBox.setText(host + ":" + port + " - connection refused.");
@@ -67,9 +66,8 @@ void MainWindow::do_connect(const QString & host, const QString & port) {
 }
 
 void MainWindow::do_disconnect() {
-	delete client;
+	client->disconnect();
 	delete task;
-	client = NULL;
 	ui->actionConnect->setIcon(QIcon(":/icons/connect"));
 
 	ui->treeWidget->clear();
@@ -87,6 +85,18 @@ void MainWindow::do_disconnect() {
 	ui->menuBar->hide();
 	wp.reset();
 	ui->scrollArea->setWidget(&wp);
+}
+
+void MainWindow::do_disconnect_on_connectionlost() {
+	if (!m_connected) return;
+	do_disconnect();
+
+	QMessageBox msgBox;
+	msgBox.setText("Connection lost!");
+	msgBox.setInformativeText("Connection with DisCODe is lost.");
+	msgBox.setStandardButtons(QMessageBox::Ok);
+	msgBox.setDefaultButton(QMessageBox::Ok);
+	msgBox.exec();
 }
 
 void MainWindow::setup(DisCODe::Client * c) {

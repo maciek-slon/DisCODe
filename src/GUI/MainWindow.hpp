@@ -34,6 +34,13 @@ public:
 
     void setup(DisCODe::Client * c);
 
+    void onConnectionLost() {
+    	emit connectionLost();
+    }
+
+signals:
+	void connectionLost();
+
 protected:
 	void closeEvent(QCloseEvent *event);
 
@@ -46,6 +53,7 @@ public slots:
 
 	void do_connect(const QString & host,const QString & port);
 	void do_disconnect();
+	void do_disconnect_on_connectionlost();
 
 private:
     Ui::MainWindow *ui;

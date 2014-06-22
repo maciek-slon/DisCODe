@@ -33,19 +33,24 @@ public:
 	typedef boost::function<void(std::string, std::vector<std::string>)> list_properties_t;
 	typedef boost::function<void(std::string, std::string, std::string)> get_property_t;
 
+	typedef boost::function<void(void)> connection_lost_t;
+
 	Client(const std::string host = "localhost", const std::string port = "30000") :
 		m_host(host),
 		m_port(port)
 	{
 		m_client.setServiceHook(boost::bind(&Client::service, this, _1, _2));
 		m_client.setCompletionHook(boost::bind(&Client::check, this, _1, _2));
-		m_connected = m_client.connect(host, port);
 	}
 
 	std::string send(const std::string & msg) {
 		fillBuffer(msg);
 		m_client.send(buf, msg.size()+3);
-		m_client.recv();
+		int ret = m_client.recv(3000);
+		if (ret < 0) {
+			m_connection_lost_handler();
+			return std::string();
+		}
 		return std::string((char*)buf);
 	}
 
@@ -65,6 +70,10 @@ public:
 		m_get_property_handler = h;
 	}
 
+	void setConnectionLostHandler(connection_lost_t h) {
+		m_connection_lost_handler = h;
+	}
+
 	bool connected() const {
 		return m_connected;
 	}
@@ -77,19 +86,25 @@ public:
 		return m_port;
 	}
 
+	bool connect(const std::string host = "localhost", const std::string port = "30000") {
+		m_host = host;
+		m_port = port;
+		m_client.setServiceHook(boost::bind(&Client::service, this, _1, _2));
+		m_client.setCompletionHook(boost::bind(&Client::check, this, _1, _2));
+		m_connected = m_client.connect(host, port);
+		return m_connected;
+	}
+
+	bool disconnect() {
+		return m_client.disconnect();
+	}
+
 protected:
 	int check(const unsigned char * msg, int size) {
-		//std::cout << "Check...\n";
-		//int ss = msg[0] * 256 + msg[1];
-		//std::cout << "Computed: " << ss << "(" << (int)msg[0] << "+" << (int)msg[1] << "), got: " << size << std::endl;
-		//std::cout << msg+2 << std::endl;
 		return size > 1 ? msg[0] * 256 + msg[1] : 2;
 	}
 
 	int service(const unsigned char * msg, int /*size*/) {
-		//std::cout << "Service... " << size << "\n";
-		//std::cout << msg+2 << std::endl;
-
 		strcpy((char*)buf, (char*)msg+2);
 
 		return 0;
@@ -113,6 +128,7 @@ private:
 	list_components_t m_list_components_handler;
 	list_properties_t m_list_properties_handler;
 	get_property_t m_get_property_handler;
+	connection_lost_t m_connection_lost_handler;
 
 	bool m_connected;
 
