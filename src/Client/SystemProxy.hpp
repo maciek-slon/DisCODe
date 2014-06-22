@@ -14,8 +14,12 @@ public:
 	SystemProxy(Client * client);
 
 	void finish();
+
+	int getLogLvl();
+
 private:
 	Client * m_client;
+	int m_loglvl;
 };
 
 }

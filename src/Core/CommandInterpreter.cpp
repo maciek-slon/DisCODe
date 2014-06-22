@@ -45,8 +45,6 @@ std::string CommandInterpreter::execute(const std::string & str)
 {
 	Command cmd;
 
-	LOG(LINFO) << "Executing " << str;
-
 	try {
 		cmd = parse(str);
 	} catch(...) {

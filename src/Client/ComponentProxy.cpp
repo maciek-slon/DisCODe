@@ -205,4 +205,14 @@ std::string ComponentProxy::getPropertyToolTip(int i) {
 	return val;
 }
 
+void ComponentProxy::setBump(int bump) {
+	std::string req = "setBump:";
+	req += m_name + ":";
+	req += boost::lexical_cast<std::string>(bump);
+
+	m_client->send(req);
+
+	m_bump = bump;
+}
+
 }

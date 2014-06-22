@@ -30,9 +30,6 @@ public:
 	void triggerHandler(int i);
 	void triggerHandler(const std::string & handler);
 
-
-
-
 	int countProperties() const {
 		return properties.size();
 	}
@@ -60,9 +57,7 @@ public:
 		return m_bump;
 	}
 
-	void setBump(int bump) {
-		m_bump = bump;
-	}
+	void setBump(int bump);
 
 	int getPriority() const {
 		return m_priority;

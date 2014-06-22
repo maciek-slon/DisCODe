@@ -114,7 +114,7 @@ void MainWindow::setup(DisCODe::Client * c) {
 			i_cp->setText(0, cp->name().c_str());
 			i_ex->addChild(i_cp);
 
-			component_props[cp->name().c_str()] = new ComponentWidget(cp);
+			component_props[cp->name().c_str()] = new ComponentWidget(cp, system);
 
 
 
