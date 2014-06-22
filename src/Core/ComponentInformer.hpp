@@ -34,6 +34,8 @@ public:
 
 	std::string getMetaInfo(std::vector<std::string> args);
 
+	std::string setBump(std::vector<std::string> args);
+
 
 private:
 	ComponentManager & m_component_manager;
