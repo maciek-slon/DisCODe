@@ -31,6 +31,8 @@ void Subtask::stop()
 			Common::Thread::msleep(50);
 		}
 	}
+
+	state_ = Stopped;
 }
 
 bool Subtask::start()
@@ -42,11 +44,12 @@ bool Subtask::start()
 
 	LOG(LTRACE) << "Waiting for all executors to start...";
 	BOOST_FOREACH(ExecutorPair executor, executors) {
-		while (executor.second->state() != Running) {
+		while (executor.second->state() != Core::ExecutorState::Running) {
 			Common::Thread::msleep(50);
 		}
 	}
 	LOG(LTRACE) << "All executors running.";
+	state_ = Running;
 
 	return ret;
 }

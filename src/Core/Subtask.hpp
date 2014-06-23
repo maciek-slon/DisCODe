@@ -26,10 +26,13 @@ namespace Core {
 class Subtask
 {
 public:
+
+	typedef enum {Running, Stopped} SubtaskState;
+
 	/*!
 	 *
 	 */
-	Subtask(const std::string & n = "") : name_(n), init_started(false) {}
+	Subtask(const std::string & n = "") : name_(n), init_started(false), state_(Stopped) {}
 
 	/*!
 	 *
@@ -77,6 +80,10 @@ public:
 		return init_started;
 	}
 
+	SubtaskState state() const {
+		return state_;
+	}
+
 private:
 	typedef std::vector<Base::Component*>::iterator comp_it;
 
@@ -89,6 +96,8 @@ private:
 	std::map<std::string, Executor*> executors;
 
 	bool init_started;
+
+	SubtaskState state_;
 };
 
 } //: namespace Core

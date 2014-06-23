@@ -105,6 +105,21 @@ public:
 		return "OK";
 	}
 
+	std::string subtaskState(std::vector<std::string> args) {
+		if (args.size() < 1) {
+			LOG(LWARNING) << "TaskInformer::subtaskState: no subtask name provided";
+			return "ERR";
+		}
+		if (!task.checkSubtask(args[0])) {
+			LOG(LWARNING) << "TaskInformer::subtaskState: subtask " << args[0] << " doesn't exist";
+			return "ERR";
+		}
+		switch (task[args[0]].state()) {
+		case Subtask::Running: return "R";
+		case Subtask::Stopped: return "S";
+		}
+	}
+
 private:
 	Core::Task & task;
 };
