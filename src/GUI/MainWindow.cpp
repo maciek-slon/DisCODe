@@ -28,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(&wp, SIGNAL(do_connect_sig(const QString &, const QString &)), this, SLOT(do_connect(const QString &, const QString &)));
 	connect(this, SIGNAL(connectionLost()), this, SLOT(do_disconnect_on_connectionlost()), Qt::QueuedConnection);
 
+	connect(&cn, SIGNAL(connected()), this, SLOT(onConnectionEstablished()));
+	connect(&cn, SIGNAL(failed()), this, SLOT(onConnectionFailed()));
+
 	QIcon * appicon = new QIcon;
 	appicon->addFile(":/icons/app", QSize(256,256));
 	QApplication::setWindowIcon(*appicon);
@@ -53,7 +56,7 @@ bool MainWindow::tryToConnect(const QString & host, const QString & port) {
 }
 
 void MainWindow::do_connect(const QString & host, const QString & port) {
-	if (tryToConnect(host, port)) {
+	/*if (tryToConnect(host, port)) {
 		setup(client);
 		m_connected = true;
 		ui->actionConnect->setIcon(QIcon(":/icons/disconnect"));
@@ -62,7 +65,37 @@ void MainWindow::do_connect(const QString & host, const QString & port) {
 		ui->menuBar->show();
 		ui->mainToolBar->show();
 		ui->scrollArea->takeWidget();
-	}
+	}*/
+
+	cn.setup(client, host, port);
+	cn.setWindowModality(Qt::WindowModal);
+	cn.show();
+}
+
+void MainWindow::onConnectionEstablished() {
+	cn.hide();
+
+	setup(client);
+	m_connected = true;
+	ui->actionConnect->setIcon(QIcon(":/icons/disconnect"));
+
+	ui->dockWidget->show();
+	ui->menuBar->show();
+	ui->mainToolBar->show();
+	ui->scrollArea->takeWidget();
+}
+
+void MainWindow::onConnectionFailed() {
+	cn.hide();
+
+	std::string msg = client->host() + ":" + client->port() + " - connection refused.";
+
+	QMessageBox msgBox;
+	msgBox.setWindowTitle("Error");
+	msgBox.setText(msg.c_str());
+	msgBox.setStandardButtons(QMessageBox::Ok);
+	msgBox.setDefaultButton(QMessageBox::Ok);
+	msgBox.exec();
 }
 
 void MainWindow::do_disconnect() {

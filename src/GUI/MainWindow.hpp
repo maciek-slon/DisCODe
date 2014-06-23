@@ -13,6 +13,7 @@
 #include "../Client/DisCODeClient.hpp"
 
 #include "WelcomePage.hpp"
+#include "Connecting.hpp"
 
 class QTreeWidgetItem;
 
@@ -55,6 +56,9 @@ public slots:
 	void do_disconnect();
 	void do_disconnect_on_connectionlost();
 
+	void onConnectionEstablished();
+	void onConnectionFailed();
+
 private:
     Ui::MainWindow *ui;
 
@@ -69,6 +73,7 @@ private:
 	bool m_connected;
 
 	WelcomePage wp;
+	Connecting cn;
 };
 
 #endif // MAINWINDOW_H

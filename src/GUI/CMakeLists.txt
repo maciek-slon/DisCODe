@@ -50,6 +50,7 @@ SET(GUI_CXX_SRCS
 	WelcomePage.cpp
 	TaskWidget.cpp
 	ComponentItem.cpp
+	Connecting.cpp
 )
 
 # Class headers that have to be MOCed (i.e. classes derived from QObject)
@@ -60,6 +61,7 @@ SET(GUI_MOC_SRCS
 	WelcomePage.hpp
 	TaskWidget.hpp
 	ComponentItem.hpp
+	Connecting.hpp
 )
 
 # Generate MOC files
@@ -72,6 +74,7 @@ SET(GUI_UI
 	WelcomePage.ui
 	TaskWidget.ui
 	ComponentItem.ui
+	Connecting.ui
 )
 
 # Generate UI include files

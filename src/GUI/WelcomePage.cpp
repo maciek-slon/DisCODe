@@ -46,7 +46,7 @@ void WelcomePage::on_btnSpawnOk_clicked()
 	if (!QProcess::startDetached(program, arguments))
 		QMessageBox::critical(this, tr("Error"), tr("Could not spawn DisCODe!"));
 	else {
-		QMessageBox::information(this, tr("Info"), tr("DisCODe spawned."));
+		//QMessageBox::information(this, tr("Info"), tr("DisCODe spawned."));
 		emit do_connect_sig(ui.editConnectHost->text(), ui.editConnectPort->text());
 	}
 
