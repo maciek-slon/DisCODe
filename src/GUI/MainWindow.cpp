@@ -109,6 +109,8 @@ void MainWindow::setup(DisCODe::Client * c) {
 	ui->treeWidget->clear();
 	ui->listComponents->clear();
 
+	QVector <ComponentItem*> items;
+
 	QTreeWidgetItem * i_task = new QTreeWidgetItem;
 	i_task->setText(0, client->host().c_str());
 	i_task->setText(1, client->port().c_str());
@@ -126,17 +128,19 @@ void MainWindow::setup(DisCODe::Client * c) {
 
 			component_props[cp->name().c_str()] = new ComponentWidget(cp, system);
 
-
-
-
 			ComponentItem *myItem = new ComponentItem(cp->name().c_str(), cp->getType().c_str(), ex->name().c_str(), cp->getPriority());
-			QListWidgetItem *item = new QListWidgetItem();
-			item->setSizeHint(QSize(0,50));
-			ui->listComponents->addItem(item);
-			ui->listComponents->setItemWidget(item,myItem);
+			items.push_back(myItem);
 		}
 
 		i_task->addChild(i_ex);
+	}
+
+	qSort(items.begin(), items.end(), PtrLess<ComponentItem>());
+	Q_FOREACH(ComponentItem * myItem, items) {
+		QListWidgetItem *item = new QListWidgetItem();
+		item->setSizeHint(QSize(0,50));
+		ui->listComponents->addItem(item);
+		ui->listComponents->setItemWidget(item,myItem);
 	}
 
 	ui->treeWidget->addTopLevelItem(i_task);
