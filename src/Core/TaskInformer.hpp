@@ -21,6 +21,8 @@ public:
 
 		ci.addHandler("startSubtask",  boost::bind(&TaskInformer::startSubtask,  this, _1));
 		ci.addHandler("stopSubtask",  boost::bind(&TaskInformer::stopSubtask,  this, _1));
+		
+		ci.addHandler("taskState",  boost::bind(&TaskInformer::taskState,  this, _1));
 	}
 
 	/*!
@@ -117,6 +119,15 @@ public:
 		switch (task[args[0]].state()) {
 		case Subtask::Running: return "R";
 		case Subtask::Stopped: return "S";
+		}
+	}
+	
+	std::string taskState(std::vector<std::string> args) {
+		switch(task.state()) {
+		case Task::Initializing: return "I";
+		case Task::Running: return "R";
+		case Task::Stopped: return "S";
+		default: return "I";
 		}
 	}
 

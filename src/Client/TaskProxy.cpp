@@ -67,4 +67,13 @@ void TaskProxy::print(int indent) {
 	}
 }
 
+TaskProxy::State TaskProxy::state() {
+	std::string str = m_client->send("taskState");
+	if (str == "I") return TaskProxy::Initializing;
+	if (str == "R") return TaskProxy::Running;
+	if (str == "S") return TaskProxy::Stopped;
+	
+	return TaskProxy::Initializing;
+}
+
 }

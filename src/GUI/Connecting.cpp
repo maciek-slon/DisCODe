@@ -30,6 +30,9 @@ void Connecting::setup(DisCODe::Client* client, QString host, QString port) {
 	ui.pbTask->setValue(0);
 
 	m_timer.start(500);
+	
+	tries = 0;
+	state = 0;
 }
 
 void Connecting::proceed() {
@@ -52,6 +55,15 @@ void Connecting::proceed() {
 
 	// waiting for task to start
 	if (state == 1) {
+		if (m_task->state() != DisCODe::TaskProxy::Initializing) {
+			ui.pbTask->setMaximum(1);
+			ui.pbTask->setValue(1);
+			state = 2;
+			tries = 0;
+		}
+	}
+	
+	if (state == 2) {
 		m_timer.stop();
 		emit connected();
 	}

@@ -101,7 +101,7 @@ def buildDCL(dclname, clean):
     subprocess.Popen('make clean', cwd = builddir, shell = True).wait()
     
   perc = 0
-  p = subprocess.Popen('make', cwd = builddir, shell = True, stdout=subprocess.PIPE)
+  p = subprocess.Popen('make', cwd = builddir, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   while p.poll() is None:
     l = p.stdout.readline() # This blocks until it receives a newline.
     match = re.search('^\[[\s]*(.*)\%\]', l)
@@ -110,12 +110,23 @@ def buildDCL(dclname, clean):
       perc = max(cur, perc)
       progbar(perc, 50)
   print ""
+  
+  if p.returncode != 0:
+    print "Errors during build:"
+    print p.stderr.read()
+    return False
+    
+  if p.stderr.readline() != "":
+    print "Warnings:"
+    print p.stderr.read()
       
     
   print "Installing..."
   p = subprocess.Popen('make install/fast', cwd = builddir, shell = True, stdout=subprocess.PIPE)
   while p.poll() is None:
     l = p.stdout.readline() # This blocks until it receives a newline.
+    
+  return True
   
 if __name__ == "__main__":
   parser = argparse.ArgumentParser()
@@ -140,4 +151,5 @@ if __name__ == "__main__":
     print "========================================================="
     print "== Building " + dep
     print "========================================================="
-    buildDCL(dep, args.clean)
+    if not buildDCL(dep, args.clean):
+      print "Build failed!"

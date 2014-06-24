@@ -12,6 +12,8 @@ class ExecutorProxy;
 
 class TaskProxy {
 public:
+	typedef enum {Initializing, Running, Stopped} State;
+
 	TaskProxy(Client * client);
 
 	void start();
@@ -24,6 +26,8 @@ public:
 	void print(int indent = 0);
 
 	int countExecutors() const;
+	
+	State state();
 
 private:
 	Client * m_client;

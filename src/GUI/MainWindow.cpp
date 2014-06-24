@@ -133,7 +133,7 @@ void MainWindow::do_disconnect_on_connectionlost() {
 }
 
 void MainWindow::setup(DisCODe::Client * c) {
-	client = c;
+//	client = c;
 	task = new DisCODe::TaskProxy(client);
 	task->refresh();
 

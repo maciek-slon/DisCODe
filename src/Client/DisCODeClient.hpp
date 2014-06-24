@@ -48,6 +48,8 @@ public:
 		m_client.send(buf, msg.size()+3);
 		int ret = m_client.recv(3000);
 		if (ret < 0) {
+			std::cout << "Connection lost while sending " << msg << std::endl;
+			std::cout.flush();
 			m_connection_lost_handler();
 			return std::string();
 		}

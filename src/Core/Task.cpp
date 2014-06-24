@@ -28,6 +28,7 @@ bool Task::start(bool init) {
 			sp.second.start();
 	}
 
+	m_state = Task::Running;
 	LOG(LTRACE) << "Task started successfully";
 	return true;
 }
@@ -39,6 +40,7 @@ bool Task::stop() {
 	}
 	LOG(LTRACE) << "Task stopped.";
 
+	m_state = Task::Stopped;
 	return true;
 }
 

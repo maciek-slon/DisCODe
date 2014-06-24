@@ -22,6 +22,11 @@ class Executor;
  */
 class Task {
 public:
+
+	typedef enum {Initializing, Running, Stopped} TaskState;
+
+	Task() : m_state(Task::Initializing) {}
+
 	/*!
 	 * Start all subtasks.
 	 */
@@ -70,12 +75,18 @@ public:
 
 	std::vector<std::string> listSubtasks();
 	std::vector<std::string> listExecutors();
+	
+	TaskState state() const {
+		return m_state;
+	}
 
 private:
 	/// All subtasks
 	std::map<std::string, Subtask> subtasks;
 
 	typedef std::pair<std::string, Subtask> SubtaskPair;
+	
+	TaskState m_state;
 };
 
 } //: namespace Core
