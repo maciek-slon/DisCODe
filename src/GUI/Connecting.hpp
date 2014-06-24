@@ -3,6 +3,7 @@
 
 #include <QtGui/QWidget>
 #include <QtCore/QTimer>
+#include <QtGui>
 
 #include "ui_Connecting.h"
 
@@ -26,8 +27,11 @@ signals:
 
 public slots:
 	void proceed();
+	void abort();
 
 private:
+	void closeEvent(QCloseEvent *e);
+
     Ui::ConnectingClass ui;
     DisCODe::Client * m_client;
     DisCODe::TaskProxy * m_task;

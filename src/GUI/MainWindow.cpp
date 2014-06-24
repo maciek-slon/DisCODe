@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	connect(&cn, SIGNAL(connected()), this, SLOT(onConnectionEstablished()));
 	connect(&cn, SIGNAL(failed()), this, SLOT(onConnectionFailed()));
+	connect(&cn, SIGNAL(aborted()), this, SLOT(onConnectionAborted()));
 
 	QIcon * appicon = new QIcon;
 	appicon->addFile(":/icons/app", QSize(256,256));
@@ -86,6 +87,7 @@ void MainWindow::onConnectionEstablished() {
 }
 
 void MainWindow::onConnectionFailed() {
+	client->disconnect();
 	cn.hide();
 
 	std::string msg = client->host() + ":" + client->port() + " - connection refused.";
@@ -96,6 +98,11 @@ void MainWindow::onConnectionFailed() {
 	msgBox.setStandardButtons(QMessageBox::Ok);
 	msgBox.setDefaultButton(QMessageBox::Ok);
 	msgBox.exec();
+}
+
+void MainWindow::onConnectionAborted() {
+	client->disconnect();
+	cn.hide();
 }
 
 void MainWindow::do_disconnect() {

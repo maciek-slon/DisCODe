@@ -58,6 +58,7 @@ public slots:
 
 	void onConnectionEstablished();
 	void onConnectionFailed();
+	void onConnectionAborted();
 
 private:
     Ui::MainWindow *ui;

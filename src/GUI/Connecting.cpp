@@ -13,6 +13,7 @@ Connecting::Connecting(QWidget *parent) :
 	this->hide();
 
 	connect(&m_timer, SIGNAL(timeout()), this, SLOT(proceed()));
+	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(abort()));
 }
 
 Connecting::~Connecting()
@@ -72,5 +73,17 @@ void Connecting::proceed() {
 		m_timer.stop();
 		emit failed();
 	}
+}
 
+void Connecting::abort() {
+	m_timer.stop();
+	tries = 0;
+	state = 0;
+    emit aborted();
+}
+
+void Connecting::closeEvent(QCloseEvent *e)
+{
+	abort();
+    e->accept();
 }
