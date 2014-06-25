@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->treeWidget->clear();
 
 	ui->dockWidget->hide();
+	ui->dockWidget_2->hide();
 	ui->mainToolBar->hide();
 	ui->menuBar->hide();
 	ui->scrollArea->setWidget(&wp);
@@ -35,6 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	QIcon * appicon = new QIcon;
 	appicon->addFile(":/icons/app", QSize(256,256));
 	QApplication::setWindowIcon(*appicon);
+
+	setTabPosition(Qt::AllDockWidgetAreas, QTabWidget::North);
 }
 
 MainWindow::~MainWindow()
@@ -81,6 +84,7 @@ void MainWindow::onConnectionEstablished() {
 	ui->actionConnect->setIcon(QIcon(":/icons/disconnect"));
 
 	ui->dockWidget->show();
+	ui->dockWidget_2->show();
 	ui->menuBar->show();
 	ui->mainToolBar->show();
 	ui->scrollArea->takeWidget();
@@ -121,6 +125,7 @@ void MainWindow::do_disconnect() {
 	m_connected = false;
 
 	ui->dockWidget->hide();
+	ui->dockWidget_2->hide();
 	ui->mainToolBar->hide();
 	ui->menuBar->hide();
 	wp.reset();

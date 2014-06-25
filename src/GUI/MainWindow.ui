@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>DisCODe</string>
   </property>
+  <property name="dockNestingEnabled">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <property name="spacing">
@@ -43,8 +46,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>438</width>
-         <height>550</height>
+         <width>456</width>
+         <height>548</height>
         </rect>
        </property>
       </widget>
@@ -58,7 +61,7 @@
      <x>0</x>
      <y>0</y>
      <width>726</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">
@@ -94,122 +97,92 @@
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
    <property name="windowTitle">
-    <string>Task browser</string>
+    <string>Components</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout_2">
-     <property name="spacing">
-      <number>2</number>
-     </property>
-     <property name="margin">
-      <number>2</number>
-     </property>
      <item>
-      <widget class="QTabWidget" name="tabWidget">
-       <property name="currentIndex">
-        <number>0</number>
+      <widget class="QListWidget" name="listComponents"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget_2">
+   <property name="windowTitle">
+    <string>Executors</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTreeWidget" name="treeWidget">
+       <property name="alternatingRowColors">
+        <bool>false</bool>
        </property>
-       <property name="documentMode">
+       <property name="rootIsDecorated">
+        <bool>false</bool>
+       </property>
+       <property name="itemsExpandable">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="tab_2">
-        <attribute name="title">
-         <string>Flat view</string>
-        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <property name="spacing">
-          <number>0</number>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string>Name</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Type</string>
+        </property>
+       </column>
+       <item>
+        <property name="text">
+         <string>Task</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <item>
+         <property name="text">
+          <string>Exec1</string>
          </property>
-         <property name="margin">
-          <number>0</number>
+         <property name="text">
+          <string>Continuous</string>
          </property>
          <item>
-          <widget class="QListWidget" name="listComponents"/>
+          <property name="text">
+           <string>Kbd1</string>
+          </property>
+          <property name="text">
+           <string>Keyboard</string>
+          </property>
          </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab">
-        <attribute name="title">
-         <string>Executors</string>
-        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="spacing">
-          <number>0</number>
+        </item>
+        <item>
+         <property name="text">
+          <string>Exec2</string>
          </property>
-         <property name="margin">
-          <number>0</number>
+         <property name="text">
+          <string>Periodic</string>
          </property>
          <item>
-          <widget class="QTreeWidget" name="treeWidget">
-           <property name="alternatingRowColors">
-            <bool>false</bool>
-           </property>
-           <property name="rootIsDecorated">
-            <bool>false</bool>
-           </property>
-           <property name="itemsExpandable">
-            <bool>true</bool>
-           </property>
-           <property name="expandsOnDoubleClick">
-            <bool>false</bool>
-           </property>
-           <column>
-            <property name="text">
-             <string>Name</string>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Type</string>
-            </property>
-           </column>
-           <item>
-            <property name="text">
-             <string>Task</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <item>
-             <property name="text">
-              <string>Exec1</string>
-             </property>
-             <property name="text">
-              <string>Continuous</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>Kbd1</string>
-              </property>
-              <property name="text">
-               <string>Keyboard</string>
-              </property>
-             </item>
-            </item>
-            <item>
-             <property name="text">
-              <string>Exec2</string>
-             </property>
-             <property name="text">
-              <string>Periodic</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>Wnd1</string>
-              </property>
-              <property name="text">
-               <string>CvWindow</string>
-              </property>
-             </item>
-            </item>
-           </item>
-          </widget>
+          <property name="text">
+           <string>Wnd1</string>
+          </property>
+          <property name="text">
+           <string>CvWindow</string>
+          </property>
          </item>
-        </layout>
-       </widget>
+        </item>
+       </item>
       </widget>
      </item>
     </layout>
