@@ -14,6 +14,19 @@ Connecting::Connecting(QWidget *parent) :
 
 	connect(&m_timer, SIGNAL(timeout()), this, SLOT(proceed()));
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(abort()));
+
+	QMovie* movie = new QMovie(":/preloader/cube");
+
+	// Make sure the GIF was loaded correctly
+	if (!movie->isValid())
+	{
+	    // Something went wrong :(
+		ui.preloader->setText("Loading");
+	} else {
+		// Play GIF
+		ui.preloader->setMovie(movie);
+		movie->start();
+	}
 }
 
 Connecting::~Connecting()

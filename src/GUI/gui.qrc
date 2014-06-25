@@ -14,4 +14,7 @@
     <qresource prefix="/splash">  
         <file alias="puzz">resources/puzz.png</file>
     </qresource>
+    <qresource prefix="/preloader">  
+        <file alias="cube">resources/cube.gif</file>
+    </qresource>
 </RCC>
