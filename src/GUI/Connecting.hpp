@@ -7,6 +7,8 @@
 
 #include "ui_Connecting.h"
 
+#include "TextRoller.hpp"
+
 #include "../Client/DisCODeClient.hpp"
 #include "../Client/TaskProxy.hpp"
 
@@ -18,6 +20,7 @@ public:
     Connecting(QWidget *parent = 0);
     ~Connecting();
 
+    void setTextRoller(TextRoller * roller);
     void setup(DisCODe::Client * client, QString host, QString port);
 
 signals:
@@ -39,6 +42,8 @@ private:
     QString m_port;
 
     QTimer m_timer;
+
+    TextRoller * m_roller;
 
     int state;
     int tries;

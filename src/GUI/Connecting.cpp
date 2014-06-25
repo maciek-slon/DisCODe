@@ -10,7 +10,6 @@ Connecting::Connecting(QWidget *parent) :
 	QWidget(parent), m_client(NULL), m_task(NULL), state(0), tries(0)
 {
 	ui.setupUi(this);
-	this->hide();
 
 	connect(&m_timer, SIGNAL(timeout()), this, SLOT(proceed()));
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(abort()));
@@ -29,10 +28,10 @@ Connecting::Connecting(QWidget *parent) :
 	}
 
 
-    QFont fnt(ui.textRoller->font());
-    fnt.setFamily("Ubuntu Light");
-    fnt.setPointSize(16);
-    ui.textRoller->setFont(fnt);
+//    QFont fnt(ui.textRoller->font());
+//    fnt.setFamily("Ubuntu Light");
+//    fnt.setPointSize(16);
+//    ui.textRoller->setFont(fnt);
 }
 
 Connecting::~Connecting()
@@ -40,12 +39,16 @@ Connecting::~Connecting()
 
 }
 
+void Connecting::setTextRoller(TextRoller * roller) {
+	m_roller = roller;
+}
+
 void Connecting::setup(DisCODe::Client* client, QString host, QString port) {
 	m_client = client;
 	m_host = host;
 	m_port = port;
 
-	ui.textRoller->resetText("Waiting for DisCODe server");
+	m_roller->setText("Waiting for DisCODe server");
 
 //	ui.pbServer->setMaximum(0);
 //	ui.pbTask->setMaximum(1);
@@ -68,7 +71,7 @@ void Connecting::proceed() {
 //			ui.pbServer->setMaximum(1);
 //			ui.pbServer->setValue(1);
 //			ui.pbTask->setMaximum(0);
-			ui.textRoller->setText("Waiting for task to start");
+			m_roller->setText("Waiting for task to start");
 
 			m_task = new DisCODe::TaskProxy(m_client);
 

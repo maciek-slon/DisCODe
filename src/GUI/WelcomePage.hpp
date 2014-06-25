@@ -28,8 +28,14 @@ public slots:
 
 	void on_btnLoadTask_linkActivated ( const QString & link );
 
-private:
+	void showError( const QString & text );
+	void restorePage();
+
+public:
     Ui::WelcomePageClass ui;
+
+private:
+    int m_last_page;
 };
 
 #endif // WELCOMEPAGE_H

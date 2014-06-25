@@ -38,6 +38,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	QApplication::setWindowIcon(*appicon);
 
 	setTabPosition(Qt::AllDockWidgetAreas, QTabWidget::North);
+
+	wp.ui.stackedWidget->addWidget(&cn);
+	cn.setTextRoller(wp.ui.lblTitle);
 }
 
 MainWindow::~MainWindow()
@@ -49,12 +52,13 @@ bool MainWindow::tryToConnect(const QString & host, const QString & port) {
 	if (client->connect(host.toStdString(), port.toStdString()))
 		return true;
 	else {
-		QMessageBox msgBox;
-		msgBox.setWindowTitle("Error");
-		msgBox.setText(host + ":" + port + " - connection refused.");
-		msgBox.setStandardButtons(QMessageBox::Ok);
-		msgBox.setDefaultButton(QMessageBox::Ok);
-		msgBox.exec();
+		wp.showError(host + ":" + port + " - connection refused.");
+//		QMessageBox msgBox;
+//		msgBox.setWindowTitle("Error");
+//		msgBox.setText(host + ":" + port + " - connection refused.");
+//		msgBox.setStandardButtons(QMessageBox::Ok);
+//		msgBox.setDefaultButton(QMessageBox::Ok);
+//		msgBox.exec();
 		return false;
 	}
 }
@@ -71,20 +75,21 @@ void MainWindow::do_connect(const QString & host, const QString & port) {
 		ui->scrollArea->takeWidget();
 	}*/
 
+	wp.ui.stackedWidget->setCurrentIndex(4);
 	cn.setup(client, host, port);
-	cn.setWindowModality(Qt::WindowModal);
-	cn.show();
+	/*cn.setWindowModality(Qt::WindowModal);
+	cn.show();*/
 }
 
 void MainWindow::onConnectionEstablished() {
-	cn.hide();
+//	cn.hide();
 
 	setup(client);
 	m_connected = true;
 	ui->actionConnect->setIcon(QIcon(":/icons/disconnect"));
 
 	ui->dockWidget->show();
-	ui->dockWidget_2->show();
+	//ui->dockWidget_2->show();
 	ui->menuBar->show();
 	ui->mainToolBar->show();
 	ui->scrollArea->takeWidget();
@@ -92,21 +97,23 @@ void MainWindow::onConnectionEstablished() {
 
 void MainWindow::onConnectionFailed() {
 	client->disconnect();
-	cn.hide();
+//	cn.hide();
 
-	std::string msg = client->host() + ":" + client->port() + " - connection refused.";
+	QString msg = QString(client->host().c_str()) + ":" + QString(client->port().c_str()) + " - connection refused.";
 
-	QMessageBox msgBox;
-	msgBox.setWindowTitle("Error");
-	msgBox.setText(msg.c_str());
-	msgBox.setStandardButtons(QMessageBox::Ok);
-	msgBox.setDefaultButton(QMessageBox::Ok);
-	msgBox.exec();
+	wp.showError(msg);
+//	QMessageBox msgBox;
+//	msgBox.setWindowTitle("Error");
+//	msgBox.setText(msg.c_str());
+//	msgBox.setStandardButtons(QMessageBox::Ok);
+//	msgBox.setDefaultButton(QMessageBox::Ok);
+//	msgBox.exec();
 }
 
 void MainWindow::onConnectionAborted() {
 	client->disconnect();
-	cn.hide();
+	wp.restorePage();
+//	cn.hide();
 }
 
 void MainWindow::do_disconnect() {
@@ -125,7 +132,7 @@ void MainWindow::do_disconnect() {
 	m_connected = false;
 
 	ui->dockWidget->hide();
-	ui->dockWidget_2->hide();
+	//ui->dockWidget_2->hide();
 	ui->mainToolBar->hide();
 	ui->menuBar->hide();
 	wp.reset();
@@ -136,12 +143,13 @@ void MainWindow::do_disconnect_on_connectionlost() {
 	if (!m_connected) return;
 	do_disconnect();
 
-	QMessageBox msgBox;
-	msgBox.setText("Connection lost!");
-	msgBox.setInformativeText("Connection with DisCODe is lost.");
-	msgBox.setStandardButtons(QMessageBox::Ok);
-	msgBox.setDefaultButton(QMessageBox::Ok);
-	msgBox.exec();
+	wp.showError("Connection with DisCODe is lost.");
+//	QMessageBox msgBox;
+//	msgBox.setText("Connection lost!");
+//	msgBox.setInformativeText("Connection with DisCODe is lost.");
+//	msgBox.setStandardButtons(QMessageBox::Ok);
+//	msgBox.setDefaultButton(QMessageBox::Ok);
+//	msgBox.exec();
 }
 
 void MainWindow::setup(DisCODe::Client * c) {
