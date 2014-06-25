@@ -51,6 +51,7 @@ SET(GUI_CXX_SRCS
 	TaskWidget.cpp
 	ComponentItem.cpp
 	Connecting.cpp
+	TextRoller.cpp
 )
 
 # Class headers that have to be MOCed (i.e. classes derived from QObject)
@@ -62,6 +63,7 @@ SET(GUI_MOC_SRCS
 	TaskWidget.hpp
 	ComponentItem.hpp
 	Connecting.hpp
+	TextRoller.hpp
 )
 
 # Generate MOC files
