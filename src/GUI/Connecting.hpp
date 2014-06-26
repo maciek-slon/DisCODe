@@ -47,6 +47,7 @@ private:
 
     int state;
     int tries;
+    int m_try_limit;
 };
 
 #endif // CONNECTING_H

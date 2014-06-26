@@ -27,7 +27,7 @@ Connecting::Connecting(QWidget *parent) :
 		movie->start();
 	}
 
-
+	m_try_limit = 6;
 //    QFont fnt(ui.textRoller->font());
 //    fnt.setFamily("Ubuntu Light");
 //    fnt.setPointSize(16);
@@ -65,6 +65,7 @@ void Connecting::proceed() {
 
 	// waiting for server reply
 	if (state == 0) {
+		m_try_limit = 6;
 		if (m_client->connect(m_host.toStdString(), m_port.toStdString())) {
 			state = 1;
 
@@ -81,6 +82,7 @@ void Connecting::proceed() {
 
 	// waiting for task to start
 	if (state == 1) {
+		m_try_limit = 20;
 		if (m_task->state() != DisCODe::TaskProxy::Initializing) {
 //			ui.pbTask->setMaximum(1);
 //			ui.pbTask->setValue(1);
@@ -94,7 +96,7 @@ void Connecting::proceed() {
 		emit connected();
 	}
 
-	if (tries > 10) {
+	if (tries > m_try_limit) {
 		m_timer.stop();
 		emit failed();
 	}
