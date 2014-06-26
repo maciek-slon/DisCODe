@@ -16,6 +16,9 @@
   <property name="dockNestingEnabled">
    <bool>true</bool>
   </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <property name="spacing">
@@ -46,8 +49,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>456</width>
-         <height>548</height>
+         <width>446</width>
+         <height>550</height>
         </rect>
        </property>
       </widget>
@@ -61,7 +64,7 @@
      <x>0</x>
      <y>0</y>
      <width>726</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTask">
@@ -95,7 +98,10 @@
    <addaction name="actionRefresh"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="wComponents">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
     <string>Components</string>
    </property>
@@ -110,9 +116,12 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="dockWidget_2">
+  <widget class="QDockWidget" name="wSubtasks">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
    <property name="windowTitle">
-    <string>Executors</string>
+    <string>Subtasks</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -120,70 +129,7 @@
    <widget class="QWidget" name="dockWidgetContents_2">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTreeWidget" name="treeWidget">
-       <property name="alternatingRowColors">
-        <bool>false</bool>
-       </property>
-       <property name="rootIsDecorated">
-        <bool>false</bool>
-       </property>
-       <property name="itemsExpandable">
-        <bool>true</bool>
-       </property>
-       <property name="expandsOnDoubleClick">
-        <bool>false</bool>
-       </property>
-       <column>
-        <property name="text">
-         <string>Name</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Type</string>
-        </property>
-       </column>
-       <item>
-        <property name="text">
-         <string>Task</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <item>
-         <property name="text">
-          <string>Exec1</string>
-         </property>
-         <property name="text">
-          <string>Continuous</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>Kbd1</string>
-          </property>
-          <property name="text">
-           <string>Keyboard</string>
-          </property>
-         </item>
-        </item>
-        <item>
-         <property name="text">
-          <string>Exec2</string>
-         </property>
-         <property name="text">
-          <string>Periodic</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>Wnd1</string>
-          </property>
-          <property name="text">
-           <string>CvWindow</string>
-          </property>
-         </item>
-        </item>
-       </item>
-      </widget>
+      <widget class="QListWidget" name="listSubtasks"/>
      </item>
     </layout>
    </widget>

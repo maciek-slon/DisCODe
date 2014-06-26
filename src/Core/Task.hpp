@@ -23,9 +23,9 @@ class Executor;
 class Task {
 public:
 
-	typedef enum {Initializing, Running, Stopped} TaskState;
+	typedef enum {Running, Stopped, Initializing} TaskState;
 
-	Task() : m_state(Task::Initializing) {}
+	Task() : m_state(Task::Initializing) {std::cout << "Kopiowanie TASKA!\n";}
 
 	/*!
 	 * Start all subtasks.
@@ -53,14 +53,14 @@ public:
 	 * \return reference to subtask
 	 * \note If no subtask with given name is present, then new one is created
 	 */
-	Subtask & operator[](const std::string & name);
+	Subtask * operator[](const std::string & name);
 
 	/*!
 	 * Add subtask to task
 	 * \param st subtask to be added
 	 */
-	Task & operator += (Subtask & st) {
-		subtasks[st.name()] = st;
+	Task & operator += (Subtask * st) {
+		subtasks[st->name()] = st;
 		return *this;
 	}
 
@@ -82,9 +82,9 @@ public:
 
 private:
 	/// All subtasks
-	std::map<std::string, Subtask> subtasks;
+	std::map<std::string, Subtask*> subtasks;
 
-	typedef std::pair<std::string, Subtask> SubtaskPair;
+	typedef std::pair<std::string, Subtask*> SubtaskPair;
 	
 	TaskState m_state;
 };

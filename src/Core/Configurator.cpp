@@ -175,7 +175,7 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 		name = tmp.get("<xmlattr>.name", "");
 		state = tmp.get("<xmlattr>.state", "running");
 
-		subtask = &task[name];
+		subtask = task[name];
 		LOG(LDEBUG) << "Created subtask " << name;
 		if (state == "running") {
 			subtask->setInitStarted(true);

@@ -49,7 +49,7 @@ bool Subtask::start()
 		}
 	}
 	LOG(LTRACE) << "All executors running.";
-	state_ = Running;
+	state_ = Subtask::Running;
 
 	return ret;
 }

@@ -46,7 +46,6 @@ protected:
 	void closeEvent(QCloseEvent *event);
 
 public slots:
-	void on_treeWidget_itemClicked(QTreeWidgetItem * item, int column);
 	void on_listComponents_itemClicked(QListWidgetItem * item);
 
 	void on_actionConnect_triggered(bool checked);
@@ -59,6 +58,9 @@ public slots:
 	void onConnectionEstablished();
 	void onConnectionFailed();
 	void onConnectionAborted();
+
+	void startSubtask(const QString & name);
+	void stopSubtask(const QString & name);
 
 private:
     Ui::MainWindow *ui;

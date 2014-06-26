@@ -10,6 +10,8 @@
 #include <string>
 #include <map>
 
+#include <iostream>
+
 namespace Base {
 	class Component;
 }
@@ -32,7 +34,9 @@ public:
 	/*!
 	 *
 	 */
-	Subtask(const std::string & n = "") : name_(n), init_started(false), state_(Stopped) {}
+	explicit Subtask(const std::string & n = "") : name_(n), init_started(false), state_(Stopped) {
+
+	}
 
 	/*!
 	 *
@@ -98,6 +102,8 @@ private:
 	bool init_started;
 
 	SubtaskState state_;
+
+	std::string st;
 };
 
 } //: namespace Core

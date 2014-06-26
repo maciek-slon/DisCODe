@@ -8,7 +8,7 @@ namespace Core {
 
 class TaskInformer : public Informer {
 public:
-	TaskInformer(Core::Task & t) : task(t) {
+	TaskInformer(Core::Task * t) : task(t) {
 
 	}
 
@@ -23,6 +23,7 @@ public:
 		ci.addHandler("stopSubtask",  boost::bind(&TaskInformer::stopSubtask,  this, _1));
 		
 		ci.addHandler("taskState",  boost::bind(&TaskInformer::taskState,  this, _1));
+		ci.addHandler("subtaskState",  boost::bind(&TaskInformer::subtaskState,  this, _1));
 	}
 
 	/*!
@@ -30,7 +31,7 @@ public:
 	 */
 	std::string listExecutors(std::vector<std::string> /* args */) {
 		std::string ret;
-		std::vector<std::string> tmp = task.listExecutors();
+		std::vector<std::string> tmp = task->listExecutors();
 		BOOST_FOREACH(std::string s, tmp) {
 			ret += s + "\n";
 		}
@@ -42,7 +43,7 @@ public:
 	 */
 	std::string listSubtasks(std::vector<std::string> /* args */) {
 		std::string ret;
-		std::vector<std::string> tmp = task.listSubtasks();
+		std::vector<std::string> tmp = task->listSubtasks();
 		BOOST_FOREACH(std::string s, tmp) {
 			ret += s + "\n";
 		}
@@ -53,7 +54,7 @@ public:
 	 * Start whole task
 	 */
 	std::string stop(std::vector<std::string> /* args */ ) {
-		task.stop();
+		task->stop();
 		return "OK";
 	}
 
@@ -61,7 +62,7 @@ public:
 	 * Stop whole task
 	 */
 	std::string start(std::vector<std::string> /* args */ ) {
-		task.start();
+		task->start();
 		return "OK";
 	}
 
@@ -76,8 +77,8 @@ public:
 		}
 
 		BOOST_FOREACH(std::string & s, args) {
-			if (task.checkSubtask(s)) {
-				task[s].start();
+			if (task->checkSubtask(s)) {
+				(*task)[s]->start();
 			} else {
 				LOG(LWARNING) << "TaskInformer::startSubtask: subtask " << s << " doesn't exist";
 			}
@@ -97,8 +98,8 @@ public:
 		}
 
 		BOOST_FOREACH(std::string & s, args) {
-			if (task.checkSubtask(s)) {
-				task[s].stop();
+			if (task->checkSubtask(s)) {
+				(*task)[s]->stop();
 			} else {
 				LOG(LWARNING) << "TaskInformer::stopSubtask: subtask " << s << " doesn't exist";
 			}
@@ -112,18 +113,20 @@ public:
 			LOG(LWARNING) << "TaskInformer::subtaskState: no subtask name provided";
 			return "ERR";
 		}
-		if (!task.checkSubtask(args[0])) {
+		std::cout << "SubtaskState " << args[0];
+		if (!task->checkSubtask(args[0])) {
 			LOG(LWARNING) << "TaskInformer::subtaskState: subtask " << args[0] << " doesn't exist";
 			return "ERR";
 		}
-		switch (task[args[0]].state()) {
+		switch ((*task)[args[0]]->state()) {
 		case Subtask::Running: return "R";
 		case Subtask::Stopped: return "S";
+		default: return "I";
 		}
 	}
 	
 	std::string taskState(std::vector<std::string> args) {
-		switch(task.state()) {
+		switch(task->state()) {
 		case Task::Initializing: return "I";
 		case Task::Running: return "R";
 		case Task::Stopped: return "S";
@@ -132,7 +135,7 @@ public:
 	}
 
 private:
-	Core::Task & task;
+	Core::Task * task;
 };
 
 }
