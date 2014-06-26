@@ -28,10 +28,11 @@ Connecting::Connecting(QWidget *parent) :
 	}
 
 	m_try_limit = 6;
-//    QFont fnt(ui.textRoller->font());
-//    fnt.setFamily("Ubuntu Light");
-//    fnt.setPointSize(16);
-//    ui.textRoller->setFont(fnt);
+
+	QFont fnt(ui.btnCancel->font());
+    fnt.setFamily("Ubuntu Light");
+    fnt.setPointSize(16);
+    ui.btnCancel->setFont(fnt);
 }
 
 Connecting::~Connecting()
@@ -50,10 +51,6 @@ void Connecting::setup(DisCODe::Client* client, QString host, QString port) {
 
 	m_roller->setText("Waiting for DisCODe server");
 
-//	ui.pbServer->setMaximum(0);
-//	ui.pbTask->setMaximum(1);
-//	ui.pbTask->setValue(0);
-
 	m_timer.start(500);
 	
 	tries = 0;
@@ -69,9 +66,6 @@ void Connecting::proceed() {
 		if (m_client->connect(m_host.toStdString(), m_port.toStdString())) {
 			state = 1;
 
-//			ui.pbServer->setMaximum(1);
-//			ui.pbServer->setValue(1);
-//			ui.pbTask->setMaximum(0);
 			m_roller->setText("Waiting for task to start");
 
 			m_task = new DisCODe::TaskProxy(m_client);
@@ -84,8 +78,6 @@ void Connecting::proceed() {
 	if (state == 1) {
 		m_try_limit = 20;
 		if (m_task->state() != DisCODe::TaskProxy::Initializing) {
-//			ui.pbTask->setMaximum(1);
-//			ui.pbTask->setValue(1);
 			state = 2;
 			tries = 0;
 		}
