@@ -18,6 +18,8 @@ public slots:
 
     void setLength(int length);
 
+    void setCompress(bool compress);
+
 protected slots:
     void animate();
 
@@ -33,6 +35,8 @@ private:
     int m_progress;
 
     int m_length;
+
+    bool m_compress;
 };
 
 #endif // TEXTROLLER_HPP

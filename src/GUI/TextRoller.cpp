@@ -12,6 +12,7 @@ TextRoller::TextRoller(QWidget *parent) :
     m_text << "TextRoller";
 
     m_length = 500;
+    m_compress = true;
 }
 
 TextRoller::~TextRoller()
@@ -19,7 +20,13 @@ TextRoller::~TextRoller()
 }
 
 void TextRoller::setText(const QString &text) {
-    m_text << text;
+	if (m_compress) {
+		while (m_text.size() > 2)
+			m_text.removeLast();
+		m_text.push_back(text);
+	} else {
+		m_text << text;
+	}
     if (!m_timer.isActive()) {
         m_timer.start(m_length/20);
         m_progress = 0;
@@ -36,6 +43,10 @@ void TextRoller::resetText(const QString &text) {
 
 void TextRoller::setLength(int length) {
     m_length = length;
+}
+
+void TextRoller::setCompress(bool compress) {
+	m_compress = compress;
 }
 
 void TextRoller::paintEvent(QPaintEvent *event) {
