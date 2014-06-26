@@ -44,25 +44,25 @@ bool TCPClient::connect(const std::string & host, const std::string & port)
 	hints.ai_socktype = SOCK_STREAM;
 
 	if ((rv = getaddrinfo(host.c_str(), port.c_str(), &hints, &servinfo)) != 0) {
-		std::cout << "getaddrinfo: " << gai_strerror(rv) << std::endl;
+		//std::cout << "getaddrinfo: " << gai_strerror(rv) << std::endl;
 		return false;
 	}
 
 	// loop through all the results and connect to the first we can
 	for (p = servinfo; p != NULL; p = p->ai_next) {
 		if ((m_sock = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
-			perror("client: socket");
+			//perror("client: socket");
 			continue;
 		}
 		if (::connect(m_sock, p->ai_addr, p->ai_addrlen) == -1) {
 			close(m_sock);
-			perror("client: connect");
+			//perror("client: connect");
 			continue;
 		}
 		break;
 	}
 	if (p == NULL) {
-		std::cout << "client: failed to connect\n";
+		//std::cout << "client: failed to connect\n";
 		return false;
 	}
 
