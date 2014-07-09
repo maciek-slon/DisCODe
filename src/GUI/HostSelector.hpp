@@ -1,7 +1,7 @@
 #ifndef HOSTSELECTOR_H
 #define HOSTSELECTOR_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include "ui_HostSelector.h"
 
 #include "../Client/DisCODeClient.hpp"

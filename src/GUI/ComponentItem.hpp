@@ -1,7 +1,7 @@
 #ifndef COMPONENTITEM_H
 #define COMPONENTITEM_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include "ui_ComponentItem.h"
 
 template <typename T>

@@ -1,9 +1,12 @@
 #ifndef CONNECTING_H
 #define CONNECTING_H
 
-#include <QtGui/QWidget>
-#include <QtCore/QTimer>
+#include <QWidget>
+#include <QTimer>
 #include <QtGui>
+#if QT_VERSION >= 0x050000
+	#include <QtWidgets>
+#endif
 
 #include "ui_Connecting.h"
 

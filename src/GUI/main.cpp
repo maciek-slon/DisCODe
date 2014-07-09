@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QApplication>
 #include "MainWindow.hpp"
 
 int main(int argc, char *argv[])

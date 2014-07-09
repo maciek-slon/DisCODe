@@ -1,7 +1,7 @@
 #ifndef WELCOMEPAGE_H
 #define WELCOMEPAGE_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include "ui_WelcomePage.h"
 
 class WelcomePage : public QWidget

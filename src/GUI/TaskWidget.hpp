@@ -1,7 +1,7 @@
 #ifndef TASKWIDGET_H
 #define TASKWIDGET_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include "ui_TaskWidget.h"
 
 class TaskWidget : public QWidget

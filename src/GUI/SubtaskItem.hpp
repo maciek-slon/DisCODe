@@ -1,7 +1,7 @@
 #ifndef SUBTASKITEM_H
 #define SUBTASKITEM_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include "ui_SubtaskItem.h"
 
 class SubtaskItem : public QWidget
