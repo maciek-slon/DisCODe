@@ -25,3 +25,7 @@ install(FILES Templates/src/Components/Component/CMakeLists.txt.tmpl DESTINATION
 install( DIRECTORY resources
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe
 )
+
+install( DIRECTORY postinstall
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe
+)

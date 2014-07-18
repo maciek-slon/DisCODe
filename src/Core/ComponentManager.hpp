@@ -10,10 +10,12 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <fstream>
 
 #include <boost/foreach.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "Component_Aux.hpp"
 #include "DisCODeException.hpp"
@@ -96,38 +98,56 @@ public:
 			std::string dcl_name = boost::filesystem::path(dcl_location).filename().string();
 			LOG(LINFO) << "Loading components from " << dcl_name;
 
-			// Get filenames.
-			vector <string> files;
-			try {
-				getSOList(dcl_location + "/dist/lib", files);
-			}
-			catch(...) {
-				LOG(LWARNING) << "Something bad happened when loading file list from " << dcl_location << ". Skipping.";
-				continue;
-			}
-
-			// Check number of so's to import.
-			if (files.empty()) {
-				LOG(LWARNING) << "ComponentManager: There are no components in " << dcl_location;
-				continue;
-			}
-
-			// Iterate through so names and add retrieved components to list.
-			BOOST_FOREACH(string file, files)
-			{
-				// Create component empty "shell".
-				ComponentFactory* k = new ComponentFactory();
-				// Try to initialize component.
-				if (k->lazyInitialize(file))
+			if (boost::filesystem::exists(dcl_location+"/dist/cache.txt")) {
+				LOG(LINFO) << "Loading component list from cache file...";
+				std::ifstream infile(dcl_location+"/dist/cache.txt");
+				std::string line;
+				std::vector<std::string> dcl;
+				while (std::getline(infile, line))
 				{
-					// Add component to list.
-					m_available_components[dcl_name][k->getName()] = k;
+					boost::split(dcl, line, boost::is_any_of("\t"));
+					// Create component empty "shell".
+					ComponentFactory* k = new ComponentFactory(dcl_location + "/dist/lib/" + dcl[1]);
+					m_available_components[dcl_name][dcl[0]] = k;
 					++total_components;
-				} else {
-					// Delete incorrect component.
-					delete (k);
+					LOG(LINFO) << dcl[0] << " from " << dcl[1];
 				}
-			}//: FOREACH
+			} else {
+
+				// Get filenames.
+				vector <string> files;
+				try {
+					getSOList(dcl_location + "/dist/lib", files);
+				}
+				catch(...) {
+					LOG(LWARNING) << "Something bad happened when loading file list from " << dcl_location << ". Skipping.";
+					continue;
+				}
+
+				// Check number of so's to import.
+				if (files.empty()) {
+					LOG(LWARNING) << "ComponentManager: There are no components in " << dcl_location;
+					continue;
+				}
+
+				// Iterate through so names and add retrieved components to list.
+				BOOST_FOREACH(string file, files)
+				{
+					// Create component empty "shell".
+					ComponentFactory* k = new ComponentFactory(file);
+					// Try to initialize component.
+					if (k->lazyInitialize(file))
+					{
+						// Add component to list.
+						m_available_components[dcl_name][k->getName()] = k;
+						++total_components;
+					} else {
+						// Delete incorrect component.
+						delete (k);
+					}
+				}//: FOREACH
+
+			}//: IF
 
 		}//: FOREACH
 

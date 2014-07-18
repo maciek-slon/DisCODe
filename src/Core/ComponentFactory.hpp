@@ -49,16 +49,22 @@ private:
 	 */
 	Base::Component* object;
 
+	/*!
+	 * Library name
+	 */
+	std::string libname;
+
 
 public:
 	/*!
 	 * Constructor. Resets pointers to objects.
 	 */
-	ComponentFactory()
+	ComponentFactory(const std::string & ln)
 	{
 		// NULL pointers.
 		object = 0;
 		ret_object = NULL;
+		libname = ln;
 	}
 
 	/*!
@@ -87,6 +93,8 @@ public:
 	 * Return pointer to created object
 	 */
 	Base::Component * create(const std::string & name) {
+		if (!ret_object)
+			lazyInitialize();
 		Base::Component * ret = ret_object(name);
 		//ret->setName(name);
 		return ret;
@@ -100,8 +108,10 @@ public:
 	 * Method tries to load component information from given dynamic library.
 	 * \param filename_ shared library filename.
 	 */
-	bool lazyInitialize(string filename_)
+	bool lazyInitialize(string filename_ = "")
 	{
+		if (filename_ == "") filename_ = libname;
+
 		try {
 			// Try to open dll.
 			lib.setLocation(filename_);

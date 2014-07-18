@@ -8,6 +8,7 @@ import sys
 
 # Absolute path of directory DisCODe was installed in
 DISCODE_PATH="@CMAKE_INSTALL_PREFIX@"
+DISCODE_DCL_DIR = os.environ["DISCODE_DCL_DIR"]
 
 ########################################################################
 
@@ -61,6 +62,16 @@ def getDclDir(dcl_name):
 		return os.path.join(dcl_dir, dcl_name)
 	else:
 		return ""
+
+########################################################################
+		
+def listDCL():
+	ret = {}
+	for o in os.listdir(DISCODE_DCL_DIR):
+		p = os.path.join(DISCODE_DCL_DIR,o,"src","Components","CMakeLists.txt") 
+		if os.path.exists(p):
+			ret[os.path.basename(o)]=os.path.join(DISCODE_DCL_DIR, o)
+	return ret
 
 ########################################################################
 

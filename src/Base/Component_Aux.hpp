@@ -150,6 +150,10 @@ extern "C" { \
   { \
     return COMPONENT_NAME; \
   } \
+  const char * returnCName() \
+  { \
+    return COMPONENT_NAME; \
+  } \
   Base::Component* returnComponent(const std::string & name) \
   { \
     return new PROCESSOR_CLASS_NAME(name); \
