@@ -133,3 +133,12 @@ MACRO(INSTALL_HEADERS HEADERS_DIR HEADERS_LIST)
     )
         
 ENDMACRO(INSTALL_HEADERS)
+
+# ==============================================================================
+# Add post-install step for rebuilding DCL cache
+# ==============================================================================
+MACRO(REBUILD_DCL_CACHE)
+	FILE(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/postinstall")
+	CONFIGURE_FILE("${DisCODe_DIR}/postinstall/CMakeLists.txt" "${CMAKE_BINARY_DIR}/postinstall/CMakeLists.txt" COPYONLY)
+	ADD_SUBDIRECTORY(${CMAKE_BINARY_DIR}/postinstall)
+ENDMACRO(REBUILD_DCL_CACHE)
