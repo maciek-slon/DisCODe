@@ -23,6 +23,7 @@
 import sys
 import os
 import re
+import argparse
 
 
 def replace_words(text, word_dic):
@@ -58,13 +59,20 @@ def configure_file(in_name, out_name, word_dic):
 
 # Absolute path of directory DisCODe was installed in
 DISCODE_PATH="@CMAKE_INSTALL_PREFIX@"
+DISCODE_DCL_DIR=os.environ['DISCODE_DCL_DIR']
 
-if len(sys.argv) != 2:
-    # stop the program and print an error message
-    sys.exit("Usage: " + sys.argv[0] + " PATH_TO_DCL")
+parser = argparse.ArgumentParser()
+parser.add_argument("DCL", help="name of DCL to be created")
+#parser.add_argument("-v", "--verbose", help="be more verbose and show created cache", action="store_true")
 
-fullpath = os.path.abspath(sys.argv[1])
-dcl_name = os.path.basename(fullpath)
+args = parser.parse_args()
+
+#if len(sys.argv) != 2:
+#    # stop the program and print an error message
+#    sys.exit("Usage: " + sys.argv[0] + " PATH_TO_DCL")
+
+dcl_name = args.DCL
+fullpath = os.path.join(DISCODE_DCL_DIR, dcl_name)
 
 # Create directory if it doesn't exist
 if not os.path.exists(fullpath):
