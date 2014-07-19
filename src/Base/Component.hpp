@@ -73,6 +73,7 @@ public:
 	Component(const std::string & n) : name_(n), state(Unready)
 	{
 		m_bump = 0;
+		m_priority = 0;
 	}
 
 	void setName(const std::string & n) {

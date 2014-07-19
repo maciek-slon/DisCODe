@@ -50,6 +50,7 @@ void TextRoller::setCompress(bool compress) {
 }
 
 void TextRoller::paintEvent(QPaintEvent *event) {
+	Q_UNUSED(event);
     QPainter painter(this);
     if (m_progress > 0)
         animateRoll(m_text[0], m_text[1], m_progress, painter);

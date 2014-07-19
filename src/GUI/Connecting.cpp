@@ -33,6 +33,8 @@ Connecting::Connecting(QWidget *parent) :
     fnt.setFamily("Ubuntu Light");
     fnt.setPointSize(16);
     ui.btnCancel->setFont(fnt);
+
+    m_roller = NULL;
 }
 
 Connecting::~Connecting()

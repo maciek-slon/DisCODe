@@ -126,6 +126,8 @@ public:
 	}
 	
 	std::string taskState(std::vector<std::string> args) {
+		if (args.size() > 0)
+			return "ERR";
 		switch(task->state()) {
 		case Task::Initializing: return "I";
 		case Task::Running: return "R";

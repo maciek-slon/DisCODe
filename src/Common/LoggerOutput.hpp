@@ -45,6 +45,8 @@ public:
 		return lvl;
 	}
 
+	virtual ~LoggerOutput(){};
+
 private:
 	Severity lvl;
 };

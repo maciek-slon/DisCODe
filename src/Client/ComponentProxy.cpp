@@ -7,7 +7,8 @@
 namespace DisCODe {
 
 ComponentProxy::ComponentProxy(Client * client, const std::string & name) : m_client(client), m_name(name) {
-
+	m_priority = -1;
+	m_bump = -1;
 }
 
 void ComponentProxy::refreshPropertyConstraints(int i) {

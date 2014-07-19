@@ -39,6 +39,7 @@ public:
 		m_host(host),
 		m_port(port)
 	{
+		m_connected = false;
 		m_client.setServiceHook(boost::bind(&Client::service, this, _1, _2));
 		m_client.setCompletionHook(boost::bind(&Client::check, this, _1, _2));
 	}

@@ -38,7 +38,11 @@ protected:
 	std::ostringstream os;
 
 private:
-	ScopeLogger(const ScopeLogger & rhs) : parent(rhs.parent) {}
+	ScopeLogger(const ScopeLogger & rhs) : parent(rhs.parent) {
+		bump = 0;
+		line = -1;
+		sev = Trace;
+	}
 
 	ScopeLogger& operator =(const ScopeLogger&) {
 		return *this;
