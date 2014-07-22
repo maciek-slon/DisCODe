@@ -8,3 +8,5 @@ gdb/
 *~
 calibration_opencv
 .pydev*
+inst/
+*.swp
