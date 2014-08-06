@@ -13,6 +13,9 @@
 #include <string>
 #include <vector>
 
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+
 #include "Logger.hpp"
 
 #define CLOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level, this->getBump()).get())
@@ -251,6 +254,8 @@ protected:
 	 * \returns pointer to handler.
 	 */
 	EventHandlerInterface * registerHandler(const std::string& name, EventHandlerInterface * handler);
+
+	EventHandlerInterface * registerHandler(const std::string& name, boost::function<void()> f);
 
 	void addDependency(const std::string & name, DataStreamInterface * stream);
 

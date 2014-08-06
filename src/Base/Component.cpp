@@ -6,6 +6,7 @@
 #include "Component.hpp"
 
 #include "EventHandler.hpp"
+#include "EventHandler2.hpp"
 #include "DataStreamInterface.hpp"
 #include "Logger.hpp"
 #include "Timer.hpp"
@@ -213,6 +214,14 @@ EventHandlerInterface * Component::getHandler(const std::string& name) {
 
 EventHandlerInterface * Component::registerHandler(const std::string& name, EventHandlerInterface * handler) {
 	/// \todo check, if handler already exists
+	handlers[name] = handler;
+	return handler;
+}
+
+EventHandlerInterface * Component::registerHandler(const std::string& name, boost::function<void()> f) {
+	/// \todo check, if handler already exists
+	EventHandler2 * handler = new EventHandler2;
+	handler->setup(f);
 	handlers[name] = handler;
 	return handler;
 }
