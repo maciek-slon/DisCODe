@@ -142,3 +142,31 @@ MACRO(REBUILD_DCL_CACHE)
 	CONFIGURE_FILE("${DisCODe_DIR}/postinstall/CMakeLists.txt" "${CMAKE_BINARY_DIR}/postinstall/CMakeLists.txt" COPYONLY)
 	ADD_SUBDIRECTORY(${CMAKE_BINARY_DIR}/postinstall)
 ENDMACRO(REBUILD_DCL_CACHE)
+
+# ==============================================================================
+# Download archive with dataset and extract it to specified location
+# ==============================================================================
+MACRO(GET_DATASET LOCATION DATASET)
+	FIND_PROGRAM(UNRAR_EXECUTABLE unrar)
+	IF (${UNRAR_EXECUTABLE} STREQUAL "UNRAR_EXECUTABLE-NOTFOUND")
+		MESSAGE(FATAL_ERROR "Unrar unavailable")
+	ENDIF ()
+	
+	IF(NOT EXISTS ${LOCATION}/${DATASET})
+		FILE(MAKE_DIRECTORY ${LOCATION}/${DATASET})
+	
+		FILE(DOWNLOAD
+			http://robotyka.ia.pw.edu.pl/discode/datasets/${DATASET}.rar
+			${LOCATION}/${DATASET}.rar
+			SHOW_PROGRESS
+		)
+
+		EXECUTE_PROCESS(
+			COMMAND unrar e ${LOCATION}/${DATASET}.rar
+			WORKING_DIRECTORY ${LOCATION}/${DATASET}
+			RESULT_VARIABLE RETCODE
+		) 
+
+		EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E remove ${LOCATION}/${DATASET}.rar)
+	ENDIF()
+ENDMACRO(GET_DATASET)

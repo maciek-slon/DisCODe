@@ -72,7 +72,6 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/DisCODeConfig.cmake.in" "${CMAKE_BIN
 install(FILES ${CMAKE_BINARY_DIR}/DisCODeConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/)
 install(FILES ${CMAKE_BINARY_DIR}/DisCODeConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/cmake/)
 
-
 # =======================================================================
 # CPack: binary installer generator
 # =======================================================================

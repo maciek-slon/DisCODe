@@ -25,6 +25,9 @@
 #
 # ==============================================================================
 
+IF( DisCODe_FIND_COMPONENTS )
+	
+ELSE ( DisCODe_FIND_COMPONENTS )
 
 # ==============================================================================
 # Include directories to add to the user project:
@@ -60,5 +63,5 @@ SET(OpenCV_VERSION_MAJOR  @DISCODE_VERSION_MAJOR@)
 SET(OpenCV_VERSION_MINOR  @DISCODE_VERSION_MINOR@)
 SET(OpenCV_VERSION_PATCH  @DISCODE_VERSION_PATCH@)
 
-
+ENDIF ( DisCODe_FIND_COMPONENTS )
 
