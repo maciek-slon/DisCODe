@@ -51,7 +51,7 @@ LINK_DIRECTORIES(${DisCODe_LIB_DIR})
 # Link libraries: e.g. Common, Base etc.
 # ==============================================================================
 
-SET(DisCODe_LIBRARIES Common Base)
+SET(DisCODe_LIBRARIES Common Base pthread rt)
 
 
 # ==============================================================================
