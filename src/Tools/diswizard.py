@@ -211,10 +211,10 @@ class DisCODeWizard(object):
 		TMPLMethodsCode = ""
 		
 		for h in self.handlers:
-			TMPLFields += "\tBase::EventHandler2 h_{};\n".format(h.name)
+#			TMPLFields += "\tBase::EventHandler2 h_{};\n".format(h.name)
 			TMPLMethodsHeaders += "\tvoid {}();\n".format(h.name)
-			TMPLPrepInterface += '\th_{0}.setup(boost::bind(&{1}::{0}, this));\n'.format(h.name, cmp_name)
-			TMPLPrepInterface += '\tregisterHandler("{0}", &h_{0});\n'.format(h.name)
+#			TMPLPrepInterface += '\th_{0}.setup(boost::bind(&{1}::{0}, this));\n'.format(h.name, cmp_name)
+			TMPLPrepInterface += '\tregisterHandler("{0}", boost::bind(&{1}::{0}, this));\n'.format(h.name, cmp_name)
 			TMPLMethodsCode += "void {}::{}()".format(cmp_name, h.name) + " {\n}\n\n"
 			
 			if(h.type == 0):

@@ -8,9 +8,9 @@ FILE(GLOB files *.cpp)
 ADD_LIBRARY(TemplateComponent SHARED ${files})
 
 # Link external libraries
-TARGET_LINK_LIBRARIES(TemplateComponent ${DisCODe_LIBRARIES} )
+TARGET_LINK_LIBRARIES(TemplateComponent ${DCL_LIBRARIES})
 
-# Add aother libraries if necessary, for example:
-# TARGET_LINK_LIBRARIES(Example ${DisCODe_LIBRARIES} ${OpenCV_LIBS} )
+# Add another libraries if necessary, for example:
+# TARGET_LINK_LIBRARIES(Example ${DCL_LIBRARIES} ${Custom_LIBS} )
 
 INSTALL_COMPONENT(TemplateComponent)
