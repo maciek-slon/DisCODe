@@ -60,7 +60,7 @@ void WelcomePage::on_btnSpawnOk_clicked()
 {
 	QString program = "discode";
 	QStringList arguments;
-	arguments << "-T" << ui.editTaskName->text();
+	arguments << "-T" << ui.editTaskName->text().trimmed();
 	m_last_page = 2;
 
 	if (!QProcess::startDetached(program, arguments))
