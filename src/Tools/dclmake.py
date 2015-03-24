@@ -99,9 +99,11 @@ def buildDCL(dclname, clean):
   if clean:
     print "Cleaning previous build..."
     subprocess.Popen('make clean', cwd = builddir, shell = True).wait()
-    
+  
+  errs = ""
   perc = 0
-  p = subprocess.Popen('make', cwd = builddir, shell = True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  log_file = open('/tmp/dclmake_build_error_log', 'w')
+  p = subprocess.Popen('make', cwd = builddir, shell = True, stdout=subprocess.PIPE, stderr=log_file, bufsize=-1)
   while p.poll() is None:
     l = p.stdout.readline() # This blocks until it receives a newline.
     match = re.search('^\[[\s]*(.*)\%\]', l)
@@ -109,16 +111,18 @@ def buildDCL(dclname, clean):
       cur = int(match.group(1))
       perc = max(cur, perc)
       progbar(perc, 50)
+  log_file.close()
   print ""
-  
+ 
+  log_file = open('/tmp/dclmake_build_error_log', 'r')
   if p.returncode != 0:
     print "Errors during build:"
-    print p.stderr.read()
+    print log_file.read()
     return False
     
-  if p.stderr.readline() != "":
+  if log_file.readline() != "":
     print "Warnings:"
-    print p.stderr.read()
+    print log_file.read()
       
     
   print "Installing..."
@@ -153,3 +157,4 @@ if __name__ == "__main__":
     print "========================================================="
     if not buildDCL(dep, args.clean):
       print "Build failed!"
+      break
