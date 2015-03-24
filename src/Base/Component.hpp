@@ -17,6 +17,7 @@
 #include <boost/function.hpp>
 
 #include "Logger.hpp"
+#include "Common/Utils.hpp"
 
 #define CLOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level, this->getBump()).get())
 
@@ -253,6 +254,7 @@ protected:
 	 * \param handler pointer to proper handler
 	 * \returns pointer to handler.
 	 */
+	MARK_DEPRECATED("Deprecated version!")
 	EventHandlerInterface * registerHandler(const std::string& name, EventHandlerInterface * handler);
 
 	EventHandlerInterface * registerHandler(const std::string& name, boost::function<void()> f);
