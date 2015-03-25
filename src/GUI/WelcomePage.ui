@@ -167,7 +167,7 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="1" colspan="2">
+   <item row="2" column="1">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="minimumSize">
       <size>
@@ -182,7 +182,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <property name="sizePolicy">
@@ -198,6 +198,12 @@
        </size>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="leftMargin">
+        <number>100</number>
+       </property>
+       <property name="rightMargin">
+        <number>100</number>
+       </property>
        <item>
         <spacer name="verticalSpacer_9">
          <property name="orientation">
@@ -282,6 +288,12 @@ Spawn new DisCODe</string>
      </widget>
      <widget class="QWidget" name="page_2">
       <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,0">
+       <property name="leftMargin">
+        <number>100</number>
+       </property>
+       <property name="rightMargin">
+        <number>100</number>
+       </property>
        <item row="3" column="0">
         <widget class="QPushButton" name="btnConnectOk">
          <property name="text">
@@ -441,9 +453,6 @@ Spawn new DisCODe</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
-        <widget class="QLineEdit" name="editTaskName"/>
-       </item>
        <item row="2" column="1">
         <widget class="QLabel" name="btnLoadTask">
          <property name="styleSheet">
@@ -466,6 +475,9 @@ p, li { white-space: pre-wrap; }
           <bool>false</bool>
          </property>
         </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QComboBox" name="cbTaskHistory"/>
        </item>
       </layout>
      </widget>

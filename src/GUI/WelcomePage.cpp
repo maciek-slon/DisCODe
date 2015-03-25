@@ -25,11 +25,23 @@ WelcomePage::WelcomePage(QWidget *parent) :
 	m_last_page = 0;
 
 	connect(ui.btnErrOk, SIGNAL(clicked()), this, SLOT(restorePage()));
+	
+	QSettings settings("DisCODe", "GUI");
+	QStringList tasks = settings.value("recent").toStringList();
+	ui.cbTaskHistory->clear();
+	ui.cbTaskHistory->insertItems(0, tasks);
+	
+	ui.stackedWidget->setCurrentIndex(0);
 }
 
 WelcomePage::~WelcomePage()
 {
-
+	QSettings settings("DisCODe", "GUI");
+	QStringList tasks;
+	for(int index = 0; index < ui.cbTaskHistory->count();index++)
+		tasks.append(ui.cbTaskHistory->itemText(index));
+		
+	settings.setValue("recent", tasks);
 }
 
 void WelcomePage::on_btnConnect_clicked()
@@ -60,7 +72,8 @@ void WelcomePage::on_btnSpawnOk_clicked()
 {
 	QString program = "discode";
 	QStringList arguments;
-	arguments << "-T" << ui.editTaskName->text().trimmed();
+	//arguments << "-T" << ui.editTaskName->text().trimmed();
+	arguments << "-T" << ui.cbTaskHistory->currentText().trimmed();
 	m_last_page = 2;
 
 	if (!QProcess::startDetached(program, arguments))
@@ -95,7 +108,17 @@ void WelcomePage::on_btnLoadTask_linkActivated ( const QString & link )
 			if (!file.open(QIODevice::ReadOnly)) {
 				QMessageBox::critical(this, tr("Error"), tr("Could not open file"));
 			} else {
-				ui.editTaskName->setText(fileName);
+				//ui.editTaskName->setText(fileName);
+				
+				int i = ui.cbTaskHistory->findText(fileName);
+				while (i != -1) {
+					ui.cbTaskHistory->removeItem(i);
+					i = ui.cbTaskHistory->findText(fileName);
+				}
+				
+				ui.cbTaskHistory->insertItem(0, fileName);
+				ui.cbTaskHistory->setCurrentIndex(0);
+				
 				file.close();
 			}
 		}
