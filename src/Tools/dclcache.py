@@ -16,12 +16,19 @@ def refreshDCLCache(dclname, dclpath, verbose):
   f = open(outfile, 'w')
   for libname in os.listdir(p):
     try:
+      if verbose:
+        print "Trying ", libname
       lib = CDLL(os.path.join(p, libname))
-    except:
- #     print "Can't open", libname
+      if verbose:
+        print "Opened"
+    except Exception as e:
+      print "Can't open", libname
+      print e
       continue
       
     try:
+      if verbose:
+        print "Calling method..."
       lib.returnCName.restype = c_char_p
       cname = lib.returnCName()
       mappings[cname] = libname
@@ -29,14 +36,14 @@ def refreshDCLCache(dclname, dclpath, verbose):
       if verbose:
         print "\t", cname, "=>", libname
     except:
-#      print "Can't read", libname, "name"
+      print "Can't read", libname, "name"
       continue
   
 #  print mappings
   f.close()
 
 def main(argv):
-  parser = argparse.ArgumentParser()
+  parser = argparse.ArgumentParser(description="Refresh DCL cache")
   parser.add_argument("DCL", nargs='?', default='all', help="name of DCL to be cached (cache is refreshed in all DLCs if ommited)")
   parser.add_argument("-v", "--verbose", help="be more verbose and show created cache", action="store_true")
   
