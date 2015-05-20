@@ -127,24 +127,24 @@ bool Component::finish() {
 double Component::step() {
 	Common::Timer timer;
 	if (state == Running) {
-		timer.restart();
 
 		typedef std::pair<std::string, std::vector<DataStreamInterface *> > HandlerTriggers;
 
 		BOOST_FOREACH(HandlerTriggers ht, sorted_triggers) {
 			bool allready = true;
-			CLOG(LDEBUG) << name() << "::" << ht.first;
+			CLOG(LTRACE) << name() << "::" << ht.first;
 			BOOST_FOREACH(DataStreamInterface * ds, ht.second) {
-				CLOG(LDEBUG) << ds->name() << " is " << (ds->fresh()?"fresh":"old");
+				CLOG(LTRACE) << ds->name() << " is " << (ds->fresh()?"fresh":"old");
 				if (!ds->fresh()) {
 					allready = false;
 					break;
 				}
 			}
 			if (allready) {
-				CLOG(LDEBUG) << "All triggers ready for " << ht.first << ". Executing...";
+				timer.restart();
+				CLOG(LTRACE) << "All triggers ready for " << ht.first << ". Executing...";
 				handlers[ht.first]->execute();
-				CLOG(LDEBUG) << ht.first << " execution done.";
+				CLOG(LDEBUG) << ht.first << " execution done [" << timer.elapsed() << "s]";
 			}
 		}
 	} else {
@@ -160,9 +160,9 @@ EventHandlerInterface* Component::getReadyHandler() {
 
 	BOOST_FOREACH(HandlerTriggers ht, triggers) {
 		bool allready = true;
-		CLOG(LDEBUG) << name() << "::" << ht.first;
+		CLOG(LTRACE) << name() << "::" << ht.first;
 		BOOST_FOREACH(DataStreamInterface * ds, ht.second) {
-			CLOG(LDEBUG) << ds->name() << " is " << (ds->fresh()?"fresh":"old");
+			CLOG(LTRACE) << ds->name() << " is " << (ds->fresh()?"fresh":"old");
 			if (!ds->fresh()) {
 				allready = false;
 				break;
