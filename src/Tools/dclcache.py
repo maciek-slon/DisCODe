@@ -12,6 +12,10 @@ def refreshDCLCache(dclname, dclpath, verbose):
     print "Refreshing cache for", dclname
   mappings = {}
   p = os.path.join(dclpath, "dist", "lib")
+  if not os.path.exists(p):
+    if verbose:
+      print "DCL", dclname, "empty. Skipping..."
+    return
   outfile = os.path.join(dclpath, "dist", "cache.txt")
   f = open(outfile, 'w')
   for libname in os.listdir(p):
@@ -22,7 +26,7 @@ def refreshDCLCache(dclname, dclpath, verbose):
       if verbose:
         print "Opened"
     except Exception as e:
-      print "Can't open", libname
+      print "Can't open", dclname, ":", libname
       print e
       continue
       
