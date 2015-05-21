@@ -256,7 +256,7 @@ void Executor::run() {
 			accum += timer.elapsed();
 			
 			if (i == 10) {
-				LOG(LINFO) << "Thread " << name << " took " << (0.1 * accum) << "s";
+				LOG(LINFO) << "Thread " << name() << " took " << (0.1 * accum) << "s";
 				accum = 0;
 				i = 0;
 			}
