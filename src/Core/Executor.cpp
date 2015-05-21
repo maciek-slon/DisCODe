@@ -198,6 +198,9 @@ void Executor::run() {
 	}
 
 	bool timeout = true;
+	Common::Timer timer;
+	int i = 0;
+	double accum = 0;
 
 	for(;;) {
 
@@ -220,7 +223,10 @@ void Executor::run() {
 		}
 
 		if (m_state == Running) {
+			++i;
 
+			timer.restart();
+			
 			// handle all pending events
 			LOG(LTRACE) << "Executing events in " << name();
 			while (!queue.empty())
@@ -247,7 +253,14 @@ void Executor::run() {
 				yield();
 			}
 
-			LOG(LTRACE) << "Thread " << name() << " works!";
+			accum += timer.elapsed();
+			
+			if (i == 10) {
+				LOG(LINFO) << "Thread " << name << " took " << (0.1 * accum) << "s";
+				accum = 0;
+				i = 0;
+			}
+			
 
 		}
 
