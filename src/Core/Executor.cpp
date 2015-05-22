@@ -238,6 +238,14 @@ void Executor::run() {
 				}
 			}
 
+			accum += timer.elapsed();
+			
+			if (i == 10) {
+				LOG(LINFO) << "Thread " << name() << " took " << (0.1 * accum) << "s";
+				accum = 0;
+				i = 0;
+			}
+
 			// if period set, then sleep until next wake-up
 			if (m_period > 0) {
 				boost::unique_lock<boost::mutex> lock(m_event_cond_mtx);
@@ -252,16 +260,6 @@ void Executor::run() {
 				// if there is no period set, then yield thread
 				yield();
 			}
-
-			accum += timer.elapsed();
-			
-			if (i == 10) {
-				LOG(LINFO) << "Thread " << name() << " took " << (0.1 * accum) << "s";
-				accum = 0;
-				i = 0;
-			}
-			
-
 		}
 
 		// double-check if executor is paused
