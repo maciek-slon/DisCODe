@@ -19,7 +19,7 @@
 #include "Logger.hpp"
 #include "Common/Utils.hpp"
 
-#define CLOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level, this->getBump()).get())
+#define CLOG(level) (Utils::Logger::ScopeLogger(LOGGER, __FILE__, __LINE__, level, this->getBump()).get()) << this->name() << ": "
 
 namespace Base {
 
