@@ -73,7 +73,12 @@ void WelcomePage::on_btnSpawnOk_clicked()
 	QString program = "discode";
 	QStringList arguments;
 	//arguments << "-T" << ui.editTaskName->text().trimmed();
-	arguments << "-T" << ui.cbTaskHistory->currentText().trimmed();
+	int index = ui.cbTaskHistory->currentIndex();
+	QString text = ui.cbTaskHistory->currentText();
+	ui.cbTaskHistory->removeItem(index);
+	ui.cbTaskHistory->insertItem(0, text);
+	ui.cbTaskHistory->setCurrentIndex(0);
+	arguments << "-T" << text.trimmed();
 	m_last_page = 2;
 
 	if (!QProcess::startDetached(program, arguments))

@@ -3,7 +3,8 @@
 #include <QMessageBox>
 
 HostSelector::HostSelector(QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent),
+	  client(NULL)
 {
 	ui.setupUi(this);
 	setResult(QDialog::Accepted);
