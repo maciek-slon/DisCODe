@@ -47,7 +47,7 @@ public:
 	std::string send(const std::string & msg) {
 		fillBuffer(msg);
 		m_client.send(buf, msg.size()+3);
-		int ret = m_client.recv(3000);
+		int ret = m_client.recv(100);
 		if (ret < 0) {
 			m_connection_lost_handler();
 			return std::string();
