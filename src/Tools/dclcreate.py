@@ -63,7 +63,6 @@ DISCODE_DCL_DIR=os.environ['DISCODE_DCL_DIR']
 
 parser = argparse.ArgumentParser()
 parser.add_argument("DCL", help="name of DCL to be created")
-#parser.add_argument("-v", "--verbose", help="be more verbose and show created cache", action="store_true")
 
 args = parser.parse_args()
 
