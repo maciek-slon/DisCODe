@@ -264,11 +264,11 @@ int main(int argc, char* argv[])
 
 		task = configurator.loadTask(task_name, overrides);
 
-		Thread::msleep(2000);
+		Thread::msleep(500);
 
 		task.initialize();
 
-		Thread::msleep(2000);
+		Thread::msleep(500);
 
 		task.start(true);
 
