@@ -52,7 +52,29 @@ items in the preceeding sets.
         if item not in ordered}
   assert not data, "Cyclic dependencies exist among these items:\n%s" % '\n'.join(repr(x) for x in data.iteritems())
 
-def getdeps(dcl_name):
+def runtimedeps(dcl_name):
+  from discode_helper import getDclDir
+  dcldir = getDclDir(dcl_name)
+
+  depset = []
+  for fn in os.listdir(os.path.join(dcldir, "tasks")):
+    if fn.endswith(".xml"): 
+        #print fn
+        with open(os.path.join(dcldir, "tasks", fn)) as f:
+          for line in f:
+            match = re.search('<.*Component.*type="(.*):.*"', line)
+            if (match):
+              depdcl = match.group(1)
+              if depdcl == dcl_name:
+                continue
+              if not depdcl in depset:
+                depset.append(depdcl)
+    else:
+        continue
+
+  return depset
+
+def getdeps(dcl_name, runtime):
   from discode_helper import getDclDir
   
   opened = []
@@ -136,12 +158,17 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument("DCL", help="name of DCL to be built")
   parser.add_argument("-c", "--clean", help="clean install", action="store_true")
+  parser.add_argument("-s", "--show-deps", help="only show dependencies without building", action="store_true")
+  parser.add_argument("-r", "--runtime", help="check also runtime dependencies", action="store_true")
   
   args = parser.parse_args()
   
-  deps = getdeps(args.DCL)
+  deps = getdeps(args.DCL, args.runtime)
   depslist = []
   
+  if args.runtime:
+    print runtimedeps(args.DCL)
+
   if len(deps) > 0:
     sorteddeps = toposort2(deps)
     for depset in sorteddeps:
@@ -149,6 +176,12 @@ if __name__ == "__main__":
         depslist.append(dep)
   else:
     depslist.append(args.DCL)
+
+  if args.show_deps:
+    print "DCL in dependency order:"
+    for d in depslist:
+      print "\t", d
+    sys.exit(0)
     
   for dep in depslist:
     print ""
