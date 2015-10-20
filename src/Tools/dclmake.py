@@ -82,7 +82,19 @@ def getdeps(dcl_name, runtime):
   
   ret = {}
   
-  opened.append(dcl_name)
+  dotstr = "digraph G {\n"
+
+  if runtime:
+    dotdot = ""
+    dotstr = dotstr + dcl_name + "-> {"
+    opened = runtimedeps(dcl_name)
+    for x in opened:
+      dotstr = dotstr + dotdot + x
+      dotdot = ", "
+    dotstr = dotstr + "} [style=dotted];\n"
+
+  if not dcl_name in opened:
+    opened.append(dcl_name)
   
   while len(opened) > 0:
     dcl = opened.pop()
@@ -106,7 +118,16 @@ def getdeps(dcl_name, runtime):
       
     closed.append(dcl)
       
+    dotstr = dotstr + dcl + " -> {"
+    dotdot = ""
+    for x in depset:
+      dotstr = dotstr + dotdot + x
+      dotdot = ", "
+    dotstr = dotstr + "}\n"
         
+  dotstr = dotstr + "}"
+  print dotstr
+
   return ret
   
 def buildDCL(dclname, clean):
