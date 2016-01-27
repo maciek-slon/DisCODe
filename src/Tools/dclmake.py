@@ -130,7 +130,7 @@ def getdeps(dcl_name, runtime):
 
   return ret
   
-def buildDCL(dclname, clean):
+def buildDCL(dclname, args):
   from discode_helper import getDclDir
   
   dcldir = getDclDir(dclname)
@@ -139,13 +139,17 @@ def buildDCL(dclname, clean):
     os.makedirs(builddir)
     subprocess.Popen("cmake ..", cwd = builddir, shell=True).wait()
     
-  if clean:
+  if args.release:
+    subprocess.Popen("cmake . -DCMAKE_BUILD_TYPE=Release", cwd = builddir, shell=True).wait()
+
+  if args.clean:
     print "Cleaning previous build..."
     subprocess.Popen('make clean', cwd = builddir, shell = True).wait()
-  
+
   errs = ""
   perc = 0
   log_file = open('/tmp/dclmake_build_error_log', 'w')
+  print "Building..."
   p = subprocess.Popen('make', cwd = builddir, shell = True, stdout=subprocess.PIPE, stderr=log_file, bufsize=-1)
   while p.poll() is None:
     l = p.stdout.readline() # This blocks until it receives a newline.
@@ -181,6 +185,7 @@ if __name__ == "__main__":
   parser.add_argument("-c", "--clean", help="clean install", action="store_true")
   parser.add_argument("-s", "--show-deps", help="only show dependencies without building", action="store_true")
   parser.add_argument("-r", "--runtime", help="check also runtime dependencies", action="store_true")
+  parser.add_argument("--release", help="build release version", action="store_true")
   
   args = parser.parse_args()
   
@@ -209,6 +214,6 @@ if __name__ == "__main__":
     print "========================================================="
     print "== Building " + dep
     print "========================================================="
-    if not buildDCL(dep, args.clean):
+    if not buildDCL(dep, args):
       print "Build failed!"
       break
