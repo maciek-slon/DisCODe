@@ -80,14 +80,14 @@ public:
 	 * @param overrides
 	 * @return
 	 */
-	Task loadTask(std::string filename, const std::vector<std::pair<std::string, std::string> > & overrides);
+	Task loadTask(std::string filename, const std::vector<std::pair<std::string, std::string> > & overrides, const std::string & context = "");
 
-	void loadSubtasks(const ptree * node, Task & task);
-	void loadExecutors(const ptree * node, Subtask & subtask);
-	void loadComponents(const ptree * node, Executor & executor);
-	void loadProperties(const ptree * node, Base::Component & component);
-	void loadEvents(const ptree * node);
-	void loadConnections(const ptree * node);
+	void loadSubtasks(const ptree * node, Task & task, const std::string & context);
+	void loadExecutors(const ptree * node, Subtask & subtask, const std::string & context);
+	void loadComponents(const ptree * node, Executor & executor, const std::string & context);
+	void loadProperties(const ptree * node, Base::Component & component, const std::string & context);
+	void loadEvents(const ptree * node, const std::string & context);
+	void loadConnections(const ptree * node, const std::string & context);
 
 
 

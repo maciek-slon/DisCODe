@@ -79,7 +79,7 @@ void Configurator::expandMacros(ptree & pt, const std::vector<std::pair<std::str
 	}
 }
 
-Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<std::string, std::string> > & overrides)
+Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<std::string, std::string> > & overrides, const std::string & context)
 {
 	ptree * tmp_node;
 
@@ -131,7 +131,7 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 
 		try {
 			tmp_node = &(configuration.get_child("Task.Subtasks"));
-			loadSubtasks(tmp_node, task);
+			loadSubtasks(tmp_node, task, context);
 		}
 		catch(ptree_bad_path&) {
 			LOG(LERROR) << "No Subtasks branch in configuration file!\n";
@@ -139,7 +139,7 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 
 		try {
 			tmp_node = &(configuration.get_child("Task.DataStreams"));
-			loadConnections(tmp_node);
+			loadConnections(tmp_node, context);
 		}
 		catch(ptree_bad_path&) {
 			LOG(LFATAL) << "No DataStreams branch in configuration file!\n";
@@ -151,7 +151,7 @@ Task Configurator::loadTask(std::string filename_, const std::vector<std::pair<s
 	}//: else
 }
 
-void Configurator::loadSubtasks(const ptree * node, Task & task) {
+void Configurator::loadSubtasks(const ptree * node, Task & task, const std::string & context) {
 	LOG(LDEBUG) << "Loading subtasks";
 
 	std::string name;
@@ -172,7 +172,7 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 			continue;
 		}
 
-		name = tmp.get("<xmlattr>.name", "");
+		name = context + tmp.get("<xmlattr>.name", "");
 		state = tmp.get("<xmlattr>.state", "running");
 
 		subtask = task[name];
@@ -186,11 +186,11 @@ void Configurator::loadSubtasks(const ptree * node, Task & task) {
 			subtask->setInitStarted(true);
 		}
 
-		loadExecutors(&tmp, *subtask);
+		loadExecutors(&tmp, *subtask, context);
 	}
 }
 
-void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
+void Configurator::loadExecutors(const ptree * node, Subtask & subtask, const std::string & context) {
 	LOG(LDEBUG) << "Creating execution threads";
 
 	Executor * ex;
@@ -212,7 +212,7 @@ void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 			continue;
 		}
 
-		name = tmp.get("<xmlattr>.name", "");
+		name = context + tmp.get("<xmlattr>.name", "");
 		type = tmp.get("<xmlattr>.type", "");
 		period = tmp.get("<xmlattr>.period", 0.0f);
 
@@ -221,13 +221,13 @@ void Configurator::loadExecutors(const ptree * node, Subtask & subtask) {
 
 		subtask+=ex;
 
-		loadComponents(&tmp, *ex);
+		loadComponents(&tmp, *ex, context);
 
 		ex->start();
 	}
 }
 
-void Configurator::loadComponents(const ptree * node, Executor & executor) {
+void Configurator::loadComponents(const ptree * node, Executor & executor, const std::string & context) {
 	LOG(LDEBUG) << "Loading required components";
 
 	std::string name;
@@ -255,6 +255,8 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 		prio = tmp.get("<xmlattr>.priority", 0);
 		bump = tmp.get("<xmlattr>.bump", 0);
 
+		name = context + name;
+
 		// split component type into dcl and type
 		std::vector<std::string> dcl_comp;
 		boost::split(dcl_comp, type, boost::is_any_of(":"));
@@ -276,7 +278,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 
 		// iterate through properties defined in xml, check if component has them
 		// and set them if property is persistent
-		loadProperties(&tmp, *cmp);
+		loadProperties(&tmp, *cmp, context);
 
 		cmp->prepareInterface();
 		cmp->sortHandlers();
@@ -287,7 +289,7 @@ void Configurator::loadComponents(const ptree * node, Executor & executor) {
 	}
 }
 
-void Configurator::loadProperties(const ptree * node, Base::Component & component) {
+void Configurator::loadProperties(const ptree * node, Base::Component & component, const std::string & context) {
 	LOG(LDEBUG) << "Loading properties";
 
 	std::string name;
@@ -330,7 +332,7 @@ void Configurator::loadProperties(const ptree * node, Base::Component & componen
 
 }
 
-void Configurator::loadConnections(const ptree * node) {
+void Configurator::loadConnections(const ptree * node, const std::string & context) {
 	LOG(LDEBUG) << "Connecting data streams";
 
 	std::string src_name, src_port;
@@ -360,7 +362,7 @@ void Configurator::loadConnections(const ptree * node) {
 
 		src_port = tmp.get("<xmlattr>.name", "");
 
-		src_name = src_port.substr(0, src_port.find_first_of("."));
+		src_name = context + src_port.substr(0, src_port.find_first_of("."));
 		src_port = src_port.substr(src_port.find_first_of(".")+1);
 		src_cmp = componentManager->getComponent(src_name);
 		src_ds = src_cmp->getStream(src_port);
@@ -390,7 +392,7 @@ void Configurator::loadConnections(const ptree * node) {
 			}
 
 			dst_port = nd2.second.data();
-			dst_name = dst_port.substr(0, dst_port.find_first_of("."));
+			dst_name = context + dst_port.substr(0, dst_port.find_first_of("."));
 			dst_port = dst_port.substr(dst_port.find_first_of(".")+1);
 			dst_cmp = componentManager->getComponent(dst_name);
 			dst_ds = dst_cmp->getStream(dst_port);
