@@ -5,6 +5,8 @@ import re
 import sys
 import argparse
 import subprocess
+import calendar
+import time
 
 def progbar(perc, length):
   str = "\r["
@@ -148,7 +150,8 @@ def buildDCL(dclname, args):
 
   errs = ""
   perc = 0
-  log_file = open('/tmp/dclmake_build_error_log', 'w')
+  tempname='/tmp/dclmake_build_error_log_' + str(calendar.timegm(time.gmtime()))
+  log_file = open(tempname, 'w')
   print "Building..."
   p = subprocess.Popen('make', cwd = builddir, shell = True, stdout=subprocess.PIPE, stderr=log_file, bufsize=-1)
   while p.poll() is None:
@@ -161,7 +164,7 @@ def buildDCL(dclname, args):
   log_file.close()
   print ""
  
-  log_file = open('/tmp/dclmake_build_error_log', 'r')
+  log_file = open(tempname, 'r')
   if p.returncode != 0:
     print "Errors during build:"
     print log_file.read()
