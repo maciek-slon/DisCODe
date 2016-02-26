@@ -128,7 +128,7 @@ def getdeps(dcl_name, runtime):
     dotstr = dotstr + "}\n"
         
   dotstr = dotstr + "}"
-  print dotstr
+  # print dotstr
 
   return ret
   
@@ -187,24 +187,26 @@ if __name__ == "__main__":
   parser.add_argument("DCL", help="name of DCL to be built")
   parser.add_argument("-c", "--clean", help="clean install", action="store_true")
   parser.add_argument("-s", "--show-deps", help="only show dependencies without building", action="store_true")
-  parser.add_argument("-r", "--runtime", help="check also runtime dependencies", action="store_true")
+  group = parser.add_mutually_exclusive_group()
+  group.add_argument("-r", "--runtime", help="check also runtime dependencies", action="store_true")
+  group.add_argument("-n", "--no-deps", help="ignore all dependencies", action="store_true")
   parser.add_argument("--release", help="build release version", action="store_true")
   
   args = parser.parse_args()
   
-  deps = getdeps(args.DCL, args.runtime)
   depslist = []
   
-  if args.runtime:
-    print runtimedeps(args.DCL)
-
-  if len(deps) > 0:
-    sorteddeps = toposort2(deps)
-    for depset in sorteddeps:
-      for dep in depset:
-        depslist.append(dep)
+  if args.no_deps:
+    depslist = [args.DCL]
   else:
-    depslist.append(args.DCL)
+    deps = getdeps(args.DCL, args.runtime)
+    if len(deps) > 0:
+      sorteddeps = toposort2(deps)
+      for depset in sorteddeps:
+        for dep in depset:
+          depslist.append(dep)
+    else:
+      depslist.append(args.DCL)
 
   if args.show_deps:
     print "DCL in dependency order:"
