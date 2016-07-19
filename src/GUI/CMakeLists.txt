@@ -44,6 +44,47 @@ SET(GUI_QRC
 # ############################################
 # Try to find and setup Qt4 for this project
 # ############################################
+
+
+# ##########################
+# Find Qt 5
+# ##########################
+FIND_PACKAGE(Qt5Widgets)
+
+IF(Qt5Widgets_FOUND)
+
+SET(CMAKE_AUTOMOC ON)
+INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDE_DIRS})
+ADD_DEFINITIONS(${Qt5Widgets_DEFINITIONS})
+
+QT5_WRAP_UI(GUI_UI_HEADERS ${GUI_UI})
+QT5_ADD_RESOURCES(GUI_QRC_SOURCES ${GUI_QRC})
+
+ADD_EXECUTABLE(discode_gui
+	${GUI_CXX_SRCS}
+#	${GUI_MOC_SRCS}
+	${GUI_UI_HEADERS}
+	${GUI_QRC_SOURCES}
+)
+
+# Link executable with QT libraries
+TARGET_LINK_LIBRARIES(discode_gui ${Qt5Widgets_LIBRARIES} DisCODeClient Network)
+#QT5_USE_MODULES(discode_gui Widgets)
+
+
+SET_TARGET_PROPERTIES(discode_gui PROPERTIES
+   BUILD_WITH_INSTALL_RPATH ON
+   INSTALL_RPATH_USE_LINK_PATH 1
+   INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib
+)
+
+install(
+  TARGETS discode_gui
+  RUNTIME DESTINATION bin COMPONENT applications
+)
+
+
+ELSE(Qt5Widgets_FOUND)
 FIND_PACKAGE(Qt4)
 
 IF(QT_FOUND)
@@ -115,48 +156,9 @@ install(
 
 ELSE(QT_FOUND)
 
-# ##########################
-# Find Qt 5
-# ##########################
-FIND_PACKAGE(Qt5Widgets)
-
-IF(Qt5Widgets_FOUND)
-
-SET(CMAKE_AUTOMOC ON)
-INCLUDE_DIRECTORIES(${Qt5Widgets_INCLUDE_DIRS})
-ADD_DEFINITIONS(${Qt5Widgets_DEFINITIONS})
-
-QT5_WRAP_UI(GUI_UI_HEADERS ${GUI_UI})
-QT5_ADD_RESOURCES(GUI_QRC_SOURCES ${GUI_QRC})
-
-ADD_EXECUTABLE(discode_gui
-	${GUI_CXX_SRCS}
-#	${GUI_MOC_SRCS}
-	${GUI_UI_HEADERS}
-	${GUI_QRC_SOURCES}
-)
-
-# Link executable with QT libraries
-TARGET_LINK_LIBRARIES(discode_gui ${Qt5Widgets_LIBRARIES} DisCODeClient Network)
-#QT5_USE_MODULES(discode_gui Widgets)
-
-
-SET_TARGET_PROPERTIES(discode_gui PROPERTIES
-   BUILD_WITH_INSTALL_RPATH ON
-   INSTALL_RPATH_USE_LINK_PATH 1
-   INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib
-)
-
-install(
-  TARGETS discode_gui
-  RUNTIME DESTINATION bin COMPONENT applications
-)
-
-
-ELSE(Qt5Widgets_FOUND)
-
     MESSAGE("Qt not found! GUI will not be built")
+
+ENDIF(QT_FOUND)
 
 ENDIF(Qt5Widgets_FOUND)
 
-ENDIF(QT_FOUND)
