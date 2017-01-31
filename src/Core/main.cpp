@@ -304,7 +304,7 @@ int main(int argc, char* argv[])
 
 	catch (Common::DisCODeException& ex) {
 		LOG(LFATAL) << ex.what() << "\n";
-		ex.printStackTrace();
+		if (log_lvl<2) ex.printStackTrace();
 		exit(EXIT_FAILURE);
 	}
 	catch (exception& ex) {
