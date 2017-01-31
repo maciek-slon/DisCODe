@@ -25,7 +25,7 @@ public:
 
 	typedef enum {Running, Stopped, Initializing} TaskState;
 
-	Task() : m_state(Task::Initializing) {std::cout << "Kopiowanie TASKA!\n";}
+	Task() : m_state(Task::Initializing) {}
 
 	/*!
 	 * Start all subtasks.

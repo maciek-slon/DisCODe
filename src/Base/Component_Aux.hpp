@@ -12,7 +12,6 @@
 #include <string>
 
 #include "Component.hpp"
-#include "Panel.hpp"
 #include "EventHandler.hpp"
 #include "DataStreamInterface.hpp"
 #include "DataStream.hpp"
@@ -55,13 +54,6 @@ typedef std::string (*returnName)(void);
  */
 typedef Base::Component* (*returnComponent)(const std::string & name);
 
-/*!
- * \typedef returnPanel
- * \brief Functor used for retrieving Panel object from SO.
- * \author tkornuta
- */
-typedef Base::Panel* (*returnPanel)(void);
-
 }//: namespace Base
 
 
@@ -92,10 +84,6 @@ extern "C" { \
   { \
     return new SOURCE_CLASS_NAME(name); \
   } \
-  Base::Panel* returnPanel() \
-  { \
-    return new PANEL_CLASS_NAME(); \
-  } \
 } /* extern "C" */
 
 /*!
@@ -104,7 +92,6 @@ extern "C" { \
  *  - 'returnType', which returns component type (in this case COMPONENT_PROCESSOR),
  *  - 'returnName', which returns component name (COMPONENT_NAME),
  *  - 'returnProcessor', which will return a new instance of PROCESSOR_CLASS_NAME source,
- *  - 'returnPanel', which will return a new instance of PANEL_CLASS_NAME panel.
  *
  * \param COMPONENT_NAME the component name.
  * \param PROCESSOR_CLASS_NAME the class name of the processor you are adding to the library.
@@ -125,10 +112,6 @@ extern "C" { \
   { \
     return new PROCESSOR_CLASS_NAME(name); \
   } \
-  Base::Panel* returnPanel() \
-  { \
-    return new PANEL_CLASS_NAME(); \
-  } \
 } /* extern "C" */
 
 /*!
@@ -137,7 +120,6 @@ extern "C" { \
  *  - 'returnType', which returns component type (in this case COMPONENT_PROCESSOR),
  *  - 'returnName', which returns component name (COMPONENT_NAME),
  *  - 'returnProcessor', which will return a new instance of PROCESSOR_CLASS_NAME source,
- *  - 'returnPanel', which will return a new instance of PANEL_CLASS_NAME panel.
  *
  * \param COMPONENT_NAME the component name.
  * \param PROCESSOR_CLASS_NAME the class name of the processor you are adding to the library.

@@ -108,7 +108,7 @@ public:
 	 * Method tries to load component information from given dynamic library.
 	 * \param filename_ shared library filename.
 	 */
-	bool lazyInitialize(string filename_ = "")
+	bool lazyInitialize(std::string filename_ = "")
 	{
 		if (filename_ == "") filename_ = libname;
 
