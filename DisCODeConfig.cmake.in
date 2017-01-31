@@ -53,15 +53,14 @@ LINK_DIRECTORIES(${DisCODe_LIB_DIR})
 
 SET(DisCODe_LIBRARIES Common Base pthread rt)
 
-
 # ==============================================================================
 #  Version variables:
 # ==============================================================================
 
-SET(OpenCV_VERSION @DISCODE_VERSION@)
-SET(OpenCV_VERSION_MAJOR  @DISCODE_VERSION_MAJOR@)
-SET(OpenCV_VERSION_MINOR  @DISCODE_VERSION_MINOR@)
-SET(OpenCV_VERSION_PATCH  @DISCODE_VERSION_PATCH@)
+SET(DisCODe_VERSION @DISCODE_VERSION@)
+SET(DisCODe_VERSION_MAJOR  @DISCODE_VERSION_MAJOR@)
+SET(DisCODe_VERSION_MINOR  @DISCODE_VERSION_MINOR@)
+SET(DisCODe_VERSION_PATCH  @DISCODE_VERSION_PATCH@)
 
 ENDIF ( DisCODe_FIND_COMPONENTS )
 

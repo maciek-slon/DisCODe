@@ -47,7 +47,7 @@ add_subdirectory(share)
 # =======================================================================
 
 #  Current version number:
-set(DISCODE_VERSION "1.0.0")
+set(DISCODE_VERSION "3.0.1")
 
 string(REGEX MATCHALL "[0-9]" DISCODE_VERSION_PARTS "${DISCODE_VERSION}")
 
@@ -57,9 +57,9 @@ list(GET DISCODE_VERSION_PARTS 2 DISCODE_VERSION_PATCH)
 
 # include directories
 set(CMAKE_INCLUDE_DIRS_CONFIGCMAKE 
-	"${CMAKE_INSTALL_PREFIX}/include/Base" 
-	"${CMAKE_INSTALL_PREFIX}/include/Common"
-	"${CMAKE_INSTALL_PREFIX}/include/Types"  
+    #	"${CMAKE_INSTALL_PREFIX}/include/Base" 
+    #	"${CMAKE_INSTALL_PREFIX}/include/Common"
+    #	"${CMAKE_INSTALL_PREFIX}/include/Types"  
 	"${CMAKE_INSTALL_PREFIX}/include"
 )
 
@@ -68,9 +68,11 @@ set(CMAKE_LIB_DIRS_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/lib")
 
 
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/DisCODeConfig.cmake.in" "${CMAKE_BINARY_DIR}/DisCODeConfig.cmake" IMMEDIATE @ONLY)
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.bash.in" "${CMAKE_BINARY_DIR}/setup.bash" IMMEDIATE @ONLY)
 
 install(FILES ${CMAKE_BINARY_DIR}/DisCODeConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/)
 install(FILES ${CMAKE_BINARY_DIR}/DisCODeConfig.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/share/DisCODe/cmake/)
+install(FILES ${CMAKE_BINARY_DIR}/setup.bash DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 # =======================================================================
 # CPack: binary installer generator
@@ -82,10 +84,10 @@ install(FILES ${CMAKE_BINARY_DIR}/DisCODeConfig.cmake DESTINATION ${CMAKE_INSTAL
 set(CPACK_PACKAGE_NAME "DisCODe")
 set(CPACK_PACKAGE_VENDOR "DisCODe")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DisCODe - Distributed Component Oriented Data Processing")
-set(CPACK_PACKAGE_VERSION "1.0.0")
-set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION "3.0.1")
+set(CPACK_PACKAGE_VERSION_MAJOR "3")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
-set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_VERSION_PATCH "1")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "DisCODe")
 #set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\doc_src\\\\discode.bmp")
 
