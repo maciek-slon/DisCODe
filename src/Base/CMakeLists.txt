@@ -4,12 +4,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Create a variable containing all .cpp files
 FILE(GLOB files *.hpp)
 install(FILES ${files}
-  DESTINATION include/Base
+    DESTINATION ${DISCODE_TARGET_INCLUDE_DIR}/Base
   COMPONENT sdk)
   
 FILE(GLOB files Policies/*.hpp)
 install(FILES ${files}
-  DESTINATION include/Base/Policies
+    DESTINATION ${DISCODE_TARGET_INCLUDE_DIR}/Base/Policies
   COMPONENT sdk)
   
 # Create library Base

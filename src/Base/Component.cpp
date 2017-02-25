@@ -199,7 +199,8 @@ void Component::printHandlers() {
 std::string Component::listHandlers() {
 	std::string ret;
 	BOOST_FOREACH(HandlerPair handler, handlers) {
-		ret += handler.first + "\n";
+		if (triggers.find(handler.first) == triggers.end())
+			ret += handler.first + "\n";
 	}
 	return ret;
 }

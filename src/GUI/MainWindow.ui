@@ -24,7 +24,16 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -49,32 +58,14 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>446</width>
-         <height>550</height>
+         <width>451</width>
+         <height>555</height>
         </rect>
        </property>
       </widget>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>726</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuTask">
-    <property name="title">
-     <string>Task</string>
-    </property>
-    <addaction name="actionLoad"/>
-    <addaction name="actionUnload"/>
-   </widget>
-   <addaction name="menuTask"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="iconSize">
@@ -92,10 +83,6 @@
    <addaction name="actionConnect"/>
    <addaction name="actionFinish"/>
    <addaction name="separator"/>
-   <addaction name="actionStart_all"/>
-   <addaction name="actionStop_all"/>
-   <addaction name="separator"/>
-   <addaction name="actionRefresh"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="wComponents">
@@ -133,6 +120,27 @@
      </item>
     </layout>
    </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>726</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuTask">
+    <property name="title">
+     <string>Task</string>
+    </property>
+    <addaction name="actionLoad"/>
+    <addaction name="actionUnload"/>
+   </widget>
+   <addaction name="menuTask"/>
   </widget>
   <action name="actionStart_all">
    <property name="icon">
@@ -177,10 +185,16 @@
      <normaloff>:/icons/connect</normaloff>:/icons/connect</iconset>
    </property>
    <property name="text">
-    <string>Connect</string>
+    <string>Disconnect from DisCODe</string>
    </property>
    <property name="toolTip">
-    <string>Connect</string>
+    <string>Disconnect from DisCODe</string>
+   </property>
+   <property name="statusTip">
+    <string>Disconnect from DisCODe</string>
+   </property>
+   <property name="whatsThis">
+    <string>Disconnect from DisCODe</string>
    </property>
   </action>
   <action name="actionFinish">
@@ -192,6 +206,12 @@
     <string>Finish</string>
    </property>
    <property name="toolTip">
+    <string>Stop DisCODe execution</string>
+   </property>
+   <property name="statusTip">
+    <string>Stop DisCODe execution</string>
+   </property>
+   <property name="whatsThis">
     <string>Stop DisCODe execution</string>
    </property>
   </action>

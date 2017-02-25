@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include "DisCODeException.hpp"
+#include "../Common/DisCODeException.hpp"
 
 namespace Base {
 

@@ -79,7 +79,7 @@ void MainWindow::onConnectionEstablished() {
 
 	ui->wComponents->show();
 	ui->wSubtasks->show();
-	ui->menuBar->show();
+	//ui->menuBar->show();
 	ui->mainToolBar->show();
 	ui->scrollArea->takeWidget();
 }

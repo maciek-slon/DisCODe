@@ -1,9 +1,11 @@
 #include "ComponentWidget.hpp"
 
 #include <QtGui>
+#include <QSignalBlocker>
 #if QT_VERSION >= 0x050000
 #include <QtWidgets>
 #endif
+
 #include <iostream>
 
 #include <boost/lexical_cast.hpp>
@@ -190,6 +192,8 @@ ComponentWidget::ComponentWidget(DisCODe::ComponentProxy * proxy, DisCODe::Syste
 			emitter->setToolTip(pttip);
 			emitter->setStatusTip(pttip);
 
+			m_widgets[fullname] = emitter;
+
 			int pos = layout->rowCount();
 
 			layout->addWidget(new QLabel(pname), pos, 0);
@@ -277,6 +281,41 @@ void ComponentWidget::setProperty(QWidget * widget) {
 	//std::cout << name.toStdString() << std::endl;
 }
 
+void ComponentWidget::refreshProperties() {
+	QWidget * widget;
+	int pc = m_proxy->countProperties();
+	//foreach(widget, m_widgets) {
+	for ( int i = 0; i < pc; ++i) {
+		QString pname = m_proxy->getPropertyName(i).c_str();
+		std::string val = m_proxy->getPropertyValue(i);
+		widget = m_widgets[pname];
+		if (!widget) return;
+		const QSignalBlocker blocker(widget);
+		if (widget->inherits("QCheckBox")) {
+			QCheckBox * check = qobject_cast<QCheckBox*>(widget);
+			//check->setChecked(boost::lexical_cast<bool>(val));
+		} else if (widget->inherits("QLineEdit")) {
+			QLineEdit * edit = qobject_cast<QLineEdit*>(widget);
+			edit->setText(val.c_str());
+		} else if (widget->inherits("QSpinBox")) {
+			QSpinBox * spin = qobject_cast<QSpinBox*>(widget);
+			
+		} else if (widget->inherits("QComboBox")) {
+			QComboBox * combo = qobject_cast<QComboBox*>(widget);
+			
+		} else if (widget->inherits("QSlider")) {
+			QSlider * slider = qobject_cast<QSlider*>(widget);
+			
+		} else {
+		}
+	}
+	//std::cout << "Refreshing props for " << m_proxy->name().c_str() << "\n";
+}
+
 void ComponentWidget::setBump(int bump) {
 	m_proxy->setBump(bump);
+}
+
+void ComponentWidget::showEvent(QShowEvent *) {
+	refreshProperties();
 }

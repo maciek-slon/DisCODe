@@ -13,7 +13,7 @@
 
 #include <boost/ptr_container/ptr_vector.hpp>
 
-#include <Singleton.hpp>
+#include "../Base/Singleton.hpp"
 
 #include "LoggerAux.hpp"
 #include "LoggerOutput.hpp"

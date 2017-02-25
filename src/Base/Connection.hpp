@@ -15,7 +15,7 @@
 #include <boost/foreach.hpp>
 
 #include "DataStreamInterface.hpp"
-#include "Logger.hpp"
+#include "../Common/Logger.hpp"
 
 namespace Base {
 

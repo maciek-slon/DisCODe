@@ -30,6 +30,8 @@ include(MacroOutOfSourceBuild)
 macro_ensure_out_of_source_build("${PROJECT_NAME} requires an out of source build.")
 
 
+set(DISCODE_TARGET_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include)
+
 ENABLE_TESTING()
 
 add_subdirectory(src)
@@ -57,11 +59,13 @@ list(GET DISCODE_VERSION_PARTS 2 DISCODE_VERSION_PATCH)
 
 # include directories
 set(CMAKE_INCLUDE_DIRS_CONFIGCMAKE 
-    	"${CMAKE_INSTALL_PREFIX}/include/Base" 
-    	"${CMAKE_INSTALL_PREFIX}/include/Common"
-    	"${CMAKE_INSTALL_PREFIX}/include/Types"  
+#	"${CMAKE_INSTALL_PREFIX}/include/Base" 
+#	"${CMAKE_INSTALL_PREFIX}/include/Common"
+#	"${CMAKE_INSTALL_PREFIX}/include/Types"  
 	"${CMAKE_INSTALL_PREFIX}/include"
 )
+
+
 
 # lib directory
 set(CMAKE_LIB_DIRS_CONFIGCMAKE "${CMAKE_INSTALL_PREFIX}/lib")

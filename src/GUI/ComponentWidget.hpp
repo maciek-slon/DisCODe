@@ -20,14 +20,19 @@ public slots:
 	void triggerHandler(const QString & name);
 
 	void setProperty(QWidget * widget);
+	void refreshProperties();
 
 	void setBump(int bump);
+
+protected:
+	void showEvent(QShowEvent *);
 
 private:
 	DisCODe::ComponentProxy * m_proxy;
 	DisCODe::SystemProxy * m_system;
 
 	QMap<QString, QString> m_prop_edits;
+	QMap<QString, QWidget*> m_widgets;
 };
 
 #endif // COMPONENTWIDGET_HPP

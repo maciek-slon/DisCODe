@@ -5,7 +5,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 FILE(GLOB h_files *.hpp)
 
 INSTALL(FILES ${h_files}
-  DESTINATION include/Client COMPONENT sdk
+    DESTINATION ${DISCODE_TARGET_INCLUDE_DIR}/Client COMPONENT sdk
 )
 
 # Create library Common
