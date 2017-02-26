@@ -1,5 +1,7 @@
 #include "TextRoller.hpp"
 
+#include <iostream>
+
 #include <QPainter>
 #include <QEasingCurve>
 
@@ -63,8 +65,9 @@ void TextRoller::animate() {
     if (m_progress >= 100) {
         m_progress = 0;
         m_text.pop_front();
-        if (m_text.size() == 1)
+        if (m_text.size() == 1) {
             m_timer.stop();
+	}
     }
     update();
 }

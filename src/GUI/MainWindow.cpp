@@ -82,7 +82,12 @@ void MainWindow::onConnectionEstablished() {
 	//ui->menuBar->show();
 	ui->mainToolBar->show();
 	ui->scrollArea->takeWidget();
+	ui->listComponents->setCurrentRow(0);
 }
+
+void MainWindow::onConnectionLost() {
+	emit connectionLost();
+}  
 
 void MainWindow::onConnectionFailed() {
 	client->disconnect();
@@ -136,7 +141,7 @@ void MainWindow::setup(DisCODe::Client * c) {
 	ui->listComponents->clear();
 	ui->listSubtasks->clear();
 
-	QVector <ComponentItem*> items;
+	QVector <ComponentItem*> component_items;
 
 	for (int i = 0; i < task->countExecutors(); ++i) {
 		DisCODe::ExecutorProxy * ex = task->getExecutor(i);
@@ -147,13 +152,13 @@ void MainWindow::setup(DisCODe::Client * c) {
 			component_props[cp->name().c_str()] = new ComponentWidget(cp, system);
 
 			ComponentItem *myItem = new ComponentItem(cp->name().c_str(), cp->getType().c_str(), ex->name().c_str(), cp->getPriority());
-			items.push_back(myItem);
+			component_items.push_back(myItem);
 		}
 
 	}
 
-	qSort(items.begin(), items.end(), PtrLess<ComponentItem>());
-	Q_FOREACH(ComponentItem * myItem, items) {
+	qSort(component_items.begin(), component_items.end(), PtrLess<ComponentItem>());
+	Q_FOREACH(ComponentItem * myItem, component_items) {
 		QListWidgetItem *item = new QListWidgetItem();
 		item->setSizeHint(QSize(0,50));
 		ui->listComponents->addItem(item);
@@ -177,10 +182,24 @@ void MainWindow::setup(DisCODe::Client * c) {
 	}
 }
 
+void MainWindow::on_listComponents_itemActivated(QListWidgetItem * item) {
+//	ui->scrollArea->takeWidget();
+//	ui->scrollArea->setWidget(component_props[dynamic_cast<ComponentItem*>(ui->listComponents->itemWidget(item))->getName()]);
+}
+
 void MainWindow::on_listComponents_itemClicked(QListWidgetItem * item) {
+//	ui->scrollArea->takeWidget();
+//	ui->scrollArea->setWidget(component_props[dynamic_cast<ComponentItem*>(ui->listComponents->itemWidget(item))->getName()]);
+}
+
+void MainWindow::on_listComponents_currentRowChanged(int row) {
+	QListWidgetItem * item = ui->listComponents->item(row);
+	if (!item) return;
 	ui->scrollArea->takeWidget();
 	ui->scrollArea->setWidget(component_props[dynamic_cast<ComponentItem*>(ui->listComponents->itemWidget(item))->getName()]);
 }
+
+
 
 void MainWindow::on_actionConnect_triggered(bool /*checked*/) {
 	if (m_connected) {

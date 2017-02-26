@@ -35,9 +35,7 @@ public:
 
     void setup(DisCODe::Client * c);
 
-    void onConnectionLost() {
-    	emit connectionLost();
-    }
+    void onConnectionLost();
 
 signals:
 	void connectionLost();
@@ -46,7 +44,9 @@ protected:
 	void closeEvent(QCloseEvent *event);
 
 public slots:
+	void on_listComponents_itemActivated(QListWidgetItem * item);
 	void on_listComponents_itemClicked(QListWidgetItem * item);
+	void on_listComponents_currentRowChanged(int row);
 
 	void on_actionConnect_triggered(bool checked);
 	void on_actionFinish_triggered(bool checked);
