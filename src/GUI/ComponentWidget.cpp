@@ -293,13 +293,21 @@ void ComponentWidget::refreshProperties() {
 		const QSignalBlocker blocker(widget);
 		if (widget->inherits("QCheckBox")) {
 			QCheckBox * check = qobject_cast<QCheckBox*>(widget);
-			//check->setChecked(boost::lexical_cast<bool>(val));
+			bool new_val;
+			try {
+				new_val = boost::lexical_cast<bool>(val);
+			} catch(...) {
+				new_val = check->isChecked();
+			}
+			check->setChecked(new_val);
 		} else if (widget->inherits("QLineEdit")) {
+			//std::cout << "Setting T " << pname.toStdString() << "=" << val << "\n";
 			QLineEdit * edit = qobject_cast<QLineEdit*>(widget);
 			edit->setText(val.c_str());
 		} else if (widget->inherits("QSpinBox")) {
+			//std::cout << "Setting S " << pname.toStdString() << "=" << val << "\n";
 			QSpinBox * spin = qobject_cast<QSpinBox*>(widget);
-			
+			spin->setValue(boost::lexical_cast<int>(val));
 		} else if (widget->inherits("QComboBox")) {
 			QComboBox * combo = qobject_cast<QComboBox*>(widget);
 			
@@ -309,7 +317,7 @@ void ComponentWidget::refreshProperties() {
 		} else {
 		}
 	}
-	//std::cout << "Refreshing props for " << m_proxy->name().c_str() << "\n";
+	std::cout << "Refreshing props for " << m_proxy->name().c_str() << "\n";
 }
 
 void ComponentWidget::setBump(int bump) {

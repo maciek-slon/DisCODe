@@ -47,12 +47,15 @@ public:
 	std::string send(const std::string & msg) {
 		fillBuffer(msg);
 		m_client.send(buf, msg.size()+3);
-		int ret = m_client.recv(100);
+		int ret = m_client.recv(500);
 		if (ret < 0) {
 			m_connection_lost_handler();
 			return std::string();
 		}
-		return std::string((char*)buf);
+		std::string rets = std::string((char*)buf);
+		//std::cout << "> " << msg << "\n";
+		//std::cout << "< " << rets << "\n";
+		return rets;
 	}
 
 	void setListExecutorsHandler(list_executors_t h) {
@@ -122,7 +125,7 @@ protected:
 private:
 	Common::TCPClient m_client;
 
-	unsigned char buf[1024];
+	unsigned char buf[2048];
 
 
 	list_executors_t m_list_executors_handler;
